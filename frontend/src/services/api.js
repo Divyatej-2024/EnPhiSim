@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // frontend/src/services/api.js
 import axios from 'axios';
 
@@ -9,3 +10,16 @@ export const getLevel = (id) => axios.get(`${BACKEND}/levels/${id}`);
 export const submitAttempt = (level, payload) => axios.post(`${BACKEND}/attempts/${level}`, payload);
 
 export const mlPredict = (text) => axios.post(`${ML}/predict`, { text });
+=======
+// frontend/src/services/api.js
+import axios from 'axios';
+
+const BACKEND = process.env.REACT_APP_API_BASE || 'http://localhost:5000/api';
+const ML = process.env.REACT_APP_ML_BASE || 'http://127.0.0.1:8001';
+
+export const getLevels = () => axios.get(`${BACKEND}/levels`);
+export const getLevel = (id) => axios.get(`${BACKEND}/levels/${id}`);
+export const submitAttempt = (level, payload) => axios.post(`${BACKEND}/attempts/${level}`, payload);
+
+export const mlPredict = (text) => axios.post(`${ML}/predict`, { text });
+>>>>>>> 622a2f58a21cb608242fa59b8e4c35dfb00d67b0
