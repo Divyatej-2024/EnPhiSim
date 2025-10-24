@@ -34,6 +34,8 @@ app.use(express.json());
 app.use('/api/levels', require('./routes/levelRoutes'));
 app.use('/api/attempts', require('./routes/attemptRoutes'));
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
->>>>>>> 622a2f58a21cb608242fa59b8e4c35dfb00d67b0
+const PORT = process.env.PORT || 8000;
+app.listen(8000, () => console.log(`Backend running on port ${PORT}`));
+============
+app.listen(process.env.PORT || 1000);
+>>>>>>> main
