@@ -1,61 +1,8 @@
-<<<<<<< HEAD
-# === Core Web Framework ===
 fastapi==0.115.0
 uvicorn==0.30.3
-
-# === Machine Learning & NLP ===
-scikit-learn==1.5.1
-pandas==2.2.2
-numpy==1.26.4
-joblib==1.4.2
-
-# === Natural Language Processing ===
-transformers==4.44.0
-torch==2.4.0
-nltk==3.9.1
-
-# === Data & JSON Utilities ===
-pydantic==2.8.2
-python-multipart==0.0.9
-requests==2.32.3
-
-# === Optional: CORS and Logging ===
-starlette==0.37.2
-loguru==0.7.2
-
-# === For Text Preprocessing ===
-beautifulsoup4==4.12.3
-
-# === Optional (if you use SVM/RandomForest models from pickle) ===
-pickle-mixin==1.0.2
-=======
-# === Core Web Framework ===
-fastapi==0.115.0
-uvicorn==0.30.3
-
-# === Machine Learning & NLP ===
-scikit-learn==1.5.1
-pandas==2.2.2
-numpy==1.26.4
-joblib==1.4.2
-
-# === Natural Language Processing ===
-transformers==4.44.0
-torch==2.4.0
-nltk==3.9.1
-
-# === Data & JSON Utilities ===
-pydantic==2.8.2
-python-multipart==0.0.9
-requests==2.32.3
-
-# === Optional: CORS and Logging ===
-starlette==0.37.2
-loguru==0.7.2
-
-# === For Text Preprocessing ===
-beautifulsoup4==4.12.3
-
-# === Optional (if you use SVM/RandomForest models from pickle) ===
-pickle-mixin==1.0.2
->>>>>>> 622a2f58a21cb608242fa59b8e4c35dfb00d67b0
+numpy
+pandas
+scikit-learn
+transformers
+torch
+joblib
