@@ -1,0 +1,197 @@
+[
+  {
+    "level": 1,
+    "title": "Mass Credential-Phish",
+    "difficulty": "Easy"
+  },
+  {
+    "level": 2,
+    "title": "Scam invoice/ Payment remainder",
+    "difficulty": "Easy"
+  },
+  {
+    "level": 3,
+    "title": "Fake News Letter Subscription",
+    "difficulty": "Easy"
+  },
+  {
+    "level": 4,
+    "title": "Lottery / Prize Scam",
+    "difficulty": "Easy"
+  },
+  {
+    "level": 5,
+    "title": "Simple Attachment Lure Doc / Xlsx",
+    "difficulty": "Easy"
+  },
+  {
+    "level": 6,
+    "title": "Basic Spoofed Display Name Sender",
+    "difficulty": "Easy"
+  },
+    {
+    "level": 7,
+    "title": "Bonus Level-1 : EAGLE",
+    "difficulty": "Easy"
+  },
+  {
+    "level": 8,
+    "title": "Typo Squatted Domain Phish",
+    "difficulty": "Advanced Easy"
+  },
+  {
+    "level": 9,
+    "title": "URL-Shortner Redirect Phish",
+    "difficulty": "Advanced Easy"
+  },
+  {
+    "level": 10,
+    "title": "Malicious Survey / Feedback Request",
+    "difficulty": "Advanced Easy"
+  },
+  {
+    "level": 11,
+    "title": "Smishing (SMS)",
+    "difficulty": "Advanced Easy"
+  },
+  {
+    "level": 12,
+    "title": "Fake Socialmedia Notification",
+    "difficulty": "Advanced Easy"
+  },
+  {
+    "level": 13,
+    "title": "Clone of a public Service alert",
+    "difficulty": "Advanced Easy"
+  },
+  {
+    "level": 14,
+    "title": "Bonus Level-2 : MONKEY",
+    "difficulty": "Advanced Easy"
+  },
+  {
+    "level": 15,
+    "title": "Spear-Phishing (Personalised to role)",
+    "difficulty": "Normal"
+  },
+  {
+    "level": 16,
+    "title": "Business Email Compromise (BEC)",
+    "difficulty": "Normal"
+  },
+  {
+    "level": 17,
+    "title": "Drive / Share Notification Spoof",
+    "difficulty": "Normal"
+  },
+  {
+    "level": 18,
+    "title": "Invoice Impersonation with PDF",
+    "difficulty": "Normal"
+  },
+    {
+    "level": 19,
+    "title": "Account Lockout Score",
+    "difficulty": "Normal"
+  },
+  {
+    "level": 20,
+    "title": "Credential Harvest Via Landing Page",
+    "difficulty": "Normal"
+  },
+  {
+    "level": 21,
+    "title": "Bonus Level-3 : Turtle",
+    "difficulty": "Normal"
+  },
+  {
+    "level": 22,
+    "title": "Whaling (C-suite impersonation)",
+    "difficulty": "Pre-hard"
+  },
+  {
+    "level": 23,
+    "title": "Spear + Vishing Combo",
+    "difficulty": "Pre-hard"
+  },
+  {
+    "level": 24,
+    "title": "QR-Code Quishing(Email or Poster)",
+    "difficulty": "Pre-hard"
+  },
+    {
+    "level": 25,
+    "title": "Account Takeover (credential Reuse)",
+    "difficulty": "Pre-hard"
+  },
+  {
+    "level": 26,
+    "title": "Malicious HTML or Embedded Script in Attachment",
+    "difficulty": "Pre-hard"
+  },
+  {
+    "level": 27,
+    "title": "Bonus Level-4 : SHARK",
+    "difficulty": "Pre-hard"
+  },
+  {
+    "level": 28,
+    "title": "Business Process Compromise (Invoice + Contractual Language)",
+    "difficulty": "Hard"
+  },
+  {
+    "level": 29,
+    "title": "Compromised Internal account Spear-Phish",
+    "difficulty": "Hard"
+  },
+  {
+    "level": 30,
+    "title": "Deepfake - Assisted Voice Vishing",
+    "difficulty": "Hard"
+  },
+    {
+    "level": 31,
+    "title": "Man in the Middle Credential Capture (advaced redirects)",
+    "difficulty": "Hard"
+  },
+  {
+    "level": 32,
+    "title": "Targeted Supply-Chain Phishing",
+    "difficulty": "Hard"
+  },
+  {
+    "level": 33,
+    "title": "Bonus Level-5 : ELEPHANT",
+    "difficulty": "Hard"
+  },
+  {
+    "level": 34,
+    "title": "AI-Generated Personalised Campains",
+    "difficulty": "Advanced Hard"
+  },
+  {
+    "level": 35,
+    "title": "Homograph / Unicide Confusable Domain Attacks (Realistic Homographs)",
+    "difficulty": "Advanced Hard"
+  },
+  {
+    "level": 36,
+    "title": "Credential Replay + Slow Drip Exfiltration",
+    "difficulty": "Advanced Hard"
+  },
+    {
+    "level": 37,
+    "title": "Multi-vector, Adaptive BEC With Reconnaissance",
+    "difficulty": "Advanced Hard"
+  },
+  {
+    "level": 38,
+    "title": "Bonus Level-6 : Honey Bee",
+    "difficulty": "Advanced Hard"
+  },
+  {
+    "level": 39,
+    "title": "advanced Persistent Phishing",
+    "difficulty": "Final"
+  }
+]
