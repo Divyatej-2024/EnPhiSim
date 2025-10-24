@@ -1,45 +1,10 @@
-<<<<<<< HEAD
-// backend/controllers/levelController.js
-const Level = require('../models/Level');
-
-exports.getLevels = async (req, res) => {
-  try {
-    const levels = await Level.find().sort({ level: 1 });
-    res.json(levels);
-  } catch (err) {
-    res.status(500).json({ message: 'Error fetching levels' });
-  }
+// backend/controllers/LevelController.js
+const getLevels = (req, res) => {
+  res.json([{ id: 1, name: "Level 1" }, { id: 2, name: "Level 2" }]);
 };
 
-exports.getLevelById = async (req, res) => {
-  try {
-    const level = await Level.findOne({ level: parseInt(req.params.id, 10) });
-    if (!level) return res.status(404).json({ message: 'Level not found' });
-    res.json(level);
-  } catch (err) {
-    res.status(500).json({ message: 'Error fetching level' });
-  }
-};
-=======
-// backend/controllers/levelController.js
-const Level = require('../models/Level');
-
-exports.getLevels = async (req, res) => {
-  try {
-    const levels = await Level.find().sort({ level: 1 });
-    res.json(levels);
-  } catch (err) {
-    res.status(500).json({ message: 'Error fetching levels' });
-  }
+const createLevel = (req, res) => {
+  res.json({ message: "Level created successfully", body: req.body });
 };
 
-exports.getLevelById = async (req, res) => {
-  try {
-    const level = await Level.findOne({ level: parseInt(req.params.id, 10) });
-    if (!level) return res.status(404).json({ message: 'Level not found' });
-    res.json(level);
-  } catch (err) {
-    res.status(500).json({ message: 'Error fetching level' });
-  }
-};
->>>>>>> 622a2f58a21cb608242fa59b8e4c35dfb00d67b0
+module.exports = { getLevels, createLevel };
