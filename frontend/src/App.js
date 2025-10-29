@@ -4,7 +4,6 @@ import Home from "./pages/Home";
 // Correct if file is Simulation.js
 import Simulation from './pages/Simulation';
 import Dashboard from "./pages/Dashboard";
-import Reports from "./pages/Reports";
 
 function App() {
   return (
@@ -13,7 +12,6 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/simulation" element={<Simulation />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/reports" element={<Reports />} />
       </Routes>
     </BrowserRouter>
   );
