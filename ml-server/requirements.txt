@@ -1,5 +1,7 @@
 fastapi==0.115.0
 uvicorn==0.30.3
+flask
+gunicorn
 numpy
 pandas
 scikit-learn
