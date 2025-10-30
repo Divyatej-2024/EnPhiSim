@@ -10,3 +10,5 @@ transformers
 joblib
 beautifulsoup4
 requests
+Flask==3.0.3
+Flask-Cors==4.0.0
