@@ -2,7 +2,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 // Correct if file is Simulation.js
-import Simulation from './pages/Simulation';
+import Simulation from "./pages/Simulation";
 import Dashboard from "./pages/Dashboard";
 
 function App() {
