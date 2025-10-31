@@ -6,7 +6,7 @@ function Home() {
       <img src={'${process.env.PUBLIC_URL}/Enphisim.png'} alt="EnPhiSim Logo" width="150"/>
       <h1>Welcome to EnPhiSim</h1>
       <p>Your phishing simulation and awareness platform.</p>
-      <a href="Simulation.jsx">Let's Begin</a>
+      <a href="/simulation">Let's Begin</a>
     </div>
   );
 }
