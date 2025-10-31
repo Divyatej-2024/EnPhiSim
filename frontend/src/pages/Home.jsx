@@ -5,7 +5,7 @@ function Home() {
     <div style={{ textAlign: 'center', marginTop: '3rem' }}>
       <h1>Welcome to EnPhiSim</h1>
       <p>Your phishing simulation and awareness platform.</p>
-      <a href="./Simulation.jsx">Let's Begin</a>
+      <a href="Simulation.jsx">Let's Begin</a>
     </div>
   );
 }
