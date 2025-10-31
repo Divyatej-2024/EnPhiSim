@@ -3,7 +3,7 @@ import EnphisimLogo from '../assests/Enphisim.png';
 function Home() {
   return (
     <div style={{ textAlign: 'center', marginTop: '3rem' }}>
-      <img src={EnphisimLogo} alt="EnPhiSim Logo" width="150">
+      <img src={EnphisimLogo} alt="EnPhiSim Logo" width="150"/>
       <h1>Welcome to EnPhiSim</h1>
       <p>Your phishing simulation and awareness platform.</p>
       <a href="Simulation.jsx">Let's Begin</a>
