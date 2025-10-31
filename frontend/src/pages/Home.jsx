@@ -1,5 +1,5 @@
 import React from 'react';
-import EnphisimLogo from '../assests/Enphisim.png';
+import EnphisimLogo from '../Enphisim.png';
 function Home() {
   return (
     <div style={{ textAlign: 'center', marginTop: '3rem' }}>
