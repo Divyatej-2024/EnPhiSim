@@ -3,7 +3,7 @@ import re
 from sklearn.preprocessing import LabelEncoder
 
 # Load your custom dataset
-df = pd.read_csv("data/Enphisim_dataset.xlsx")
+df = pd.read_excel("data/Enphisim_dataset.xlsx")
 
 # Clean the text
 def clean_text(text):
@@ -18,5 +18,5 @@ encoder = LabelEncoder()
 df["label"] = encoder.fit_transform(df["label"])
 
 # Save processed data
-df.to_csv("data/emails_clean.csv", index=False)
-print("Custom dataset is finally, cleaned and saved as data/emails_clean.csv")
+df.to_excel("data/Enphisim_clean.xlsx", index=False)
+print("Custom dataset is finally, cleaned and saved as data/Enphisim_clean.xlsx")
