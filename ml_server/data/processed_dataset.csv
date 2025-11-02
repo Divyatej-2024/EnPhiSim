@@ -1,18 +1,18 @@
 id,level_no,page_title,screenshot_path,html_path,confidence,level_type,random_level
-1,l1,unknown,missing,missing,0.0,unknown,no
-2,l2,unknown,missing,missing,0.0,unknown,no
-3,l3,unknown,missing,missing,0.0,unknown,no
-4,l4,unknown,missing,missing,0.0,unknown,no
-5,l5,unknown,missing,missing,0.0,unknown,no
-6,l6,unknown,missing,missing,0.0,unknown,no
-7,bl1,unknown,missing,missing,0.0,unknown,no
-8,l7,unknown,missing,missing,0.0,unknown,no
-9,l8,unknown,missing,missing,0.0,unknown,no
-10,l9,unknown,missing,missing,0.0,unknown,no
-11,l10,unknown,missing,missing,0.0,unknown,no
-12,l11,unknown,missing,missing,0.0,unknown,no
-13,l12,unknown,missing,missing,0.0,unknown,no
-14,bl2,unknown,missing,missing,0.0,unknown,no
+1,l1,mass credential-phish,missing,missing,0.0,unknown,no
+2,l2,scam invoice/payment reminder,missing,missing,0.0,unknown,no
+3,l3,fake newsletter subscription,missing,missing,0.0,unknown,no
+4,l4,lottery / prize scam,missing,missing,0.0,unknown,no
+5,l5,simple attachment lure,missing,missing,0.0,unknown,no
+6,l6,basic spoofed display -name senders,missing,missing,0.0,unknown,no
+7,bl1,eagle,missing,missing,0.0,unknown,no
+8,l7,typosquatted domain phish,missing,missing,0.0,unknown,no
+9,l8,url shortner redirected phish,missing,missing,0.0,unknown,no
+10,l9,malicious survey /feedback request,missing,missing,0.0,unknown,no
+11,l10,sms(smishing) generic link,missing,missing,0.0,unknown,no
+12,l11,fake social media notification,missing,missing,0.0,unknown,no
+13,l12,clone of a public service alert,missing,missing,0.0,unknown,no
+14,bl2,monkey,missing,missing,0.0,unknown,no
 15,l13,unknown,missing,missing,0.0,unknown,no
 16,l14,unknown,missing,missing,0.0,unknown,no
 17,l15,unknown,missing,missing,0.0,unknown,no
