@@ -175,7 +175,7 @@ export default function Level1MassCredentialPhish() {
           <div className="content">
             <img src={avtar} alt="Avatar" />
             <div className="info">
-              <span className="sender">From: security@enphisim.com</span>
+              <span className="sender">From: secureity@enphisim.com</span>
               <div className="phish-hint">Phishing Email</div>
               <span className="recipient">To: user@enphisim.com</span>
             </div>
