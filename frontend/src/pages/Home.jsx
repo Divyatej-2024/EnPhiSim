@@ -26,7 +26,7 @@ function Home() {
         Your phishing simulation and awareness platform.
       </p>
       <Link
-        to="/levels/l1"
+        to="/levelpage"
         style={{
           display: "inline-block",
           background: "#38bdf8",
