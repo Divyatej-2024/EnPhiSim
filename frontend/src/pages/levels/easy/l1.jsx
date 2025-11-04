@@ -11,7 +11,7 @@ export default function Level1MassCredentialPhish() {
   const closeDialog = () => {
     setDialog({ visible: false, title: "", message: "", type: "" });
     if (dialog.type === "success") {
-      window.location.href = "/L2"; // redirect after correct choice
+      window.location.href = "/levels/easy/l2"; // redirect after correct choice
     }
   };
 
