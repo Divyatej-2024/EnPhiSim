@@ -4,14 +4,14 @@ import { Link } from "react-router-dom";
 function Home() {
   return (
     <div
-      style={{
+      /*style={{
         textAlign: "center",
         marginTop: "4rem",
         background: "linear-gradient(to bottom right, #0f172a, #1e293b)",
         minHeight: "100vh",
         color: "white",
         fontFamily: "'Poppins', sans-serif",
-      }}
+      }}*/
     >
       <img
         src={`${process.env.PUBLIC_URL}/Enphisim.png`}
