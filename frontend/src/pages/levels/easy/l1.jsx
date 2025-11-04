@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import avtar from "../levels/img/avtar.png";
+import avtar from "../img/avtar.png";
 
 export default function Level1MassCredentialPhish() {
   const [hintVisible, setHintVisible] = useState(false);
