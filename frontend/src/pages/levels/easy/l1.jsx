@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
  
 const AccountVerification = () => {
   const [hoverSender, setHoverSender] = useState(false);
@@ -161,7 +161,7 @@ const AccountVerification = () => {
           <div className="content">
             <div>
               <img src="./avtar.png" alt="Avatar" />
-<div className="info">
+              <div className="info">
               <span
                 onMouseEnter={() => setHoverSender(true)}
                 onMouseLeave={() => setHoverSender(false)}
