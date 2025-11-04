@@ -1,132 +1,166 @@
-import React, { useState } from "react";
+import React from "react";
 
 const AccountVerification = () => {
-  const [hoverSender, setHoverSender] = useState(false);
+  const sender = "securety@enphisim.com";
+  const recipient = "user@enphisim.com";
+  const level = "L1";
+  const topic = "Mass Credential-Phish";
 
-  // Wrong option popup
+  // ❌ Wrong option popup
   const handleWrongOption = (e) => {
     e.preventDefault();
-    alert(
-      "⚠️ This is a phishing simulation.\n\nYou clicked a malicious link. This was the WRONG option!\nAlways verify sender details and URLs before clicking."
-    );
+    alert("⚠️ This is a phishing simulation.\n\nYou clicked a malicious link. This was the WRONG option!\nAlways verify sender details and URLs before clicking.");
   };
 
-  // Correct option popup
+  // ✅ Correct option popup
   const handleCorrectOption = (e) => {
     e.preventDefault();
-    alert(
-      "✅ Correct! You recognized the phishing attempt and avoided clicking any suspicious link."
-    );
+    alert("✅ Correct! You recognized the phishing attempt and avoided clicking any suspicious link.");
   };
 
   return (
     <>
+      {/* Inline CSS */}
       <style>{`
-        .screen-out {
-          background: grey;
+        body {
+          background: linear-gradient(to bottom right, #0f172a, #1e293b);
+          font-family: Arial, sans-serif;
           display: flex;
           justify-content: center;
           align-items: center;
           height: 100vh;
+          margin: 0;
+        }
+        .screen-out {
+          background: grey;
+          border: 2px solid grey;
+          border-radius: 30px;
+          padding: 20px;
+          max-width: 500px;
+          width: 100%;
+          box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
         .screen-in {
           background: white;
-          border-radius: 30px;
           border: 2px solid grey;
-          width: 400px;
+          border-radius: 30px;
           padding: 20px;
-          box-shadow: 0 0 20px rgba(0,0,0,0.2);
-          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         .content {
           text-align: left;
         }
-        .content img {
+        img {
           width: 60px;
-          height: 60px;
           border-radius: 50%;
+          margin-bottom: 10px;
         }
         .info {
-          margin-top: 10px;
-          font-size: 0.9rem;
-          color: #444;
+          margin-bottom: 15px;
+          font-size: 14px;
+          color: #333;
         }
         .info span {
           display: block;
-          margin-bottom: 3px;
         }
         .text {
-          margin-top: 15px;
+          padding: 10px 0;
+          line-height: 1.6;
+          color: #444;
         }
         .greeting {
           font-weight: bold;
+          margin-bottom: 5px;
         }
         .meta {
-          font-size: 0.85rem;
-          margin-bottom: 10px;
-          color: #555;
+          margin: 10px 0;
+          display: inline-flex;
+          gap: 8px;
+          align-items: center;
+          font-size: 13px;
         }
         .meta-level {
-          background: #0078d7;
-          color: white;
-          padding: 2px 6px;
-          border-radius: 4px;
-          margin-right: 8px;
+          background: #fde68a;
+          color: #92400e;
+          padding: 4px 8px;
+          border-radius: 10px;
+          font-weight: 700;
+          font-size: 12px;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.06);
         }
         .meta-topic {
-          color: #0078d7;
-          font-weight: bold;
-        }
-        .notice {
-          margin: 10px 0;
-          color: #333;
+          background: #eef2ff;
+          color: #1e3a8a;
+          padding: 4px 8px;
+          border-radius: 10px;
+          font-weight: 600;
+          font-size: 12px;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.04);
         }
         .buttons {
           margin-top: 15px;
-          display: flex;
-          gap: 10px;
         }
-        .verify-btn, .secondary {
-          background: #0078d7;
+        .verify-btn {
+          display: inline-block;
+          background: #007bff;
           color: white;
-          border: none;
-          padding: 10px 15px;
+          padding: 10px 20px;
           border-radius: 5px;
           text-decoration: none;
-          cursor: pointer;
+          margin-right: 10px;
+          font-size: 14px;
+          transition: background 0.3s ease;
+        }
+        .verify-btn:hover {
+          background: #0056b3;
         }
         .secondary {
-          background: #888;
+          background: #e0e0e0;
+          color: #333;
+          padding: 10px 15px;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          font-size: 14px;
+          transition: background 0.3s ease;
+        }
+        .secondary:hover {
+          background: #c7c7c7;
         }
         .unsubscribe {
-          font-size: 0.8rem;
-          color: #666;
           margin-top: 15px;
-          border-top: 1px solid #ccc;
-          padding-top: 10px;
+          font-size: 12px;
+          color: #666;
           text-align: center;
+          border-top: 1px solid #ddd;
+          padding-top: 10px;
         }
         .unsubscribe a {
-          color: #0078d7;
+          color: #007bff;
           text-decoration: none;
-          font-weight: bold;
+          font-weight: 500;
         }
         .unsubscribe a:hover {
           text-decoration: underline;
         }
-        .phish-hint {
-          font-size: 0.8rem;
-          color: red;
-          margin-top: 5px;
-          font-style: italic;
+        @media (max-width: 600px) {
+          .screen-out {
+            max-width: 90%;
+            padding: 15px;
+          }
+          .verify-btn, .secondary {
+            width: 100%;
+            margin-bottom: 10px;
+          }
         }
       `}</style>
 
+      {/* JSX */}
       <div className="screen-out">
         <div className="screen-in">
           <div className="content">
-            <img src="avtar.png" alt="Avatar" />
-            <div className="info">
+            <div>
+              <img src="./avtar.png" alt="Avatar" />
+<div className="info">
               <span
                 onMouseEnter={() => setHoverSender(true)}
                 onMouseLeave={() => setHoverSender(false)}
@@ -139,40 +173,35 @@ const AccountVerification = () => {
               <span>
                 <strong>Recipient:</strong> user@enphisim.com
               </span>
-            </div>
+            </div>            </div>
 
             <div className="text">
               <p className="greeting">Hello User,</p>
 
               <div className="meta">
-                <span className="meta-level">L1</span>
-                <span className="meta-topic">Mass Credential-Phish</span>
+                <span className="meta-level">{level}</span>
+                <span className="meta-topic">{topic}</span>
               </div>
 
-              <p>
-                Your account verification session has timed out for security
-                reasons.
-              </p>
+              <p>Your account verification session has timed out for security reasons.</p>
               <p className="notice">
-                To regain access, please re-verify your account by clicking the
-                button below. If you did not request this, ignore this message
-                or click Unsubscribe below.
+                To regain access, please re-verify your account by clicking the button below.
+                If you did not request this, ignore this message or click Unsubscribe below.
               </p>
 
               <div className="buttons">
-                <a href="#" className="verify-btn" onClick={handleWrongOption}>
+                <a href="#" className="verify-btn" role="button" onClick={handleWrongOption}>
                   Re-Verify Account
                 </a>
-                <button className="secondary" onClick={handleWrongOption}>
-                  Remind Me Later
+                <button className="secondary" type="button" onClick={handleWrongOption}>
+                  Remind me later
                 </button>
               </div>
             </div>
           </div>
 
           <div className="unsubscribe">
-            You’re receiving this message because you have an active EnPhiSim
-            account.<br />
+            You’re receiving this message because you have an active EnPhiSim account.<br />
             <a href="#" onClick={handleCorrectOption}>Unsubscribe</a> from similar notifications.
           </div>
         </div>
