@@ -1,6 +1,23 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import LevelPage from "./pages/LevelPage";
+import Dashboard from "./pages/Dashboard";
+import Disclaimer from "./pages/Disclaimer";
+
+function App(){
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/disclaimer" element={<Disclaimer />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/levels/:levelId" element={<LevelPage />} />
+        <Route path="/" element={<Disclaimer />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
 
 // Easy levels
 import L1 from "./pages/levels/easy/l1";
