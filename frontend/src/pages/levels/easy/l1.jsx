@@ -159,7 +159,7 @@ const AccountVerification = () => {
         <div className="screen-in">
           <div className="content">
             <div>
-              <img src="avtar.png" alt="Avatar" />
+              <img src="./img/avtar.png" alt="Avatar" />
               <div className="info">
                 <span><strong>Sender:</strong> {sender}</span>
                 <span><strong>Recipient:</strong> {recipient}</span>
