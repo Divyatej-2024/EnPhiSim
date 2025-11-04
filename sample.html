@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Verification</title>
+    <style>
+        :root{
+            --bg: #e8ecf1;
+            --muted: #6b7280;
+            --brand: #0b63d6;
+            --card: #ffffff;
+            --border: #d2d6dc;
+            --radius: 24px;
+        }
+
+        html, body{
+            height:100%;
+            margin:0;
+            font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+            background:linear-gradient(180deg, var(--bg), #f4f6f8);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            -webkit-font-smoothing:antialiased;
+        }
+
+        .screen-out{
+            background:#d9dde3;
+            padding:32px;
+            border-radius:calc(var(--radius) + 4px);
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.08);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            width: min(100%, 900px);
+            aspect-ratio: 4 / 3; /* Tablet shape */
+        }
+
+        .screen-in{
+            background:var(--card);
+            border-radius:var(--radius);
+            padding:28px;
+            box-shadow:0 12px 28px rgba(11,99,214,0.1);
+            border:1px solid var(--border);
+            max-width:640px;
+            width:100%;
+            height:auto;
+            box-sizing:border-box;
+            overflow:hidden;
+        }
+
+        .content{
+            display:flex;
+            gap:22px;
+            align-items:flex-start;
+            text-align:left;
+        }
+
+        .content img{
+            width:90px;
+            height:90px;
+            object-fit:cover;
+            border-radius:50%;
+            border:2px solid rgba(11,99,214,0.12);
+            flex:0 0 90px;
+        }
+
+        .info{
+            font-size:14px;
+            color:var(--muted);
+            margin-top:8px;
+            line-height:1.4;
+        }
+        .info span{
+            display:block;
+        }
+        .info strong{
+            color:#111827;
+            font-weight:600;
+        }
+
+        .text{
+            padding:0;
+            margin:0;
+            line-height:1.45;
+            color:#1f2937;
+            flex:1 1 auto;
+        }
+
+        .text p{
+            margin:0 0 10px 0;
+            font-size:15.5px;
+        }
+
+        .text p.greeting{
+            font-weight:600;
+            font-size:16px;
+        }
+
+        .text p.notice{
+            color:var(--muted);
+            font-size:14px;
+        }
+
+        .buttons{
+            margin-top:14px;
+            display:flex;
+            gap:12px;
+            justify-content:flex-start;
+        }
+
+        .buttons .verify-btn{
+            background:var(--brand);
+            color:white;
+            padding:11px 20px;
+            border-radius:999px;
+            font-weight:600;
+            font-size:14px;
+            border:none;
+            cursor:pointer;
+            box-shadow:0 8px 18px rgba(11,99,214,0.2);
+            transition:transform 0.12s ease, box-shadow 0.12s ease;
+            text-decoration:none;
+        }
+
+        .buttons .verify-btn:active{
+            transform:translateY(1px) scale(.998);
+        }
+
+        .buttons .secondary{
+            background:transparent;
+            border:1px solid var(--border);
+            color:var(--muted);
+            padding:9px 15px;
+            border-radius:999px;
+            font-size:13.5px;
+            cursor:pointer;
+        }
+
+        .unsubscribe{
+            margin-top:24px;
+            text-align:center;
+            font-size:12.5px;
+            color:var(--muted);
+        }
+
+        .unsubscribe a{
+            color:var(--brand);
+            text-decoration:none;
+            font-weight:500;
+        }
+
+        .unsubscribe a:hover{
+            text-decoration:underline;
+        }
+
+        .screen-in::after{
+            content:"• EnPhiSim";
+            display:block;
+            margin-top:10px;
+            font-size:12px;
+            color:var(--muted);
+            text-align:right;
+            opacity:.9;
+        }
+
+        @media (max-width:640px){
+            .screen-out{
+                padding:20px;
+                aspect-ratio:auto;
+            }
+            .content{
+                flex-direction:column;
+                align-items:center;
+                text-align:center;
+            }
+            .content img{
+                width:80px;
+                height:80px;
+            }
+            .text p{
+                font-size:14.5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="screen-out">
+        <div class="screen-in">
+            <div class="content">
+                <div>
+                    <img src="avtar.png" alt="Avatar">
+                    <div class="info">
+                        <span><strong>Sender:</strong> EnPhiSim Security</span>
+                        <span><strong>Recipient:</strong> John Doe</span>
+                    </div>
+                </div>
+
+                <div class="text">
+                    <p class="greeting">Hello John,</p>
+                    <p>Your account verification session has timed out for security reasons.</p>
+                    <p class="notice">To regain access, please re-verify your account by clicking the button below. If you did not request this, ignore this message or contact support.</p>
+                    <div class="buttons">
+                        <a href="#" class="verify-btn" role="button">Re-Verify Account</a>
+                        <button class="secondary" type="button">Remind me later</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="unsubscribe">
+                You’re receiving this message because you have an active EnPhiSim account.<br>
+                <a href="#">Unsubscribe</a> from similar notifications.
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import avtar from "../img/avtar.png"; // ✅ Correct image path
+import avtar from "../img/avtar.png"; 
 
 export default function Level1MassCredentialPhish() {
   const [dialog, setDialog] = useState({ visible: false, title: "", message: "", type: "" });
@@ -41,7 +41,7 @@ export default function Level1MassCredentialPhish() {
           border-radius: 40px;
           padding: 30px;
           width: 820px;
-          height: 1000px;
+          height: 800px;
           box-shadow: 0 0 40px rgba(0,0,0,0.4);
           display: flex;
           justify-content: center;
@@ -52,7 +52,7 @@ export default function Level1MassCredentialPhish() {
           border-radius: 25px;
           border: 2px solid #ccc;
           width: 700px;
-          height: 950px;
+          height: 500px;
           padding: 25px;
           box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
           overflow-y: auto;
