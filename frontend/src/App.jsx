@@ -27,11 +27,11 @@ import L17 from "./pages/levels/normal/l17";
 import L18 from "./pages/levels/normal/l18";
 
 // Pre-hard levels
-import L19 from "./pages/levels/pre hard/l19";
-import L20 from "./pages/levels/pre hard/l20";
-import L21 from "./pages/levels/pre hard/l21";
-import L22 from "./pages/levels/pre hard/l22";
-import L23 from "./pages/levels/pre hard/l23";
+import L19 from "./pages/levels/pre-hard/l19";
+import L20 from "./pages/levels/pre-hard/l20";
+import L21 from "./pages/levels/pre-hard/l21";
+import L22 from "./pages/levels/pre-hard/l22";
+import L23 from "./pages/levels/pre-hard/l23";
 
 // Hard levels
 import L24 from "./pages/levels/hard/l24";
