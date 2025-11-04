@@ -41,7 +41,7 @@ export default function Level1MassCredentialPhish() {
           border-radius: 40px;
           padding: 30px;
           width: 820px;
-          height: 1100px;
+          height: 1000px;
           box-shadow: 0 0 40px rgba(0,0,0,0.4);
           display: flex;
           justify-content: center;
