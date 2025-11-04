@@ -23,7 +23,7 @@ const AccountVerification = () => {
       {/* Inline CSS */}
       <style>{`
         body {
-          /*background-color: #f1f1f1;*/
+          background: linear-gradient(to bottom right, #0f172a, #1e293b);
           font-family: Arial, sans-serif;
           display: flex;
           justify-content: center;
