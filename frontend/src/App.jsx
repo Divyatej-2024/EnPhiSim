@@ -5,19 +5,6 @@ import LevelPage from "./pages/LevelPage";
 import Dashboard from "./pages/Dashboard";
 import Disclaimer from "./pages/Disclaimer";
 
-function App(){
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/disclaimer" element={<Disclaimer />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/levels/:levelId" element={<LevelPage />} />
-        <Route path="/" element={<Disclaimer />} />
-      </Routes>
-    </BrowserRouter>
-  );
-}
-
 // Easy levels
 import L1 from "./pages/levels/easy/l1";
 import L2 from "./pages/levels/easy/l2";
@@ -74,6 +61,11 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/disclaimer" element={<Disclaimer />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/levels/:levelId" element={<LevelPage />} />
+        <Route path="/" element={<Disclaimer />} />
+
         {/* Redirect root to /home */}
         <Route path="/" element={<Navigate to="/home" />} />
         <Route path="/home" element={<Home />} />
