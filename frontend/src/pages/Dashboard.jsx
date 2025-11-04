@@ -2,7 +2,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import levels from "./levels/level_data";
-import { useProgress } from "./context/ProgressContext";
+import { useProgress } from "../context/ProgressContext";
 
 const categories = ["easy", "adv_easy", "normal", "pre_hard", "hard", "adv_hard", "final"];
 

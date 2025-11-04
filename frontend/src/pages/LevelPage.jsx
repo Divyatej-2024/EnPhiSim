@@ -1,7 +1,7 @@
 // src/pages/LevelPage.jsx
 import React from "react";
 import { useParams } from "react-router-dom";
-import LevelTemplate from "../components/LevelTemplate";
+import LevelTemplate from "./components/LevelTemplate";
 import levels from "./levels/level_data";
 
 export default function LevelPage() {
