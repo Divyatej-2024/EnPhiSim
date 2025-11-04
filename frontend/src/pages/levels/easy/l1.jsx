@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import avtar from "../img/avtar.png";
+import avtar from "../levels/img/avtar.png";
 
 export default function Level1MassCredentialPhish() {
   const [hintVisible, setHintVisible] = useState(false);
@@ -7,7 +7,7 @@ export default function Level1MassCredentialPhish() {
   const handleAction = (action) => {
     if (action === "unsubscribe") {
       alert("✅ Correct! This is a phishing email. Redirecting to the next level...");
-      window.location.href = "/level2"; // change this to your actual next level route
+      window.location.href = "/l2"; // change this to your actual next level route
     } else {
       alert("❌ Wrong choice! This was a phishing email. Try again.");
     }
