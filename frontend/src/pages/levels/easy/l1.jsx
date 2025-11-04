@@ -38,7 +38,7 @@ const AccountVerification = () => {
           display: flex;
           justify-content: center;
           align-items: center;
-          height: 10vh;
+          height: 100vh;
           margin: 0;
           border: 2px solid grey;
           border-radius: 30px;
