@@ -2,7 +2,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import LevelTemplate from "../components/LevelTemplate";
-import levels from "../levels/level_data";
+import levels from "./levels/level_data";
 
 export default function LevelPage() {
   const { levelId } = useParams();
