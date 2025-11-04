@@ -3,22 +3,22 @@ import React, { useState } from "react";
 const AccountVerification = () => {
   const [hoverSender, setHoverSender] = useState(false);
 
-  // ⚠️ Wrong option popup
+  // Wrong option popup
   const handleWrongOption = (e) => {
     e.preventDefault();
     alert(
-      "⚠️ This is a phishing simulation.\n\nYou clicked a malicious link. This was the WRONG option!\nAlways verify sender details and URLs before clicking."
+      "This is a phishing simulation.\n\nYou clicked a malicious link. This was the WRONG option!\nAlways verify sender details and URLs before clicking."
     );
   };
 
-  // ✅ Correct option popup + redirect
+  // Correct option popup + redirect
   const handleCorrectOption = (e) => {
     e.preventDefault();
     alert(
-      "✅ Correct! You recognized the phishing attempt and avoided clicking any suspicious link.\n\nRedirecting you to the next level..."
+      "Correct! You recognized the phishing attempt and avoided clicking any suspicious link.\n\nRedirecting you to the next level..."
     );
     setTimeout(() => {
-      window.location.href = "/level2"; // redirect to next level
+      window.location.href = "/l2"; // redirect to next level
     }, 2000);
   };
 
@@ -38,7 +38,7 @@ const AccountVerification = () => {
           display: flex;
           justify-content: center;
           align-items: center;
-          height: 100vh;
+          height: 10vh;
           margin: 0;
           border: 2px solid grey;
           border-radius: 30px;
@@ -207,7 +207,7 @@ const AccountVerification = () => {
                 <strong>Sender:</strong> securety@enphisim.com
               </span>
               <div className={`phish-hint ${hoverSender ? "show" : ""}`}>
-                ⚠️ Phishing Email
+                Phishing Email
               </div>
               <span>
                 <strong>Recipient:</strong> user@enphisim.com
