@@ -100,12 +100,12 @@ function App() {
         <Route path="/levels/hard/l28" element={<L28 />} />
 
         {/* Bonus */}
-        <Route path="/levels/bonus/bl1" element={<BL1 />} />
-        <Route path="/levels/bonus/bl2" element={<BL2 />} />
-        <Route path="/levels/bonus/bl3" element={<BL3 />} />
-        <Route path="/levels/bonus/bl4" element={<BL4 />} />
-        <Route path="/levels/bonus/bl5" element={<BL5 />} />
-        <Route path="/levels/bonus/bl6" element={<BL6 />} />
+        <Route path="/levels/bonus levels/bl1" element={<BL1 />} />
+        <Route path="/levels/bonus levels/bl2" element={<BL2 />} />
+        <Route path="/levels/bonus levels/bl3" element={<BL3 />} />
+        <Route path="/levels/bonus levels/bl4" element={<BL4 />} />
+        <Route path="/levels/bonus levels/bl5" element={<BL5 />} />
+        <Route path="/levels/bonus levels/bl6" element={<BL6 />} />
 
         {/* 404 fallback */}
         <Route path="*" element={<h1 style={{ color: "red", textAlign: "center" }}>404 Not Found</h1>} />
