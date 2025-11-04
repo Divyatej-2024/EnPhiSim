@@ -1,7 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LevelPage from "./pages/LevelPage";
 import Dashboard from "./pages/Dashboard";
 import Disclaimer from "./pages/Disclaimer";

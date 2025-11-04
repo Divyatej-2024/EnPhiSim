@@ -1,7 +1,7 @@
 // src/levels/levelsData.js
 const levels = [
   // EASY
-  { id: "I1", title: "Master Credential-Phish", category: "easy",
+  { id: "l1", title: "Master Credential-Phish", category: "easy",
     content: "<p>Your account verification has timed out. Please re-verify your account immediately to avoid suspension.</p>",
     options: [
       { id: "verify", label: "Verify Now (Click link)" },
@@ -10,11 +10,11 @@ const levels = [
     ],
     correctOption: "unsubscribe",
     hints: ["Look at the sender address and link domain", "Legitimate services rarely ask to verify via an unexpected link"],
-    nextLevel: "I2",
+    nextLevel: "l2",
     points: 100
   },
 
-  { id: "I2", title: "Scam Invoice / Payment Reminder", category: "easy",
+  { id: "l2", title: "Scam Invoice / Payment Reminder", category: "easy",
     content: "<p>Invoice attached: Please download the attached invoice to confirm payment.</p>",
     options: [
       { id: "download", label: "Download Attachment" },
@@ -23,17 +23,17 @@ const levels = [
     ],
     correctOption: "report",
     hints: ["Attachments from unknown senders can contain malware", "Check the sender domain and invoice details"],
-    nextLevel: "I3",
+    nextLevel: "l3",
     points: 100
   },
 
   // ... Continue entries for every level ...
   // For brevity, I'll include the rest with minimal fields.
-  { id: "I3", title: "Fake Newsletter Subscription", category: "easy",
+  { id: "l3", title: "Fake Newsletter Subscription", category: "easy",
     content: "<p>Confirm your newsletter subscription by clicking below.</p>",
     options: [{id:"confirm",label:"Confirm"},{id:"ignore",label:"Ignore"},{id:"report",label:"Report"}],
     correctOption: "report",
-    hints:["Unexpected subscribes are suspicious"], nextLevel:"I4", points:80
+    hints:["Unexpected subscribes are suspicious"], nextLevel:"l4", points:80
   },
   { id: "I4", title: "Lottery / Prize Scam", category: "easy",
     content: "<p>You have won! Claim your prize by providing your bank details.</p>",
