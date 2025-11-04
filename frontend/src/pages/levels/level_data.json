@@ -35,29 +35,29 @@ const levels = [
     correctOption: "report",
     hints:["Unexpected subscribes are suspicious"], nextLevel:"l4", points:80
   },
-  { id: "I4", title: "Lottery / Prize Scam", category: "easy",
+  { id: "l4", title: "Lottery / Prize Scam", category: "easy",
     content: "<p>You have won! Claim your prize by providing your bank details.</p>",
     options: [{id:"claim",label:"Claim Prize"},{id:"report",label:"Report"},{id:"delete",label:"Delete"}],
     correctOption: "report",
-    hints:["Never provide bank details to claim a prize"], nextLevel:"I5", points:120
+    hints:["Never provide bank details to claim a prize"], nextLevel:"l5", points:120
   },
-  { id: "I5", title: "Simple Attachment Lure", category: "easy",
+  { id: "l5", title: "Simple Attachment Lure", category: "easy",
     content: "<p>See attached document with details about your order.</p>",
     options: [{id:"open",label:"Open Attachment"},{id:"save",label:"Save"} ,{id:"report",label:"Report"}],
     correctOption: "report",
-    hints:["Attachments from unknown sources are risky"], nextLevel:"I6", points:90
+    hints:["Attachments from unknown sources are risky"], nextLevel:"l6", points:90
   },
-  { id: "I6", title: "Basic Spoofed Display-Name Sender", category: "easy",
+  { id: "l6", title: "Basic Spoofed Display-Name Sender", category: "easy",
     content: "<p>Message appears from HR but uses a public gmail address.</p>",
     options: [{id:"trust",label:"Trust & Reply"},{id:"verify",label:"Verify Sender"},{id:"report",label:"Report"}],
     correctOption: "verify",
-    hints:["Display name may be spoofed; check full email address"], nextLevel:"bI1", points:110
+    hints:["Display name may be spoofed; check full email address"], nextLevel:"bl1", points:110
   },
-  { id: "bI1", title: "Eagle (Bonus)", category: "easy_bonus",
+  { id: "bl1", title: "Eagle (Bonus)", category: "easy_bonus",
     content: "<p>Bonus: a mixed bag of obvious tricks. Identify them fast.</p>",
     options: [{id:"flag",label:"Flag all suspicious items"},{id:"ignore",label:"Ignore"}],
     correctOption: "flag",
-    hints:["This bonus rewards breadth of detection"], nextLevel:"I7", points:200
+    hints:["This bonus rewards breadth of detection"], nextLevel:"l7", points:200
   },
 
   // ADVANCED EASY (I7-I12 + bI2)
