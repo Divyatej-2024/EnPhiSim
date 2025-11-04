@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import avtar from "../levels/img/avtar.png";
 
 export default function Level1MassCredentialPhish() {
   const [hintVisible, setHintVisible] = useState(false);
@@ -174,7 +175,7 @@ export default function Level1MassCredentialPhish() {
       <div className="screen-out">
         <div className="screen-in">
           <div className="content">
-            <img src="avtar.png" alt="avtar" />
+            <img src="{avtar}" alt="avtar" />
             <div className="info">
               <span className="sender">From: security@enphisim.com</span>
               <div className="phish-hint">⚠️ Phishing Email</div>
