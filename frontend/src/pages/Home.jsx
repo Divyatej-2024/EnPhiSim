@@ -6,7 +6,7 @@ function Home() {
     <div
       style={{
         textAlign: "center",
-        marginTop: "4rem",
+        margin: "4rem",
         /*background: "linear-gradient(to bottom right, #0f172a, #1e293b)",*/
         minHeight: "100vh",
         color: "white",
