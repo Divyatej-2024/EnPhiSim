@@ -1,6 +1,7 @@
 import React from "react";
-
+ 
 const AccountVerification = () => {
+  const [hoverSender, setHoverSender] = useState(false);
   const sender = "securety@enphisim.com";
   const recipient = "user@enphisim.com";
   const level = "L1";
