@@ -519,7 +519,7 @@ export const levels = {
     actions: [{ id:"submit", label:"Submit Full Report" }, { id:"skip", label:"Skip Final", style:"neutral" }],
     correctAction: "submit",
     hints: ["Use all previous rulesets: headers, links, vendor verification, out-of-band checks"],
-    nextLevel: Thankyou,
+    nextLevel: null,
     points: 50,
     mlCheck: { enabled: false }
   }
