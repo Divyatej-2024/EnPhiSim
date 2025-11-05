@@ -26,20 +26,22 @@ export function ProgressProvider({ children }) {
     }
   }, [actions]);
 
-  const recordAction = (levelId, optionId, isCorrect = false, points = 0) => {
+  const recordAction = (levelId, optionId, isCorrect = false, points = 0, meta = {}) => {
     const entry = {
       timestamp: new Date().toISOString(),
       levelId,
       optionId,
       isCorrect,
       points,
+      meta
     };
     setActions(prev => [...prev, entry]);
-    // localStorage will be kept in sync by useEffect
+    return entry;
   };
 
   const resetActions = () => {
     setActions([]);
+    localStorage.removeItem("enphisim_actions");
   };
 
   return (
