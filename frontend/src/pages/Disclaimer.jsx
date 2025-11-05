@@ -21,7 +21,7 @@ export default function Disclaimer() {
         <div style={{ marginTop: 18, display: "flex", gap: 8 }}>
           <button onClick={() => {
             if (!agreed) return alert("Please agree to proceed.");
-            nav("/dashboard");
+            nav("/about");
           }} style={{ padding: "8px 12px", borderRadius: 8, border: "none", background: "#2563eb", color: "#fff" }}>Proceed</button>
 
           <button onClick={() => { // eslint-disable-next-line no-restricted-globals

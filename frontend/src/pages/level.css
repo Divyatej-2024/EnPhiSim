@@ -1,0 +1,108 @@
+/* ---------- General layout ---------- */
+.level-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-family: "Poppins", sans-serif;
+  text-align: center;
+  padding: 2rem;
+}
+
+/* ---------- Easy Levels ---------- */
+.level-easy {
+  background: linear-gradient(to bottom right, #0ea5e9, #0369a1);
+}
+
+.level-easy h1 {
+  color: #e0f2fe;
+  text-shadow: 0 0 10px rgba(14, 165, 233, 0.6);
+}
+
+/* ---------- Advanced Easy Levels ---------- */
+.level-adv-easy {
+  background: linear-gradient(to bottom right, #4ade80, #166534);
+}
+
+.level-adv-easy h1 {
+  color: #dcfce7;
+  text-shadow: 0 0 10px rgba(74, 222, 128, 0.6);
+}
+
+/* ---------- Normal Levels ---------- */
+.level-normal {
+  background: linear-gradient(to bottom right, #6366f1, #312e81);
+}
+
+.level-normal h1 {
+  color: #e0e7ff;
+  text-shadow: 0 0 10px rgba(99, 102, 241, 0.6);
+}
+
+/* ---------- Pre-Hard Levels ---------- */
+.level-pre-hard {
+  background: linear-gradient(to bottom right, #fbbf24, #92400e);
+}
+
+.level-pre-hard h1 {
+  color: #fef9c3;
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.7);
+}
+
+/* ---------- Hard Levels ---------- */
+.level-hard {
+  background: linear-gradient(to bottom right, #ef4444, #7f1d1d);
+}
+
+.level-hard h1 {
+  color: #fee2e2;
+  text-shadow: 0 0 10px rgba(239, 68, 68, 0.7);
+}
+
+/* ---------- Advanced Hard Levels ---------- */
+.level-adv-hard {
+  background: linear-gradient(to bottom right, #9333ea, #581c87);
+}
+
+.level-adv-hard h1 {
+  color: #f3e8ff;
+  text-shadow: 0 0 10px rgba(147, 51, 234, 0.7);
+}
+
+/* ---------- Final / Bonus ---------- */
+.level-final {
+  background: linear-gradient(to bottom right, #0f172a, #334155);
+}
+
+.level-final h1 {
+  color: #f8fafc;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+/* ---------- Shared components ---------- */
+.level-content {
+  max-width: 700px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.level-button {
+  margin-top: 2rem;
+  background: white;
+  color: black;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.2s, background 0.3s;
+}
+
+.level-button:hover {
+  background: #f0f0f0;
+  transform: scale(1.05);
+}
