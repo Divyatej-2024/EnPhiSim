@@ -5,7 +5,7 @@ import LevelTemplate from "../../../components/LevelTemplate";
 export default function I2() {
   return (
     <LevelTemplate
-      id="I2"
+      id="l2"
       title="Scam Invoice / Payment Reminder"
       category="easy"
       content="<p>Dear User, your pending invoice of £259.99 is due. Click below to process immediately.</p>"
