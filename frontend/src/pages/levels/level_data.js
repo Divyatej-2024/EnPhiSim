@@ -1,5 +1,4 @@
-// src/data/levels.js
-// 39 levels: l1..l33, bl1..bl6
+
 export const levels = {
   /* ===== EASY l1 - l6 ===== */
   l1: {
@@ -440,7 +439,7 @@ export const levels = {
 
   /* ===== FINAL l33 ===== */
   l33: {
-    id: "l33",
+    id: "f",
     title: "Advanced Persistent Phishing (Final)",
     category: "final",
     contentHtml: `<p>Multi-stage hybrid spear-phishing exercise requiring synthesis of previous levels.</p>`,

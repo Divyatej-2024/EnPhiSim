@@ -4,13 +4,15 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Disclaimer from "./pages/Disclaimer";
 import Dashboard from "./pages/Dashboard";
 import LevelPage from "./pages/LevelPage";
+import Home from "./pages/Home"
+
 
 // static redirects
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/disclaimer" replace />} />
+        <Route path="/" element={<Home />} />
         <Route path="/disclaimer" element={<Disclaimer />} />
         <Route path="/dashboard" element={<Dashboard />} />
 
