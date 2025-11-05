@@ -27,7 +27,7 @@ export default function Disclaimer(){
 
         <div style={{ marginTop: 20 }}>
           <button
-            onClick={() => agreed ? navigate("/dashboard") : alert("Please agree to proceed")}
+            onClick={() => agreed ? navigate("/Dashboard") : alert("Please agree to proceed")}
             style={{ padding:"10px 14px", borderRadius:10, border:"none", background:"#0ea5a4", color:"#fff" }}
           >
             Proceed to Dashboard

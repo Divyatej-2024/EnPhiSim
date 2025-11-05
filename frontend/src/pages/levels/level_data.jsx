@@ -60,169 +60,169 @@ const levels = [
     hints:["This bonus rewards breadth of detection"], nextLevel:"l7", points:200
   },
 
-  // ADVANCED EASY (I7-I12 + bI2)
-  { id: "I7", title: "TypoSquatted Domain Phish", category: "adv_easy",
+  // ADVANCED EASY (I7-l12 + bl2)
+  { id: "l7", title: "TypoSquatted Domain Phish", category: "adv_easy",
     content: "<p>Link points to 'micr0soft.com' (zero instead of o)</p>",
     options: [{id:"click",label:"Click Link"},{id:"hover",label:"Hover Link"},{id:"report",label:"Report"}],
-    correctOption: "hover", hints:["Hover to reveal real domain"], nextLevel:"I8", points:120
+    correctOption: "hover", hints:["Hover to reveal real domain"], nextLevel:"l8", points:120
   },
-  { id: "I8", title: "URL Shortener Redirected Phish", category: "adv_easy",
+  { id: "l8", title: "URL Shortener Redirected Phish", category: "adv_easy",
     content: "<p>Shortened URL included (bit.ly/xyz)</p>",
     options: [{id:"open",label:"Open Short URL"},{id:"expand",label:"Expand URL"},{id:"report",label:"Report"}],
-    correctOption: "expand", hints:["Expand to see target domain"], nextLevel:"I9", points:110
+    correctOption: "expand", hints:["Expand to see target domain"], nextLevel:"l9", points:110
   },
-  { id: "I9", title: "Malicious Survey / Feedback Request", category: "adv_easy",
+  { id: "l9", title: "Malicious Survey / Feedback Request", category: "adv_easy",
     content: "<p>Click this quick survey to claim a discount.</p>",
     options: [{id:"take",label:"Take Survey"},{id:"report",label:"Report"},{id:"ignore",label:"Ignore"}],
-    correctOption: "report", hints:["Surveys asking credentials are suspicious"], nextLevel:"I10", points:100
+    correctOption: "report", hints:["Surveys asking credentials are suspicious"], nextLevel:"l10", points:100
   },
-  { id: "I10", title: "SMS (Smishing) Generic Link", category: "adv_easy",
+  { id: "l10", title: "SMS (Smishing) Generic Link", category: "adv_easy",
     content: "<p>SMS-like message inside email with a click-to-verify link.</p>",
     options: [{id:"call",label:"Call Number"},{id:"click",label:"Click Link"},{id:"report",label:"Report"}],
-    correctOption: "report", hints:["Avoid clicking links in unexpected SMS-style messages"], nextLevel:"I11", points:130
+    correctOption: "report", hints:["Avoid clicking links in unexpected SMS-style messages"], nextLevel:"l11", points:130
   },
-  { id: "I11", title: "Fake Social Media Notification", category: "adv_easy",
+  { id: "l11", title: "Fake Social Media Notification", category: "adv_easy",
     content: "<p>Notification from social network asking to verify account.</p>",
     options: [{id:"login",label:"Login Now"},{id:"verify",label:"Verify Sender"},{id:"report",label:"Report"}],
-    correctOption: "verify", hints:["Use the app/site directly to check notifications"], nextLevel:"I12", points:110
+    correctOption: "verify", hints:["Use the app/site directly to check notifications"], nextLevel:"l12", points:110
   },
-  { id: "I12", title: "Clone of a Public Service Alert", category: "adv_easy",
+  { id: "l12", title: "Clone of a Public Service Alert", category: "adv_easy",
     content: "<p>Message copies a public service (e.g., tax, gov) style</p>",
     options: [{id:"follow",label:"Follow Link"},{id:"report",label:"Report"},{id:"call",label:"Call Official"}],
-    correctOption: "call", hints:["Call official numbers from the official website"], nextLevel:"bI2", points:150
+    correctOption: "call", hints:["Call official numbers from the official website"], nextLevel:"bl2", points:150
   },
-  { id: "bI2", title: "Monkey (Bonus)", category: "adv_easy_bonus",
+  { id: "bl2", title: "Monkey (Bonus)", category: "adv_easy_bonus",
     content: "<p>Timed mini-challenge: identify 3 suspicious items in 60s</p>",
     options: [{id:"start",label:"Start Challenge"}],
-    correctOption: "start", hints:["Speed matters"], nextLevel:"I13", points:250
+    correctOption: "start", hints:["Speed matters"], nextLevel:"l13", points:250
   },
 
-  // NORMAL (I13-I18 + bI3)
-  { id: "I13", title: "Spear-Phishing", category: "normal",
+  // NORMAL (l13-l18 + bl3)
+  { id: "l13", title: "Spear-Phishing", category: "normal",
     content: "<p>Personalised email that references your manager's name.</p>",
     options: [{id:"reply",label:"Reply with info"},{id:"verify",label:"Verify with manager"},{id:"report",label:"Report"}],
-    correctOption: "verify", hints:["Verify using another channel"], nextLevel:"I14", points:140
+    correctOption: "verify", hints:["Verify using another channel"], nextLevel:"l14", points:140
   },
-  { id: "I14", title: "Business Email Compromise", category: "normal",
+  { id: "l14", title: "Business Email Compromise", category: "normal",
     content: "<p>Urgent payment request that appears to be from a senior exec.</p>",
     options: [{id:"pay",label:"Initiate Payment"},{id:"verify",label:"Verify with exec"},{id:"report",label:"Report"}],
-    correctOption: "verify", hints:["Never act on finance requests without confirmation"], nextLevel:"I15", points:160
+    correctOption: "verify", hints:["Never act on finance requests without confirmation"], nextLevel:"l15", points:160
   },
-  { id: "I15", title: "Drive / Share Notification", category: "normal",
+  { id: "l15", title: "Drive / Share Notification", category: "normal",
     content: "<p>Shared drive link requests login to view document.</p>",
     options: [{id:"login",label:"Login to View"},{id:"open",label:"Open Without Login"},{id:"report",label:"Report"}],
-    correctOption: "report", hints:["Use official app to access shared docs"], nextLevel:"I16", points:110
+    correctOption: "report", hints:["Use official app to access shared docs"], nextLevel:"l16", points:110
   },
-  { id: "I16", title: "Invoice Impersonation", category: "normal",
+  { id: "l16", title: "Invoice Impersonation", category: "normal",
     content: "<p>Invoice that mimics your vendor's style but with different payment details.</p>",
     options: [{id:"pay",label:"Pay"},{id:"verify",label:"Verify Invoice"},{id:"report",label:"Report"}],
-    correctOption: "verify", hints:["Check bank details directly with vendor"], nextLevel:"I17", points:150
+    correctOption: "verify", hints:["Check bank details directly with vendor"], nextLevel:"l17", points:150
   },
-  { id: "I17", title: "Account Lockout Scare", category: "normal",
+  { id: "l17", title: "Account Lockout Scare", category: "normal",
     content: "<p>Immediate action required: Your account will be locked unless you act.</p>",
     options: [{id:"click",label:"Click to Unlock"},{id:"report",label:"Report"},{id:"ignore",label:"Ignore"}],
-    correctOption: "report", hints:["Scare tactics are common in phishing"], nextLevel:"I18", points:100
+    correctOption: "report", hints:["Scare tactics are common in phishing"], nextLevel:"l18", points:100
   },
-  { id: "I18", title: "Credential-harvest via Landing Page", category: "normal",
+  { id: "l18", title: "Credential-harvest via Landing Page", category: "normal",
     content: "<p>Link leads to a convincing login page that requests credentials.</p>",
     options: [{id:"login",label:"Login"},{id:"inspect",label:"Inspect Link"},{id:"report",label:"Report"}],
-    correctOption: "inspect", hints:["Inspect target URL and TLS certificate"], nextLevel:"bI3", points:180
+    correctOption: "inspect", hints:["Inspect target URL and TLS certificate"], nextLevel:"bl3", points:180
   },
-  { id: "bI3", title: "Turtle (Bonus)", category: "normal_bonus",
+  { id: "bl3", title: "Turtle (Bonus)", category: "normal_bonus",
     content: "<p>Long-form challenge: perform a chain of verifications across 3 emails.</p>",
-    options: [{id:"start",label:"Start"}], correctOption:"start", hints:["Chain detection"], nextLevel:"I19", points:260
+    options: [{id:"start",label:"Start"}], correctOption:"start", hints:["Chain detection"], nextLevel:"l19", points:260
   },
 
-  // PRE-HARD (I19-I23 + bI4)
-  { id: "I19", title: "Whaling", category: "pre_hard",
+  // PRE-HARD (l19-l23 + bI4)
+  { id: "l19", title: "Whaling", category: "pre_hard",
     content: "<p>Highly targeted email to a C-suite executive.</p>",
     options: [{id:"respond",label:"Respond"},{id:"verify",label:"Verify via phone"},{id:"report",label:"Report"}],
-    correctOption: "verify", hints:["Use out-of-band verification"], nextLevel:"I20", points:220
+    correctOption: "verify", hints:["Use out-of-band verification"], nextLevel:"l20", points:220
   },
-  { id: "I20", title: "Spear + Whishing Combo", category: "pre_hard",
+  { id: "l20", title: "Spear + Whishing Combo", category: "pre_hard",
     content: "<p>Voice + email attempt combined to request credentials.</p>",
     options: [{id:"comply",label:"Comply"},{id:"verify",label:"Verify identity"},{id:"report",label:"Report"}],
-    correctOption: "verify", hints:["Always verify voice requests"], nextLevel:"I21", points:230
+    correctOption: "verify", hints:["Always verify voice requests"], nextLevel:"l21", points:230
   },
-  { id: "I21", title: "QRCode Quishing", category: "pre_hard",
+  { id: "l21", title: "QRCode Quishing", category: "pre_hard",
     content: "<p>QR code in email points to a fake login site.</p>",
     options: [{id:"scan",label:"Scan QR"},{id:"preview",label:"Preview URL"},{id:"report",label:"Report"}],
-    correctOption: "preview", hints:["Preview QR before scanning"], nextLevel:"I22", points:200
+    correctOption: "preview", hints:["Preview QR before scanning"], nextLevel:"l22", points:200
   },
-  { id: "I22", title: "Account Takeover", category: "pre_hard",
+  { id: "l22", title: "Account Takeover", category: "pre_hard",
     content: "<p>Compromised account sends a password-reset-looking email.</p>",
     options: [{id:"reset",label:"Reset Password"},{id:"report",label:"Report"},{id:"contact",label:"Contact User"}],
-    correctOption: "contact", hints:["Confirm with the account owner via other channels"], nextLevel:"I23", points:210
+    correctOption: "contact", hints:["Confirm with the account owner via other channels"], nextLevel:"l23", points:210
   },
-  { id: "I23", title: "Malicious HTML / Embedded Script in Attachment", category: "pre_hard",
+  { id: "l23", title: "Malicious HTML / Embedded Script in Attachment", category: "pre_hard",
     content: "<p>Attachment contains HTML that auto-executes on open.</p>",
     options: [{id:"open",label:"Open Attachment"},{id:"sandbox",label:"Open in Sandbox"},{id:"report",label:"Report"}],
-    correctOption: "sandbox", hints:["Sandbox attachments if absolutely needed"], nextLevel:"bI4", points:240
+    correctOption: "sandbox", hints:["Sandbox attachments if absolutely needed"], nextLevel:"bl4", points:240
   },
-  { id: "bI4", title: "Shark (Bonus)", category: "pre_hard_bonus",
+  { id: "bl4", title: "Shark (Bonus)", category: "pre_hard_bonus",
     content: "<p>Bonus: mixed vector with QR + voice + email fallacies.</p>",
-    options: [{id:"start",label:"Start"}], correctOption:"start", hints:["Use critical thinking"], nextLevel:"I24", points:320
+    options: [{id:"start",label:"Start"}], correctOption:"start", hints:["Use critical thinking"], nextLevel:"l24", points:320
   },
 
-  // HARD (I24-I28 + bI5)
-  { id: "I24", title: "Business Process Compromise", category: "hard",
+  // HARD (l24-l28 + bI5)
+  { id: "l24", title: "Business Process Compromise", category: "hard",
     content: "<p>An attacker injects into a business process flow to alter payments.</p>",
     options: [{id:"follow",label:"Follow Process"},{id:"verify",label:"Verify Process Change"},{id:"report",label:"Report"}],
-    correctOption: "verify", hints:["Audit process changes with stakeholders"], nextLevel:"I25", points:300
+    correctOption: "verify", hints:["Audit process changes with stakeholders"], nextLevel:"l25", points:300
   },
-  { id: "I25", title: "Compromised Internal Account Spear-Phish", category: "hard",
+  { id: "l25", title: "Compromised Internal Account Spear-Phish", category: "hard",
     content: "<p>Email from an internal account but headers show external relay.</p>",
     options: [{id:"trust",label:"Trust"},{id:"verify",label:"Verify headers"},{id:"report",label:"Report"}],
-    correctOption: "verify", hints:["Inspect headers for anomalies"], nextLevel:"I26", points:280
+    correctOption: "verify", hints:["Inspect headers for anomalies"], nextLevel:"l26", points:280
   },
-  { id: "I26", title: "Deepfake-Assisted Voice Whishing", category: "hard",
+  { id: "l26", title: "Deepfake-Assisted Voice Whishing", category: "hard",
     content: "<p>Voice call impersonates manager using deepfake audio accompanying an email.</p>",
     options: [{id:"comply",label:"Comply"},{id:"verify",label:"Verify via secure channel"},{id:"report",label:"Report"}],
-    correctOption: "verify", hints:["Use multi-factor verification for voice requests"], nextLevel:"I27", points:350
+    correctOption: "verify", hints:["Use multi-factor verification for voice requests"], nextLevel:"l27", points:350
   },
-  { id: "I27", title: "Man-in-the-Middle Credential Capture", category: "hard",
+  { id: "l27", title: "Man-in-the-Middle Credential Capture", category: "hard",
     content: "<p>Transparent proxy page captures credentials before relaying to the real site.</p>",
     options: [{id:"login",label:"Login"},{id:"inspect",label:"Inspect TLS/URL"},{id:"report",label:"Report"}],
-    correctOption: "inspect", hints:["Check HTTPS and certificate details"], nextLevel:"I28", points:320
+    correctOption: "inspect", hints:["Check HTTPS and certificate details"], nextLevel:"l28", points:320
   },
-  { id: "I28", title: "Targeted Supply-Chain Phishing", category: "hard",
+  { id: "l28", title: "Targeted Supply-Chain Phishing", category: "hard",
     content: "<p>Compromise originates through a vendor update email.</p>",
     options: [{id:"install",label:"Install Update"},{id:"verify",label:"Verify with Vendor"},{id:"report",label:"Report"}],
-    correctOption: "verify", hints:["Verify vendor signatures and channels"], nextLevel:"bI5", points:330
+    correctOption: "verify", hints:["Verify vendor signatures and channels"], nextLevel:"bl5", points:330
   },
-  { id: "bI5", title: "Elephant (Bonus)", category: "hard_bonus",
+  { id: "bl5", title: "Elephant (Bonus)", category: "hard_bonus",
     content: "<p>Long puzzle combining supply-chain + deepfake signals</p>",
-    options: [{id:"start",label:"Start"}], correctOption:"start", hints:["Synthesis required"], nextLevel:"I29", points:420
+    options: [{id:"start",label:"Start"}], correctOption:"start", hints:["Synthesis required"], nextLevel:"l29", points:420
   },
 
-  // ADVANCED HARD (I29-I32 + bI6)
-  { id: "I29", title: "AI-generated personalised campaigns", category: "adv_hard",
+  // ADVANCED HARD (l29-l32 + bI6)
+  { id: "l29", title: "AI-generated personalised campaigns", category: "adv_hard",
     content: "<p>Emails crafted using personal public data to increase trust.</p>",
     options: [{id:"engage",label:"Engage"},{id:"verify",label:"Verify identity"},{id:"report",label:"Report"}],
-    correctOption: "verify", hints:["Cross-check with independent channels"], nextLevel:"I30", points:450
+    correctOption: "verify", hints:["Cross-check with independent channels"], nextLevel:"l30", points:450
   },
-  { id: "I30", title: "Homograph / Unicode Confusables", category: "adv_hard",
+  { id: "l30", title: "Homograph / Unicode Confusables", category: "adv_hard",
     content: "<p>Domain uses confusable unicode characters to look identical.</p>",
     options: [{id:"click",label:"Click Link"},{id:"inspect",label:"Inspect Domain"},{id:"report",label:"Report"}],
-    correctOption: "inspect", hints:["Check punycode or copy-paste domain"], nextLevel:"I31", points:400
+    correctOption: "inspect", hints:["Check punycode or copy-paste domain"], nextLevel:"l31", points:400
   },
-  { id: "I31", title: "Credential Replay + Slow Drip Exfiltration", category: "adv_hard",
+  { id: "l31", title: "Credential Replay + Slow Drip Exfiltration", category: "adv_hard",
     content: "<p>Credentials are replayed to a shadow account over time.</p>",
     options: [{id:"revoke",label:"Revoke Sessions"},{id:"ignore",label:"Ignore"},{id:"report",label:"Report"}],
-    correctOption: "revoke", hints:["Revoke unknown sessions and run audit"], nextLevel:"I32", points:430
+    correctOption: "revoke", hints:["Revoke unknown sessions and run audit"], nextLevel:"l32", points:430
   },
-  { id: "I32", title: "Multi-vector adaptive BEC with reconnaissance", category: "adv_hard",
+  { id: "l32", title: "Multi-vector adaptive BEC with reconnaissance", category: "adv_hard",
     content: "<p>Adaptive scam combining data points across channels to request funds.</p>",
     options: [{id:"transfer",label:"Transfer Funds"},{id:"verify",label:"Verify via CFO"},{id:"report",label:"Report"}],
-    correctOption: "verify", hints:["Out-of-band confirmation required"], nextLevel:"bI6", points:480
+    correctOption: "verify", hints:["Out-of-band confirmation required"], nextLevel:"bl6", points:480
   },
-  { id: "bI6", title: "HoneyBee (Bonus)", category: "adv_hard_bonus",
+  { id: "bl6", title: "HoneyBee (Bonus)", category: "adv_hard_bonus",
     content: "<p>Final bonus before the final: multi-day investigation simulation.</p>",
-    options: [{id:"start",label:"Start"}], correctOption:"start", hints:["Comprehensive skills required"], nextLevel:"F", points:600
+    options: [{id:"start",label:"Start"}], correctOption:"start", hints:["Comprehensive skills required"], nextLevel:"f", points:600
   },
 
   // FINAL
-  { id: "F", title: "Advanced Persistent Phishing (Final)", category: "final",
+  { id: "f", title: "Advanced Persistent Phishing (Final)", category: "final",
     content: "<p>Complex chained scenario that requires applying previous learnings.</p>",
     options: [{id:"submit",label:"Submit Full Report"},{id:"skip",label:"Skip"}],
     correctOption: "submit", hints:["Provide a multi-step remediation report"], nextLevel:null, points:1000
