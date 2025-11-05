@@ -15,7 +15,7 @@ export default function I4() {
         { key: "delete", label: "Delete", style: "neutral" }
       ]}
       correctOption="report"
-      nextPath="/levels/easy/I5"
+      nextPath="/levels/easy/l5"
     />
   );
 }

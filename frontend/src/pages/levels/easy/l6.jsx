@@ -15,7 +15,7 @@ export default function I6() {
         { key: "report", label: "Report", style: "neutral" }
       ]}
       correctOption="inspect"
-      nextPath="/levels/adv_easy/I7"
+      nextPath="/levels/bonus_levels/bl1"
     />
   );
 }

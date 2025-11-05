@@ -5,7 +5,7 @@ import LevelTemplate from "../../../components/LevelTemplate";
 export default function I3() {
   return (
     <LevelTemplate
-      id="I3"
+      id="l3"
       title="Fake Newsletter Subscription"
       category="easy"
       content="<p>Subscribe now to access trending updates and free rewards!</p>"
@@ -14,7 +14,7 @@ export default function I3() {
         { key: "ignore", label: "Ignore Email", style: "neutral" }
       ]}
       correctOption="ignore"
-      nextPath="/levels/easy/I4"
+      nextPath="/levels/easy/l4"
     />
   );
 }

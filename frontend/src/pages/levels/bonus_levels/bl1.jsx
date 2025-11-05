@@ -14,7 +14,7 @@ export default function bI1() {
         { key: "skip", label: "Skip Bonus", style: "primary" }
       ]}
       correctOption="flag"
-      nextPath="/levels/adv_easy/I7"
+      nextPath="/levels/adv_easy/l7"
     />
   );
 }

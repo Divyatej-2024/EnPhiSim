@@ -14,7 +14,7 @@ export default function I5() {
         { key: "report", label: "Report", style: "neutral" }
       ]}
       correctOption="report"
-      nextPath="/levels/easy/I6"
+      nextPath="/levels/easy/l6"
     />
   );
 }

@@ -14,7 +14,7 @@ export default function I2() {
         { key: "report", label: "Report as Scam", style: "neutral" }
       ]}
       correctOption="report"
-      nextPath="/levels/easy/I3"
+      nextPath="/levels/easy/l3"
     />
   );
 }
