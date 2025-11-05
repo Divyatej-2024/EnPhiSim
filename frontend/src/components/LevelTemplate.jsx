@@ -20,7 +20,7 @@ Level shape (from data/levels.js):
 }
 */
 
-export default function LevelTemplateRealtime({ level }) {
+export default function LevelTemplate({ level }) {
   const { recordAction } = useProgress();
   const [time, setTime] = useState(0);
   const [eventsLog, setEventsLog] = useState([]);
@@ -115,13 +115,13 @@ export default function LevelTemplateRealtime({ level }) {
     recordAction(level.id, actionId, isCorrect, isCorrect ? (level.points || 10) : 0, meta);
     pushLog({ type: "user_action", actionId, meta, isCorrect });
     if (isCorrect) {
-      showDialog("✅ Correct Choice", level.successMessage || "Good job — proceed to next level.", "success");
+      showDialog("Correct Choice", level.successMessage || "Good job — proceed to next level.", "success");
     } else {
       // special consequence for clicking active phish link
       if (actionId === "phish_link" && flags["phish_link"]) {
-        showDialog("⚠️ Phish Link Clicked", "You clicked a malicious link during its active window (simulation).", "error");
+        showDialog("Phish Link Clicked", "You clicked a malicious link during its active window (simulation).", "error");
       } else {
-        showDialog("❌ Unsafe Choice", "That action was unsafe. Hints have been recorded. Every action counts.", "error");
+        showDialog("Unsafe Choice", "That action was unsafe. Hints have been recorded. Every action counts.", "error");
       }
     }
   };
