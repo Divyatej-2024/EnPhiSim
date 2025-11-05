@@ -1,140 +1,163 @@
-// src/components/LevelTemplate.jsx
+// src/shared/LevelTemplate.jsx
 import React, { useState } from "react";
-import { useProgress } from "../context/ProgressContext";
-import avatar from "../pages/levels/img/avtar.png"; // ensure you have this file (or update path)
-import parse from "html-react-parser"; // optional; npm i html-react-parser
+import avatar from "../pages/levels/img/avtar.png"; // place avtar.png in src/pages/levels/img/
 
-export default function LevelTemplate({ level }) {
-  const { recordAction } = useProgress();
+function saveAction(record) {
+  try {
+    const raw = localStorage.getItem("enphisim_actions");
+    const arr = raw ? JSON.parse(raw) : [];
+    arr.push(record);
+    localStorage.setItem("enphisim_actions", JSON.stringify(arr));
+  } catch (e) {
+    console.error("Saving action failed", e);
+  }
+}
+
+export default function LevelTemplate({
+  id,
+  title,
+  category,
+  content, // string or JSX
+  options = [], // [{ key: "verify", label: "Verify Now" }, ...]
+  correctOption, // key of correct
+  nextPath // string route to next level (e.g. "/levels/easy/l3")
+}) {
   const [dialog, setDialog] = useState({ visible: false, title: "", message: "", type: "" });
   const [attempts, setAttempts] = useState(0);
 
-  if (!level) return <div style={{padding:40,color:"#fff"}}>Level not found.</div>;
+  const showDialog = (t, m, ty) => setDialog({ visible: true, title: t, message: m, type: ty });
 
-  const handleAction = (option) => {
-    const isCorrect = option.id === level.correctOption;
-    // every action counts — log it
-    recordAction(level.id, option.id, isCorrect, isCorrect ? level.points : 0);
+  const closeDialog = (goNext = false) => {
+    // capture current dialog type for post-close behavior
+    const wasSuccess = dialog.type === "success";
+    setDialog({ visible: false, title: "", message: "", type: "" });
+    if (wasSuccess && goNext && nextPath) {
+      // simple navigation
+      window.location.href = nextPath;
+    }
+  };
+
+  const handleAction = (optKey) => {
+    const timestamp = new Date().toISOString();
+    const isCorrect = optKey === correctOption;
+    const rec = { levelId: id, choice: optKey, isCorrect, timestamp };
+    saveAction(rec);
     setAttempts(a => a + 1);
 
     if (isCorrect) {
-      setDialog({
-        visible: true,
-        title: "Correct Choice!",
-        message: `Well done — you've earned ${level.points} points.`,
-        type: "success"
-      });
+      showDialog("Correct Choice!", "Good job — you've chosen the safer action. You can proceed to the next level.", "success");
     } else {
-      setDialog({
-        visible: true,
-        title: "Incorrect / Unsafe",
-        message: "That action was unsafe. Check the hints and try again — every action counts.",
-        type: "error"
-      });
+      showDialog("Unsafe Choice", "That action is unsafe or suboptimal. Review the hints and try again — every action counts.", "error");
     }
   };
 
-  const closeDialog = (navigateToNext) => {
-    setDialog({ visible: false, title: "", message: "", type: "" });
-    if (dialog.type === "success" && level.nextLevel && navigateToNext) {
-      window.location.href = `/levels/${level.nextLevel}`; // simple redirect
-    }
-  };
-
-  // Inline styles for simplicity (copy your L1 CSS if you want)
   return (
-    <div style={{
-      minHeight: "100vh",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      background: "radial-gradient(circle at center, #1e293b, #0f172a)",
-      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-      padding: 20
-    }}>
-      <div style={{
-        background: "#fff",
-        borderRadius: 18,
-        width: 780,
-        maxWidth: "95%",
-        boxShadow: "0 8px 40px rgba(0,0,0,0.4)",
-        overflow: "hidden"
-      }}>
-        <div style={{ padding: 22 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-            <img src={avatar} alt="avatar" style={{ width: 64, height: 64, borderRadius: "50%", border: "2px solid #ddd" }} />
-            <div>
-              <div style={{ fontWeight: 700, fontSize: 18 }}>{level.title}</div>
-              <div style={{ color: "#666", fontSize: 13 }}>{level.category}</div>
+    <div>
+      <style>{`
+        /* Basic L1-inspired CSS (kept local for simplicity) */
+        body { margin:0; }
+        .level-viewport {
+          min-height:100vh;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          background: radial-gradient(circle at center, #1e293b, #0f172a);
+          font-family: 'Segoe UI', Tahoma, sans-serif;
+          padding:20px;
+        }
+        .screen-out {
+          background:#888;
+          border:10px solid #2e2e2e;
+          border-radius:28px;
+          width:880px;
+          max-width:100%;
+          box-shadow:0 20px 60px rgba(0,0,0,0.5);
+          padding:30px;
+        }
+        .screen-in {
+          background:#fff;
+          border-radius:18px;
+          padding:22px;
+          height:560px;
+          overflow:auto;
+          box-shadow: inset 0 0 20px rgba(0,0,0,0.06);
+        }
+        .header-row { display:flex; align-items:center; gap:14px; }
+        .avatar { width:60px; height:60px; border-radius:50%; border:2px solid #ddd; }
+        .meta { margin-top:10px; color:#555; font-size:0.9rem; }
+        .meta .badge { background:#0078d7; color:white; padding:4px 8px; border-radius:6px; font-weight:700; margin-right:8px; display:inline-block; }
+        .content { margin-top:18px; color:#222; line-height:1.6; font-size:1rem; }
+        .buttons { margin-top:20px; display:flex; gap:10px; flex-wrap:wrap; }
+        .btn { padding:10px 16px; border-radius:8px; border:none; cursor:pointer; font-weight:600; }
+        .btn-primary { background:#0078d7; color:white; }
+        .btn-neutral { background:#e6e6e6; color:#111; }
+        .unsubscribe { margin-top:18px; text-align:center; color:#666; font-size:0.9rem; }
+        .footer { margin-top:14px; text-align:center; color:#999; font-size:0.85rem; }
+        /* Dialog */
+        .dialog-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; z-index:3000; }
+        .dialog { background:white; padding:20px; border-radius:12px; min-width:300px; max-width:90%; box-shadow:0 10px 40px rgba(0,0,0,0.25); }
+        .dialog.success { border-top:6px solid #16a34a; }
+        .dialog.error { border-top:6px solid #dc2626; }
+        .dialog h3 { margin:0 0 8px 0; }
+        .dialog p { margin:0 0 12px 0; color:#444; }
+        .dialog .row { display:flex; justify-content:flex-end; gap:8px; }
+      `}</style>
+
+      <div className="level-viewport">
+        <div className="screen-out">
+          <div className="screen-in">
+            <div className="header-row">
+              <img src={avatar} alt="avatar" className="avatar" />
+              <div>
+                <div style={{ fontSize: 18, fontWeight: 700 }}>{title}</div>
+                <div style={{ color: "#6b7280", fontSize: 13 }}>{category}</div>
+              </div>
+              <div style={{ marginLeft: "auto", color: "#9ca3af" }}>Attempts: {attempts}</div>
             </div>
-            <div style={{ marginLeft: "auto", color: "#888", fontSize: 13 }}>
-              Attempts: {attempts}
+
+            <div className="meta">
+              <span className="badge">{id}</span>
+              <span className="meta-topic">{title}</span>
             </div>
-          </div>
 
-          <div style={{ marginTop: 18, color: "#222", lineHeight: 1.6 }}>
-            {parse ? parse(level.content) : <div dangerouslySetInnerHTML={{ __html: level.content }} />}
-          </div>
+            <div className="content">{typeof content === "string" ? <div dangerouslySetInnerHTML={{ __html: content }} /> : content}</div>
 
-          <div style={{ display: "flex", gap: 12, marginTop: 20, flexWrap: "wrap" }}>
-            {level.options.map(opt => (
-              <button
-                key={opt.id}
-                onClick={() => handleAction(opt)}
-                style={{
-                  background: opt.id === level.correctOption ? "#0078d7" : "#ccc",
-                  color: opt.id === level.correctOption ? "#fff" : "#333",
-                  padding: "10px 16px",
-                  borderRadius: 8,
-                  border: "none",
-                  cursor: "pointer",
-                  transition: "transform 0.12s"
-                }}
-                onMouseDown={(e) => e.currentTarget.style.transform = "translateY(1px)"}
-                onMouseUp={(e) => e.currentTarget.style.transform = "translateY(0px)"}
-              >
-                {opt.label}
-              </button>
-            ))}
-          </div>
-
-          <div style={{ marginTop: 18, borderTop: "1px solid #eee", paddingTop: 12, color: "#666", fontSize: 13 }}>
-            <div><strong>Hints:</strong></div>
-            <ul>
-              {level.hints.map((h, i) => <li key={i}>{h}</li>)}
-            </ul>
-          </div>
-
-          <div style={{ marginTop: 12, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <div style={{ fontSize: 12, color: "#999" }}>© 2025 EnPhiSim</div>
-            <div style={{ fontSize: 12, color: "#999" }}>
-              Every action counts — each click is recorded.
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {dialog.visible && (
-        <div style={{
-          position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)",
-          display: "flex", alignItems: "center", justifyContent: "center", zIndex: 999
-        }}>
-          <div style={{
-            background: "#fff", padding: 20, borderRadius: 12, minWidth: 320, boxShadow: "0 6px 30px rgba(0,0,0,0.3)"
-          }}>
-            <h3 style={{ margin: 0 }}>{dialog.title}</h3>
-            <p style={{ color: "#444" }}>{dialog.message}</p>
-            <div style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
-              <button onClick={() => closeDialog(false)} style={{ padding: "8px 12px", borderRadius: 6 }}>Close</button>
-              {dialog.type === "success" && level.nextLevel && (
-                <button onClick={() => closeDialog(true)} style={{ padding: "8px 12px", borderRadius: 6, background: "#0078d7", color: "#fff" }}>
-                  Next Level
+            <div className="buttons">
+              {options.map(opt => (
+                <button
+                  key={opt.key}
+                  className={`btn ${opt.style === "neutral" ? "btn-neutral" : "btn-primary"}`}
+                  onClick={() => handleAction(opt.key)}
+                >
+                  {opt.label}
                 </button>
-              )}
+              ))}
             </div>
+
+            <div className="unsubscribe">
+              <span>Don't want to receive these messages? </span>
+              <a href="#" onClick={(e)=>{ e.preventDefault(); handleAction("unsubscribe"); }}>Unsubscribe</a>
+            </div>
+
+            <div className="footer">© 2025 EnPhiSim — Every action counts</div>
           </div>
         </div>
-      )}
+
+        {dialog.visible && (
+          <div className="dialog-overlay">
+            <div className={`dialog ${dialog.type}`}>
+              <h3>{dialog.title}</h3>
+              <p>{dialog.message}</p>
+              <div className="row">
+                <button onClick={() => closeDialog(false)} className="btn btn-neutral">Close</button>
+                {dialog.type === "success" && nextPath && (
+                  <button onClick={() => closeDialog(true)} className="btn btn-primary">Next Level</button>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -8,40 +8,42 @@ export function useProgress() {
 }
 
 export function ProgressProvider({ children }) {
-  const [progress, setProgress] = useState(() => {
+  const [actions, setActions] = useState(() => {
     try {
-      const raw = localStorage.getItem("enphisim_progress");
-      return raw ? JSON.parse(raw) : { completed: {}, actions: {}, totalPoints: 0 };
+      const raw = localStorage.getItem("enphisim_actions");
+      return raw ? JSON.parse(raw) : [];
     } catch (e) {
-      return { completed: {}, actions: {}, totalPoints: 0 };
+      console.error("Failed to read enphisim_actions", e);
+      return [];
     }
   });
 
   useEffect(() => {
-    localStorage.setItem("enphisim_progress", JSON.stringify(progress));
-  }, [progress]);
+    try {
+      localStorage.setItem("enphisim_actions", JSON.stringify(actions));
+    } catch (e) {
+      console.error("Failed to write enphisim_actions", e);
+    }
+  }, [actions]);
 
-  const recordAction = (levelId, actionId, isCorrect, points = 0) => {
-    setProgress(prev => {
-      const actionsForLevel = prev.actions[levelId] ? [...prev.actions[levelId]] : [];
-      const timestamp = new Date().toISOString();
-      actionsForLevel.push({ actionId, isCorrect, points, timestamp });
-      // award points for this correct action
-      const totalPoints = prev.totalPoints + (isCorrect ? points : 0);
-      const completed = { ...prev.completed };
-      if (isCorrect) {
-        completed[levelId] = { completedAt: timestamp, pointsAwarded: (completed[levelId]?.pointsAwarded || 0) + points };
-      }
-      return { ...prev, actions: { ...prev.actions, [levelId]: actionsForLevel }, completed, totalPoints };
-    });
+  const recordAction = (levelId, optionId, isCorrect = false, points = 0) => {
+    const entry = {
+      timestamp: new Date().toISOString(),
+      levelId,
+      optionId,
+      isCorrect,
+      points,
+    };
+    setActions(prev => [...prev, entry]);
+    // localStorage will be kept in sync by useEffect
   };
 
-  const resetProgress = () => {
-    setProgress({ completed: {}, actions: {}, totalPoints: 0 });
+  const resetActions = () => {
+    setActions([]);
   };
 
   return (
-    <ProgressContext.Provider value={{ progress, recordAction, resetProgress }}>
+    <ProgressContext.Provider value={{ actions, recordAction, resetActions }}>
       {children}
     </ProgressContext.Provider>
   );
