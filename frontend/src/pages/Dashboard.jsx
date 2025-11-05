@@ -135,12 +135,19 @@ export default function Dashboard() {
               Export progress (CSV)
             </button>
             <button onClick={() => {
-              if (confirm("Clear recorded actions from localStorage? This cannot be undone.")) {
-                localStorage.removeItem("enphisim_actions");
-                window.location.reload();
+            // eslint-disable-next-line no-restricted-globals
+          if (confirm("Clear recorded actions from localStorage? This cannot be undone.")) {
+            localStorage.removeItem("enphisim_actions");
+              window.location.reload();
               }
+
             }} style={{
-              padding: "8px 12px", borderRadius: 8, border: "none", background: "#ef4444", color: "#fff", cursor: "pointer"
+             padding: "8px 12px",
+    borderRadius: 8,
+    border: "none",
+    background: "#ef4444",
+    color: "#fff",
+    cursor: "pointer",
             }}>
               Clear data
             </button>
