@@ -3,6 +3,7 @@ import React from "react";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Disclaimer from "./pages/Disclaimer";
+import About from "./pages/About";
 import Dashboard from "./pages/Dashboard";
 import LevelPage from "./pages/LevelPage";
 import Home from "./pages/Home"
@@ -14,6 +15,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/disclaimer" element={<Disclaimer />} />
+        <Route path="/about" element={< About/>}/>
         <Route path="/dashboard" element={<Dashboard />} />
 
         {/* 👇👇👇 THE FIX: Captures BOTH category and levelId parameters 👇👇👇 */}
