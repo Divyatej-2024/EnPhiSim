@@ -15,7 +15,7 @@ export default function LevelPage() {
   }
 
   // optional: validate category matches
-  if (level.category !== category && !(category === "bonus" && level.category === "bonus")) {
+  if (level.category !== category && !(category === "bonus_levels" && level.category === "bonus_levels")) {
     // redirect to correct path for safety
     return <Navigate to={`/levels/${level.category}/${key}`} replace />;
   }
