@@ -89,7 +89,7 @@ export const levels = {
     actions: [{ id:"trust", label:"Trust & Reply" }, { id:"inspect", label:"Inspect Email Address", style:"neutral" }, { id:"report", label:"Report", style:"neutral" }],
     correctAction: "inspect",
     hints: ["Look beyond display name; check the actual address"],
-    nextLevel: "/levels/adv_easy/l7",
+    nextLevel: "/levels/bonus/bl1",
     points: 12
   },
   bl1: {
@@ -101,7 +101,7 @@ export const levels = {
     actions: [{ id:"flag", label:"Flag Suspicious Items" }, { id:"skip", label:"Skip", style:"neutral" }],
     correctAction: "flag",
     hints: ["Look for typos, unknown senders, urgency, attachments, odd links"],
-    nextLevel: "/levels/easy/l1",
+    nextLevel: "/levels/adv_easy/l7",
     points: 15
   },
 
@@ -180,7 +180,7 @@ export const levels = {
     actions: [{ id:"follow", label:"Follow Link", linkKey:"gov_link" }, { id:"call", label:"Call Official Number", style:"neutral" }, { id:"report", label:"Report", style:"neutral" }],
     correctAction: "call",
     hints: ["Check official channels; government bodies rarely ask via email for credentials"],
-    nextLevel: "/levels/normal/l13",
+    nextLevel: "/levels/bonus/bl2",
     points: 12
   },
   bl2: {
@@ -191,7 +191,7 @@ export const levels = {
     events: [{ t:0, type:"arrive_email" }, { t:5, type:"unlock_hint", data:{ hint:"Look for shortened URLs" } }],
     actions: [{ id:"start", label:"Start Challenge" }, { id:"skip", label:"Skip", style:"neutral" }],
     correctAction: "start",
-    nextLevel: "/levels/adv_easy/l7",
+    nextLevel: "/levels/normal/l13",
     points: 12
   },
   /* ===== NORMAL l13 - l18 ===== */
@@ -269,7 +269,7 @@ export const levels = {
     actions: [{ id:"login", label:"Login", linkKey:"landing_link" }, { id:"inspect", label:"Inspect Link/URL", style:"neutral" }, { id:"report", label:"Report", style:"neutral" }],
     correctAction: "inspect",
     hints: ["Check TLS/punycode and prefer official bookmarks"],
-    nextLevel: "/levels/prehard/l19",
+    nextLevel: "/levels/bonus/bl3",
     points: 16
   },
   bl3: {
@@ -346,7 +346,7 @@ export const levels = {
     actions: [{ id:"open", label:"Open Attachment" }, { id:"sandbox", label:"Open in Sandbox", style:"neutral" }, { id:"report", label:"Report", style:"neutral" }],
     correctAction: "sandbox",
     hints: ["Use a secure environment for unknown attachments"],
-    nextLevel: "/levels/hard/l24",
+    nextLevel: "/levels/bonus/bl4",
     points: 16
   },
   bl4: {
@@ -423,7 +423,7 @@ export const levels = {
     actions: [{ id:"install", label:"Install Update" }, { id:"verify", label:"Verify with Vendor", style:"neutral" }, { id:"report", label:"Report", style:"neutral" }],
     correctAction: "verify",
     hints: ["Verify updates with vendor and checksum signatures"],
-    nextLevel: "/levels/adv_hard/l29",
+    nextLevel: "/levels/bonus/bl5",
     points: 26
   },
   bl5: {
@@ -489,7 +489,7 @@ export const levels = {
     actions: [{ id:"transfer", label:"Transfer Funds" }, { id:"verify", label:"Verify via CFO", style:"neutral" }, { id:"report", label:"Report", style:"neutral" }],
     correctAction: "verify",
     hints: ["High-value transfers require multi-person verification"],
-    nextLevel: "/levels/final/f",
+    nextLevel: "/levels/bonus/bl6",
     points: 32
   },
   bl6: {
@@ -519,7 +519,7 @@ export const levels = {
     actions: [{ id:"submit", label:"Submit Full Report" }, { id:"skip", label:"Skip Final", style:"neutral" }],
     correctAction: "submit",
     hints: ["Use all previous rulesets: headers, links, vendor verification, out-of-band checks"],
-    nextLevel: null,
+    nextLevel: Thankyou,
     points: 50,
     mlCheck: { enabled: false }
   }
