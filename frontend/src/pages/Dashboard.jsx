@@ -15,13 +15,13 @@ import { useProgress } from "../context/ProgressContext";
 */
 
 const CATEGORIES = [
-  { key: "easy", label: "Easy", path: "/levels/easy/I1" },
-  { key: "adv_easy", label: "Advanced Easy", path: "/levels/adv_easy/I7" },
-  { key: "normal", label: "Normal", path: "/levels/normal/I13" },
-  { key: "prehard", label: "Pre-Hard", path: "/levels/pre_hard/I19" },
-  { key: "hard", label: "Hard", path: "/levels/hard/I24" },
-  { key: "adv_hard", label: "Advanced Hard", path: "/levels/adv_hard/I29" },
-  { key: "final", label: "Final", path: "/levels/final/F" },
+  { key: "easy", label: "Easy", path: "/levels/easy/l1" },
+  { key: "adv_easy", label: "Advanced Easy", path: "/levels/adv_easy/l7" },
+  { key: "normal", label: "Normal", path: "/levels/normal/l13" },
+  { key: "prehard", label: "Pre-Hard", path: "/levels/pre_hard/l19" },
+  { key: "hard", label: "Hard", path: "/levels/hard/l24" },
+  { key: "adv_hard", label: "Advanced Hard", path: "/levels/adv_hard/l29" },
+  { key: "final", label: "Final", path: "/levels/final/f" },
 ];
 
 export default function Dashboard() {
