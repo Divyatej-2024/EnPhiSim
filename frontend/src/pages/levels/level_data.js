@@ -92,6 +92,18 @@ export const levels = {
     nextLevel: "/levels/adv_easy/l7",
     points: 12
   },
+  bl1: {
+    id: "bl1",
+    title: "BL1: Eagle (Bonus)",
+    category: "bonus",
+    contentHtml: `<p>Bonus milestone: identify 5 suspicious indicators in a mixed email chain.</p>`,
+    events: [{ t:0, type:"arrive_email" }],
+    actions: [{ id:"flag", label:"Flag Suspicious Items" }, { id:"skip", label:"Skip", style:"neutral" }],
+    correctAction: "flag",
+    hints: ["Look for typos, unknown senders, urgency, attachments, odd links"],
+    nextLevel: "/levels/easy/l1",
+    points: 15
+  },
 
   /* ===== ADV_EASY l7 - l12 ===== */
   l7: {
@@ -171,7 +183,17 @@ export const levels = {
     nextLevel: "/levels/normal/l13",
     points: 12
   },
-
+  bl2: {
+    id: "bl2",
+    title: "BL2: Monkey (Bonus)",
+    category: "bonus",
+    contentHtml: `<p>Mini-challenge: timed identification of 3 obfuscation tricks.</p>`,
+    events: [{ t:0, type:"arrive_email" }, { t:5, type:"unlock_hint", data:{ hint:"Look for shortened URLs" } }],
+    actions: [{ id:"start", label:"Start Challenge" }, { id:"skip", label:"Skip", style:"neutral" }],
+    correctAction: "start",
+    nextLevel: "/levels/adv_easy/l7",
+    points: 12
+  },
   /* ===== NORMAL l13 - l18 ===== */
   l13: {
     id: "l13",
@@ -250,6 +272,17 @@ export const levels = {
     nextLevel: "/levels/prehard/l19",
     points: 16
   },
+  bl3: {
+    id: "bl3",
+    title: "BL3: Turtle (Bonus)",
+    category: "bonus",
+    contentHtml: `<p>Verify a chain of three emails for authenticity.</p>`,
+    events: [{ t:0, type:"arrive_email" }],
+    actions: [{ id:"start", label:"Start" }, { id:"skip", label:"Skip", style:"neutral" }],
+    correctAction: "start",
+    nextLevel: "/levels/prehard/l19",
+    points: 15
+  },
 
   /* ===== PREHARD l19 - l23 (5) ===== */
   l19: {
@@ -315,6 +348,17 @@ export const levels = {
     hints: ["Use a secure environment for unknown attachments"],
     nextLevel: "/levels/hard/l24",
     points: 16
+  },
+  bl4: {
+    id: "bl4",
+    title: "BL4: Shark (Bonus)",
+    category: "bonus",
+    contentHtml: `<p>Mixed vector (QR + voice + email) puzzle.</p>`,
+    events: [{ t:0, type:"arrive_email" }],
+    actions: [{ id:"start", label:"Start Bonus" }, { id:"skip", label:"Skip", style:"neutral" }],
+    correctAction: "start",
+    nextLevel: "/levels/hard/l24",
+    points: 18
   },
 
   /* ===== HARD l24 - l28 (5) ===== */
@@ -382,6 +426,18 @@ export const levels = {
     nextLevel: "/levels/adv_hard/l29",
     points: 26
   },
+  bl5: {
+    id: "bl5",
+    title: "BL5: Elephant (Bonus)",
+    category: "bonus",
+    contentHtml: `<p>Long puzzle combining supply-chain + deepfake signals.</p>`,
+    events: [{ t:0, type:"arrive_email" }],
+    actions: [{ id:"start", label:"Start Bonus" }, { id:"skip", label:"Skip", style:"neutral" }],
+    correctAction: "start",
+    nextLevel: "/levels/adv_hard/l29",
+    points: 20
+  },
+
 
   /* ===== ADV_HARD l29 - l32 (4) ===== */
   l29: {
@@ -433,12 +489,23 @@ export const levels = {
     actions: [{ id:"transfer", label:"Transfer Funds" }, { id:"verify", label:"Verify via CFO", style:"neutral" }, { id:"report", label:"Report", style:"neutral" }],
     correctAction: "verify",
     hints: ["High-value transfers require multi-person verification"],
-    nextLevel: "/levels/final/l33",
+    nextLevel: "/levels/final/f",
     points: 32
+  },
+  bl6: {
+    id: "bl6",
+    title: "BL6: HoneyBee (Bonus)",
+    category: "bonus",
+    contentHtml: `<p>Multi-day investigation simulation (condensed).</p>`,
+    events: [{ t:0, type:"arrive_email" }],
+    actions: [{ id:"start", label:"Start Challenge" }, { id:"skip", label:"Skip", style:"neutral" }],
+    correctAction: "start",
+    nextLevel: "/levels/final/f",
+    points: 25
   },
 
   /* ===== FINAL l33 ===== */
-  l33: {
+  f: {
     id: "f",
     title: "Advanced Persistent Phishing (Final)",
     category: "final",
@@ -455,79 +522,5 @@ export const levels = {
     nextLevel: null,
     points: 50,
     mlCheck: { enabled: false }
-  },
-
-  /* ===== BONUS BL1 - BL6 ===== */
-  bl1: {
-    id: "bl1",
-    title: "BL1: Eagle (Bonus)",
-    category: "bonus",
-    contentHtml: `<p>Bonus milestone: identify 5 suspicious indicators in a mixed email chain.</p>`,
-    events: [{ t:0, type:"arrive_email" }],
-    actions: [{ id:"flag", label:"Flag Suspicious Items" }, { id:"skip", label:"Skip", style:"neutral" }],
-    correctAction: "flag",
-    hints: ["Look for typos, unknown senders, urgency, attachments, odd links"],
-    nextLevel: "/levels/easy/l1",
-    points: 15
-  },
-
-  bl2: {
-    id: "bl2",
-    title: "BL2: Monkey (Bonus)",
-    category: "bonus",
-    contentHtml: `<p>Mini-challenge: timed identification of 3 obfuscation tricks.</p>`,
-    events: [{ t:0, type:"arrive_email" }, { t:5, type:"unlock_hint", data:{ hint:"Look for shortened URLs" } }],
-    actions: [{ id:"start", label:"Start Challenge" }, { id:"skip", label:"Skip", style:"neutral" }],
-    correctAction: "start",
-    nextLevel: "/levels/adv_easy/l7",
-    points: 12
-  },
-
-  bl3: {
-    id: "bl3",
-    title: "BL3: Turtle (Bonus)",
-    category: "bonus",
-    contentHtml: `<p>Verify a chain of three emails for authenticity.</p>`,
-    events: [{ t:0, type:"arrive_email" }],
-    actions: [{ id:"start", label:"Start" }, { id:"skip", label:"Skip", style:"neutral" }],
-    correctAction: "start",
-    nextLevel: "/levels/prehard/l19",
-    points: 15
-  },
-
-  bl4: {
-    id: "bl4",
-    title: "BL4: Shark (Bonus)",
-    category: "bonus",
-    contentHtml: `<p>Mixed vector (QR + voice + email) puzzle.</p>`,
-    events: [{ t:0, type:"arrive_email" }],
-    actions: [{ id:"start", label:"Start Bonus" }, { id:"skip", label:"Skip", style:"neutral" }],
-    correctAction: "start",
-    nextLevel: "/levels/hard/l24",
-    points: 18
-  },
-
-  bl5: {
-    id: "bl5",
-    title: "BL5: Elephant (Bonus)",
-    category: "bonus",
-    contentHtml: `<p>Long puzzle combining supply-chain + deepfake signals.</p>`,
-    events: [{ t:0, type:"arrive_email" }],
-    actions: [{ id:"start", label:"Start Bonus" }, { id:"skip", label:"Skip", style:"neutral" }],
-    correctAction: "start",
-    nextLevel: "/levels/adv_hard/l29",
-    points: 20
-  },
-
-  bl6: {
-    id: "bl6",
-    title: "BL6: HoneyBee (Bonus)",
-    category: "bonus",
-    contentHtml: `<p>Multi-day investigation simulation (condensed).</p>`,
-    events: [{ t:0, type:"arrive_email" }],
-    actions: [{ id:"start", label:"Start Challenge" }, { id:"skip", label:"Skip", style:"neutral" }],
-    correctAction: "start",
-    nextLevel: "/levels/final/l33",
-    points: 25
   }
 };
