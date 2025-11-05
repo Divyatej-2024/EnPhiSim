@@ -3,7 +3,7 @@
 import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useProgress } from "../context/ProgressContext";
-//import { levels } from "./levels/level_data.json";
+//import { levels } from "./levels/level_data";
 
 const START_LINKS = [
   { label: "Easy", path: "/levels/easy/l1" },
