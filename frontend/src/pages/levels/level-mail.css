@@ -1,0 +1,90 @@
+/* Generic mail-style CSS for levels (used by I1, I2, etc.) */
+.level-mail-wrapper {
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  color: #0f172a;
+}
+
+/* Briefing / content used inside LevelTemplate content HTML */
+.mail-briefing {
+  background: linear-gradient(180deg,#0f172a00,#00000000);
+  padding: 16px;
+  border-radius: 10px;
+  color: #e6eef8;
+}
+
+.mail-briefing-header {
+  display:flex;
+  gap:12px;
+  align-items:center;
+  margin-bottom:10px;
+}
+
+.brief-avatar {
+  width:44px;
+  height:44px;
+  border-radius:8px;
+  object-fit:cover;
+  background:linear-gradient(135deg,#e6f5f4,#cfeef0);
+}
+
+.brief-from {
+  font-weight:700;
+  color:#fff;
+}
+
+.brief-sub {
+  font-size:0.85rem;
+  color:#9ca3af;
+}
+
+/* Body text */
+.brief-body {
+  background:#0f172a;
+  padding:14px;
+  border-radius:10px;
+  border: 1px solid rgba(255,255,255,0.02);
+  color: #dbeafe;
+  line-height:1.6;
+}
+
+/* Phishy link style — looks clickable and urgent */
+.phish-link {
+  color: #3b82f6;
+  text-decoration: underline;
+  font-weight:600;
+  cursor:pointer;
+}
+
+/* hint text */
+.hint-muted {
+  color:#9ca3af;
+  font-size:0.9rem;
+  margin-top:8px;
+}
+
+/* Buttons and option styles that LevelTemplate might use —
+   these selectors are intentionally generic; align them with your LevelTemplate classes */
+.lt-options {
+  display:flex;
+  gap:10px;
+  margin-top:16px;
+}
+
+.lt-btn {
+  padding:10px 14px;
+  border-radius:8px;
+  font-weight:700;
+  cursor:pointer;
+  border:none;
+}
+
+/* map style names to colors; LevelTemplate should apply .primary/.neutral/.positive */
+.lt-btn.primary { background:#ef4444; color:white; }   /* verify - red to show urgency */
+.lt-btn.neutral { background:#6b7280; color:white; }   /* ignore - grey */
+.lt-btn.positive { background:#16a34a; color:white; }  /* report - green */
+
+/* responsive */
+@media (max-width: 720px) {
+  .mail-briefing { padding:12px; }
+  .brief-avatar { width:40px; height:40px; }
+}
