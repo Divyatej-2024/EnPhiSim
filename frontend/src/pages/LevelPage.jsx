@@ -2,6 +2,7 @@
 import React from "react";
 import { useParams, Navigate } from "react-router-dom";
 import "../level.css";
+import "./levels/level-mail.css"
 import LevelTemplateRealtime from "../components/LevelTemplate";
 import { levels } from "./levels/level_data";
 
