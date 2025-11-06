@@ -6,9 +6,12 @@ import "./levels/level-mail.css"
 import LevelTemplateRealtime from "../components/LevelTemplate";
 import { levels } from "./levels/level_data";
 
-export default function LevelPage() {
+
+export default function LevelPage(props) {
   const { category, levelId } = useParams(); // e.g., category="easy", levelId="l1"
   const key = levelId; // levels keyed by l1..l33 / bl1..bl6
+ console.log(props.id);
+ 
 
   const level = levels[key];
 
@@ -21,6 +24,17 @@ export default function LevelPage() {
     // redirect to correct path for safety
     return <Navigate to={`/levels/${level.category}/${key}`} replace />;
   }
+  
+  <div className="level-content">
+  {props.children ? (
+    props.children
+  ) : props.content ? (
+    <div
+      className="level-html-content"
+      dangerouslySetInnerHTML={{ __html: props.content }}
+    />
+  ) : null}
+  </div>
 
   return <LevelTemplateRealtime level={level} />;
 }
