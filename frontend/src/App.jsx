@@ -7,11 +7,13 @@ import About from "./pages/About";
 import Dashboard from "./pages/Dashboard";
 import LevelPage from "./pages/LevelPage";
 import Home from "./pages/Home"
+import BackgroundWrapper from "./components/BackgroundWrapper";
 
 
 export default function App() {
   return (
     <BrowserRouter>
+    <BackgroundWrapper>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/disclaimer" element={<Disclaimer />} />
@@ -24,6 +26,7 @@ export default function App() {
         {/* catch-all */}
         <Route path="*" element={<div style={{ padding: 24, color: "#fff" }}>Page not found</div>} />
       </Routes>
+    </BackgroundWrapper>
     </BrowserRouter>
   );
 }
