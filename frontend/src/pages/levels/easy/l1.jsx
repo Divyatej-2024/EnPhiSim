@@ -2,7 +2,7 @@
 import React from "react";
 import LevelTemplate from "../../../components/LevelTemplate";
 import avatar from "../../img/avtar.png";
-import "./level-mail.css";
+import "../level-mail.css";
 
 export default function I1() {
   // Using LevelTemplate API you showed earlier. LevelTemplate should render the content (HTML string)
