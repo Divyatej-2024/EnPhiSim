@@ -12,7 +12,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: url("./Enphisim.png") no-repeat center center; /* path to your logo */
+  background: url("/Enphisim.png") no-repeat center center; /* path to your logo */
   background-size: 400px auto; /* adjust size */
   opacity: 0.06; /* transparency (0.05–0.1 works best) */
   z-index: -1;
