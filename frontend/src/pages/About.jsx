@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "../levels.css"; // reuse your main CSS file
+import "../level.css"; // reuse your main CSS file
 
 export default function About() {
   const navigate = useNavigate();
