@@ -24,7 +24,7 @@ export default function App() {
         <Route path="/levels/:category/:levelId" element={<LevelPage />} />
         
         {/* catch-all */}
-        <Route path="*" element={<div style={{ padding: 24, color: "#fff" }}>Page not found</div>} />
+        <Route path="*" element={<div style={{ padding: 24, color: "#000" }}>Page not found</div>} />
       </Routes>
     </BackgroundWrapper>
     </BrowserRouter>
