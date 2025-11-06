@@ -11,7 +11,7 @@ export default function BackgroundWrapper({ children }) {
         backgroundPosition: "center",
         backgroundAttachment: "fixed",
         backgroundSize: "400px auto",
-        opacity: 0.06,
+        opacity: 0.6,
         zIndex: -1,
       }}
     >
