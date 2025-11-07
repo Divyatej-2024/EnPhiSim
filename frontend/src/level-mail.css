@@ -18,6 +18,26 @@
   align-items:center;
   margin-bottom:10px;
 }
+/* inactive state — appears dimmed and not clickable */
+.lt-btn.inactive {
+  background: #e5e7eb;
+  color: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* default style (for fallback or replay/ML buttons) */
+.lt-btn.default {
+  background: #1e3a8a;
+  color: white;
+}
+
+/* hover effects for active buttons */
+.lt-btn:not(.inactive):hover {
+  opacity: 0.9;
+  transform: scale(1.02);
+  transition: all 0.2s ease-in-out;
+}
 
 .brief-avatar {
   width:44px;

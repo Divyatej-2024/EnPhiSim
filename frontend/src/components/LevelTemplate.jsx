@@ -184,12 +184,12 @@ export default function LevelTemplate({ level }) {
                     disabled={!active}
                     // Apply base button class, then add active/inactive class
                     className={`lt-btn ${active ? styleClass : 'inactive'}`} 
-                    style={{
+                    /*style={{
                       // Custom styles needed since external CSS doesn't handle active/inactive
                       cursor: active ? "pointer" : "not-allowed",
                       background: active ? "#0078d7" : "#e5e7eb",
                       color: active ? "#fff" : "#9ca3af"
-                    }}>
+                    }}*/>
                     {a.label}{!active ? ` (inactive)` : ""}
                   </button>
                 );
@@ -228,7 +228,7 @@ export default function LevelTemplate({ level }) {
                 setEventsLog([]);
                 setFlags({});
                 setHintsUnlocked([]);
-              }} /*style={{ padding: "8px 12px", borderRadius: 8, border: "none", background: "#111827", color: "#fff" }}*/>Replay</button>
+              }} className="lt-btn" /*style={{ padding: "8px 12px", borderRadius: 8, border: "none", background: "#111827", color: "#fff" }}*/>Replay</button>
 
               <button onClick={() => {
                 if (level.mlCheck && level.mlCheck.enabled) {
@@ -237,7 +237,7 @@ export default function LevelTemplate({ level }) {
                     pushLog({ type: "ml_manual", score: res });
                   });
                 } else alert("ML check not enabled");
-              }} /*style={{ padding: "8px 12px", borderRadius: 8, border: "none", background: "#10b981", color: "#fff" }}*/>
+              }} className="lt-btn" /*style={{ padding: "8px 12px", borderRadius: 8, border: "none", background: "#10b981", color: "#fff" }}*/>
                 ML Check
               </button>
             </div>
@@ -251,9 +251,9 @@ export default function LevelTemplate({ level }) {
             <h3 style={{ margin: 0 }}>{dialog.title}</h3>
             <p style={{ color: "#333" }}>{dialog.message}</p>
             <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>
-              <button onClick={() => closeDialog(false)} /*style={{ padding: "8px 10px", borderRadius: 8 }}*/>Close</button>
+              <button onClick={() => closeDialog(false)} className="lt-btn" /*style={{ padding: "8px 10px", borderRadius: 8 }}*/>Close</button>
               {dialog.type === "success" && level.nextLevel && (
-                <button onClick={() => closeDialog(true)} /*style={{ padding: "8px 10px", borderRadius: 8, background: "#0078d7", color: "#fff" }}*/>Next Level</button>
+                <button onClick={() => closeDialog(true)} className="lt-btn" /*style={{ padding: "8px 10px", borderRadius: 8, background: "#0078d7", color: "#fff" }}*/>Next Level</button>
               )}
             </div>
           </div>
