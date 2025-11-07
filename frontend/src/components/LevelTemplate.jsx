@@ -169,12 +169,23 @@ export default function LevelTemplate({ level }) {
 
           <div style={{ display: "flex", gap: 10, marginTop: 18, flexWrap: "wrap" }}>
             {level.actions.map(a => {
+              // Define styleClass here, within the map callback where 'a' is defined
+              const styleClass = a.style || 'default'; 
+
               if (a.linkKey) {
                 const active = !!flags[a.linkKey];
+                
+                // For linkKey actions, we need custom classes/styles for active/inactive state
+                // Note: The external CSS doesn't support active/inactive, so you need custom styling for this state
                 return (
-                  <button key={a.id} onClick={() => handleAction(a.id)} disabled={!active}
+                  <button 
+                    key={a.id} 
+                    onClick={() => handleAction(a.id)} 
+                    disabled={!active}
+                    // Apply base button class, then add active/inactive class
+                    className={`lt-btn ${active ? styleClass : 'inactive'}`} 
                     style={{
-                      padding: "10px 14px", borderRadius: 8, border: "none",
+                      // Custom styles needed since external CSS doesn't handle active/inactive
                       cursor: active ? "pointer" : "not-allowed",
                       background: active ? "#0078d7" : "#e5e7eb",
                       color: active ? "#fff" : "#9ca3af"
@@ -184,17 +195,15 @@ export default function LevelTemplate({ level }) {
                 );
               }
               return (
-                <button key={a.id} onClick={() => handleAction(a.id)}
-                  style={{
-                    padding: "10px 14px", borderRadius: 8, border: "none",
-                    cursor: "pointer",
-                    background: a.style === "neutral" ? "#e6e6e6" : "#0078d7",
-                    color: a.style === "neutral" ? "#111" : "#fff"
-                  }}>
+<button 
+                  key={a.id} 
+                  onClick={() => handleAction(a.id)}
+                  // Correct Template Literal Syntax: Use backticks ``
+                  className={`lt-btn ${styleClass}`}> 
                   {a.label}
                 </button>
               );
-            })}
+})}
           </div>
 
           <div style={{ marginTop: 18, borderTop: "1px solid #eee", paddingTop: 12, color: "#666" }}>
@@ -219,7 +228,7 @@ export default function LevelTemplate({ level }) {
                 setEventsLog([]);
                 setFlags({});
                 setHintsUnlocked([]);
-              }} style={{ padding: "8px 12px", borderRadius: 8, border: "none", background: "#111827", color: "#fff" }}>Replay</button>
+              }} /*style={{ padding: "8px 12px", borderRadius: 8, border: "none", background: "#111827", color: "#fff" }}*/>Replay</button>
 
               <button onClick={() => {
                 if (level.mlCheck && level.mlCheck.enabled) {
@@ -228,7 +237,7 @@ export default function LevelTemplate({ level }) {
                     pushLog({ type: "ml_manual", score: res });
                   });
                 } else alert("ML check not enabled");
-              }} style={{ padding: "8px 12px", borderRadius: 8, border: "none", background: "#10b981", color: "#fff" }}>
+              }} /*style={{ padding: "8px 12px", borderRadius: 8, border: "none", background: "#10b981", color: "#fff" }}*/>
                 ML Check
               </button>
             </div>
@@ -242,9 +251,9 @@ export default function LevelTemplate({ level }) {
             <h3 style={{ margin: 0 }}>{dialog.title}</h3>
             <p style={{ color: "#333" }}>{dialog.message}</p>
             <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>
-              <button onClick={() => closeDialog(false)} style={{ padding: "8px 10px", borderRadius: 8 }}>Close</button>
+              <button onClick={() => closeDialog(false)} /*style={{ padding: "8px 10px", borderRadius: 8 }}*/>Close</button>
               {dialog.type === "success" && level.nextLevel && (
-                <button onClick={() => closeDialog(true)} style={{ padding: "8px 10px", borderRadius: 8, background: "#0078d7", color: "#fff" }}>Next Level</button>
+                <button onClick={() => closeDialog(true)} /*style={{ padding: "8px 10px", borderRadius: 8, background: "#0078d7", color: "#fff" }}*/>Next Level</button>
               )}
             </div>
           </div>
