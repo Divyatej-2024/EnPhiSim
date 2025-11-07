@@ -1,85 +1,115 @@
-/* Generic mail-style CSS for levels (used by I1, I2, etc.) */
+/* Overall wrapper — dark cyber mail interface */
 .level-mail-wrapper {
+  min-height: 100vh;
   font-family: "Segoe UI", Roboto, Arial, sans-serif;
-  color: #0f172a;
-}
-
-/* Briefing / content used inside LevelTemplate content HTML */
-.mail-briefing {
-  background: linear-gradient(180deg,#0f172a00,#00000000);
-  padding: 16px;
-  border-radius: 10px;
+  background: radial-gradient(circle at top left, #0f172a 0%, #1e293b 60%, #0a0f1a 100%);
   color: #e6eef8;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 20px;
 }
 
+/* Content container */
+.mail-briefing {
+  background: rgba(17, 24, 39, 0.9);
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+  padding: 24px;
+  border-radius: 14px;
+  max-width: 850px;
+  width: 100%;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Header — avatar + sender info */
 .mail-briefing-header {
-  display:flex;
-  gap:12px;
-  align-items:center;
-  margin-bottom:10px;
-}
-/* inactive state — appears dimmed and not clickable */
-.lt-btn.inactive {
-  background: #e5e7eb;
-  color: #9ca3af;
-  cursor: not-allowed;
-  opacity: 0.7;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 10px;
 }
 
-/* default style (for fallback or replay/ML buttons) */
-.lt-btn.default {
-  background: #1e3a8a;
-  color: white;
-}
-
-/* hover effects for active buttons */
-.lt-btn:not(.inactive):hover {
-  opacity: 0.9;
-  transform: scale(1.02);
-  transition: all 0.2s ease-in-out;
-}
-
+/* Avatar */
 .brief-avatar {
-  width:44px;
-  height:44px;
-  border-radius:8px;
-  object-fit:cover;
-  background:linear-gradient(135deg,#e6f5f4,#cfeef0);
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  border: 2px solid #1e40af;
 }
 
+/* Sender name */
 .brief-from {
-  font-weight:700;
-  color:#fff;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #f9fafb;
 }
 
+/* Subject line */
 .brief-sub {
-  font-size:0.85rem;
-  color:#9ca3af;
+  font-size: 0.9rem;
+  color: #a1a1aa;
 }
 
-/* Body text */
+/* Body */
 .brief-body {
-  background:#0f172a;
-  padding:14px;
-  border-radius:10px;
-  border: 1px solid rgba(255,255,255,0.02);
+  background: linear-gradient(180deg, #111827 0%, #0f172a 100%);
+  padding: 18px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   color: #dbeafe;
-  line-height:1.6;
+  line-height: 1.7;
+  letter-spacing: 0.2px;
+  font-size: 1rem;
 }
 
-/* Phishy link style — looks clickable and urgent */
+/* Links — simulate phishing urgency */
 .phish-link {
   color: #3b82f6;
   text-decoration: underline;
-  font-weight:600;
-  cursor:pointer;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+.phish-link:hover {
+  color: #60a5fa;
 }
 
-/* hint text */
+/* Muted hint / footer text */
 .hint-muted {
-  color:#9ca3af;
-  font-size:0.9rem;
-  margin-top:8px;
+  color: #9ca3af;
+  font-size: 0.9rem;
+  margin-top: 12px;
+  font-style: italic;
+}
+
+/* Options section (button group) */
+.lt-options {
+  display: flex;
+  gap: 12px;
+  margin-top: 22px;
+  justify-content: flex-end;
+}
+
+/* Responsive adjustments */
+@media (max-width: 720px) {
+  .level-mail-wrapper {
+    padding: 20px 10px;
+  }
+  .mail-briefing {
+    padding: 16px;
+  }
+  .brief-avatar {
+    width: 44px;
+    height: 44px;
+  }
+  .brief-body {
+    font-size: 0.95rem;
+  }
 }
 
 /* Buttons and option styles that LevelTemplate might use —
