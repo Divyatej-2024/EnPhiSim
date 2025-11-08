@@ -138,3 +138,165 @@
   .mail-briefing { padding:12px; }
   .brief-avatar { width:40px; height:40px; }
 }
+
+.ipad-level-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at center, #1e293b, #0f172a);
+  padding: 16px;
+}
+
+.ipad-level-container {
+  width: 100%;
+  max-width: 760px; /* iPad portrait width */
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.ipad-level-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.ipad-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+}
+
+.ipad-level-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.ipad-level-sub {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.ipad-timer {
+  font-size: 0.8rem;
+  color: #666;
+  text-align: right;
+}
+
+.ipad-level-body {
+  margin-top: 16px;
+  color: #222;
+  line-height: 1.6;
+}
+
+.ipad-followup {
+  background: #fff7ed;
+  color: #92400e;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.ipad-escalation {
+  background: #fee2e2;
+  color: #991b1b;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.ipad-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.ipad-hints {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 10px;
+  margin-top: 20px;
+  color: #666;
+}
+
+.hint-title {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.hidden-hint {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.hint-footer {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-top: 6px;
+}
+
+.ipad-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ipad-footer-text {
+  font-size: 12px;
+  color: #999;
+}
+
+.ipad-footer-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+/* Dialog */
+.ipad-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ipad-dialog {
+  background: #fff;
+  padding: 18px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+}
+
+.ipad-dialog-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* iPad responsive tweaks */
+@media (max-width: 820px) {
+  .ipad-level-container {
+    padding: 16px;
+  }
+
+  .ipad-level-title {
+    font-size: 1.2rem;
+  }
+
+  .ipad-actions button {
+    flex: 1 1 45%;
+  }
+}
