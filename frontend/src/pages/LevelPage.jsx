@@ -1,7 +1,6 @@
 // src/pages/LevelPage.jsx
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import levels from "./levels/level_data.js";
 
 export default function LevelPage() {
   const { levelId } = useParams();
