@@ -1,52 +1,40 @@
-// src/pages/levels/easy/I1.jsx
+// src/pages/levels/easy/L1.jsx
 import React from "react";
-import LevelTemplate from "../../../components/LevelTemplate";
-import avatar from "../../img/avtar.png";
-import "../level-mail.css";
+import "./l1.css";
 
-export default function I1() {
+export default function L1() {
   return (
-    <LevelTemplate
-      id="l1"
-      title="Mass Credential-Phish"
-      category="easy"
-      options={[
-        { key: "verify", label: "Verify Account", style: "primary" },
-        { key: "ignore", label: "Ignore", style: "neutral" },
-        { key: "report", label: "Report as Phishing", style: "positive" }
-      ]}
-      correctOption="report"
-      nextPath="/levels/easy/l2"
-    >
-      {/* children: safer, interactive JSX */}
-      <div className="mail-briefing">
-        <header className="mail-briefing-header">
-          <img src={avatar} alt="Sender" className="brief-avatar" />
-          <div>
-            <div className="brief-from"><strong>security@support-login.com</strong></div>
-            <div className="brief-sub">Account Security Team • 6 Nov 2025</div>
-          </div>
-        </header>
+    <div className="level1-wrapper">
+      <header className="level1-header">
+        <button
+          onClick={() => (window.location.href = "/dashboard")}
+          className="back-btn"
+        >
+          Back to Dashboard
+        </button>
+        <h1>Level 1 — Phishing Email Basics</h1>
+        <p>Understand how attackers trick users through social engineering.</p>
+      </header>
 
-        <div className="brief-body">
-          <p>Hello,</p>
-          <p>
-            We detected a suspicious login attempt to your account from an unknown device.
-            Please verify your credentials immediately to prevent suspension.
-          </p>
+      <section className="level1-content">
+        <h2>Scenario:</h2>
+        <p>
+          You’ve received an email claiming to be from your university IT
+          department. It asks you to “verify your account immediately” by
+          clicking a link.
+        </p>
 
-          <p style={{ marginTop: 12 }}>
-            <a className="phish-link" href="#" onClick={(e) => e.preventDefault()}>
-              Verify Account
-            </a>
-          </p>
+        <h3>Your Task:</h3>
+        <ul>
+          <li>Inspect the sender’s address carefully.</li>
+          <li>Hover over the link without clicking it.</li>
+          <li>Identify suspicious elements and report the email.</li>
+        </ul>
+      </section>
 
-          <hr style={{ marginTop: 12 }} />
-          <p className="hint-muted">
-            Tip: hover the link to inspect where it points, and check the sender's address carefully before clicking.
-          </p>
-        </div>
-      </div>
-    </LevelTemplate>
+      <footer className="level1-footer">
+       copyright 2025@ Enphisim 
+      </footer>
+    </div>
   );
 }

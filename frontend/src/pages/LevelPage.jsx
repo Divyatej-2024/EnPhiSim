@@ -1,20 +1,41 @@
 // src/pages/LevelPage.jsx
-import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
 
 export default function LevelPage() {
-  const { levelId } = useParams();
+  const { category, levelId } = useParams(); // e.g. easy, normal, hard + l1, l2 ...
+  const [LevelContent, setLevelContent] = useState(null);
 
   useEffect(() => {
-    import(`./styles/levels/${levelId}.css`).catch(() =>
-      console.warn(`⚠️ No CSS found for ${levelId}`)
-    );
-  }, [levelId]);
+    const loadLevel = async () => {
+      try {
+        // Dynamically import the component
+        const { default: ImportedLevel } = await import(
+          `./levels/${category}/${levelId}.jsx`
+        );
+        setLevelContent(() => ImportedLevel);
 
-  return (
-    <div className={`level-page ${levelId}`}>
-      <h1>{`Welcome to ${levelId}`}</h1>
-      <p>Level-specific content here.</p>
-    </div>
-  );
+        // Also dynamically load its CSS (if available)
+        import(`./levels/${category}/${levelId}.css`).catch(() =>
+          console.warn(`⚠️ No CSS for ${levelId}`)
+        );
+      } catch (err) {
+        console.error("❌ Level not found:", err);
+        setLevelContent(() => () => (
+          <div style={{ padding: 20, color: "white" }}>
+            <h2>Level not found</h2>
+            <Link to="/dashboard" style={{ color: "#38bdf8" }}>
+              ← Back to Dashboard
+            </Link>
+          </div>
+        ));
+      }
+    };
+
+    loadLevel();
+  }, [category, levelId]);
+
+  if (!LevelContent) return <div className="loading">Loading level...</div>;
+
+  return <LevelContent />;
 }
