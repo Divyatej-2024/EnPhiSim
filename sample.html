@@ -1,218 +1,308 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account Verification</title>
-    <style>
-        :root{
-            --bg: #e8ecf1;
-            --muted: #6b7280;
-            --brand: #0b63d6;
-            --card: #ffffff;
-            --border: #d2d6dc;
-            --radius: 24px;
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Level 1 — Mass Credential-Phish (Single Page)</title>
+  <style>
+    /* === Page / Layout === */
+    :root{
+      --bg-start:#0f172a;
+      --bg-end:#1e293b;
+      --panel:#0f172a;
+      --muted:#9ca3af;
+      --accent:#3b82f6;
+      --danger:#ef4444;
+      --green:#16a34a;
+      --card-radius:12px;
+      --shadow: 0 8px 28px rgba(2,6,23,0.6);
+      --maxw:720px;
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      color-scheme: dark;
+    }
 
-        html, body{
-            height:100%;
-            margin:0;
-            font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
-            background:linear-gradient(180deg, var(--bg), #f4f6f8);
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            -webkit-font-smoothing:antialiased;
-        }
+    html,body{height:100%;margin:0;}
+    body{
+      background: linear-gradient(135deg,var(--bg-start),var(--bg-end));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:28px;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
 
-        .screen-out{
-            background:#d9dde3;
-            padding:32px;
-            border-radius:calc(var(--radius) + 4px);
-            box-shadow: inset 0 0 8px rgba(0,0,0,0.08);
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            width: min(100%, 900px);
-            aspect-ratio: 4 / 3; /* Tablet shape */
-        }
+    .container{
+      width:100%;
+      max-width:var(--maxw);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:var(--card-radius);
+      box-shadow:var(--shadow);
+      padding:20px;
+      box-sizing:border-box;
+      color: #e6eef8;
+    }
 
-        .screen-in{
-            background:var(--card);
-            border-radius:var(--radius);
-            padding:28px;
-            box-shadow:0 12px 28px rgba(11,99,214,0.1);
-            border:1px solid var(--border);
-            max-width:640px;
-            width:100%;
-            height:auto;
-            box-sizing:border-box;
-            overflow:hidden;
-        }
+    /* header */
+    .mail-header{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      margin-bottom:12px;
+    }
+    .avatar{
+      width:52px;height:52px;border-radius:10px;flex:0 0 52px;
+      background:linear-gradient(135deg,#e6f5f4,#cfeef0);
+      display:inline-flex;align-items:center;justify-content:center;font-weight:700;color:#062024;
+      overflow:hidden;
+    }
+    .meta .from{font-weight:700;font-size:1rem}
+    .meta .sub{color:var(--muted);font-size:0.88rem;margin-top:2px}
 
-        .content{
-            display:flex;
-            gap:22px;
-            align-items:flex-start;
-            text-align:left;
-        }
+    /* subject + body */
+    .subject{font-size:1.35rem;font-weight:800;margin:6px 0 12px}
+    .body-card{
+      background:var(--panel);
+      border-radius:10px;
+      padding:14px;
+      border: 1px solid rgba(255,255,255,0.03);
+      line-height:1.6;
+      color:#dbeafe;
+    }
+    .body-card p{margin:0 0 10px}
 
-        .content img{
-            width:90px;
-            height:90px;
-            object-fit:cover;
-            border-radius:50%;
-            border:2px solid rgba(11,99,214,0.12);
-            flex:0 0 90px;
-        }
+    .phish-link{
+      color:var(--accent);
+      text-decoration:underline;
+      font-weight:700;
+      cursor:pointer;
+      display:inline-block;
+      margin-top:6px;
+    }
 
-        .info{
-            font-size:14px;
-            color:var(--muted);
-            margin-top:8px;
-            line-height:1.4;
-        }
-        .info span{
-            display:block;
-        }
-        .info strong{
-            color:#111827;
-            font-weight:600;
-        }
+    /* options row */
+    .options{
+      display:flex;
+      gap:10px;
+      margin-top:16px;
+      align-items:center;
+    }
+    .btn{
+      padding:10px 14px;border-radius:8px;border:0;font-weight:700;cursor:pointer;
+      transition:transform .12s ease, box-shadow .12s ease;
+    }
+    .btn:active{transform:translateY(1px)}
+    .btn-verify{background:var(--danger);color:#fff}
+    .btn-ignore{background:#6b7280;color:#fff}
+    .btn-report{background:var(--green);color:#fff}
 
-        .text{
-            padding:0;
-            margin:0;
-            line-height:1.45;
-            color:#1f2937;
-            flex:1 1 auto;
-        }
+    /* info / hint */
+    .hint{
+      margin-top:12px;color:var(--muted);font-size:0.92rem;
+    }
 
-        .text p{
-            margin:0 0 10px 0;
-            font-size:15.5px;
-        }
+    /* alert area (inline) */
+    .inline-alert{
+      margin-top:14px;
+      padding:12px;
+      border-radius:8px;
+      background: linear-gradient(180deg, rgba(59,130,246,0.06), rgba(59,130,246,0.02));
+      border-left:4px solid rgba(59,130,246,0.9);
+      display:none;
+    }
 
-        .text p.greeting{
-            font-weight:600;
-            font-size:16px;
-        }
+    /* accessible dialog (modal) */
+    .dialog-backdrop{
+      position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,0.6);z-index:1200;
+    }
+    .dialog{
+      width:92%;max-width:520px;background:#0b1220;color:#e6eef8;padding:18px;border-radius:12px;
+      box-shadow:0 12px 40px rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.03);
+    }
+    .dialog h3{margin:0 0 8px;font-size:1.05rem}
+    .dialog p{margin:0 0 12px;color:var(--muted)}
+    .dialog .actions{display:flex;gap:8px;justify-content:flex-end}
+    .dialog .actions .btn{padding:8px 12px}
 
-        .text p.notice{
-            color:var(--muted);
-            font-size:14px;
-        }
+    /* small monospace for link target */
+    .target{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+      background:rgba(255,255,255,0.02);padding:6px;border-radius:6px;color:#cfe8ff;display:inline-block;margin-top:8px;font-size:0.86rem;
+    }
 
-        .buttons{
-            margin-top:14px;
-            display:flex;
-            gap:12px;
-            justify-content:flex-start;
-        }
-
-        .buttons .verify-btn{
-            background:var(--brand);
-            color:white;
-            padding:11px 20px;
-            border-radius:999px;
-            font-weight:600;
-            font-size:14px;
-            border:none;
-            cursor:pointer;
-            box-shadow:0 8px 18px rgba(11,99,214,0.2);
-            transition:transform 0.12s ease, box-shadow 0.12s ease;
-            text-decoration:none;
-        }
-
-        .buttons .verify-btn:active{
-            transform:translateY(1px) scale(.998);
-        }
-
-        .buttons .secondary{
-            background:transparent;
-            border:1px solid var(--border);
-            color:var(--muted);
-            padding:9px 15px;
-            border-radius:999px;
-            font-size:13.5px;
-            cursor:pointer;
-        }
-
-        .unsubscribe{
-            margin-top:24px;
-            text-align:center;
-            font-size:12.5px;
-            color:var(--muted);
-        }
-
-        .unsubscribe a{
-            color:var(--brand);
-            text-decoration:none;
-            font-weight:500;
-        }
-
-        .unsubscribe a:hover{
-            text-decoration:underline;
-        }
-
-        .screen-in::after{
-            content:"• EnPhiSim";
-            display:block;
-            margin-top:10px;
-            font-size:12px;
-            color:var(--muted);
-            text-align:right;
-            opacity:.9;
-        }
-
-        @media (max-width:640px){
-            .screen-out{
-                padding:20px;
-                aspect-ratio:auto;
-            }
-            .content{
-                flex-direction:column;
-                align-items:center;
-                text-align:center;
-            }
-            .content img{
-                width:80px;
-                height:80px;
-            }
-            .text p{
-                font-size:14.5px;
-            }
-        }
-    </style>
+    /* responsive */
+    @media (max-width:480px){
+      .avatar{width:44px;height:44px}
+      .subject{font-size:1.1rem}
+      .dialog{padding:14px}
+    }
+  </style>
 </head>
 <body>
-    <div class="screen-out">
-        <div class="screen-in">
-            <div class="content">
-                <div>
-                    <img src="avtar.png" alt="Avatar">
-                    <div class="info">
-                        <span><strong>Sender:</strong> EnPhiSim Security</span>
-                        <span><strong>Recipient:</strong> John Doe</span>
-                    </div>
-                </div>
-
-                <div class="text">
-                    <p class="greeting">Hello John,</p>
-                    <p>Your account verification session has timed out for security reasons.</p>
-                    <p class="notice">To regain access, please re-verify your account by clicking the button below. If you did not request this, ignore this message or contact support.</p>
-                    <div class="buttons">
-                        <a href="#" class="verify-btn" role="button">Re-Verify Account</a>
-                        <button class="secondary" type="button">Remind me later</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="unsubscribe">
-                You’re receiving this message because you have an active EnPhiSim account.<br>
-                <a href="#">Unsubscribe</a> from similar notifications.
-            </div>
-        </div>
+  <div class="container" role="main" aria-labelledby="pageTitle">
+    <div class="mail-header">
+      <div class="avatar" aria-hidden="true">
+        <!-- Avatar image — replace src if you want an image element -->
+        E
+      </div>
+      <div class="meta">
+        <div class="from">security@support-login.com</div>
+        <div class="sub">Account Security Team • 6 Nov 2025</div>
+      </div>
     </div>
+
+    <div id="pageTitle" class="subject">Mass Credential-Phish: Account Security Alert</div>
+
+    <article class="body-card" aria-describedby="briefHint">
+      <p>Hello,</p>
+      <p>
+        We detected a suspicious login attempt to your account from an unknown device.
+        Please verify your credentials immediately to prevent suspension.
+      </p>
+
+      <!-- Phishy link: include an obviously suspicious href -->
+      <p>
+        <a id="phishLink" class="phish-link" href="https://secure-login.verify-account.example.com/verify?uid=ABCD1234">
+          Verify Account
+        </a>
+      </p>
+
+      <div class="options" role="group" aria-label="Actions">
+        <button id="btnVerify" class="btn btn-verify" title="(Wrong) Verify account">Verify Account</button>
+        <button id="btnIgnore" class="btn btn-ignore" title="Ignore the email">Ignore</button>
+        <button id="btnReport" class="btn btn-report" title="Report as phishing">Report as Phishing</button>
+      </div>
+
+      <div id="inlineAlert" class="inline-alert" role="status" aria-live="polite"></div>
+
+      <p id="briefHint" class="hint">
+        Tip: hover links to reveal their destination and check the sender address. If something looks off, report it.
+      </p>
+    </article>
+  </div>
+
+  <!-- Accessible dialog / modal -->
+  <div id="dialogBackdrop" class="dialog-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="dialog" role="document" aria-labelledby="dialogTitle">
+      <h3 id="dialogTitle">Suspicious Link Detected</h3>
+      <p id="dialogText">This link looks suspicious. You can inspect the destination before continuing.</p>
+      <div id="linkTarget" class="target" aria-hidden="true"></div>
+      <div class="actions" style="margin-top:12px">
+        <button id="dialogCancel" class="btn btn-ignore">Cancel</button>
+        <button id="dialogContinue" class="btn btn-verify">Proceed (unsafe)</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      // Elements
+      const phishLink = document.getElementById('phishLink');
+      const btnVerify = document.getElementById('btnVerify');
+      const btnIgnore = document.getElementById('btnIgnore');
+      const btnReport = document.getElementById('btnReport');
+      const inlineAlert = document.getElementById('inlineAlert');
+
+      const dialogBackdrop = document.getElementById('dialogBackdrop');
+      const dialogText = document.getElementById('dialogText');
+      const linkTarget = document.getElementById('linkTarget');
+      const dialogCancel = document.getElementById('dialogCancel');
+      const dialogContinue = document.getElementById('dialogContinue');
+
+      // Simple action log (kept in-memory and logged to console)
+      const actionLog = [];
+      function logAction(action){
+        actionLog.push({ action, ts: new Date().toISOString() });
+        console.info('User Action:', action, actionLog[actionLog.length - 1].ts);
+      }
+
+      // Helper to show inline alert
+      function showInline(msg, level='info'){
+        inlineAlert.style.display = 'block';
+        inlineAlert.textContent = msg;
+        // auto-hide after 3s
+        clearTimeout(inlineAlert._timeout);
+        inlineAlert._timeout = setTimeout(()=> {
+          inlineAlert.style.display = 'none';
+        }, 4000);
+      }
+
+      // When user clicks the in-email "Verify Account" link => show dialog with target
+      phishLink.addEventListener('click', function(ev){
+        ev.preventDefault();
+        const href = phishLink.getAttribute('href') || '(no href)';
+        logAction('Clicked in-email link: ' + href);
+        // populate dialog
+        linkTarget.textContent = href;
+        dialogText.textContent = 'This link looks suspicious. The destination is shown below. Are you sure you want to proceed?';
+        dialogBackdrop.style.display = 'flex';
+        dialogBackdrop.setAttribute('aria-hidden', 'false');
+        dialogCancel.focus();
+      });
+
+      // Clicking "Verify Account" button (option) — same flow but log different action
+      btnVerify.addEventListener('click', function(){
+        logAction('Clicked Verify Account (button)');
+        // Show inline warning and also dialog so they must confirm
+        showInline('⚠️ This action may be unsafe. A confirmation dialog has opened.');
+        linkTarget.textContent = phishLink.getAttribute('href') || '(no href)';
+        dialogText.textContent = 'You chose to verify credentials. This is potentially dangerous. Continue?';
+        dialogBackdrop.style.display = 'flex';
+        dialogBackdrop.setAttribute('aria-hidden', 'false');
+        dialogCancel.focus();
+      });
+
+      // Ignore action
+      btnIgnore.addEventListener('click', function(){
+        logAction('Ignored the email');
+        showInline('⚠️ You ignored the email but didn’t report it. Stay alert!');
+      });
+
+      // Report action
+      btnReport.addEventListener('click', function(){
+        logAction('Reported as phishing');
+        showInline('✅ Thanks — you reported this email as phishing. Well done!');
+        // In a real app you'd persist the report; here we simulate a redirect after a short delay.
+        setTimeout(function(){
+          showInline('Returning to dashboard...');
+          // simulate navigation by logging:
+          console.info('Simulated navigation: /dashboard');
+        }, 900);
+      });
+
+      // Dialog buttons
+      dialogCancel.addEventListener('click', function(){
+        logAction('Dialog: Cancelled navigation to link');
+        dialogBackdrop.style.display = 'none';
+        dialogBackdrop.setAttribute('aria-hidden', 'true');
+        showInline('Cancelled. Good call — avoid unknown links.');
+      });
+
+      dialogContinue.addEventListener('click', function(){
+        const href = linkTarget.textContent || '#';
+        logAction('Dialog: Continued to ' + href);
+        dialogBackdrop.style.display = 'none';
+        dialogBackdrop.setAttribute('aria-hidden', 'true');
+        // Simulate navigating to the dangerous link (but do NOT actually navigate)
+        showInline('Simulated navigation to: ' + href);
+        console.warn('SIMULATED UNSAFE NAVIGATION to:', href);
+      });
+
+      // Keyboard: close dialog with Escape
+      document.addEventListener('keydown', function(e){
+        if(e.key === 'Escape' && dialogBackdrop.style.display === 'flex'){
+          dialogBackdrop.style.display = 'none';
+          dialogBackdrop.setAttribute('aria-hidden', 'true');
+          logAction('Dialog: closed with Escape');
+        }
+      });
+
+      // Show link target on hover in a visually accessible way (optional)
+      phishLink.addEventListener('mouseenter', function(){
+        phishLink.setAttribute('title', 'Destination: ' + (phishLink.getAttribute('href') || '(none)'));
+      });
+
+    })();
+  </script>
 </body>
 </html>
