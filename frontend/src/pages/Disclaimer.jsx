@@ -1,6 +1,5 @@
 // src/pages/Disclaimer.jsx
 import React, { useState } from "react";
-import avtar from "../img/avtar.png"
 import { useNavigate } from "react-router-dom";
 //import "../level.css";
 
@@ -10,7 +9,7 @@ export default function Disclaimer() {
   return (
     <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: "#e6eef8", padding: 24 }}>
       <div style={{ background: "#071029", padding: 28, borderRadius: 12, maxWidth: 500, opacity:0.5 }}>
-        <h1 style={{borderImage:avtar}}> EnPhiSim — Disclaimer</h1>
+        <h1 style={{backgroundImage:`url(${process.env.PUBLIC_URL}/img/avtar.png)`}}> EnPhiSim — Disclaimer</h1>
         <p style={{ color: "#9fb0c8" }}>
 Welcome to EnPhiSim — a training-only simulation environment.
 
