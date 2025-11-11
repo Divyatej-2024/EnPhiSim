@@ -10,7 +10,7 @@ export default function Disclaimer() {
     <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: "#e6eef8", padding: 24 }}>
       <div style={{ background: "#071029", padding: 28, borderRadius: 12, maxWidth: 500, opacity:0.5 }}>
         <h1> EnPhiSim — Disclaimer</h1>
-        <p style={{ backgroundImage:`url(${process.env.PUBLIC_URL}/img/avtar.png)`,color: "#000",backgroundRepeat:"no-repeat" }}>
+        <p style={{ backgroundImage:`url(${process.env.PUBLIC_URL}/img/avtar.png)`,color: "#fff",backgroundRepeat:"no-repeat" }}>
 Welcome to EnPhiSim — a training-only simulation environment.
 
 EnPhiSim is a completely virtual world of simulation: every scenario, challenge, and simulated attack exists solely to train, demonstrate, and analyze cybersecurity threats in a safe, controlled setting.
