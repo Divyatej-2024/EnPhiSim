@@ -1,7 +1,7 @@
 // src/pages/Disclaimer.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../level.css";
+//import "../level.css";
 
 export default function Disclaimer() {
   const [agreed, setAgreed] = useState(false);
