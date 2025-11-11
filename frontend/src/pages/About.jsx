@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "../level.css"; // reuse your main CSS file
+//import "../level.css"; // reuse your main CSS file
+
 
 export default function About() {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ export default function About() {
       <div className="level-content">
         <h1>About EnPhiSim</h1>
         <p style={{ fontSize: "1.1rem", lineHeight: "1.8rem", marginTop: "1rem" }}>
-          <strong>EnPhiSim (Enhanced Phishing Simulation)</strong> is an interactive
+          <strong>EnPhiSim (Enhanced Phishing Simulation)</strong> is an interactive WalkThrough
           cybersecurity learning platform designed to raise awareness and train users
           to identify and respond to phishing attacks in real time.
         </p>
@@ -40,6 +41,7 @@ export default function About() {
           Join the simulation, challenge yourself, and strengthen your defense against
           social engineering threats.
         </p>
+
 
         <button onClick={handlePlay} className="level-button">
           Let’s Play →
