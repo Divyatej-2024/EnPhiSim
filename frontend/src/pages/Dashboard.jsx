@@ -54,7 +54,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div style={{ minHeight: "100vh", background: "linear-gradient(180deg,#0f172a,#071033)", color: "#e6eef8", padding: 26 }}>
+    <div style={{ minHeight: "100vh", color: "#e6eef8", padding: 26 }}>
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
         <h1>EnPhiSim Dashboard</h1>
         <p>Select a category to start the real-time phishing simulations.</p>
