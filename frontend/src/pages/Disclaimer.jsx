@@ -11,8 +11,25 @@ export default function Disclaimer() {
       <div style={{ background: "#071029", padding: 28, borderRadius: 12, maxWidth: 800 }}>
         <h1>EnPhiSim — Disclaimer</h1>
         <p style={{ color: "#9fb0c8" }}>
-          This educational phishing simulator mimics attacker behaviour for training. Do not enter real credentials. Actions are stored locally and may be exported for grading.
-        </p>
+Welcome to EnPhiSim — a training-only simulation environment.
+
+EnPhiSim is a completely virtual world of simulation: every scenario, challenge, and simulated attack exists solely to train, demonstrate, and analyze cybersecurity threats in a safe, controlled setting.
+
+No real users, real content, or real credentials are used. All names, accounts, pages, and data presented inside EnPhiSim are synthetic or fictional and are generated for training purposes only. Do not enter any real personal information or credentials anywhere in the simulator.
+
+Original branding. The logo and emblem used throughout EnPhiSim are original creations owned by the project. They must not be reused, modified, or redistributed without permission.
+
+Educational purpose and scope. This platform mimics attacker behavior (e.g., deceptive emails, fake login pages, social-engineering scenarios) strictly for educational, training, and assessment purposes. It is not intended for malicious use.
+
+Data handling and privacy.
+
+User actions and responses are stored locally on the device by default.
+
+Local data may be exported only for authorized evaluation, grading, or research purposes.
+
+EnPhiSim does not collect or transmit real user credentials or personal data to external servers.
+
+Use and responsibility. By using EnPhiSim you confirm that you understand its training-only nature and agree to use the tool responsibly and ethically for learning, testing, and research.</p>
 
         <label style={{ display: "flex", gap: 10, alignItems: "center", marginTop: 14 }}>
           <input type="checkbox" checked={agreed} onChange={() => setAgreed(a => !a)} />
