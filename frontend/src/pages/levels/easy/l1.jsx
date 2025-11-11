@@ -1,5 +1,5 @@
 // src/pages/levels/easy/L1.jsx
-import React from "react";
+import React,{useState} from "react";
 import "./l1.css";
 
 const FeedbackDialog = ({ type, message, onAction, actionLabel }) => {
