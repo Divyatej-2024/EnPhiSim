@@ -3,8 +3,9 @@
 import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useProgress } from "../context/ProgressContext";
+import "../level-mail.css";
 import "../level.css";
-import "../components/BackgroundWrapper"
+import "../components/BackgroundWrapper";
 //import { levels } from "./levels/level_data";
 
 const START_LINKS = [
