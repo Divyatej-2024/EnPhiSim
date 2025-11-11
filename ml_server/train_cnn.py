@@ -1,49 +1,53 @@
-import os
 import pandas as pd
+import tensorflow as tf
+from sklearn.model_selection import train_test_split
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Embedding, Conv1D, GlobalMaxPooling1D, Dense, Dropout
 
-# --- Load dataset ---
-train = pd.read_excel('data/Enphisim_dataset.xlsx')
+# Load dataset
+df = pd.read_excel("data/Enphisim_dataset.xlsx")
+df["__text_raw"] = (
+    df["page_title"].fillna("") + " " +
+    df["Hint"].fillna("") + " " +
+    df["level_text"].fillna("")
+)
 
-# --- Ensure text and label columns are clean ---
-# Convert non-string or NaN values in 'level_text' to empty strings
-train['level_text'] = train['level_text'].apply(lambda x: str(x) if isinstance(x, str) else "")
+data_rows = []
+for _, row in df.iterrows():
+    data_rows.append({"text": row["__text_raw"] + " " + str(row["correct_option"]), "label": "correct"})
+    data_rows.append({"text": row["__text_raw"] + " " + str(row["neutral_option"]), "label": "neutral"})
+    data_rows.append({"text": row["__text_raw"] + " " + str(row["wrong_option"]), "label": "wrong"})
 
-# Convert confidence column to numeric (0–1)
-# If it's categorical (like "phish"/"safe"), map it accordingly
-if train['confidence'].dtype == 'object':
-    train['confidence'] = train['confidence'].map({'phish': 1, 'spam': 1, 'safe': 0, 'ham': 0}).fillna(0)
-else:
-    train['confidence'] = pd.to_numeric(train['confidence'], errors='coerce').fillna(0)
+dataset = pd.DataFrame(data_rows)
 
-# --- Prepare data ---
-max_words = 10000
-max_len = 150
+label_map = {"correct": 0, "neutral": 1, "wrong": 2}
+dataset["label"] = dataset["label"].map(label_map)
 
-tokenizer = Tokenizer(num_words=max_words, oov_token="<UNK>")
-tokenizer.fit_on_texts(train['level_text'])
-sequences = tokenizer.texts_to_sequences(train['level_text'])
-X = pad_sequences(sequences, maxlen=max_len)
-y = train['confidence']
+# Split
+train_texts, test_texts, train_labels, test_labels = train_test_split(
+    dataset["text"], dataset["label"], test_size=0.2, random_state=42
+)
 
-# --- Define CNN model ---
+# Tokenize
+tokenizer = Tokenizer(num_words=5000, oov_token="<OOV>")
+tokenizer.fit_on_texts(train_texts)
+train_sequences = pad_sequences(tokenizer.texts_to_sequences(train_texts), maxlen=128)
+test_sequences = pad_sequences(tokenizer.texts_to_sequences(test_texts), maxlen=128)
+
+# CNN model
 model = Sequential([
-    Embedding(max_words, 128, input_length=max_len),
-    Conv1D(64, 5, activation='relu'),
+    Embedding(input_dim=5000, output_dim=128, input_length=128),
+    Conv1D(128, 5, activation='relu'),
     GlobalMaxPooling1D(),
-    Dense(64, activation='relu'),
     Dropout(0.5),
-    Dense(1, activation='sigmoid')
+    Dense(64, activation='relu'),
+    Dense(3, activation='softmax')
 ])
 
-# --- Compile and train ---
-model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-model.fit(X, y, epochs=5, batch_size=32, validation_split=0.2)
+model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
+model.fit(train_sequences, train_labels, validation_data=(test_sequences, test_labels), epochs=5, batch_size=8)
 
-# --- Save model ---
-os.makedirs('models', exist_ok=True)
-model.save('models/cnn_model.h5')
-print("CNN model trained and saved successfully!")
+model.save("models/cnn_options_model.h5")
+print("CNN model saved successfully.")

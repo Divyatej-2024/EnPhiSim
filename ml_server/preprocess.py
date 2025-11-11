@@ -1,46 +1,26 @@
 import pandas as pd
-import os
 
-# Path setup
-DATA_PATH = os.path.join("data", "Enphisim_dataset.xlsx")
-OUTPUT_PATH = os.path.join("data", "processed_dataset.csv")
+def preprocess_txt(fil="data/Enphisim_dataset.xlsx"):
+    # Load Excel file
+    df = pd.read_excel(fil)
 
-def preprocess_dataset():
-    # 1. Load Excel file
-    print("Loading dataset...")
-    df = pd.read_excel(DATA_PATH)
+    # Combine all text info into a single column
+    df["__text_raw"] = (
+        df["page_title"].fillna("") + " " +
+        df["Hint"].fillna("") + " " +
+        df["level_text"].fillna("")
+    )
 
-    print(f"Initial shape: {df.shape}")
+    # Create training samples for each option
+    data_rows = []
+    for _, row in df.iterrows():
+        # Each option becomes a separate training sample
+        data_rows.append({"text": row["__text_raw"] + " " + str(row["correct_option"]), "label": "correct"})
+        data_rows.append({"text": row["__text_raw"] + " " + str(row["neutral_option"]), "label": "neutral"})
+        data_rows.append({"text": row["__text_raw"] + " " + str(row["wrong_option"]), "label": "wrong"})
 
-    # 2. Clean column names
-    df.columns = [c.strip().lower() for c in df.columns]
+    dataset = pd.DataFrame(data_rows)
+    print("Training samples created:", len(dataset))
+    print(dataset.head())
 
-    # 3. Handle missing values
-    df = df.fillna({
-        "page_title": "unknown",
-        "screenshot_path": "missing",
-        "html_path": "missing",
-        "confidence": 0.0,
-        "level_type": "unknown",
-        "random_level": "no"
-    })
-
-    # 4. Convert level_no to string
-    df["level_no"] = df["level_no"].astype(str)
-
-    # 5. Normalize text fields (remove extra spaces, lowercase)
-    text_cols = ["page_title", "level_type", "random_level"]
-    for col in text_cols:
-        df[col] = df[col].astype(str).str.strip().str.lower()
-
-    # 6. Remove duplicates (if any)
-    df = df.drop_duplicates()
-
-    # 7. Save processed version
-    os.makedirs("data", exist_ok=True)
-    df.to_csv(OUTPUT_PATH, index=False)
-    print(f"Processed dataset saved to {OUTPUT_PATH}")
-    print(df.head())
-
-if __name__ == "__main__":
-    preprocess_dataset()
+    return dataset
