@@ -7,7 +7,7 @@ export default function Disclaimer() {
   const [agreed, setAgreed] = useState(false);
   const nav = useNavigate();
   return (
-    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(180deg,#0f172a,#071033)", color: "#e6eef8", padding: 24 }}>
+    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: "#e6eef8", padding: 24 }}>
       <div style={{ background: "#071029", padding: 28, borderRadius: 12, maxWidth: 800 }}>
         <h1>EnPhiSim — Disclaimer</h1>
         <p style={{ color: "#9fb0c8" }}>
