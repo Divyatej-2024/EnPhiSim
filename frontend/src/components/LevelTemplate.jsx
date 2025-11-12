@@ -1,6 +1,6 @@
 import React from "react";
 import "../level.css";
-//import "../level-mail.css"; // your CSS file above
+import "../level-mail.css"; // your CSS file above
 
 export default function LevelTemplate({ levelData }) {
   const { sender, subject, body, hints, options } = levelData;
