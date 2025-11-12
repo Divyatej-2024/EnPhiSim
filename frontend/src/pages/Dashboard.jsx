@@ -56,7 +56,7 @@ export default function Dashboard() {
       justifyContent: "center",
       flexDirection: "column",
       color: "#e6eef8",
-      background: "radial-gradient(circle at top, #071029, #020617)",
+      //background: "radial-gradient(circle at top, #071029, #020617)",
       padding: 24
     }}>
       <h1 style={{ marginBottom: 12, textAlign: "center" }}>EnPhiSim Dashboard</h1>
