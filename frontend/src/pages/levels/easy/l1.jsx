@@ -11,11 +11,11 @@ const level1Data = {
         { key: "report", label: "Report Phishing", style: "neutral" }
     ],
     correctOption: "report", 
-    nextPath: "/levels/easy/l2",
+    nextPath: "./l2.jsx",
     simulatedData: {
-        sender: "IT Support <it-helpdesk@uni-login-verify.com>",
+        sender: "IT Support <it-helpdesk@enphisim.com>",
         subject: "URGENT: Your Account Requires Immediate Action",
-        suspiciousURL: "https://secure.uni-account.phishing.login.ru/verify"
+        suspiciousURL: "https://secure-enphisim.com/verify"
     }
 };
 
