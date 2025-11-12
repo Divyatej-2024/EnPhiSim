@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // ✅ Add this import
 import "./l1.css";
+import "../../../level-mail.css";
 
 const level1Data = {
     id: "l1",
@@ -98,7 +99,7 @@ const L1 = () => {
                     <p>Determine the nature of this email and choose the safest action.</p>
                 </div>
 
-                <div className="email-area">
+                <div className="level-mail-wrapper">
                     <div className="email-logo"><span className="logo-text">EnPhSim</span></div>
                     <div className="simulated-email-client">
                         <div className="email-actions">

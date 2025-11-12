@@ -1,6 +1,6 @@
 /* Overall wrapper — dark cyber mail interface */
 .level-mail-wrapper {
-  min-height: 100vh;
+  /*min-height: 100vh;*/
   font-family: "Segoe UI", Roboto, Arial, sans-serif;
   background: radial-gradient(circle at top left, #0f172a 0%, #1e293b 60%, #0a0f1a 100%);
   color: #e6eef8;
