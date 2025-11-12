@@ -1,6 +1,7 @@
 // src/pages/levels/easy/L1.jsx
 import React,{useState} from "react";
 import "./l1.css";
+import "../../../level.css";
 import "../../../level-mail.css";
 
 const FeedbackDialog = ({ type, message, onAction, actionLabel }) => {
