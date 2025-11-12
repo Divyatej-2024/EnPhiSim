@@ -11,6 +11,7 @@ export default function About() {
   };
 
   return (
+    <div className="level-container">
       <div className="level-content">
         <h1>About EnPhiSim</h1>
         <p style={{ fontSize: "1.1rem", lineHeight: "1.8rem", marginTop: "1rem" }}>
@@ -45,6 +46,7 @@ export default function About() {
         <button onClick={handlePlay} className="level-button">
           Let’s Play →
         </button>
+      </div>
       </div>
   );
 }
