@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // ✅ Add this import
+import "./l1.css";
 
 const level1Data = {
     id: "l1",
