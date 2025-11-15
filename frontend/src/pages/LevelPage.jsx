@@ -1,44 +1,60 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { useProgress } from "../context/ProgressContext";
+import { levels } from "./levels/level_data.js";
 
 export default function LevelPage() {
-  const { category, levelId } = useParams();
-  const [LevelContent, setLevelContent] = useState(null);
+  const { category, levelId } = useParams();  // FIXED
+  const navigate = useNavigate();
 
-  const wrapper = {
-    padding: "40px",
-    color: "white",
-    minHeight: "100vh",
+  const { recordAction, markLevelComplete } = useProgress();
+  const [level, setLevel] = useState(null);
+
+useEffect(() => {
+  console.log("PARAM category:", category);
+  console.log("PARAM levelId:", levelId);
+
+  console.log("First 5 levels:", levels.slice(0, 5));
+
+  const lvl = levels.find(
+    (l) => l.category === category && l.id === levelId
+  );
+
+  console.log("MATCHED LEVEL:", lvl);
+
+  setLevel(lvl);
+}, [category, levelId]);
+
+
+  if (!level) return <p>Loading...</p>;
+
+  const handleOptionClick = (option) => {
+    recordAction(levelId, option.label);
+
+    if (option.correct) {
+      markLevelComplete(levelId);
+      navigate(level.next);
+    } else {
+      alert("Incorrect! Try again.");
+    }
   };
 
-  useEffect(() => {
-    const loadLevel = async () => {
-      try {
-        const { default: Comp } = await import(
-          `./levels/${category}/${levelId}.jsx`
-        );
-        setLevelContent(() => Comp);
-      } catch (err) {
-        console.error(err);
-
-        // Move styles INSIDE the fallback component (so effect has no external dependencies)
-        setLevelContent(() => () => (
-          <div style={{ padding: "20px", color: "white" }}>
-            <h2>Level not found</h2>
-            <Link to="/dashboard" style={{ color: "#38bdf8" }}>
-              ← Back to Dashboard
-            </Link>
-          </div>
-        ));
-      }
-    };
-
-    loadLevel();
-  }, [category, levelId]);
-
   return (
-    <div style={wrapper}>
-      {!LevelContent ? "Loading..." : <LevelContent />}
+    <div className="level-container">
+      <h1>{level.page_title}</h1>
+
+      <div
+        className="email-content"
+        dangerouslySetInnerHTML={{ __html: level.content }}
+      />
+
+      <div className="options">
+        {level.options.map((opt) => (
+          <button key={opt.key} onClick={() => handleOptionClick(opt)}>
+            {opt.label}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }

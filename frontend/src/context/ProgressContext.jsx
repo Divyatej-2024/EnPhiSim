@@ -1,34 +1,56 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 const ProgressContext = createContext();
 
-export function ProgressProvider({ children }) {
-  const [actions, setActions] = useState(() => {
-    try {
-      const raw = localStorage.getItem("enphisim_actions");
-      return raw ? JSON.parse(raw) : [];
-    } catch {
-      return [];
-    }
+export const useProgress = () => useContext(ProgressContext);
+
+export const ProgressProvider = ({ children }) => {
+  const [progress, setProgress] = useState(() => {
+    const saved = localStorage.getItem("enphisim_progress");
+    return saved
+      ? JSON.parse(saved)
+      : {
+          completedLevels: {},
+          attempts: {},
+          totalActions: 0
+        };
   });
 
+  // Save to localStorage whenever progress updates
   useEffect(() => {
-    try {
-      localStorage.setItem("enphisim_actions", JSON.stringify(actions));
-    } catch (e) {
-      console.error("Failed to save actions:", e);
-    }
-  }, [actions]);
+    localStorage.setItem("enphisim_progress", JSON.stringify(progress));
+  }, [progress]);
 
-  const addAction = (action) => {
-    setActions((prev) => [...prev, action]);
+  const markLevelComplete = (levelId) => {
+    setProgress((prev) => ({
+      ...prev,
+      completedLevels: {
+        ...prev.completedLevels,
+        [levelId]: true,
+      },
+    }));
+  };
+
+  const recordAction = (levelId, actionName) => {
+    setProgress((prev) => ({
+      ...prev,
+      totalActions: prev.totalActions + 1,
+      attempts: {
+        ...prev.attempts,
+        [levelId]: [...(prev.attempts[levelId] || []), actionName],
+      },
+    }));
   };
 
   return (
-    <ProgressContext.Provider value={{ actions, addAction }}>
+    <ProgressContext.Provider
+      value={{
+        progress,
+        markLevelComplete,
+        recordAction,
+      }}
+    >
       {children}
     </ProgressContext.Provider>
   );
-}
-
-export const useProgress = () => useContext(ProgressContext);
+};
