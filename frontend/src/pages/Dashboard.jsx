@@ -94,27 +94,28 @@ export default function Dashboard() {
       </div>
 
       {/* Start Button */}
-      <div style={{ marginTop: 30 }}>
-        <Link to="/levels/easy/l1">
-          <button style={{
-            padding: "14px 26px",
-            borderRadius: 50,
-            fontSize: 18,
-            fontWeight: 700,
-            border: "none",
-            background: "#2563eb",
-            color: "#fff",
-            cursor: "pointer",
-            boxShadow: "0 0 10px rgba(37,99,235,0.5)",
-            transition: "transform 0.2s ease"
-          }}
-            onMouseOver={e => e.currentTarget.style.transform = "scale(1.05)"}
-            onMouseOut={e => e.currentTarget.style.transform = "scale(1.0)"}
-          >
-            Start Simulation
-          </button>
-        </Link>
-      </div>
+<div style={{ marginTop: 30 }}>
+  <Link to="/levels/easy/l1">
+    <button style={{
+      padding: "14px 26px",
+      borderRadius: 50,
+      fontSize: 18,
+      fontWeight: 700,
+      border: "none",
+      background: "#2563eb",
+      color: "#fff",
+      cursor: "pointer",
+      boxShadow: "0 0 10px rgba(37,99,235,0.5)",
+      transition: "transform 0.2s ease"
+    }}
+      onMouseOver={e => e.currentTarget.style.transform = "scale(1.05)"}
+      onMouseOut={e => e.currentTarget.style.transform = "scale(1.0)"}
+    >
+      Start Simulation
+    </button>
+  </Link>
+</div>
+
 
       {/* Stats */}
       <div style={{

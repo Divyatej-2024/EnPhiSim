@@ -1,28 +1,29 @@
-// src/pages/LevelPage.jsx
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 
 export default function LevelPage() {
-  const { category, levelId } = useParams(); // e.g. easy, normal, hard + l1, l2 ...
+  const { category, levelId } = useParams();
   const [LevelContent, setLevelContent] = useState(null);
+
+  const wrapper = {
+    padding: "40px",
+    color: "white",
+    minHeight: "100vh",
+  };
 
   useEffect(() => {
     const loadLevel = async () => {
       try {
-        // Dynamically import the component
-        const { default: ImportedLevel } = await import(
+        const { default: Comp } = await import(
           `./levels/${category}/${levelId}.jsx`
         );
-        setLevelContent(() => ImportedLevel);
-
-        // Also dynamically load its CSS (if available)
-        import(`./levels/${category}/${levelId}.css`).catch(() =>
-          console.warn(`⚠️ No CSS for ${levelId}`)
-        );
+        setLevelContent(() => Comp);
       } catch (err) {
-        console.error("❌ Level not found:", err);
+        console.error(err);
+
+        // Move styles INSIDE the fallback component (so effect has no external dependencies)
         setLevelContent(() => () => (
-          <div style={{ padding: 20, color: "white" }}>
+          <div style={{ padding: "20px", color: "white" }}>
             <h2>Level not found</h2>
             <Link to="/dashboard" style={{ color: "#38bdf8" }}>
               ← Back to Dashboard
@@ -35,7 +36,9 @@ export default function LevelPage() {
     loadLevel();
   }, [category, levelId]);
 
-  if (!LevelContent) return <div className="loading">Loading level...</div>;
-
-  return <LevelContent />;
+  return (
+    <div style={wrapper}>
+      {!LevelContent ? "Loading..." : <LevelContent />}
+    </div>
+  );
 }

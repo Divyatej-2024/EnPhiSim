@@ -126,9 +126,7 @@ const L1 = () => {
                             </button>
                         </div>
 
-                        <div className="status-bar">Simulated Status Bar</div>
-                        <div className="status-url">{suspiciousURL}</div>
-                    </div>
+                  </div>
                 </div>
             </div>
 
