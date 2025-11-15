@@ -10,6 +10,207 @@
   padding: 40px 20px;
 }
 
+/* ================================
+   EMAIL SIMULATION BASE STYLING
+================================== */
+
+.email-box {
+  width: 90%;
+  max-width: 650px;
+  margin: 40px auto;
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #e4e4e4;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  padding: 25px 30px;
+  font-family: "Arial", sans-serif;
+  animation: fadeIn 0.4s ease;
+}
+
+/* Smooth fade */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Subject + Sender Header */
+.email-header {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 16px;
+}
+
+.sender {
+  font-weight: bold;
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+}
+
+/* Tooltip */
+.sender .tooltip {
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.25s ease;
+  position: absolute;
+  top: 22px;
+  left: 0;
+  background: #000;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  white-space: nowrap;
+  z-index: 50;
+  border: 1px solid #333;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+.sender:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Email Body */
+.email-content {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #222;
+}
+
+.email-content a.fake-link {
+  color: #0074d4;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.email-content a.fake-link:hover {
+  color: #004d8c;
+}
+
+/* ================================
+   OPTION BUTTONS
+================================== */
+
+.options {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.option-btn {
+  padding: 14px 12px;
+  border-radius: 8px;
+  font-size: 16px;
+  border: none;
+  background: #f3f3f3;
+  cursor: pointer;
+  transition: 0.2s;
+  border: 1px solid #ccc;
+}
+
+.option-btn:hover {
+  background: #e6e6e6;
+  transform: translateY(-2px);
+}
+
+/* Correct / Wrong Highlights */
+.option-btn.correct {
+  background: #d0f3d0;
+  border-color: #42a742;
+}
+.email-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.email-panel {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  border: 1px solid #e1e4e8;
+  box-shadow: 0 0 20px rgba(0,0,0,0.05);
+}
+
+.email-header-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+/* Sender Hover */
+.sender-hover {
+  position: relative;
+  font-weight: bold;
+  cursor: pointer;
+  color: #444;
+}
+
+.hover-tooltip {
+  position: absolute;
+  background: #222;
+  color: #fff;
+  padding: 8px 12px;
+  font-size: 13px;
+  border-radius: 5px;
+  white-space: nowrap;
+  top: 120%;
+  left: 0;
+  display: none;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.sender-hover:hover .hover-tooltip {
+  display: block;
+  opacity: 1;
+}
+
+/* Email Subject */
+.email-subject {
+  font-size: 1.2rem;
+  margin: 10px 0;
+  color: #222;
+  font-weight: bold;
+}
+
+/* Email Content */
+.email-content {
+  background: #f9fafb;
+  padding: 15px;
+  border-radius: 6px;
+  border: 1px solid #eee;
+  margin-top: 10px;
+}
+
+/* Footer (bottom button) */
+.email-footer {
+  margin-top: 20px;
+  text-align: right;
+}
+
+.option-btn.wrong {
+  background: #ffd3d3;
+  border-color: #b90000;
+}
+
+/* Mobile-friendly */
+@media (max-width: 480px) {
+  .email-box {
+    padding: 20px;
+  }
+
+  .option-btn {
+    font-size: 15px;
+  }
+}
+
 /* Content container */
 .mail-briefing {
   background: rgba(17, 24, 39, 0.9);

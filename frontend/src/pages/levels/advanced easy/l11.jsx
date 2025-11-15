@@ -5,12 +5,12 @@ import "../../../level-mail.css";
 import "../../../level.css";
 
 /**
- * Auto-generated component for l26 — Deepfake-assisted voice vishing
- * Hint: A familiar voice makes an unusual or high-pressure request over the phone.
- * from_to: Fake vishin to reciever
+ * Auto-generated component for l11 — fake social media notification
+ * Hint: The link domain does not match the real social media platform's URL when you hover over it
+ * from_to: pretending to have a notification to the user
  */
 
-export default function L_l26() {
+export default function L_l11() {
   const navigate = useNavigate();
   const { addAction } = useProgress();
   const [selected, setSelected] = useState(null);
@@ -20,15 +20,15 @@ export default function L_l26() {
 
     // record the action for Dashboard
     addAction({
-      level: "l26",
-      page_title: "Deepfake-assisted voice vishing",
+      level: "l11",
+      page_title: "fake social media notification",
       choice: key,
       time: new Date().toISOString(),
     });
 
     // short delay then navigate to the next level
     setTimeout(() => {
-      navigate("/levels/hard/l27");
+      navigate("/levels/advanced easy/l12");
     }, 900);
   };
 
@@ -38,13 +38,13 @@ export default function L_l26() {
         Back to Dashboard
       </button>
 
-      <h1>Deepfake-assisted voice vishing — A familiar voice makes an unusual or high-pressure request over the phone.</h1>
+      <h1>fake social media notification — The link domain does not match the real social media platform's URL when you hover over it</h1>
       <p className="level-subtitle"></p>
 
       <div className="email-wrapper">
         <div className="task-box">
           <h3>Your Task:</h3>
-          <p>A familiar voice makes an unusual or high-pressure request over the phone.</p>
+          <p>The link domain does not match the real social media platform's URL when you hover over it</p>
         </div>
 
         <div className="email-panel">
@@ -67,14 +67,14 @@ export default function L_l26() {
           <div className="email-header">
             <strong>From:</strong>{" "}
             <span className="sender-hover">
-              Fake vishin to reciever
+              pretending to have a notification to the user
               <span className="hover-tooltip">
                 ⚠ Suspicious address<br />
                 <strong>Correct (example):</strong> it.support@tees.ac.uk
               </span>
             </span>
 
-            <h3 className="email-subject">Deepfake-assisted voice vishing</h3>
+            <h3 className="email-subject">fake social media notification</h3>
           </div>
 
           <div className="email-content">

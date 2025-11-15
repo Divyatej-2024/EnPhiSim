@@ -5,12 +5,12 @@ import "../../../level-mail.css";
 import "../../../level.css";
 
 /**
- * Auto-generated component for l26 — Deepfake-assisted voice vishing
- * Hint: A familiar voice makes an unusual or high-pressure request over the phone.
- * from_to: Fake vishin to reciever
+ * Auto-generated component for l23 — Malicious HTML or embedded script in attachment
+ * Hint: Unusual file extensions like .html, .hta, or a seemingly harmless .docm with macros.
+ * from_to: html page with malicious html header
  */
 
-export default function L_l26() {
+export default function L_l23() {
   const navigate = useNavigate();
   const { addAction } = useProgress();
   const [selected, setSelected] = useState(null);
@@ -20,15 +20,15 @@ export default function L_l26() {
 
     // record the action for Dashboard
     addAction({
-      level: "l26",
-      page_title: "Deepfake-assisted voice vishing",
+      level: "l23",
+      page_title: "Malicious HTML or embedded script in attachment",
       choice: key,
       time: new Date().toISOString(),
     });
 
     // short delay then navigate to the next level
     setTimeout(() => {
-      navigate("/levels/hard/l27");
+      navigate("/levels/pre-hard/bl4");
     }, 900);
   };
 
@@ -38,13 +38,13 @@ export default function L_l26() {
         Back to Dashboard
       </button>
 
-      <h1>Deepfake-assisted voice vishing — A familiar voice makes an unusual or high-pressure request over the phone.</h1>
+      <h1>Malicious HTML or embedded script in attachment — Unusual file extensions like .html, .hta, or a seemingly harmless .docm with macros.</h1>
       <p className="level-subtitle"></p>
 
       <div className="email-wrapper">
         <div className="task-box">
           <h3>Your Task:</h3>
-          <p>A familiar voice makes an unusual or high-pressure request over the phone.</p>
+          <p>Unusual file extensions like .html, .hta, or a seemingly harmless .docm with macros.</p>
         </div>
 
         <div className="email-panel">
@@ -67,14 +67,14 @@ export default function L_l26() {
           <div className="email-header">
             <strong>From:</strong>{" "}
             <span className="sender-hover">
-              Fake vishin to reciever
+              html page with malicious html header
               <span className="hover-tooltip">
                 ⚠ Suspicious address<br />
                 <strong>Correct (example):</strong> it.support@tees.ac.uk
               </span>
             </span>
 
-            <h3 className="email-subject">Deepfake-assisted voice vishing</h3>
+            <h3 className="email-subject">Malicious HTML or embedded script in attachment</h3>
           </div>
 
           <div className="email-content">

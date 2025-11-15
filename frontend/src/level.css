@@ -16,6 +16,113 @@ body {
   text-align: center;
   padding: 2rem;
 }
+/* --- Page Layout --- */
+.level-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+  animation: fadein 0.5s ease;
+}
+
+.fade-in {
+  animation: fadein 0.6s ease-in-out;
+}
+
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.level-subtitle {
+  margin-top: -10px;
+  color: #666;
+  font-size: 1rem;
+}
+
+/* --- Back Button --- */
+.back-btn {
+  background: #ddd;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 15px;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.back-btn:hover {
+  background: #bbb;
+}
+
+/* Task box */
+.task-box {
+  background: #f6f8fa;
+  border-left: 4px solid #1f7aff;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.task-box h3 {
+  margin: 0;
+}
+
+/* Buttons (Report/Delete/Verify) */
+.phish-btn,
+.delete-btn,
+.verify-btn {
+  padding: 10px 18px;
+  border-radius: 6px;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+/* Report Phishing */
+.phish-btn {
+  background: #ff4757;
+  color: white;
+}
+.phish-btn:hover {
+  background: #e84141;
+}
+
+/* Delete Email */
+.delete-btn {
+  background: #888;
+  color: white;
+}
+.delete-btn:hover {
+  background: #666;
+}
+
+/* Verify Button */
+.verify-btn {
+  background: #1f7aff;
+  color: white;
+}
+.verify-btn:hover {
+  background: #0b5fe0;
+}
+
+/* Correct & Wrong Feedback */
+.correct {
+  background: #2ecc71 !important;
+}
+
+.wrong {
+  background: #ff6b6b !important;
+}
+
+/* Animate panel after answer */
+.selected {
+  opacity: 0.6;
+  pointer-events: none;
+}
 
 /* ---------- Easy Levels ---------- */
 .level-easy {
