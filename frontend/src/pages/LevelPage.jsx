@@ -1,60 +1,104 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useProgress } from "../context/ProgressContext";
 import { levels } from "./levels/level_data.js";
 
 export default function LevelPage() {
-  const { category, levelId } = useParams();  // FIXED
+  const { category, levelId } = useParams();
   const navigate = useNavigate();
 
   const { recordAction, markLevelComplete } = useProgress();
-  const [level, setLevel] = useState(null);
 
-useEffect(() => {
-  console.log("PARAM category:", category);
-  console.log("PARAM levelId:", levelId);
+  const [levelMeta, setLevelMeta] = useState(null);
+  const [LevelUI, setLevelUI] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  console.log("First 5 levels:", levels.slice(0, 5));
+  useEffect(() => {
+    const loadLevel = async () => {
+      setLoading(true);
 
-  const lvl = levels.find(
-    (l) => l.category === category && l.id === levelId
-  );
+      // 1️⃣ Find matching metadata
+      const meta = levels.find(
+        (lvl) =>
+          lvl.category.replace(/\s+/g, "").toLowerCase() ===
+            category.replace(/\s+/g, "").toLowerCase() &&
+          lvl.Level_no.toLowerCase() === levelId.toLowerCase()
+      );
 
-  console.log("MATCHED LEVEL:", lvl);
+      if (!meta) {
+        console.error("❌ Level metadata not found");
+        setLevelUI(() => () => (
+          <div style={{ padding: 20, color: "white" }}>
+            <h2>Level not found</h2>
+            <Link to="/dashboard" style={{ color: "#38bdf8" }}>
+              ← Back to Dashboard
+            </Link>
+          </div>
+        ));
+        setLoading(false);
+        return;
+      }
 
-  setLevel(lvl);
-}, [category, levelId]);
+      setLevelMeta(meta);
 
+      try {
+        // 2️⃣ Dynamic import of Level UI
+        const { default: ImportedUI } = await import(
+          /* webpackIgnore: true */
+          `${meta.js_path.replace(".js", ".jsx")}`
+        ).catch(async () =>
+          import(/* webpackIgnore: true */ `${meta.js_path}`)
+        );
 
-  if (!level) return <p>Loading...</p>;
+        setLevelUI(() => ImportedUI);
 
-  const handleOptionClick = (option) => {
-    recordAction(levelId, option.label);
+        // 3️⃣ Load per-level CSS if exists
+        import(
+          `${meta.js_path.replace(".js", ".css").replace(".jsx", ".css")}`
+        ).catch(() => {});
+
+      } catch (error) {
+        console.error("❌ Failed to import UI:", error);
+
+        // Fallback to simple UI with level_text
+        setLevelUI(() => () => (
+          <div className="level-container">
+            <h1>{meta.page_title}</h1>
+            <p>{meta.level_text || "No content available."}</p>
+          </div>
+        ));
+      }
+
+      setLoading(false);
+    };
+
+    loadLevel();
+  }, [category, levelId]);
+
+  // 4️⃣ Unified handler for scoring + ML + navigation
+  const onOptionClick = (option) => {
+    recordAction(levelMeta.Level_no, option.label);
 
     if (option.correct) {
-      markLevelComplete(levelId);
-      navigate(level.next);
+      markLevelComplete(levelMeta.Level_no);
+
+      const nextIndex = levels.findIndex(
+        (lvl) => lvl.Level_no === levelMeta.Level_no
+      ) + 1;
+
+      const nextLevel = levels[nextIndex];
+
+      if (nextLevel) {
+        navigate(`/levels/${nextLevel.category}/${nextLevel.Level_no}`);
+      } else {
+        navigate("/dashboard");
+      }
     } else {
       alert("Incorrect! Try again.");
     }
   };
 
-  return (
-    <div className="level-container">
-      <h1>{level.page_title}</h1>
+  if (loading || !LevelUI) return <p className="loading">Loading level...</p>;
 
-      <div
-        className="email-content"
-        dangerouslySetInnerHTML={{ __html: level.content }}
-      />
-
-      <div className="options">
-        {level.options.map((opt) => (
-          <button key={opt.key} onClick={() => handleOptionClick(opt)}>
-            {opt.label}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
+  return <LevelUI level={levelMeta} onOptionClick={onOptionClick} />;
 }

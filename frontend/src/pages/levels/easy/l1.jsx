@@ -1,29 +1,22 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import { useProgress } from "../context/ProgressContext";
 
-export default function Level1() {
-  const navigate = useNavigate();
-  const { recordAction, markLevelComplete } = useProgress();
-
-  const handleCorrect = () => {
-    recordAction("level1", "clicked_correct_button");
-    markLevelComplete("level1");
-    navigate("/levels/easy/level2");
-  };
-
-  const handleWrong = () => {
-    recordAction("level1", "clicked_wrong_button");
-    alert("Incorrect! Try again.");
-  };
-
+export default function Level1({ level, onOptionClick }) {
   return (
     <div className="level-container">
-      <h1>Level 1: Phishing Basics</h1>
+      <h1>{level.page_title}</h1>
 
-      <button onClick={handleCorrect}>Correct Choice</button>
-      <button onClick={handleWrong}>Wrong Choice 1</button>
-      <button onClick={handleWrong}>Wrong Choice 2</button>
+      <div
+        className="email-content"
+        dangerouslySetInnerHTML={{ __html: level.content }}
+      />
+
+      <div className="options">
+        {level.options.map((opt) => (
+          <button key={opt.key} onClick={() => onOptionClick(opt)}>
+            {opt.label}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
