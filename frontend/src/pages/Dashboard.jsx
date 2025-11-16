@@ -38,7 +38,7 @@ export default function Dashboard() {
                 <td>{id}</td>
                 <td>{page_title}</td>
                 <td className={`cat ${category}`}>{category.toUpperCase()}</td>
-                <td>{isCompleted ? "✅ Completed" : "❌ Not Completed"}</td>
+                <td>{isCompleted ? "Completed successfully" : "Not Completed unfortunately"}</td>
                 <td>{attempts}</td>
                 <td>
                   <Link className="start-btn" to={`/levels/${category}/${id}`}>
