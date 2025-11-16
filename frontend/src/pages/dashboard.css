@@ -1,0 +1,124 @@
+/* ----------- DASHBOARD LAYOUT ----------- */
+.dashboard {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 20px;
+  color: #fff;
+  font-family: "Inter", sans-serif;
+}
+
+.dashboard h1 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.dashboard h2,
+.dashboard h3 {
+  text-align: center;
+  font-weight: 500;
+  margin: 5px 0 20px;
+  color: #cfd3d8;
+}
+
+/* ----------- TABLE ----------- */
+.progress-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 25px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.progress-table th {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 12px;
+  text-align: left;
+  font-size: 0.95rem;
+  color: #e2e6ea;
+  letter-spacing: 0.5px;
+}
+
+.progress-table td {
+  padding: 12px;
+  font-size: 0.9rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.progress-table tr:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transition: 0.2s;
+}
+
+/* ----------- CATEGORY BADGES ----------- */
+.cat {
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  display: inline-block;
+  color: #000;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.cat.easy {
+  background-color: #4caf50;
+  color: white;
+}
+
+.cat.medium {
+  background-color: #ffa726;
+  color: white;
+}
+
+.cat.hard {
+  background-color: #ef5350;
+  color: white;
+}
+
+.cat.unknown {
+  background-color: #bdbdbd;
+  color: #222;
+}
+
+/* ----------- BUTTON ----------- */
+.start-btn {
+  padding: 6px 18px;
+  background: #1e88e5;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.2s ease-in-out;
+}
+
+.start-btn:hover {
+  background: #1565c0;
+}
+
+/* ----------- RESPONSIVE ----------- */
+@media (max-width: 768px) {
+
+  .progress-table th,
+  .progress-table td {
+    padding: 10px;
+    font-size: 0.8rem;
+  }
+
+  .start-btn {
+    padding: 5px 14px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .progress-table {
+    font-size: 0.75rem;
+  }
+
+  .dashboard h1 {
+    font-size: 1.8rem;
+  }
+}

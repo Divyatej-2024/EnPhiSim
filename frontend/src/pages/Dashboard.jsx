@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useProgress } from "../context/ProgressContext";
 import { levels } from "./levels/level_data";
+import  "./dashboard.css";
 
 export default function Dashboard() {
   const { progress } = useProgress();
