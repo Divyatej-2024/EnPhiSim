@@ -9,43 +9,52 @@ export default function LevelPage() {
   const { recordAction, markLevelComplete } = useProgress();
 
   // FIXED: levels are grouped by category
-  const categoryLevels = levels[category];
+//  const categoryLevels = levels[category];
 
-  if (!categoryLevels) {
-    return <h1>Invalid category: {category}</h1>;
-  }
+  //if (!categoryLevels) {
+    //return <h1>Invalid category: {category}</h1>;
+  //}
 
-  const level = categoryLevels.find(
-    (item) => String(item.id).toLowerCase() === String(levelId).toLowerCase()
+  const level = levels.find(
+    (item) => String(item.category ?? "").toLowerCase() ===(category ?? "").toLowerCase() &&
+    String(item.id).toLowerCase() === String(levelId).toLowerCase()
   );
 
-  if (!level) {
+  if (!level)
     return <h1>Level not found</h1>;
-  }
+
+const options = [
+{ key: "correct", label: level.correct_option, correct:true },
+{ key: "neutral", label: level.neutral_option, correct:false },
+{ key: "wrong", label: level.wrong_option, correct:false },
+];
+
+const handleOptionClick = (option) = > {
+	recordAction(level.Level_no, option.key);
+	
+	if (option.correct){
+	markLevelComplete(level.Level_no);
+	navigate("/dashboard");
+	} else{
+	alert("Incorrect! Try again.");
+	}
+};
 
   return (
     <div className="level-page">
-      <h1>{level.title}</h1>
-      <div dangerouslySetInnerHTML={{ __html: level.content }} />
-
-      {level.options?.length > 0 && (
-        <div className="choices">
-          {level.options.map((opt) => (
+      <h1>{level.page_title}</h1>
+      <div className="level-content">{level.level_text}</div>
+        <div className="options">
+          {options.map((option) => (
             <button
-              key={opt.key}
-              onClick={() => {
-                recordAction(category, levelId, opt.key);
-                if (opt.correct) {
-                  markLevelComplete(category, levelId);
-                  navigate("/dashboard");
-                }
-              }}
+              key={option.key}
+              onClick={() => handleOptionClick(option)}
+           className="option-btn"
             >
-              {opt.label}
+              {option.label}
             </button>
           ))}
         </div>
-      )}
     </div>
   );
 }
