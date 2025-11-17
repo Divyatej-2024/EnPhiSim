@@ -1,4 +1,5 @@
 import React from "react";
+import "../../level.css";
 import ".levels/l1.css";
 export default function Level1({ level, onOptionClick }) {
   return (
