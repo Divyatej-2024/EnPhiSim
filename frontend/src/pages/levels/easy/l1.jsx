@@ -1,5 +1,5 @@
 import React from "react";
-
+import ".levels/l1.css";
 export default function Level1({ level, onOptionClick }) {
   return (
     <div className="level-container">
