@@ -35,10 +35,10 @@ export const levels=[
     js_path:"./levels/easy/l3.js",
     category:"easy",
     from_and_to:"marketing team to reciever",
-    level_text:"null",
-    correct_option:"null",
-    neutral_option:"null",
-    wrong_option:"null",
+    level_text:null,
+    correct_option:null,
+    neutral_option:null,
+    wrong_option:null,
     template_type:"mail"
   },
   {
@@ -49,10 +49,10 @@ export const levels=[
     js_path:"./levels/easy/l4.js",
     category:"easy",
     from_and_to:"scammer to the reciever",
-    level_text:"null",
-    correct_option:"null",
-    neutral_option:"null",
-    wrong_option:"null",
+    level_text:null,
+    correct_option:null,
+    neutral_option:null,
+    wrong_option:null,
     template_type:"mail"
   },
   {
@@ -63,10 +63,10 @@ export const levels=[
     js_path:"./levels/easy/l5.js",
     category:"easy",
     from_and_to:"fake HR to reciever",
-    level_text:"null",
-    correct_option:"null",
-    neutral_option:"null",
-    wrong_option:"null",
+    level_text:null,
+    correct_option:null,
+    neutral_option:null,
+    wrong_option:null,
     template_type:"mail"
   },
   {
