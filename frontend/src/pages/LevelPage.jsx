@@ -8,53 +8,52 @@ export default function LevelPage() {
   const navigate = useNavigate();
   const { recordAction, markLevelComplete } = useProgress();
 
-  // FIXED: levels are grouped by category
-//  const categoryLevels = levels[category];
-
-  //if (!categoryLevels) {
-    //return <h1>Invalid category: {category}</h1>;
-  //}
-
+  // Find correct level
   const level = levels.find(
-    (item) => String(item.category ?? "").toLowerCase() ===(category ?? "").toLowerCase() &&
-    String(item.id).toLowerCase() === String(levelId).toLowerCase()
+    (l) =>
+      (l.category ?? "").toLowerCase().trim() ===
+        (category ?? "").toLowerCase().trim() &&
+      (l.Level_no ?? "").toLowerCase().trim() ===
+        (levelId ?? "").toLowerCase().trim()
   );
 
-  if (!level)
-    return <h1>Level not found</h1>;
+  if (!level) return <h2>Level not found</h2>;
 
-const options = [
-{ key: "correct", label: level.correct_option, correct:true },
-{ key: "neutral", label: level.neutral_option, correct:false },
-{ key: "wrong", label: level.wrong_option, correct:false },
-];
+  const options = [
+    { key: "correct", label: level.correct_option, correct: true },
+    { key: "neutral", label: level.neutral_option, correct: false },
+    { key: "wrong", label: level.wrong_option, correct: false },
+  ];
 
-const handleOptionClick = (option) = > {
-	recordAction(level.Level_no, option.key);
-	
-	if (option.correct){
-	markLevelComplete(level.Level_no);
-	navigate("/dashboard");
-	} else{
-	alert("Incorrect! Try again.");
-	}
-};
+  // ✅ FIXED ARROW FUNCTION
+  const handleOptionClick = (option) => {
+    recordAction(level.Level_no, option.key);
+
+    if (option.correct) {
+      markLevelComplete(level.Level_no);
+      navigate("/dashboard");
+    } else {
+      alert("Incorrect! Try again.");
+    }
+  };
 
   return (
     <div className="level-page">
       <h1>{level.page_title}</h1>
+
       <div className="level-content">{level.level_text}</div>
-        <div className="options">
-          {options.map((option) => (
-            <button
-              key={option.key}
-              onClick={() => handleOptionClick(option)}
-           className="option-btn"
-            >
-              {option.label}
-            </button>
-          ))}
-        </div>
+
+      <div className="options">
+        {options.map((option) => (
+          <button
+            key={option.key}
+            onClick={() => handleOptionClick(option)}
+            className="option-btn"
+          >
+            {option.label}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
