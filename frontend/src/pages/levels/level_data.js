@@ -21,7 +21,7 @@ export const levels=[
     js_path:"./levels/easy/l2.js",
     category:"easy",
     from_and_to:"vendor to the supplier",
-    level_text:"Subject: OVERDUE! We haven't received your payment of u00a31,200. Check the attached invoice and pay immediately to keep your service running! - Accounts Dept.",
+    level_text:"Subject: OVERDUE! We haven't received your payment of £200. Check the attached invoice and pay immediately to keep your service running! - Accounts Dept.",
     correct_option:"Unsubscribe",
     neutral_option:"ignore",
     wrong_option:"click on the Attachment",
