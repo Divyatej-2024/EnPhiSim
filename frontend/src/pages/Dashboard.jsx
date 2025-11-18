@@ -42,8 +42,8 @@ export default function Dashboard() {
                 <td>{attempts}</td>
                 <td>
                   <Link className="start-btn" to={`/levels/${category}/${lvl.Level_no}`}>
-                    {isCompleted ? "Review" : "Start"}
-                  </Link>
+  {isCompleted ? "Review" : "Start"}
+</Link>
                 </td>
               </tr>
             );

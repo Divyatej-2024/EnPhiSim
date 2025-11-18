@@ -1,0 +1,24 @@
+import React from "react";
+import MailLevel from "./templates/MailLevel";
+import BrowserLevel from "./templates/BrowserLevel";
+import MessageLevel from "./templates/MessageLevel";
+import NotificationLevel from "./templates/NotificationLevel";
+import ImageLevel from "./templates/ImageLevel";
+import MailBrowserLevel from "./templates/MailBrowserLevel";
+import MailBrowserMessageLevel from "./templates/MailBrowserMessageLevel";
+
+const levelTemplates = {
+  mail: MailLevel,
+  browser: BrowserLevel,
+  message: MessageLevel,
+  notification: NotificationLevel,
+  image: ImageLevel,
+  "mail + browser": MailBrowserLevel,
+  "mail + browser + message": MailBrowserMessageLevel,
+};
+
+export default function TemplateRenderer({ level, onOptionClick }) {
+  const TemplateComponent = levelTemplates[level.template_type];
+  if (!TemplateComponent) return <h2>Template not found</h2>;
+  return <TemplateComponent level={level} onOptionClick={onOptionClick} />;
+}

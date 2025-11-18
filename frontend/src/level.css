@@ -3,6 +3,63 @@ body {
   background-color: #0f172a;
   color: white;
 }
+ .wrapper {
+      max-width: "750px";
+      margin: "40px auto";
+      background: "#fff";
+      border-radius: "10px";
+      box-shadow: "0 4px 12px rgba(0,0,0,0.1)";
+      font-family: "Arial, sans-serif";
+      overflow: "hidden";
+    }
+    .header {
+      display: "flex";
+      justify-self: "space-between";
+      padding: "18px 22px";
+      background: "#f6f8fc";
+      border-bottom: "1px solid #e0e0e0";
+    }
+    .fromStrong {
+      font-size: "16px";
+      font-weight: "600";
+      display: "block";
+    }
+    .fromSpan {
+      font-size: "14px";
+      color: "#555";
+    }
+    .meta {
+      font-size: "13px";
+      color: "#777";
+      margin-top: "4px";
+    }
+    .subject {
+      padding: "20px 22px";
+      font-size: "20px";
+      font-weight: "700";
+      border-bottom: "1px solid #eee";
+      background: "#fff";
+    }
+    .emailbody {
+      padding: "22px";
+      font-size: "16px";
+      line-height: "1.6";
+    }
+    .options{
+      padding: "20px";
+      display: "flex";
+      gap: "12px";
+      flex-wrap: "wrap";
+    }
+    .button{
+      padding: "10px 18px";
+      background: "#1a73e8";
+      color: "#fff";
+      border: "none";
+      border-radius: "6px";
+      cursor: "pointer";
+      font-size: "15px";
+    }
 
 /* ---------- General layout ---------- */
 .level-container {

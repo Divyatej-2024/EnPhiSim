@@ -1,20 +1,18 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useProgress } from "../context/ProgressContext";
-import { levels } from "./levels/level_data.js";
+import { levels } from "./levels/level_data";
+import TemplateRenderer from "./levels/TemplateRenderer";
 
 export default function LevelPage() {
   const { category, levelId } = useParams();
   const navigate = useNavigate();
   const { recordAction, markLevelComplete } = useProgress();
 
-  // Find correct level
   const level = levels.find(
     (l) =>
-      (l.category ?? "").toLowerCase().trim() ===
-        (category ?? "").toLowerCase().trim() &&
-      (l.Level_no ?? "").toLowerCase().trim() ===
-        (levelId ?? "").toLowerCase().trim()
+      (l.category ?? "").toLowerCase().trim() === (category ?? "").toLowerCase().trim() &&
+      (l.Level_no ?? "").toLowerCase().trim() === (levelId ?? "").toLowerCase().trim()
   );
 
   if (!level) return <h2>Level not found</h2>;
@@ -25,7 +23,6 @@ export default function LevelPage() {
     { key: "wrong", label: level.wrong_option, correct: false },
   ];
 
-  // ✅ FIXED ARROW FUNCTION
   const handleOptionClick = (option) => {
     recordAction(level.Level_no, option.key);
 
@@ -37,23 +34,8 @@ export default function LevelPage() {
     }
   };
 
-  return (
-    <div className="level-page">
-      <h1>{level.page_title}</h1>
+  // Add options to level for the renderer
+  level.options = options;
 
-      <div className="level-content">{level.level_text}</div>
-
-      <div className="options">
-        {options.map((option) => (
-          <button
-            key={option.key}
-            onClick={() => handleOptionClick(option)}
-            className="option-btn"
-          >
-            {option.label}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
+  return <TemplateRenderer level={level} onOptionClick={handleOptionClick} />;
 }
