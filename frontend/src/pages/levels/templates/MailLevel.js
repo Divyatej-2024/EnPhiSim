@@ -4,7 +4,7 @@ export default function MailLevel({ level, onOptionClick }) {
  if (!level) {
     return <div>Level data not found.</div>;
 }
-const { from_and_to, level_text, page_title } = level;
+const { from_and_to, level_text, page_title, phish_email, crct_email } = level;
 
 const options = [
   { key: "correct", label: level.correct_option, correct: true },
