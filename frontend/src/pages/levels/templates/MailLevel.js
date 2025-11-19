@@ -18,6 +18,8 @@ level.options = options;
     <div style={{ border: "1px solid #ccc", padding: "20px", maxWidth: "700px", margin: "auto" }}>
       <h2>{page_title || "No title"}</h2>
       <p>{from_and_to}</p>
+      <p>{phish_email}</p>
+      <p>{crct_email}</p>
       <p>{level_text}</p>
 <div style={{ marginTop: "15px" }}>
         {level.options?.map((opt) => (
