@@ -10,7 +10,7 @@ export default function Disclaimer() {
     <div className="level-container">
       <div className="level-content">
         <h1> EnPhiSim — Disclaimer</h1>
-        <p style={{ color: "#fff",backgroundRepeat:"no-repeat" }}>
+        <p style={{ color: "#fff",opacity:0.4 }}>
 Welcome to EnPhiSim — a training-only simulation environment.
 
 EnPhiSim is a completely virtual world of simulation: every scenario, challenge, and simulated attack exists solely to train, demonstrate, and analyze cybersecurity threats in a safe, controlled setting.
