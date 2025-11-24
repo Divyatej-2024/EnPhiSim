@@ -8,7 +8,7 @@ export default function Disclaimer() {
   const nav = useNavigate();
   return (
     <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: "#e6eef8", padding: 24 }}>
-      <div style={{ padding: 28, borderRadius: 12, maxWidth: 500, opacity:0.3 }}>
+      <div style={{ background:"",padding: 28, borderRadius: 12, maxWidth: 500 }}>
         <h1> EnPhiSim — Disclaimer</h1>
         <p style={{ color: "#fff",backgroundRepeat:"no-repeat" }}>
 Welcome to EnPhiSim — a training-only simulation environment.
