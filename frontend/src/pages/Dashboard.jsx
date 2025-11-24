@@ -8,21 +8,14 @@ export default function Dashboard() {
   const { progress } = useProgress();
 
   // ---------------------------
-  // 1. BASIC COUNTS
+  // 1. ANALYTICS & CALCULATIONS
   // ---------------------------
   const completed = Object.keys(progress.completedLevels).length;
   const totalLevels = levels.length;
-
-  // ---------------------------
-  // 2. ACTION-BASED ANALYTICS
-  // ---------------------------
-
-  // Total actions (already tracked)
   const totalActions = progress.totalActions || 0;
-
-  // Categorizing actions
   const actions = progress.actions || [];
 
+  // Categorizing actions
   const riskyActions = actions.filter(a =>
     a.type === "clicked_link" ||
     a.type === "opened_attachment" ||
@@ -43,6 +36,26 @@ export default function Dashboard() {
   // Completion Rate
   const completionRate = ((completed / totalLevels) * 100).toFixed(1);
 
+  // ---------------------------
+  // 2. FIND CURRENT/NEXT LEVEL
+  // ---------------------------
+
+  // Find the first level that hasn't been completed.
+  const currentLevel = levels.find(lvl => !progress.completedLevels[lvl.id]);
+
+  const nextLevelTitle = currentLevel 
+    ? currentLevel.page_title 
+    : "All Levels Completed!";
+    
+  const nextLevelPath = currentLevel 
+    ? `/levels/${currentLevel.category}/${currentLevel.Level_no}` 
+    : '/summary'; // Direct to a summary/congratulations page if finished
+
+  const buttonText = currentLevel ? "Start Current Level" : "Review All Levels";
+
+  // ---------------------------
+  // 3. RENDER COMPONENT
+  // ---------------------------
   return (
     <div className="dashboard">
       <h1>EnPhiSim Dashboard</h1>
@@ -66,70 +79,46 @@ export default function Dashboard() {
           <p>{completionRate}%</p>
         </div>
 
-        <div className="card">
-          <h3>Safe Actions</h3>
-          <p>{safeActions}</p>
+        {/* Highlight ML-related analytics as requested */}
+        <div className="card blue">
+          <h3>Accuracy</h3>
+          <p>{accuracy}%</p>
         </div>
 
         <div className="card red">
           <h3>Risky Actions</h3>
           <p>{riskyActions}</p>
         </div>
-
-        <div className="card blue">
-          <h3>Accuracy</h3>
-          <p>{accuracy}%</p>
-        </div>
       </div>
 
       {/* =======================
-          LEVEL TABLE
+          CURRENT LEVEL CARD (REPLACES TABLE)
       ======================== */}
-      <table className="progress-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>Category</th>
-            <th>Status</th>
-            <th>Attempts</th>
-            <th>Start</th>
-          </tr>
-        </thead>
+      <div className="current-level-card">
+        <h2>{nextLevelTitle}</h2>
+        <p>Your current phishing training module. Click below to continue.</p>
+        
+        <Link
+          className="start-current-btn"
+          to={nextLevelPath}
+        >
+          {buttonText}
+        </Link>
+      </div>
 
-        <tbody>
-          {levels.map((lvl) => {
-            const { id, page_title, category = "unknown" } = lvl;
-            const isCompleted = progress.completedLevels[id];
-            const attempts = progress.attempts[id]?.length || 0;
-
-            return (
-              <tr key={id}>
-                <td>{id}</td>
-                <td>{page_title}</td>
-                <td className={`cat ${category}`}>{category.toUpperCase()}</td>
-
-                <td>
-                  {isCompleted
-                    ? "Completed successfully"
-                    : "Not Completed unfortunately"}
-                </td>
-
-                <td>{attempts}</td>
-
-                <td>
-                  <Link
-                    className="start-btn"
-                    to={`/levels/${category}/${lvl.Level_no}`}
-                  >
-                    {isCompleted ? "Review" : "Start"}
-                  </Link>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      {/* Optionally, keep the full level list for navigation/review, but simplified */}
+      <details className="level-list-details">
+        <summary>View All Levels</summary>
+        <ul className="level-list">
+          {levels.map(lvl => (
+            <li key={lvl.id} className={progress.completedLevels[lvl.id] ? 'completed' : 'pending'}>
+              <Link to={`/levels/${lvl.category}/${lvl.Level_no}`}>
+                {progress.completedLevels[lvl.id] ? '✅' : '➡️'} {lvl.page_title}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </details>
     </div>
   );
 }
