@@ -12,7 +12,7 @@ export default function Dashboard() {
   // ---------------------------
   const completed = Object.keys(progress.completedLevels).length;
   const totalLevels = levels.length;
-  const actions = progress.actions || [];
+  const actions = Object.values(progress.actions || {}).flat();
   const totalActions = actions.length;
   
   // Categorizing actions
