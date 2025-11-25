@@ -2,123 +2,148 @@ import React,{ useState } from "react";
 import { Link } from "react-router-dom";
 import "../../../level.css";
 
-
-
+// Props: level, onOptionClick, onNextLevel
 export default function MailLevel({ level, onOptionClick, onNextLevel }) {
+  if (!level) return <div>Level data not found.</div>;
 
-  const [showCorrect, setShowCorrect] = React.useState(false);
-  
-  if (!level) {
-    return <div>Level data not found.</div>;
-  }
+  const {
+    level_text,
+    page_title,
+    phish_email,
+    crct_email,
+    from_and_to,
+    subj,
+    category,
+    id,
+  } = level;
 
-  
-  
-  const { from_and_to, level_text, page_title, phish_email, crct_email,subj } = level;
+  const subject = subj || "No Subject";
 
-  const subject = level.subj || level.from_and_to ||"No Subject";
-
+  // Options
   const options = [
-    { key: "correct", label: level.correct_option, correct: true },
-    { key: "wrong", label: level.wrong_option, correct: false },
-    { key: "neutral", label: level.neutral_option, correct: false },
+    { key: "correct", label: level.correct_option, correct: true, type: "link" },
+    { key: "wrong", label: level.wrong_option, correct: false, type: "button" },
+    { key: "neutral", label: level.neutral_option, correct: false, type: "button" },
   ].filter(opt => opt.label);
 
+  // Styles
+  const container = {
+    background: "#f8f8f8",
+    maxWidth: "800px",
+    margin: "20px auto",
+    borderRadius: "8px",
+    boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+    fontFamily: "Arial, sans-serif",
+  };
 
-  const linkStyle = {
-    display: "inline-block",
+  const header = {
+    background: "#fff",
+    padding: "20px",
+    borderBottom: "1px solid #ddd",
+    display: "flex",
+    alignItems: "center",
+    gap: "15px",
+  };
+
+  const profilePhoto = {
+    width: "50px",
+    height: "50px",
+    borderRadius: "50%",
+    objectFit: "cover",
+  };
+
+  const emailBody = {
+    padding: "20px",
+    background: "#fff",
+    borderBottom: "1px solid #ddd",
+    whiteSpace: "pre-wrap",
+    lineHeight: "1.6",
+  };
+
+  const optionsContainer = {
+    padding: "20px",
+    textAlign: "center",
+  };
+
+  const buttonBase = {
     margin: "0 10px",
     padding: "10px 20px",
-    background: "#4CAF50",
-    color: "white",
     borderRadius: "4px",
-    textDecoration: "none",
+    cursor: "pointer",
     fontWeight: "600",
-  };
-
-  const wrongButtonStyle = {
-    margin: "0 10px",
-    padding: "10px 20px",
-    background: "#f44336",
-    color: "white",
-    borderRadius: "4px",
-    cursor: "pointer",
     border: "none",
+    transition: "0.2s",
   };
 
-  const neutralButtonStyle = {
-    margin: "0 10px",
-    padding: "10px 20px",
-    background: "#f0f0f0",
-    color: "#333",
-    borderRadius: "4px",
-    cursor: "pointer",
-    border: "1px solid #ccc",
-  };
+  const correctButton = { ...buttonBase, background: "#4CAF50", color: "#fff" };
+  const wrongButton = { ...buttonBase, background: "#f44336", color: "#fff" };
+  const neutralButton = { ...buttonBase, background: "#ccc", color: "#333" };
+
+  const backButton = { ...buttonBase, background: "#2196F3", color: "#fff" };
 
   return (
-    <div style={{ padding: 20, maxWidth: 800, margin: "auto" }}>
-      <h2 style={{ textAlign: "center" }}>{page_title}</h2>
+    <div style={container}>
+      {/* Page Title */}
+      <h2 style={{ textAlign: "center", paddingTop: "15px" }}>{page_title}</h2>
 
-      <div style={{ background: "#fff", border: "1px solid #ccc",color:"#333", padding: 20 }}>
-        <h3>{subject}</h3>
+      {/* Email Header */}
+      <div style={header}>
+        {/* Profile / demographic photo */}
+        <img
+          src="https://randomuser.me/api/portraits/lego/1.jpg" // Example demographic photo
+          alt="Profile"
+          style={profilePhoto}
+        />
+        <div>
+          <p>
+            <strong>From/To:</strong> {from_and_to || "sender@example.com"}
+          </p>
+          <p>
+            <strong>Subject:</strong> {subject}
+          </p>
+          <p>
+            <strong>Email:</strong>{" "}
+            <span title={crct_email}>{phish_email}</span>
+          </p>
+        </div>
+      </div>
 
-        <p>
-  <strong>Email: </strong>
+      {/* Email Body */}
+      <div style={emailBody}>{level_text || "This is the email body."}</div>
 
-  <span
-    onMouseEnter={() => setShowCorrect(true)}
-    onMouseLeave={() => setShowCorrect(false)}
-    style={{ 
-      background: showCorrect ? "#e6ffe6" : "transparent",
-      padding: "2px 4px",
-      borderRadius: "4px",
-      cursor: "pointer",
-      transition: "0.2s",
-      fontWeight: showCorrect ? "bold" : "normal"
-    }}
-    title="Hover to see the legitimate sender"
-  >
-    {showCorrect ? crct_email : phish_email}
-  </span>
-</p>
-
-
-        <p>{level_text}</p>
-
-        <div style={{ marginTop: 20, textAlign: "center" }}>
-
-          {options.map((opt) => {
-            if (opt.key === "correct") {
-              // ONLY CORRECT OPTION → LINK
-              return (
-                <Link
-                  key={opt.key}
-                  to={`/levels/${level.category}/l${level.id + 1}`}
-                  style={linkStyle}
-                  onClick={() => onOptionClick(opt)}
-                >
-                  {opt.label}
-                </Link>
-              );
-            }
-
-            // WRONG + NEUTRAL → BUTTONS
-            const style =
-              opt.key === "wrong" ? wrongButtonStyle : neutralButtonStyle;
-
+      {/* Options */}
+      <div style={optionsContainer}>
+        {options.map(opt => {
+          if (opt.type === "link") {
+            return (
+              <Link
+                key={opt.key}
+                to={`/levels/${category}/${id + 1}`}
+                style={correctButton}
+                onClick={() => onOptionClick(opt)}
+              >
+                {opt.label}
+              </Link>
+            );
+          } else {
             return (
               <button
                 key={opt.key}
+                style={opt.key === "wrong" ? wrongButton : neutralButton}
                 onClick={() => onOptionClick(opt)}
-                style={style}
               >
                 {opt.label}
               </button>
             );
-          })}
+          }
+        })}
+      </div>
 
-        </div>
+      {/* Back to Dashboard */}
+      <div style={{ textAlign: "center", paddingBottom: "20px" }}>
+        <Link to="/dashboard" style={backButton}>
+          Back to Dashboard
+        </Link>
       </div>
     </div>
   );
