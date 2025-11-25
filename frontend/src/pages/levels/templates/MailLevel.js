@@ -57,10 +57,10 @@ export default function MailLevel({ level, onOptionClick, onNextLevel }) {
   };
 
   return (
-    <div style={{ padding: 20, maxWidth: 800, margin: "auto", color:"#333" }}>
+    <div style={{ padding: 20, maxWidth: 800, margin: "auto" }}>
       <h2 style={{ textAlign: "center" }}>{page_title}</h2>
 
-      <div style={{ background: "#fff", border: "1px solid #ccc", padding: 20 }}>
+      <div style={{ background: "#fff", border: "1px solid #ccc",color:"#333", padding: 20 }}>
         <h3>{subject}</h3>
 
         <p>
