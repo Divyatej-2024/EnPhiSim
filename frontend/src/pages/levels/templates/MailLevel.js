@@ -94,7 +94,7 @@ export default function MailLevel({ level, onOptionClick, onNextLevel }) {
               return (
                 <Link
                   key={opt.key}
-                  to={`/levels/${level.category}/${level.Level_no + 1}`}
+                  to={`/levels/${level.category}/${'l'+level.id + 1}`}
                   style={linkStyle}
                   onClick={() => onOptionClick(opt)}
                 >
