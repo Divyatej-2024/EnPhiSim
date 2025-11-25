@@ -14,7 +14,7 @@ export default function MailLevel({ level, onOptionClick, onNextLevel }) {
 
   
   
-  const { from_and_to, level_text, page_title, phish_email, crct_email,subj } = level;
+  const { from_and_to, level_text, page_title, phish_email, crct_email,subj, Level_no } = level;
 
   const subject = level.subj || level.from_and_to ||"No Subject";
 
@@ -94,7 +94,7 @@ export default function MailLevel({ level, onOptionClick, onNextLevel }) {
               return (
                 <Link
                   key={opt.key}
-                  to={`/levels/${level.category}/${level.id + 1}`}
+                  to={`/levels/${level.category}/${level.Level_no + 1}`}
                   style={linkStyle}
                   onClick={() => onOptionClick(opt)}
                 >
