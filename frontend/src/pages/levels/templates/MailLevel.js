@@ -94,7 +94,7 @@ export default function MailLevel({ level, onOptionClick, onNextLevel }) {
           alt="Profile"
           style={profilePhoto}
         />
-        <div>
+        <div style={{color:"#333"}}>
           <p>
             <strong>From/To:</strong> {from_and_to || "sender@example.com"}
           </p>
@@ -109,7 +109,7 @@ export default function MailLevel({ level, onOptionClick, onNextLevel }) {
       </div>
 
       {/* Email Body */}
-      <div style={emailBody}>{level_text || "This is the email body."}</div>
+      <div style={{#333}}>{level_text || "This is the email body."}</div>
 
       {/* Options */}
       <div style={optionsContainer}>
