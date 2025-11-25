@@ -16,7 +16,7 @@ export default function MailLevel({ level, onOptionClick, onNextLevel }) {
   
   const { from_and_to, level_text, page_title, phish_email, crct_email } = level;
 
-  const subject = phish_email || crct_email || "No Subject";
+  const subject = subject || "No Subject";
 
   const options = [
     { key: "correct", label: level.correct_option, correct: true },
