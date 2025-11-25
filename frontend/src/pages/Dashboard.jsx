@@ -24,8 +24,6 @@ const riskyActions = actions.filter(a => !a.correct).length;
 const accuracy = totalActions > 0 ? ((safeActions / totalActions) * 100).toFixed(1) : 0;
 
 // Completion Rate = completed levels / total levels
-const completed = Object.keys(progress.completedLevels).length;
-const totalLevels = levels.length;
 const completionRate = totalLevels > 0 ? ((completed / totalLevels) * 100).toFixed(1) : 0;
 
 console.log({ totalActions, safeActions, riskyActions, accuracy, completionRate });
