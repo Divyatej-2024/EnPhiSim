@@ -25,7 +25,7 @@ export default function Dashboard() {
   const accuracy = totalActions > 0 ? ((correctActions / totalActions) * 100).toFixed(1) : 0;
 
   // Completion Rate
-  const completionRate = totalActions > 0 ? ((completed / totalLevels) * 100).toFixed(1);
+  const completionRate = totalActions > 0 ? ((completed / totalLevels) * 100).toFixed(1) : 0;
 
   // ---------------------------
   // 2. FIND CURRENT/NEXT LEVEL
