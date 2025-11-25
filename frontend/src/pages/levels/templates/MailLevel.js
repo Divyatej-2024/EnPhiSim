@@ -109,7 +109,7 @@ export default function MailLevel({ level, onOptionClick, onNextLevel }) {
       </div>
 
       {/* Email Body */}
-      <div style={{#333}}>{level_text || "This is the email body."}</div>
+      <div style={{color:"#333"}}>{level_text || "This is the email body."}</div>
 
       {/* Options */}
       <div style={optionsContainer}>
