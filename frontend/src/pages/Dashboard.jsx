@@ -16,17 +16,9 @@ export default function Dashboard() {
   const actions = progress.actions || [];
 
   // Categorizing actions
-  const riskyActions = actions.filter(a =>
-    a.type === "clicked_link" ||
-    a.type === "opened_attachment" ||
-    a.type === "ignored_phishing"
-  ).length;
+  const riskyActions = actions.filter(a => !a.correct).length;
 
-  const safeActions = actions.filter(a =>
-    a.type === "reported_phishing" ||
-    a.type === "avoided_click" ||
-    a.type === "marked_phishing"
-  ).length;
+  const safeActions = actions.filter(a => a.correct).length;
 
   // Accuracy = correct actions / total actions
   const correctActions = actions.filter(a => a.correct).length;
