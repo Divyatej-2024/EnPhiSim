@@ -54,7 +54,26 @@ export default function MailLevel({ level, onOptionClick, onNextLevel }) {
       <div style={{ background: "#fff", border: "1px solid #ccc", padding: 20 }}>
         <h3>{subject}</h3>
 
-        <p><strong>From/To:</strong> {from_and_to}</p>
+        <p>
+  <strong>Email: </strong>
+
+  <span
+    onMouseEnter={() => setShowCorrect(true)}
+    onMouseLeave={() => setShowCorrect(false)}
+    style={{ 
+      background: showCorrect ? "#e6ffe6" : "transparent",
+      padding: "2px 4px",
+      borderRadius: "4px",
+      cursor: "pointer",
+      transition: "0.2s",
+      fontWeight: showCorrect ? "bold" : "normal"
+    }}
+    title="Hover to see the legitimate sender"
+  >
+    {showCorrect ? crct_email : phish_email}
+  </span>
+</p>
+
 
         <p>{level_text}</p>
 
@@ -66,7 +85,7 @@ export default function MailLevel({ level, onOptionClick, onNextLevel }) {
               return (
                 <Link
                   key={opt.key}
-                  to=to={`/levels/${level.category}/${level.id + 1}`}
+                  to=to={`/levels/${category}/${levelId + 1}`}
                   style={linkStyle}
                   onClick={() => onOptionClick(opt)}
                 >
