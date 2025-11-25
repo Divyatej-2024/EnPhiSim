@@ -31,16 +31,19 @@ export const ProgressProvider = ({ children }) => {
     }));
   };
 
-  const recordAction = (levelId, actionName) => {
-    setProgress((prev) => ({
+const recordAction = (levelId, actionName, isCorrect) => {
+  setProgress((prev) => {
+    const newAction = { name: actionName, correct: isCorrect };
+    return {
       ...prev,
-      totalActions: prev.totalActions + 1,
       attempts: {
         ...prev.attempts,
-        [levelId]: [...(prev.attempts[levelId] || []), actionName],
+        [levelId]: [...(prev.attempts[levelId] || []), newAction],
       },
-    }));
-  };
+    };
+  });
+};
+
 
   return (
     <ProgressContext.Provider
