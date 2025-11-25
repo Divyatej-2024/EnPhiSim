@@ -12,20 +12,24 @@ export default function Dashboard() {
   // ---------------------------
   const completed = Object.keys(progress.completedLevels).length;
   const totalLevels = levels.length;
-  const actions = Object.values(progress.actions || {}).flat();
-  const totalActions = actions.length;
-  
-  // Categorizing actions
-  const riskyActions = actions.filter(a => !a.correct).length;
+ // Flatten all actions across levels
+const actions = Object.values(progress.attempts || {}).flat();
+const totalActions = actions.length;
 
-  const safeActions = actions.filter(a => a.correct).length;
+// Categorize safe vs risky
+const safeActions = actions.filter(a => a.correct).length;
+const riskyActions = actions.filter(a => !a.correct).length;
 
-  // Accuracy = correct actions / total actions
-  const correctActions = safeActions;
-  const accuracy = totalActions > 0 ? ((correctActions / totalActions) * 100).toFixed(1) : 0;
+// Accuracy = correct actions / total actions
+const accuracy = totalActions > 0 ? ((safeActions / totalActions) * 100).toFixed(1) : 0;
 
-  // Completion Rate
-  const completionRate = totalActions > 0 ? ((completed / totalLevels) * 100).toFixed(1) : 0;
+// Completion Rate = completed levels / total levels
+const completed = Object.keys(progress.completedLevels).length;
+const totalLevels = levels.length;
+const completionRate = totalLevels > 0 ? ((completed / totalLevels) * 100).toFixed(1) : 0;
+
+console.log({ totalActions, safeActions, riskyActions, accuracy, completionRate });
+
 
   
   // ---------------------------
