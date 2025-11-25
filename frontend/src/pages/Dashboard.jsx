@@ -12,38 +12,33 @@ export default function Dashboard() {
   // ---------------------------
   const completed = Object.keys(progress.completedLevels).length;
   const totalLevels = levels.length;
- // Flatten all actions across levels
-const actions = Object.values(progress.attempts || {}).flat();
-const totalActions = actions.length;
 
-// Categorize safe vs risky
-const safeActions = actions.filter(a => a.correct).length;
-const riskyActions = actions.filter(a => !a.correct).length;
+  // Flatten all actions across levels
+  const actions = Object.values(progress.attempts || {}).flat();
+  const totalActions = actions.length;
 
-// Accuracy = correct actions / total actions
-const accuracy = totalActions > 0 ? ((safeActions / totalActions) * 100).toFixed(1) : 0;
+  // Categorize safe vs risky
+  const safeActions = actions.filter(a => a.correct).length;
+  const riskyActions = actions.filter(a => !a.correct).length;
 
-// Completion Rate = completed levels / total levels
-const completionRate = totalLevels > 0 ? ((completed / totalLevels) * 100).toFixed(1) : 0;
+  // Accuracy = correct actions / total actions
+  const accuracy = totalActions > 0 ? ((safeActions / totalActions) * 100).toFixed(1) : 0;
 
-console.log({ totalActions, safeActions, riskyActions, accuracy, completionRate });
+  // Completion Rate = completed levels / total levels
+  const completionRate = totalLevels > 0 ? ((completed / totalLevels) * 100).toFixed(1) : 0;
 
-
-  
   // ---------------------------
   // 2. FIND CURRENT/NEXT LEVEL
   // ---------------------------
-
-  // Find the first level that hasn't been completed.
   const currentLevel = levels.find(lvl => !progress.completedLevels[lvl.id]);
 
   const nextLevelTitle = currentLevel 
     ? currentLevel.page_title 
     : "All Levels Completed!";
-    
+
   const nextLevelPath = currentLevel 
     ? `/levels/${currentLevel.category}/${currentLevel.Level_no}` 
-    : '/summary'; // Direct to a summary/congratulations page if finished
+    : '/summary';
 
   const buttonText = currentLevel ? "Start Current Level" : "Review All Levels";
 
@@ -73,10 +68,14 @@ console.log({ totalActions, safeActions, riskyActions, accuracy, completionRate 
           <p>{completionRate}%</p>
         </div>
 
-        {/* Highlight ML-related analytics as requested */}
         <div className="card blue">
           <h3>Accuracy</h3>
           <p>{accuracy}%</p>
+        </div>
+
+        <div className="card green">
+          <h3>Safe Actions</h3>
+          <p>{safeActions}</p>
         </div>
 
         <div className="card red">
@@ -86,21 +85,20 @@ console.log({ totalActions, safeActions, riskyActions, accuracy, completionRate 
       </div>
 
       {/* =======================
-          CURRENT LEVEL CARD (REPLACES TABLE)
+          CURRENT LEVEL CARD
       ======================== */}
       <div className="current-level-card">
         <h2>{nextLevelTitle}</h2>
         <p>Your current phishing training module. Click below to continue.</p>
         
-        <Link
-          className="start-current-btn"
-          to={nextLevelPath}
-        >
+        <Link className="start-current-btn" to={nextLevelPath}>
           {buttonText}
         </Link>
       </div>
 
-      {/* Optionally, keep the full level list for navigation/review, but simplified */}
+      {/* =======================
+          FULL LEVEL LIST (OPTIONAL)
+      ======================== */}
       <details className="level-list-details">
         <summary>View All Levels</summary>
         <ul className="level-list">
