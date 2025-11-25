@@ -12,9 +12,9 @@ export default function Dashboard() {
   // ---------------------------
   const completed = Object.keys(progress.completedLevels).length;
   const totalLevels = levels.length;
-  const totalActions = actions.length;
   const actions = progress.actions || [];
-
+  const totalActions = actions.length;
+  
   // Categorizing actions
   const riskyActions = actions.filter(a => !a.correct).length;
 
