@@ -12,7 +12,7 @@ export default function Dashboard() {
   // ---------------------------
   const completed = Object.keys(progress.completedLevels).length;
   const totalLevels = levels.length;
-  const totalActions = progress.totalActions || 0;
+  const totalActions = actions.length;
   const actions = progress.actions || [];
 
   // Categorizing actions
@@ -27,13 +27,6 @@ export default function Dashboard() {
   // Completion Rate
   const completionRate = totalActions > 0 ? ((completed / totalLevels) * 100).toFixed(1) : 0;
 
-  console.log({
-    totalActions,
-    safeActions, 
-    riskyActions,
-    accuracy,
-    completionRate,
-  });
   
   // ---------------------------
   // 2. FIND CURRENT/NEXT LEVEL
