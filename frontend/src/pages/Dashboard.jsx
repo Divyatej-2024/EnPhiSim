@@ -21,12 +21,11 @@ export default function Dashboard() {
   const safeActions = actions.filter(a => a.correct).length;
 
   // Accuracy = correct actions / total actions
-  const correctActions = actions.filter(a => a.correct).length;
-  const accuracy =
-    totalActions > 0 ? ((correctActions / totalActions) * 100).toFixed(1) : 0;
+  const correctActions = safeActions;
+  const accuracy = totalActions > 0 ? ((correctActions / totalActions) * 100).toFixed(1) : 0;
 
   // Completion Rate
-  const completionRate = ((completed / totalLevels) * 100).toFixed(1);
+  const completionRate = totalActions > 0 ? ((completed / totalLevels) * 100).toFixed(1);
 
   // ---------------------------
   // 2. FIND CURRENT/NEXT LEVEL
