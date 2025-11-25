@@ -15,6 +15,7 @@ export default function MailLevel({ level, onOptionClick, onNextLevel }) {
     { key: "wrong", label: level.wrong_option, correct: false },
     { key: "neutral", label: level.neutral_option, correct: false },
   ].filter(opt => opt.label);
+const [showCorrect, setShowCorrect] = React.useState(false);
 
   const linkStyle = {
     display: "inline-block",
