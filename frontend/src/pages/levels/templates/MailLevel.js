@@ -2,11 +2,18 @@ import React,{ useState } from "react";
 import { Link } from "react-router-dom";
 import "../../../level.css";
 
+
+
 export default function MailLevel({ level, onOptionClick, onNextLevel }) {
+
+  const [showCorrect, setShowCorrect] = React.useState(false);
+  
   if (!level) {
     return <div>Level data not found.</div>;
   }
 
+  
+  
   const { from_and_to, level_text, page_title, phish_email, crct_email } = level;
 
   const subject = phish_email || crct_email || "No Subject";
@@ -16,7 +23,7 @@ export default function MailLevel({ level, onOptionClick, onNextLevel }) {
     { key: "wrong", label: level.wrong_option, correct: false },
     { key: "neutral", label: level.neutral_option, correct: false },
   ].filter(opt => opt.label);
-const [showCorrect, setShowCorrect] = React.useState(false);
+
 
   const linkStyle = {
     display: "inline-block",
