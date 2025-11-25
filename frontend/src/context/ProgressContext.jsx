@@ -11,8 +11,7 @@ export const ProgressProvider = ({ children }) => {
       ? JSON.parse(saved)
       : {
           completedLevels: {},
-          attempts: {},
-          totalActions: 0
+          attempts: {}
         };
   });
 
