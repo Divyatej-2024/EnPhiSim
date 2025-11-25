@@ -1,6 +1,7 @@
-import React,useState from "react";
+import React,{ useState } from "react";
 import { Link } from "react-router-dom";
-import "./level.css"
+import "./level.css";
+
 export default function MailLevel({ level, onOptionClick, onNextLevel }) {
   if (!level) {
     return <div>Level data not found.</div>;
