@@ -155,16 +155,23 @@ export default function MailLevel({ level, onOptionClick, onNextLevel }) {
 
 
             return (
-              <Component
-                key={opt.key}
-                // Use the custom handleClick function
-                onClick={handleClick} 
-                style={style}
-                // Only for <Link> components, ensure they act like buttons
-                to={opt.type === "Link" ? "#" : undefined}
-              >
-                {opt.label || "Action"}
-              </Component>
+              <button
+  key={opt.key}
+  onClick={() => onOptionClick(opt)}
+  style={{
+    background: "none",
+    border: "none",
+    color: "#1a73e8",
+    textDecoration: "underline",
+    cursor: "pointer",
+    padding: 0,
+    fontSize: "16px",
+    marginTop: "10px"
+  }}
+>
+  {opt.label}
+</button>
+
             );
           })}
         </div>
