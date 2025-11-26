@@ -1,62 +1,31 @@
+// src/components/Dashboard.js
+
 import React from "react";
 import { Link } from "react-router-dom";
 import { useProgress } from "../context/ProgressContext";
 import { levels } from "./levels/level_data";
+import useDashboardAnalytics from "../hooks/useDashboardAnalytics"; // <-- NEW IMPORT
 import "./dashboard.css";
 
 export default function Dashboard() {
   const { progress } = useProgress();
 
+  // Use the new custom hook to get all calculated data
+  const {
+    completed,
+    totalLevels,
+    completionRate,
+    totalActions,
+    safeActions,
+    riskyActions,
+    accuracy,
+    nextLevelTitle,
+    nextLevelPath,
+    buttonText,
+  } = useDashboardAnalytics(progress, levels); // <-- CLEANER LOGIC
+
   // Use progress to force dashboard refresh when data changes
   const refreshKey = JSON.stringify(progress);
-
-  // ---------------------------
-  // 1. ANALYTICS & CALCULATIONS
-  // ---------------------------
-  const completed = Object.keys(progress.completedLevels).length;
-  const totalLevels = levels.length;
-
-  // -------- SAFE ACTION FLATTENING --------
-  const attempts = progress.attempts || {};
-  let actions = [];
-
-  Object.values(attempts).forEach(entry => {
-    if (Array.isArray(entry)) {
-      actions = [...actions, ...entry];
-    } else if (entry && typeof entry === "object") {
-      actions.push(entry);
-    }
-  });
-
-  const totalActions = actions.length;
-
-  const safeActions = actions.filter(a => a.correct === true).length;
-  const riskyActions = actions.filter(a => a.correct === false).length;
-
-  const accuracy =
-    totalActions > 0 ? ((safeActions / totalActions) * 100).toFixed(1) : 0;
-
-  const completionRate =
-    totalLevels > 0 ? ((completed / totalLevels) * 100).toFixed(1) : 0;
-
-  // ---------------------------
-  // 2. FIND CURRENT/NEXT LEVEL
-  // ---------------------------
-  const currentLevel = levels.find(
-    lvl => !progress.completedLevels[lvl.id]
-  );
-
-  const nextLevelTitle = currentLevel
-    ? currentLevel.page_title
-    : "All Levels Completed!";
-
-  const nextLevelPath = currentLevel
-    ? `/levels/${currentLevel.category}/${currentLevel.Level_no}`
-    : "/summary";
-
-  const buttonText = currentLevel
-    ? "Start Current Level"
-    : "Review All Levels";
 
   // ---------------------------
   // 3. RENDER COMPONENT
