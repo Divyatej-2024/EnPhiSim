@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { useProgress } from "../context/ProgressContext";
 import { levels } from "./levels/level_data";
 import useDashboardAnalytics from "./useDashboardAnalytics"; // <-- NEW IMPORT
-import {useProgress} from "../context/ProgressContext"
 import "./dashboard.css";
 
 export default function Dashboard() {
