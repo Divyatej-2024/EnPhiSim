@@ -4,7 +4,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useProgress } from "../context/ProgressContext";
 import { levels } from "./levels/level_data";
-import useDashboardAnalytics from "../hooks/useDashboardAnalytics"; // <-- NEW IMPORT
+import useDashboardAnalytics from "./useDashboardAnalytics"; // <-- NEW IMPORT
 import "./dashboard.css";
 
 export default function Dashboard() {
