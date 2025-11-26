@@ -13,13 +13,25 @@ export default function Dashboard() {
   const completed = Object.keys(progress.completedLevels).length;
   const totalLevels = levels.length;
 
-  // Flatten all actions across levels
-  const actions = Object.values(progress.attempts || {}).flat();
+  // Flatten all actions across levels// -------- SAFE ACTION FLATTENING --------
+const attempts = progress.attempts || {};
+let actions = [];
+
+Object.values(attempts).forEach(entry => {
+  if (Array.isArray(entry)) {
+    // Correct format (array of actions)
+    actions = [...actions, ...entry];
+  } else if (entry && typeof entry === "object") {
+    // Single object instead of array
+    actions.push(entry);
+  }
+});
+
   const totalActions = actions.length;
 
   // Categorize safe vs risky
-  const safeActions = actions.filter(a => a.correct).length;
-  const riskyActions = actions.filter(a => !a.correct).length;
+  const safeActions = actions.filter(a => a.correct === true).length;
+  const riskyActions = actions.filter(a => a.correct === false).length;
 
   // Accuracy = correct actions / total actions
   const accuracy = totalActions > 0 ? ((safeActions / totalActions) * 100).toFixed(1) : 0;
