@@ -90,7 +90,7 @@ export default function MailLevel({ level, onOptionClick, onNextLevel }) {
       <div style={header}>
         {/* Profile / demographic photo */}
         <img
-          src="https://randomuser.me/api/portraits/lego/1.jpg" // Example demographic photo
+          src="/avtar.png" // Example demographic photo
           alt="Profile"
           style={profilePhoto}
         />
