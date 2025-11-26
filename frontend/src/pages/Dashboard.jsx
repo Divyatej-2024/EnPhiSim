@@ -13,19 +13,19 @@ export default function Dashboard() {
   const completed = Object.keys(progress.completedLevels).length;
   const totalLevels = levels.length;
 
-  // Flatten all actions across levels// -------- SAFE ACTION FLATTENING --------
-const attempts = progress.attempts || {};
-let actions = [];
+  // -------- SAFE ACTION FLATTENING --------
+  const attempts = progress.attempts || {};
+  let actions = [];
 
-Object.values(attempts).forEach(entry => {
-  if (Array.isArray(entry)) {
-    // Correct format (array of actions)
-    actions = [...actions, ...entry];
-  } else if (entry && typeof entry === "object") {
-    // Single object instead of array
-    actions.push(entry);
-  }
-});
+  Object.values(attempts).forEach(entry => {
+    if (Array.isArray(entry)) {
+      // If level attempts are in an array
+      actions = [...actions, ...entry];
+    } else if (entry && typeof entry === "object") {
+      // If a single action object was stored
+      actions.push(entry);
+    }
+  });
 
   const totalActions = actions.length;
 
@@ -34,25 +34,31 @@ Object.values(attempts).forEach(entry => {
   const riskyActions = actions.filter(a => a.correct === false).length;
 
   // Accuracy = correct actions / total actions
-  const accuracy = totalActions > 0 ? ((safeActions / totalActions) * 100).toFixed(1) : 0;
+  const accuracy =
+    totalActions > 0 ? ((safeActions / totalActions) * 100).toFixed(1) : 0;
 
   // Completion Rate = completed levels / total levels
-  const completionRate = totalLevels > 0 ? ((completed / totalLevels) * 100).toFixed(1) : 0;
+  const completionRate =
+    totalLevels > 0 ? ((completed / totalLevels) * 100).toFixed(1) : 0;
 
   // ---------------------------
   // 2. FIND CURRENT/NEXT LEVEL
   // ---------------------------
-  const currentLevel = levels.find(lvl => !progress.completedLevels[lvl.id]);
+  const currentLevel = levels.find(
+    lvl => !progress.completedLevels[lvl.id]
+  );
 
-  const nextLevelTitle = currentLevel 
-    ? currentLevel.page_title 
+  const nextLevelTitle = currentLevel
+    ? currentLevel.page_title
     : "All Levels Completed!";
 
-  const nextLevelPath = currentLevel 
-    ? `/levels/${currentLevel.category}/${currentLevel.Level_no}` 
-    : '/summary';
+  const nextLevelPath = currentLevel
+    ? `/levels/${currentLevel.category}/${currentLevel.Level_no}`
+    : "/summary";
 
-  const buttonText = currentLevel ? "Start Current Level" : "Review All Levels";
+  const buttonText = currentLevel
+    ? "Start Current Level"
+    : "Review All Levels";
 
   // ---------------------------
   // 3. RENDER COMPONENT
@@ -72,7 +78,9 @@ Object.values(attempts).forEach(entry => {
 
         <div className="card">
           <h3>Completed Levels</h3>
-          <p>{completed} / {totalLevels}</p>
+          <p>
+            {completed} / {totalLevels}
+          </p>
         </div>
 
         <div className="card">
@@ -102,22 +110,34 @@ Object.values(attempts).forEach(entry => {
       <div className="current-level-card">
         <h2>{nextLevelTitle}</h2>
         <p>Your current phishing training module. Click below to continue.</p>
-        
+
         <Link className="start-current-btn" to={nextLevelPath}>
           {buttonText}
         </Link>
       </div>
 
       {/* =======================
-          FULL LEVEL LIST (OPTIONAL)
+          FULL LEVEL LIST
       ======================== */}
       <details className="level-list-details">
         <summary>View All Levels</summary>
         <ul className="level-list">
           {levels.map(lvl => (
-            <li key={lvl.id} className={progress.completedLevels[lvl.id] ? 'completed' : 'pending'}>
-              <Link to={`/levels/${lvl.category}/${lvl.Level_no}`}>
-                {progress.completedLevels[lvl.id] ? '✅' : '➡️'} {lvl.page_title}
+            <li
+              key={lvl.id}
+              className={
+                progress.completedLevels[lvl.id]
+                  ? "completed"
+                  : "pending"
+              }
+            >
+              <Link
+                to={`/levels/${lvl.category}/${lvl.Level_no}`}
+              >
+                {progress.completedLevels[lvl.id]
+                  ? "✅"
+                  : "➡️"}{" "}
+                {lvl.page_title}
               </Link>
             </li>
           ))}
