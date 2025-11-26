@@ -7,6 +7,9 @@ import "./dashboard.css";
 export default function Dashboard() {
   const { progress } = useProgress();
 
+  // Use progress to force dashboard refresh when data changes
+  const refreshKey = JSON.stringify(progress);
+
   // ---------------------------
   // 1. ANALYTICS & CALCULATIONS
   // ---------------------------
@@ -19,25 +22,20 @@ export default function Dashboard() {
 
   Object.values(attempts).forEach(entry => {
     if (Array.isArray(entry)) {
-      // If level attempts are in an array
       actions = [...actions, ...entry];
     } else if (entry && typeof entry === "object") {
-      // If a single action object was stored
       actions.push(entry);
     }
   });
 
   const totalActions = actions.length;
 
-  // Categorize safe vs risky
   const safeActions = actions.filter(a => a.correct === true).length;
   const riskyActions = actions.filter(a => a.correct === false).length;
 
-  // Accuracy = correct actions / total actions
   const accuracy =
     totalActions > 0 ? ((safeActions / totalActions) * 100).toFixed(1) : 0;
 
-  // Completion Rate = completed levels / total levels
   const completionRate =
     totalLevels > 0 ? ((completed / totalLevels) * 100).toFixed(1) : 0;
 
@@ -64,7 +62,7 @@ export default function Dashboard() {
   // 3. RENDER COMPONENT
   // ---------------------------
   return (
-    <div className="dashboard">
+    <div className="dashboard" key={refreshKey}>
       <h1>EnPhiSim Dashboard</h1>
 
       {/* =======================
@@ -134,9 +132,7 @@ export default function Dashboard() {
               <Link
                 to={`/levels/${lvl.category}/${lvl.Level_no}`}
               >
-                {progress.completedLevels[lvl.id]
-                  ? "✅"
-                  : "➡️"}{" "}
+                {progress.completedLevels[lvl.id] ? "✅" : "➡️"}{" "}
                 {lvl.page_title}
               </Link>
             </li>
