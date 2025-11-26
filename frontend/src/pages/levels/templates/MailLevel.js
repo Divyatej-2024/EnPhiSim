@@ -82,6 +82,14 @@ export default function MailLevel({ level, onOptionClick, onNextLevel }) {
   const backButton = { ...buttonBase, background: "#2196F3", color: "#fff" };
 
   return (
+
+    {/* Back to Dashboard */}
+      <div style={{ textAlign: "center", paddingBottom: "20px" }}>
+        <Link to="/dashboard" style={backButton}>
+          Back to Dashboard
+        </Link>
+      </div>
+    
     <div style={container}>
       {/* Page Title */}
       <h2 style={{ textAlign: "center", paddingTop: "15px" }}>{page_title}</h2>
@@ -139,12 +147,7 @@ export default function MailLevel({ level, onOptionClick, onNextLevel }) {
         })}
       </div>
 
-      {/* Back to Dashboard */}
-      <div style={{ textAlign: "center", paddingBottom: "20px" }}>
-        <Link to="/dashboard" style={backButton}>
-          Back to Dashboard
-        </Link>
-      </div>
+      
     </div>
   );
 }
