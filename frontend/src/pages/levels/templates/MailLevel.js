@@ -146,8 +146,6 @@ export default function MailLevel({ level, onOptionClick, onNextLevel }) {
           }
         })}
       </div>
-
-      
     </div>
   );
 }
