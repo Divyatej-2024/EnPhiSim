@@ -1,90 +1,136 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import "../../../level.css";
 
-export default function BrowserLevel({ level, onOptionClick }) {
-  useEffect(() => {
-    const script = document.createElement("script");
+export default function MailLevel({ level, onOptionClick, onNextLevel }) {
+  if (!level) return <div>Level data not found.</div>;
 
-    script.innerHTML = `
-      function safeCarousel() {
-        var x = document.getElementsByClassName("mySlides");
-        if (!x || x.length === 0) {
-          console.warn("No .mySlides found yet, retrying...");
-          setTimeout(safeCarousel, 500);
-          return;
-        }
+  const {
+    level_text,
+    page_title,
+    phish_email,
+    crct_email,
+    from_and_to,
+    subj,
+    category,
+    id,
+  } = level;
 
-        let myIndex = 0;
-        function carousel() {
-          for (let i = 0; i < x.length; i++) {
-            if (x[i]) x[i].style.display = "none";
-          }
-          myIndex++;
-          if (myIndex > x.length) myIndex = 1;
-          if (x[myIndex - 1]) x[myIndex - 1].style.display = "block";
-          setTimeout(carousel, 4000);
-        }
+  const subject = subj || "No Subject";
 
-        carousel();
-      }
+  const options = [
+    { key: "correct", label: level.correct_option, correct: true, type: "link" },
+    { key: "wrong", label: level.wrong_option, correct: false, type: "button" },
+    { key: "neutral", label: level.neutral_option, correct: false, type: "button" },
+  ].filter(opt => opt.label);
 
-      // Start AFTER ensuring DOM has loaded
-      setTimeout(safeCarousel, 300);
+  const container = {
+    background: "#f8f8f8",
+    maxWidth: "800px",
+    margin: "20px auto",
+    borderRadius: "8px",
+    boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+    fontFamily: "Arial, sans-serif",
+  };
 
-      function myFunction() {
-        var x = document.getElementById("navDemo");
-        if (!x) return;
-        if (x.className.indexOf("w3-show") == -1) {
-          x.className += " w3-show";
-        } else { 
-          x.className = x.className.replace(" w3-show", "");
-        }
-      }
+  const header = {
+    background: "#fff",
+    padding: "20px",
+    borderBottom: "1px solid #ddd",
+    display: "flex",
+    alignItems: "center",
+    gap: "15px",
+  };
 
-      var modalCheck = setInterval(() => {
-        var modal = document.getElementById('ticketModal');
-        if (modal) {
-          clearInterval(modalCheck);
-          window.onclick = function(event) {
-            if (event.target == modal) {
-              modal.style.display = "none";
-            }
-          };
-        }
-      }, 300);
-    `;
+  const profilePhoto = {
+    width: "50px",
+    height: "50px",
+    borderRadius: "50%",
+    objectFit: "cover",
+  };
 
-    document.body.appendChild(script);
-    return () => script.remove();
-  }, []);
+  const optionsContainer = {
+    padding: "20px",
+    textAlign: "center",
+  };
 
-  const htmlContent = `
-    <div style="height: 70vh; overflow-y: auto; border: 3px solid #000;">
-      ${level.browser_html}
-    </div>
-  `;
+  const buttonBase = {
+    margin: "0 10px",
+    padding: "10px 20px",
+    borderRadius: "4px",
+    cursor: "pointer",
+    fontWeight: "600",
+    border: "none",
+    transition: "0.2s",
+  };
+
+  const correctButton = { ...buttonBase, background: "#4CAF50", color: "#fff" };
+  const wrongButton = { ...buttonBase, background: "#f44336", color: "#fff" };
+  const neutralButton = { ...buttonBase, background: "#ccc", color: "#333" };
+  const backButton = { ...buttonBase, background: "#2196F3", color: "#fff" };
 
   return (
     <div>
-      <div
-        dangerouslySetInnerHTML={{ __html: htmlContent }}
-      />
+      {/* Back to Dashboard */}
+      <div style={{ textAlign: "center", paddingBottom: "20px" }}>
+        <Link to="/dashboard" style={backButton}>
+          Back to Dashboard
+        </Link>
+      </div>
 
-      <div style={{ textAlign: "center", marginTop: "20px" }}>
-        {level.options.map((opt) => (
-          <button
-            key={opt.key}
-            onClick={() => onOptionClick(opt)}
-            style={{
-              padding: "10px 20px",
-              margin: "10px",
-              background: "#000",
-              color: "#fff",
-              borderRadius: "6px",
-            }}
-          >
-            {opt.label}
-          </button>
-        ))}
+      <div style={container}>
+        {/* Page Title */}
+        <h2 style={{ textAlign: "center", paddingTop: "15px" }}>{page_title}</h2>
+
+        {/* Email Header */}
+        <div style={header}>
+          <img
+            src="/avtar.png"
+            alt="Profile"
+            style={profilePhoto}
+          />
+          <div style={{ color: "#333" }}>
+            <p><strong>From/To:</strong> {from_and_to || "sender@example.com"}</p>
+            <p><strong>Subject:</strong> {subject}</p>
+            <p>
+              <strong>Email:</strong>{" "}
+              <span title={crct_email}>{phish_email}</span>
+            </p>
+          </div>
+        </div>
+
+        {/* Email Body */}
+        <div style={{ padding: "20px", background: "#fff", color: "#333" }}>
+          {level_text || "This is the email body."}
+        </div>
+
+        {/* Options */}
+        <div style={optionsContainer}>
+          {options.map(opt => {
+            if (opt.type === "link") {
+              return (
+                <Link
+                  key={opt.key}
+                  to={`/levels/${category}/l${id + 1}`}
+                  style={correctButton}
+                  onClick={() => onOptionClick(opt)}
+                >
+                  {opt.label}
+                </Link>
+              );
+            } else {
+              return (
+                <button
+                  key={opt.key}
+                  style={opt.key === "wrong" ? wrongButton : neutralButton}
+                  onClick={() => onOptionClick(opt)}
+                >
+                  {opt.label}
+                </button>
+              );
+            }
+          })}
+        </div>
       </div>
     </div>
   );
