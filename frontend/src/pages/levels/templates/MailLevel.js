@@ -26,40 +26,57 @@ export default function MailLevel({ level, onOptionClick, onNextLevel }) {
   // 3. SAFE OPTIONAL ACCESS
   const safeOptions = Array.isArray(options) ? options : [];
 
-  return (
-    <div className="mail-level">
-      <h1>{page_title || "Email Level"}</h1>
+return (
+   <div className="mail-level">
+     <h1>{page_title || "Email Level"}</h1>
 
-      <p className="level-text">{level_text}</p>
+      <p className="level-text">{level_text}</p>
 
-      <div className="email-box">
-        <p><strong>From / To:</strong> {from_and_to || "Unknown"}</p>
-        <p><strong>Subject:</strong> {subject || "No subject"}</p>
+      <div className="email-box">
+        <p className="email-header">
+            <span className="email-from">
+                <strong>From:</strong> {from_and_to || "Unknown"}
+            </span>
+            <span className="email-subject">
+                <strong>Subject:</strong> {subject || "No subject"}
+            </span>
+        </p>
 
-        <div className="email-content">
-          {(phish_email || crct_email || "No email content provided.")}
-        </div>
-      </div>
+        <div className="email-content">
+          {/* Phishing content goes here */}
+          {(phish_email || crct_email || "No email content provided.")}
+        </div>
+      </div>
 
-      <div className="options">
-        {safeOptions.length > 0 ? (
-          safeOptions.map((opt, index) => (
-            <button
-              key={index}
-              className="option-btn"
-              onClick={() => onOptionClick(opt, level.id)}
-            >
-              {opt.label}
-            </button>
-          ))
-        ) : (
-          <p>No options available for this level.</p>
-        )}
-      </div>
+      <div className="options">
+        {safeOptions.length > 0 ? (
+          safeOptions.map((opt, index) => (
+            <button
+              key={index}
+              className={`option-btn ${opt.isPrimary ? 'primary-action-btn' : ''}`}
+              onClick={() => onOptionClick(opt, level.id)}
+            >
+              {opt.label}
+            </button>
+          ))
+        ) : (
+          <p>No options available for this level.</p>
+        )}
+        
+        {/* --- NEW UNSUBSCRIBE BUTTON --- */}
+        <button
+            className="unsubscribe-link"
+            onClick={() => onOptionClick({label: "Unsubscribe", correct: false, action: "unsubscribe"}, level.id)}
+        >
+            Unsubscribe from these alerts
+        </button>
+        {/* ------------------------------- */}
 
-      <button className="next-btn" onClick={onNextLevel}>
-        Next Level
-      </button>
-    </div>
-  );
+      </div>
+
+      <button className="next-btn" onClick={onNextLevel}>
+        Next Level
+      </button>
+    </div>
+  );
 }
