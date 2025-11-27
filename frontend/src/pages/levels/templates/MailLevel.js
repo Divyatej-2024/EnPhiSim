@@ -15,6 +15,7 @@ export default function MailLevel({ level, onOptionClick, onNextLevel }) {
 
   const {
     level_text,
+    subj,
     page_title,
     phish_email,
     crct_email,
@@ -30,7 +31,7 @@ return (
    <div className="mail-level">
      <h1>{page_title || "Email Level"}</h1>
 
-      <p className="level-text">{level_text}</p>
+      <p className="level-text">{subj}</p>
 
       <div className="email-box">
         <p className="email-header">
@@ -66,7 +67,7 @@ return (
         {/* --- NEW UNSUBSCRIBE BUTTON --- */}
         <button
             className="unsubscribe-link"
-            onClick={() => onOptionClick({label: "Unsubscribe", correct: false, action: "unsubscribe"}, level.id)}
+            onClick={() => onOptionClick({label: "Unsubscribe", correct: true, action: "unsubscribe"}, level.id)}
         >
             Unsubscribe from these alerts
         </button>
