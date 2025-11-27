@@ -1,27 +1,28 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+// src/context/ProgressContext.js
+
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 const ProgressContext = createContext();
-
 export const useProgress = () => useContext(ProgressContext);
 
 export const ProgressProvider = ({ children }) => {
   const [progress, setProgress] = useState(() => {
-    const saved = localStorage.getItem("enphisim_progress");
+    const saved = localStorage.getItem("enphi-progress");
     return saved
       ? JSON.parse(saved)
       : {
           completedLevels: {},
-          attempts: {}
+          attempts: {},   // store actions here { levelId: [{correct: true|false}] }
         };
   });
 
-  // Save to localStorage whenever progress updates
   useEffect(() => {
-    localStorage.setItem("enphisim_progress", JSON.stringify(progress));
+    localStorage.setItem("enphi-progress", JSON.stringify(progress));
   }, [progress]);
 
-  const markLevelComplete = (levelId) => {
-    setProgress((prev) => ({
+  // Mark level completed
+  const completeLevel = (levelId) => {
+    setProgress(prev => ({
       ...prev,
       completedLevels: {
         ...prev.completedLevels,
@@ -30,25 +31,25 @@ export const ProgressProvider = ({ children }) => {
     }));
   };
 
-const recordAction = (levelId, actionName, isCorrect) => {
-  setProgress((prev) => {
-    const newAction = { name: actionName, correct: isCorrect };
-    return {
+  // Record a user action (safe / risky click)
+  const recordAction = (levelId, correct) => {
+    setProgress(prev => ({
       ...prev,
       attempts: {
         ...prev.attempts,
-        [levelId]: [...(prev.attempts[levelId] || []), newAction],
+        [levelId]: [
+          ...(prev.attempts[levelId] || []),
+          { correct },
+        ],
       },
-    };
-  });
-};
-
+    }));
+  };
 
   return (
     <ProgressContext.Provider
       value={{
         progress,
-        markLevelComplete,
+        completeLevel,
         recordAction,
       }}
     >

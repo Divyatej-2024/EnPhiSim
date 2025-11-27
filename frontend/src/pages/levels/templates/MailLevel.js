@@ -1,9 +1,17 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useProgress } from "../../../context/ProgressContext";
 import "../../../level.css";
 
-export default function MailLevel({ level, onOptionClick, onNextLevel }) {
-  if (!level) return <div>Level data not found.</div>;
+export default function MailLevel({ level, allLevels }) {
+  // ⬇️ MUST BE AT TOP — BEFORE ANY CONDITIONAL RETURN
+  const navigate = useNavigate();
+  const { recordAction, completeLevel } = useProgress();
+
+  // ⬇️ ALLOW EARLY RETURN ONLY AFTER HOOKS
+  if (!level) {
+    return <div>Level data not found.</div>;
+  }
 
   const {
     level_text,
@@ -14,16 +22,36 @@ export default function MailLevel({ level, onOptionClick, onNextLevel }) {
     subj,
     category,
     id,
+    correct_option,
+    wrong_option,
+    neutral_option,
   } = level;
 
   const subject = subj || "No Subject";
 
-  const options = [
-    { key: "correct", label: level.correct_option, correct: true, type: "link" },
-    { key: "wrong", label: level.wrong_option, correct: false, type: "button" },
-    { key: "neutral", label: level.neutral_option, correct: false, type: "button" },
-  ].filter(opt => opt.label);
+  // GET NEXT LEVEL
+  const nextLevel = allLevels.find((l) => l.id === id + 1);
+  const nextPath = nextLevel
+    ? `/levels/${nextLevel.category}/${nextLevel.Level_no}`
+    : "/dashboard";
 
+  const options = [
+    { key: "correct", label: correct_option, correct: true },
+    { key: "wrong", label: wrong_option, correct: false },
+    { key: "neutral", label: neutral_option, correct: false },
+  ].filter((opt) => opt.label);
+
+  const handleOptionClick = (opt) => {
+    recordAction(id, opt.correct);
+    if (opt.correct) {
+      completeLevel(id);
+      navigate(nextPath);
+    } else {
+      alert("This action is risky. Try again!");
+    }
+  };
+
+  // STYLES
   const container = {
     background: "#f8f8f8",
     maxWidth: "800px",
@@ -79,19 +107,18 @@ export default function MailLevel({ level, onOptionClick, onNextLevel }) {
       </div>
 
       <div style={container}>
-        {/* Page Title */}
         <h2 style={{ textAlign: "center", paddingTop: "15px" }}>{page_title}</h2>
 
         {/* Email Header */}
         <div style={header}>
-          <img
-            src="/avtar.png"
-            alt="Profile"
-            style={profilePhoto}
-          />
+          <img src="/avtar.png" alt="Profile" style={profilePhoto} />
           <div style={{ color: "#333" }}>
-            <p><strong>From/To:</strong> {from_and_to || "sender@example.com"}</p>
-            <p><strong>Subject:</strong> {subject}</p>
+            <p>
+              <strong>From/To:</strong> {from_and_to}
+            </p>
+            <p>
+              <strong>Subject:</strong> {subject}
+            </p>
             <p>
               <strong>Email:</strong>{" "}
               <span title={crct_email}>{phish_email}</span>
@@ -101,35 +128,26 @@ export default function MailLevel({ level, onOptionClick, onNextLevel }) {
 
         {/* Email Body */}
         <div style={{ padding: "20px", background: "#fff", color: "#333" }}>
-          {level_text || "This is the email body."}
+          {level_text}
         </div>
 
         {/* Options */}
         <div style={optionsContainer}>
-          {options.map(opt => {
-            if (opt.type === "link") {
-              return (
-                <Link
-                  key={opt.key}
-                  to={`/levels/${category}/l${id + 1}`}
-                  style={correctButton}
-                  onClick={() => onOptionClick(opt)}
-                >
-                  {opt.label}
-                </Link>
-              );
-            } else {
-              return (
-                <button
-                  key={opt.key}
-                  style={opt.key === "wrong" ? wrongButton : neutralButton}
-                  onClick={() => onOptionClick(opt)}
-                >
-                  {opt.label}
-                </button>
-              );
-            }
-          })}
+          {options.map((opt) => (
+            <button
+              key={opt.key}
+              style={
+                opt.key === "correct"
+                  ? correctButton
+                  : opt.key === "wrong"
+                  ? wrongButton
+                  : neutralButton
+              }
+              onClick={() => handleOptionClick(opt)}
+            >
+              {opt.label}
+            </button>
+          ))}
         </div>
       </div>
     </div>
