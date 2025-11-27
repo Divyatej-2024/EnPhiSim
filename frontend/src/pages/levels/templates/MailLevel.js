@@ -39,13 +39,13 @@ return (
                 <strong>From:</strong> {from_and_to || "Unknown"}
             </span>
             <span className="email-subject">
-                <strong>Subject:</strong> {subject || "No subject"}
+                <strong>Subject:</strong> {subj || "No subject"}
             </span>
         </p>
 
         <div className="email-content">
           {/* Phishing content goes here */}
-          {(phish_email || crct_email || "No email content provided.")}
+          {level_text || "No email content provided."}
         </div>
       </div>
 
