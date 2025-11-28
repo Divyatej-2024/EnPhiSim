@@ -1,87 +1,59 @@
 import React from "react";
-import { useProgress } from "../../../context/ProgressContext"; // Keeping this, though currently unused in this component
+import { useProgress } from "../../../context/ProgressContext";
 import "../../../level.css";
 
-// Removed useNavigate hook, and removed onNextLevel prop
-export default function MailLevel({ level, onOptionClick }) { 
-  // 1. HOOKS MUST BE AT TOP (never inside conditions)
-  const { progress } = useProgress(); // Keep useProgress, potentially useful later
+export default function MailTemplate({ level }) {
+  const { recordAction, completeLevel } = useProgress();
 
-  // 2. VALIDATE LEVEL DATA AT THE START
-  if (!level) {
-    return <div>Error: Level data is missing.</div>;
-  }
+  const handleClick = (type) => {
+    let isCorrect = type === level.correct_option;
 
-  const {
-    level_text,
-    page_title,
-    phish_email,
-    crct_email,
-    from_and_to,
-    subject,
-    options
-  } = level;
+    recordAction(level.id, isCorrect);
+    if (isCorrect) completeLevel(level.id);
+  };
 
-  // 3. SAFE OPTIONAL ACCESS
-  const safeOptions = Array.isArray(options) ? options : [];
+  return (
+    <div className="mail-wrapper">
+      <div className="mail-header">
+        <h2>{level.subj || level.page_title}</h2>
 
-  // 4. Define the action for the Unsubscribe link
-    const unsubscribeAction = {
-        label: "Unsubscribe",
-        // Setting correct: false for unsubscribing from a malicious email is a common failure
-        // However, if your simulation counts 'Unsubscribe' as a safe exit, change this to true.
-        correct: true, 
-        action: "unsubscribe"
-    };
+        <div className="mail-meta">
+          <p>
+            <strong>From:</strong>{" "}
+            {level.from_and_to ? level.from_and_to.split(" to ")[0] : "Unknown"}
+          </p>
+          <p>
+            <strong>Email:</strong> {level.phish_email || level.phish_e}
+          </p>
+        </div>
+      </div>
 
-  return (
-    <div className="mail-level">
-      <h1>{page_title || "Email Level"}</h1>
+      <div className="mail-body">
+        <p>{level.level_text}</p>
+      </div>
 
-      <p className="level-text">{level_text}</p>
-
-      <div className="email-box">
-        <p className="email-header">
-            <span className="email-from">
-                <strong>From:</strong> {from_and_to || "Unknown"}
-            </span>
-            <span className="email-subject">
-                <strong>Subject:</strong> {subject || "No subject"}
-            </span>
-        </p>
-        <div className="email-content">
-          {(phish_email || crct_email || "No email content provided.")}
-        </div>
-      </div>
-
-      <div className="options">
-        {safeOptions.length > 0 ? (
-          safeOptions.map((opt, index) => (
-            <button
-              key={index}
-              // Use the isPrimary class for styling the main action button
-              className={`option-btn ${opt.isPrimary ? 'primary-action-btn' : ''}`}
-              onClick={() => onOptionClick(opt, level.id)}
-            >
-              {opt.label}
-            </button>
-          ))
-        ) : (
-          <p>No options available for this level.</p>
-        )}
-        
-        {/* --- UNSUBSCRIBE LINK takes the place of the Next Level button --- */}
+      <div className="mail-actions">
         <button
-            className="unsubscribe-link"
-            // Call onOptionClick with the predefined unsubscribe action
-            onClick={() => onOptionClick(unsubscribeAction, level.id)}
+          className="btn correct"
+          onClick={() => handleClick(level.correct_option)}
         >
-            Unsubscribe from these alerts
+          {level.correct_option}
         </button>
-        {/* ------------------------------------------------------------------ */}
-      </div>
-        
-        {/* REMOVED: The static "Next Level" button */}
-    </div>
-  );
+
+        <button
+          className="btn neutral"
+          onClick={() => handleClick(level.neutral_option)}
+        >
+          {level.neutral_option}
+        </button>
+
+        <button
+          className="btn wrong"
+          onClick={() => handleClick(level.wrong_option)}
+        >
+          {level.wrong_option}
+        </button>
+      </div>
+    </div>
+  );
 }
