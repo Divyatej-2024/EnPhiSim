@@ -41,13 +41,13 @@ export const levels = [
     js_path:"./levels/easy/l3.js",
     category:"easy",
     from_and_to:"marketing team to reciever",
-    phish_email:"it-supp0rt@enphisim.com",
-    crct_email:"it-support@enphisim.com",
+    phish_e:"it-supp0rt@enphisim.com",
+    crct_e:"it-support@enphisim.com",
     level_text:null,
     correct_option:"Report Phish",
     neutral_option:"Ignore",
     wrong_option:"Click Link",
-    template_type:"mail"
+    template_type:""
   },
   {
     id:4,
@@ -57,13 +57,13 @@ export const levels = [
     js_path:"./levels/easy/l4.js",
     category:"easy",
     from_and_to:"scammer to the reciever",
-    phish_email:"it-supp0rt@enphisim.com",
-    crct_email:"it-support@enphisim.com",
+    phish_e:"it-supp0rt@enphisim.com",
+    crct_e:"it-support@enphisim.com",
     level_text:null,
     correct_option:"Report Phish",
     neutral_option:"Ignore",
     wrong_option:"Claim Prize",
-    template_type:"mail"
+    template_type:""
   },
   {
     id:5,
@@ -73,13 +73,13 @@ export const levels = [
     js_path:"./levels/easy/l5.js",
     category:"easy",
     from_and_to:"fake HR to reciever",
-    phish_email:"it-supp0rt@enphisim.com",
-    crct_email:"it-support@enphisim.com",
+    phish_e:"it-supp0rt@enphisim.com",
+    crct_e:"it-support@enphisim.com",
     level_text:null,
     correct_option:"Report Phish",
     neutral_option:"Ignore",
     wrong_option:"Open Attachment",
-    template_type:"mail"
+    template_type:""
   },
   {
     id:6,
@@ -93,7 +93,7 @@ export const levels = [
     correct_option:"Report Phish",
     neutral_option:"Ignore",
     wrong_option:"Click Link",
-    template_type:"mail"
+    template_type:""
   },
   {
     id:7,
@@ -113,7 +113,7 @@ export const levels = [
     id:8,
     Level_no:"l7",
     page_title:"TypoSquatted Domain Phish",
-    Hint:"Check the full email address, not just the name.",
+    Hint:"Check the full e address, not just the name.",
     js_path:"./levels/advanced_easy/l7.js",
     category:"advanced_easy",
     from_and_to:"Fake domain to the user",
@@ -149,7 +149,7 @@ export const levels = [
     correct_option:"Report Phish",
     neutral_option:"Ignore",
     wrong_option:"Fill Survey",
-    template_type:"mail"
+    template_type:""
   },
   {
     id:11,
@@ -191,7 +191,7 @@ export const levels = [
     correct_option:"Report Phish",
     neutral_option:"Ignore",
     wrong_option:"Click Link",
-    template_type:"mail"
+    template_type:""
   },
   {
     id:14,
@@ -219,12 +219,12 @@ export const levels = [
     correct_option:"Report Phish",
     neutral_option:"Ignore",
     wrong_option:"Respond",
-    template_type:"mail"
+    template_type:""
   },
   {
     id:16,
     Level_no:"l14",
-    page_title:"Business Email Compromise",
+    page_title:"Business E Compromise",
     Hint:"Urgent financial request with a sudden change in procedure.",
     js_path:"./levels/normal/l14.js",
     category:"normal",
@@ -233,7 +233,7 @@ export const levels = [
     correct_option:"Report Phish",
     neutral_option:"Ignore",
     wrong_option:"Approve Payment",
-    template_type:"mail"
+    template_type:""
   },
   {
     id:17,
@@ -261,7 +261,7 @@ export const levels = [
     correct_option:"Report Phish",
     neutral_option:"Ignore",
     wrong_option:"Pay Invoice",
-    template_type:"mail"
+    template_type:""
   },
   {
     id:19,
@@ -275,7 +275,7 @@ export const levels = [
     correct_option:"Report Phish",
     neutral_option:"Ignore",
     wrong_option:"Restore Account",
-    template_type:"mail"
+    template_type:""
   },
   {
     id:20,
@@ -304,5 +304,13 @@ export const levels = [
     neutral_option:"Skip",
     wrong_option:"Download Image",
     template_type:"image"
-  }, { id:22, Level_no:"l19", page_title:"Whaling ", Hint:"A high-level executive (C-suite) is pressured into an unusual, high-value financial or data request that demands secrecy.", js_path:"./levels/pre_hard/l19.js", category:"pre_hard", from_and_to:"Facts of whaling and Technology", level_text:null, correct_option:null, neutral_option:null, wrong_option:null, template_type:"mail" }, { id:23, Level_no:"l20", page_title:"spear+ vishing combo", Hint:"An email sets the stage, and then a call follows up.", js_path:"./levels/pre_hard/l20.js", category:"pre_hard", from_and_to:"Fake redirection to the user", level_text:null, correct_option:null, neutral_option:null, wrong_option:null, template_type:"message" }, { id:24, Level_no:"l21", page_title:"Qrcode Quishing", Hint:"Unsolicited QR codes.", js_path:"./levels/pre_hard/l21.js", category:"pre_hard", from_and_to:"fake phish to the user with vishing", level_text:null, correct_option:null, neutral_option:null, wrong_option:null, template_type:"poster" }, { id:25, Level_no:"l22", page_title:"Account takeover", Hint:"Unexpected password reset, login notification, or small, unusual internal emails.", js_path:"./levels/pre_hard/l22.js", category:"pre_hard", from_and_to:"fake qrcode redirection to the user", level_text:null, correct_option:null, neutral_option:null, wrong_option:null, template_type:"mail + browser" }, { id:26, Level_no:"l23", page_title:"Malicious HTML or embedded script in attachment", Hint:"Unusual file extensions like .html, .hta, or a seemingly harmless .docm with macros.", js_path:"./levels/pre_hard/l23.js", category:"pre_hard", from_and_to:"html page with malicious html header", level_text:null, correct_option:null, neutral_option:null, wrong_option:null, template_type:"browser" }, { id:27, Level_no:"bl4", page_title:"Shark", Hint:null, js_path:"./levels/pre_hard/bl4.js", category:"pre-hard", from_and_to:"Facts of shark and Technology", level_text:null, correct_option:null, neutral_option:null, wrong_option:null, template_type:"image" }, { id:28, Level_no:"l24", page_title:"Business Process Commpromise", Hint:"Unexpected changes to internal systems or processes that don't match formal approvals.", js_path:"./levels/hard/l24.js", category:"hard", from_and_to:"Fake redirection to the user", level_text:null, correct_option:null, neutral_option:null, wrong_option:null, template_type:"mail" }, { id:29, Level_no:"l25", page_title:"Compromised internal Account Spear-phish", Hint:"The email comes from a real colleague's address but contains uncharacteristic language or an unexpected request for a file or link.", js_path:"./levels/hard/l25.js", category:"hard", from_and_to:"Fake Spear- to reciever", level_text:null, correct_option:null, neutral_option:null, wrong_option:null, template_type:"mail + message" }, { id:30, Level_no:"l26", page_title:"Deepfake-assisted voice vishing", Hint:"A familiar voice makes an unusual or high-pressure request over the phone.", js_path:"./levels/hard/l26.js", category:"hard", from_and_to:"Fake vishin to reciever", level_text:null, correct_option:null, neutral_option:null, wrong_option:null, template_type:"message" }, { id:31, Level_no:"l27", page_title:"man-in-the-middle credential capture", Hint:"The login page has a vaidURL but asks for credentials too often.", js_path:"./levels/hard/27.js", category:"hard", from_and_to:"Fake captur to reciever", level_text:"null", correct_option:null, neutral_option:null, wrong_option:null, template_type:"browser + mail" }, { id:32, Level_no:"l28", page_title:"Targeted supply-chain Phishing", Hint:"An email comes from a legitimate, trusted third-party vendor about an unexpected software update.", js_path:"./levels/hard/l28.js", category:"hard", from_and_to:"Fake Phishing mail to reciever", level_text:null, correct_option:null, neutral_option:null, wrong_option:null, template_type:"mail" }, { id:33, Level_no:"bl5", page_title:"Elephant", Hint:null, js_path:"./levels/hard/bl5.js", category:"hard", from_and_to:"Facts of elephant and Technology", level_text:null, correct_option:null, neutral_option:null, wrong_option:null, template_type:"image" }, { id:34, Level_no:"l29", page_title:"AI-generated personalised campaigns", Hint:"Hyper-realistic, perfect language and strong context.", js_path:"./levels/advanced_hard/l29.js", category:"advanced_hard", from_and_to:"Fake campai to reciever", level_text:null, correct_option:null, neutral_option:null, wrong_option:null, template_type:"mail + browser" }, { id:35, Level_no:"l30", page_title:"Homograph/unicode confusablle domain attacks", Hint:"Characters lookidntical but are different.", js_path:"./levels/advanced_hard/l30.js", category:"advanced_hard", "from_and_to":"fake domain similar as the real domai ", level_text:null, correct_option:null, neutral_option:null, wrong_option:null, template_type:"browser + message" }, { id:36, Level_no:"l31", page_title:"credential replay+ slow drip exfiltration", Hint:"Receiving \"successful login\" notifications for a past password on an old account.", js_path:"./levels/advanced_hard/l31.js", category:"advanced_hard", from_and_to:"credential replay with extrafiltration", level_text:null, correct_option:null, neutral_option:null, wrong_option:null, template_type:"browser + message" }, { id:37, Level_no:"l32", page_title:"Multi-vector,adaptive BEC with reconnaissance", Hint:"The emails show an intimate, evolving knowledge of your current work.", js_path:"./levels/advanced_hard/l32.js", category:"advanced_hard", from_and_to:"Fake reconn to reciever", level_text:null, correct_option:null, neutral_option:null, wrong_option:null, template_type:"browser + mail + message" }, { id:38, Level_no:"bl6", page_title:"HoneyBee", Hint:null, js_path:"./levels/advanced_hard/bl6.js", category:"advanced_hard", from_and_to:"Facts of honeybee and Technology", level_text:null, correct_option:null, neutral_option:null, wrong_option:null, template_type:"image" }, { id:39, Level_no:"f", page_title:"Advanced Persistent Phishing", Hint:"Sender is a compromised internal account.", js_path:"./levels/final/f.js", category:"final", from_and_to:"Fake redirection to the user", level_text:null, correct_option:null, neutral_option:null, wrong_option:null, template_type:"mail + Browser+message+notification" }
+  }, { id:22, Level_no:"l19", page_title:"Whaling ", Hint:"A high-level executive (C-suite) is pressured into an unusual, high-value financial or data request that demands secrecy.", js_path:"./levels/pre_hard/l19.js", category:"pre_hard", from_and_to:"Facts of whaling and Technology", level_text:null,     correct_option:"Report Phish",
+    neutral_option:"Ignore",
+    wrong_option:"Click Link", template_type:"mail" }, { id:23, Level_no:"l20", page_title:"spear+ vishing combo", Hint:"An email sets the stage, and then a call follows up.", js_path:"./levels/pre_hard/l20.js", category:"pre_hard", from_and_to:"Fake redirection to the user", level_text:null, correct_option:null, neutral_option:null, wrong_option:null, template_type:"message" }, { id:24, Level_no:"l21", page_title:"Qrcode Quishing", Hint:"Unsolicited QR codes.", js_path:"./levels/pre_hard/l21.js", category:"pre_hard", from_and_to:"fake phish to the user with vishing", level_text:null, correct_option:null, neutral_option:null, wrong_option:null, template_type:"poster" }, { id:25, Level_no:"l22", page_title:"Account takeover", Hint:"Unexpected password reset, login notification, or small, unusual internal emails.", js_path:"./levels/pre_hard/l22.js", category:"pre_hard", from_and_to:"fake qrcode redirection to the user", level_text:null,     correct_option:"Report Phish",
+    neutral_option:"Ignore",
+    wrong_option:"Click Link", template_type:"mail + browser" }, { id:26, Level_no:"l23", page_title:"Malicious HTML or embedded script in attachment", Hint:"Unusual file extensions like .html, .hta, or a seemingly harmless .docm with macros.", js_path:"./levels/pre_hard/l23.js", category:"pre_hard", from_and_to:"html page with malicious html header", level_text:null, correct_option:null, neutral_option:null, wrong_option:null, template_type:"browser" }, { id:27, Level_no:"bl4", page_title:"Shark", Hint:null, js_path:"./levels/pre_hard/bl4.js", category:"pre-hard", from_and_to:"Facts of shark and Technology", level_text:null, correct_option:null, neutral_option:null, wrong_option:null, template_type:"image" }, { id:28, Level_no:"l24", page_title:"Business Process Commpromise", Hint:"Unexpected changes to internal systems or processes that don't match formal approvals.", js_path:"./levels/hard/l24.js", category:"hard", from_and_to:"Fake redirection to the user", level_text:null,    correct_option:"Report Phish",
+    neutral_option:"Ignore",
+    wrong_option:"Click Link",template_type:"mail" }, { id:29, Level_no:"l25", page_title:"Compromised internal Account Spear-phish", Hint:"The email comes from a real colleague's address but contains uncharacteristic language or an unexpected request for a file or link.", js_path:"./levels/hard/l25.js", category:"hard", from_and_to:"Fake Spear- to reciever", level_text:null, correct_option:null, neutral_option:null, wrong_option:null, template_type:"mail + message" }, { id:30, Level_no:"l26", page_title:"Deepfake-assisted voice vishing", Hint:"A familiar voice makes an unusual or high-pressure request over the phone.", js_path:"./levels/hard/l26.js", category:"hard", from_and_to:"Fake vishin to reciever", level_text:null, correct_option:null, neutral_option:null, wrong_option:null, template_type:"message" }, { id:31, Level_no:"l27", page_title:"man-in-the-middle credential capture", Hint:"The login page has a vaidURL but asks for credentials too often.", js_path:"./levels/hard/27.js", category:"hard", from_and_to:"Fake captur to reciever", level_text:"null", correct_option:null, neutral_option:null, wrong_option:null, template_type:"browser + mail" }, { id:32, Level_no:"l28", page_title:"Targeted supply-chain Phishing", Hint:"An email comes from a legitimate, trusted third-party vendor about an unexpected software update.", js_path:"./levels/hard/l28.js", category:"hard", from_and_to:"Fake Phishing mail to reciever", level_text:null,     correct_option:"Report Phish",
+    neutral_option:"Ignore",
+    wrong_option:"Click Link",, template_type:"mail" }, { id:33, Level_no:"bl5", page_title:"Elephant", Hint:null, js_path:"./levels/hard/bl5.js", category:"hard", from_and_to:"Facts of elephant and Technology", level_text:null, correct_option:null, neutral_option:null, wrong_option:null, template_type:"image" }, { id:34, Level_no:"l29", page_title:"AI-generated personalised campaigns", Hint:"Hyper-realistic, perfect language and strong context.", js_path:"./levels/advanced_hard/l29.js", category:"advanced_hard", from_and_to:"Fake campai to reciever", level_text:null, correct_option:null, neutral_option:null, wrong_option:null, template_type:"mail + browser" }, { id:35, Level_no:"l30", page_title:"Homograph/unicode confusablle domain attacks", Hint:"Characters lookidntical but are different.", js_path:"./levels/advanced_hard/l30.js", category:"advanced_hard", "from_and_to":"fake domain similar as the real domai ", level_text:null, correct_option:null, neutral_option:null, wrong_option:null, template_type:"browser + message" }, { id:36, Level_no:"l31", page_title:"credential replay+ slow drip exfiltration", Hint:"Receiving \"successful login\" notifications for a past password on an old account.", js_path:"./levels/advanced_hard/l31.js", category:"advanced_hard", from_and_to:"credential replay with extrafiltration", level_text:null, correct_option:null, neutral_option:null, wrong_option:null, template_type:"browser + message" }, { id:37, Level_no:"l32", page_title:"Multi-vector,adaptive BEC with reconnaissance", Hint:"The emails show an intimate, evolving knowledge of your current work.", js_path:"./levels/advanced_hard/l32.js", category:"advanced_hard", from_and_to:"Fake reconn to reciever", level_text:null, correct_option:null, neutral_option:null, wrong_option:null, template_type:"browser + mail + message" }, { id:38, Level_no:"bl6", page_title:"HoneyBee", Hint:null, js_path:"./levels/advanced_hard/bl6.js", category:"advanced_hard", from_and_to:"Facts of honeybee and Technology", level_text:null, correct_option:null, neutral_option:null, wrong_option:null, template_type:"image" }, { id:39, Level_no:"f", page_title:"Advanced Persistent Phishing", Hint:"Sender is a compromised internal account.", js_path:"./levels/final/f.js", category:"final", from_and_to:"Fake redirection to the user", level_text:null, correct_option:null, neutral_option:null, wrong_option:null, template_type:"mail + Browser+message+notification" }
 ];
