@@ -1,9 +1,15 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useProgress } from "../../../context/ProgressContext";
+import { levels } from "../../levels/level_data"; 
 import "../../../level.css";
 
-export default function MailTemplate({ level, onNextLevel }) {
+export default function MailLevelPage() {
   const { recordAction, completeLevel } = useProgress();
+  const navigate = useNavigate();
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const level = levels[currentIndex];
 
   const [dialog, setDialog] = useState({
     show: false,
@@ -17,13 +23,10 @@ export default function MailTemplate({ level, onNextLevel }) {
     recordAction(level.id, isCorrect);
     if (isCorrect) completeLevel(level.id);
 
-    // Set modal content
-    let title = "";
-    if (isCorrect) title = "Correct!";
-    else if (type === level.wrong_option) title = "Wrong!";
-    else title = "Neutral";
+    const title =
+      isCorrect ? "Correct!" : type === level.wrong_option ? "Wrong!" : "Neutral";
 
-    let message = `
+    const message = `
 Correct Email: ${level.crct_email || "N/A"}
 Hint: ${level.Hint || "No hint available"}
     `;
@@ -34,11 +37,14 @@ Hint: ${level.Hint || "No hint available"}
       message,
     });
 
-    // 🔥 Auto redirect to next level on correct answer
     if (isCorrect) {
       setTimeout(() => {
-        if (onNextLevel) onNextLevel();
-      }, 1500); // 1.5 seconds delay
+        if (currentIndex < levels.length - 1) {
+          setCurrentIndex((prev) => prev + 1);
+        } else {
+          alert("🎉 All levels completed!");
+        }
+      }, 1500);
     }
   };
 
@@ -48,7 +54,34 @@ Hint: ${level.Hint || "No hint available"}
 
   return (
     <>
-      <div className="mail-wrapper">
+      {/* 🔙 BACK TO DASHBOARD BUTTON */}
+      <div style={{ textAlign: "right", marginBottom: "10px" }}>
+        <button
+          onClick={() => navigate("/dashboard")}
+          style={{
+            background: "#444",
+            color: "white",
+            padding: "8px 14px",
+            borderRadius: "6px",
+            border: "none",
+            cursor: "pointer",
+            fontSize: "14px",
+          }}
+        >
+          ← Back to Dashboard
+        </button>
+      </div>
+
+      {/* EMAIL UI */}
+      <div
+        className="mail-wrapper"
+        style={{
+          padding: "20px",
+          backgroundColor: "#fff",
+          color: "#333",
+          fontFamily: "Arial",
+        }}
+      >
         <div className="mail-header">
           <h2>{level.subj || level.page_title}</h2>
 
@@ -91,7 +124,7 @@ Hint: ${level.Hint || "No hint available"}
         </div>
       </div>
 
-      {/* Modal */}
+      {/* MODAL */}
       {dialog.show && (
         <div className="dialog-overlay">
           <div className="dialog-box">
