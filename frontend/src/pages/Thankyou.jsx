@@ -22,7 +22,7 @@ export default function ThankYouPage() {
       <div className="thankyou-card">
         {/* Logo Circle */}
         <div className="logo-wrapper">
-          <div className="logo-circle">{avtar}</div>
+          <div className="logo-circle"><img src={'${process.env.PUBLIC_url}/img/avtar.png'}/></div>
         </div>
 
         {/* Title */}
