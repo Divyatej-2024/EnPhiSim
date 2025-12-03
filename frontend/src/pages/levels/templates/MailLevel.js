@@ -77,6 +77,7 @@ Hint: ${level.Hint || "No hint provided"}`;
             border: "none",
             cursor: "pointer",
             fontSize: "14px",
+            align:"left",
           }}
         >
           ← Back to Dashboard
@@ -91,6 +92,7 @@ Hint: ${level.Hint || "No hint provided"}`;
           backgroundColor: "#fff",
           color: "#333",
           fontFamily: "Arial",
+          margin:"20px",
           position: "relative",
         }}
       >
