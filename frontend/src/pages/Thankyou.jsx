@@ -10,7 +10,6 @@ export default function ThankYouPage() {
   const totalActions = Object.values(progress?.attempts || {}).flat().length || 0;
 
   const actions = Object.values(progress?.attempts || {}).flat();
-  const totalActions = actions.length;
   const safe = actions.filter(a => a.correct).length;
   const risky = actions.filter(a => !a.correct).length;
   const accuracy = totalActions > 0 ? ((safe / totalActions) * 100).toFixed(1) : "0";
