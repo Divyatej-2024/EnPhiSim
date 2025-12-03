@@ -50,7 +50,7 @@ export default function ThankYouPage() {
           <div className="summary-main">Accuracy: {accuracy}%</div>
           <div className="summary-sub">Safe: {safe} • Risky: {risky}</div>
           <div className="summary-note">Completed Levels: {completedLevels}</div>
-
+          </div>
       </div> {/* end thankyou-card */}
     </div>   {/* end thankyou-container */}
   );
