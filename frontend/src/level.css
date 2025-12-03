@@ -17,13 +17,6 @@ body {
   --grad-end: #06b6d4;
 }
 
-body {
-  margin: 0;
-  padding: 0;
-  background: linear-gradient(to bottom, var(--bg-dark), var(--bg-darker));
-  font-family: "Inter", sans-serif;
-  color: var(--text-light);
-}
 
 .thankyou-container {
   min-height: 100vh;
