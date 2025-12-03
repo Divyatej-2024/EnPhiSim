@@ -1,5 +1,5 @@
 import React from "react";
-import "../level.css";
+import "./ThankYou.css";
 
 import { useProgress } from "../context/ProgressContext";
 
@@ -8,6 +8,17 @@ export default function ThankYouPage() {
 
   const timeTaken = progress?.timeTaken || "{timeTaken}";
   const totalActions = Object.values(progress?.attempts || {}).flat().length || 0;
+
+  const { progress } = useProgress();
+
+  const actions = Object.values(progress?.attempts || {}).flat();
+  const totalActions = actions.length;
+  const safe = actions.filter(a => a.correct).length;
+  const risky = actions.filter(a => !a.correct).length;
+  const accuracy = totalActions > 0 ? ((safe / totalActions) * 100).toFixed(1) : "0";
+
+  const timeTaken = progress?.timeTaken || "00:00:00";
+  const completedLevels = Object.keys(progress?.completedLevels || {}).length;
 
   return (
     <div className="thankyou-container">
@@ -36,6 +47,12 @@ export default function ThankYouPage() {
           >
             See You Again
           </button>
+                {/* Summary Section */}
+        <div className="summary-box">
+          <div className="summary-title">Performance Overview</div>
+          <div className="summary-main">Accuracy: {accuracy}%</div>
+          <div className="summary-sub">Safe: {safe} • Risky: {risky}</div>
+          <div className="summary-note">Completed Levels: {completedLevels}</div>
         </div>
       </div>
     </div>
