@@ -14,7 +14,6 @@ export default function ThankYouPage() {
   const risky = actions.filter(a => !a.correct).length;
   const accuracy = totalActions > 0 ? ((safe / totalActions) * 100).toFixed(1) : "0";
 
-  const timeTaken = progress?.timeTaken || "00:00:00";
   const completedLevels = Object.keys(progress?.completedLevels || {}).length;
 
   return (
