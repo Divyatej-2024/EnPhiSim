@@ -23,7 +23,7 @@ export default function App() {
 
         {/* 👇👇👇 THE FIX: Captures BOTH category and levelId parameters 👇👇👇 */}
         <Route path="/levels/:category/:levelId" element={<LevelPage />} />
-      <Route path="/thankyou" element={<Thankyou/>}/>
+        <Route path="/thankyou" element={<Thankyou />}/>
         {/* catch-all */}
         <Route path="*" element={<div style={{ padding: 24, color: "#000" }}>Page not found</div>} />
       </Routes>
