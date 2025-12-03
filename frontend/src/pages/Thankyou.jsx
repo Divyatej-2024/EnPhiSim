@@ -1,6 +1,6 @@
 import React from "react";
 import "../level.css";
-
+import avtar from "../../public/img/avtar"
 import { useProgress } from "../context/ProgressContext";
 
 export default function ThankYouPage() {
@@ -22,7 +22,7 @@ export default function ThankYouPage() {
       <div className="thankyou-card">
         {/* Logo Circle */}
         <div className="logo-wrapper">
-          <div className="logo-circle">LOGO</div>
+          <div className="logo-circle">{avtar}</div>
         </div>
 
         {/* Title */}
