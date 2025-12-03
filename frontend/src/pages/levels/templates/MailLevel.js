@@ -92,7 +92,7 @@ Hint: ${level.Hint || "No hint provided"}`;
           backgroundColor: "#fff",
           color: "#333",
           fontFamily: "Arial",
-          marginTop:"500px",
+          marginTop:"480px",
           marginRight:"500px",
           marginLeft:"500px",
           position: "relative",
