@@ -1,6 +1,5 @@
 import React from "react";
 import "../level.css";
-import avtar from "../../public/img/avtar"
 import { useProgress } from "../context/ProgressContext";
 
 export default function ThankYouPage() {
