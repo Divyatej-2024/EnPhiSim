@@ -9,8 +9,6 @@ export default function ThankYouPage() {
   const timeTaken = progress?.timeTaken || "{timeTaken}";
   const totalActions = Object.values(progress?.attempts || {}).flat().length || 0;
 
-  const { progress } = useProgress();
-
   const actions = Object.values(progress?.attempts || {}).flat();
   const totalActions = actions.length;
   const safe = actions.filter(a => a.correct).length;
