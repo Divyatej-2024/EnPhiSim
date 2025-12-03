@@ -4,7 +4,6 @@ import "../level.css";
 
 export default function ThankYouPage() {
   useEffect(() => {
-    // timestamp
     const ts = document.getElementById("ts");
     if (ts) ts.textContent = new Date().toLocaleString();
   }, []);
