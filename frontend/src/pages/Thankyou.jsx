@@ -1,5 +1,5 @@
 import React from "react";
-import "./ThankYou.css";
+import "../level.css";
 
 export default function ThankYouPage() {
   return (
