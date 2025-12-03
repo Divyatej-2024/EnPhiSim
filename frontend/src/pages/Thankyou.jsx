@@ -1,7 +1,14 @@
 import React from "react";
 import "../level.css";
 
+import { useProgress } from "../context/ProgressContext";
+
 export default function ThankYouPage() {
+  const { progress } = useProgress();
+
+  const timeTaken = progress?.timeTaken || "{timeTaken}";
+  const totalActions = Object.values(progress?.attempts || {}).flat().length || 0;
+
   return (
     <div className="thankyou-container">
       <div className="thankyou-card">
@@ -19,7 +26,7 @@ export default function ThankYouPage() {
 
         {/* Actions Section */}
         <p className="ty-line">Total Actions</p>
-        <p className="ty-value">0 Actions</p>
+        <p className="ty-value">{totalActions} Actions</p>
 
         {/* Button */}
         <div className="ty-btn-wrap">
