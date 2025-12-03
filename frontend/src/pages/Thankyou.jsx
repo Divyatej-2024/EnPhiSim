@@ -21,7 +21,12 @@ export default function ThankYouPage() {
       <div className="thankyou-card">
         {/* Logo Circle */}
         <div className="logo-wrapper">
-          <div className="logo-circle"><img src={'${process.env.PUBLIC_url}/img/avtar.png'}/></div>
+          <div className="logo-circle"><img
+        src={`${process.env.PUBLIC_URL}/img/avtar.png`}
+        alt="EnPhiSim Logo"
+        width="160"
+        style={{ marginBottom: "1.5rem" }}
+      /></div>
         </div>
 
         {/* Title */}
