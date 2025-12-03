@@ -44,6 +44,7 @@ export default function ThankYouPage() {
           >
             See You Again
           </button>
+          </div>
                 {/* Summary Section */}
         <div className="summary-box">
           <div className="summary-title">Performance Overview</div>
@@ -51,7 +52,7 @@ export default function ThankYouPage() {
           <div className="summary-sub">Safe: {safe} • Risky: {risky}</div>
           <div className="summary-note">Completed Levels: {completedLevels}</div>
           </div>
-      </div> {/* end thankyou-card */}
-    </div>   {/* end thankyou-container */}
+      </div> 
+    </div>  
   );
 }
