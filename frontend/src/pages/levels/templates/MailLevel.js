@@ -185,10 +185,10 @@ Hint: ${level.Hint || "No hint provided"}`;
             <button className="dialog-close" onClick={closeDialog}>
               Close
             </button>
-        </div>
           </div>
         </div>
       )}
+</div>
     </>
   );
 }
