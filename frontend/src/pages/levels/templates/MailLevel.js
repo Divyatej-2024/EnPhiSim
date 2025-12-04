@@ -84,7 +84,7 @@ Hint: ${level.Hint || "No hint provided"}`;
         </button>
       </div>
 <div 
-    className="MailWrapper">
+    className="mail-wrapper">
       {/* EMAIL UI */}
       <div
         className="mail-wrapper"
