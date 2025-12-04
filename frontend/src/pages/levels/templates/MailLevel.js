@@ -83,7 +83,8 @@ Hint: ${level.Hint || "No hint provided"}`;
           ← Back to Dashboard
         </button>
       </div>
-
+<div 
+    className="MailWrapper">
       {/* EMAIL UI */}
       <div
         className="mail-wrapper"
@@ -184,6 +185,7 @@ Hint: ${level.Hint || "No hint provided"}`;
             <button className="dialog-close" onClick={closeDialog}>
               Close
             </button>
+        </div>
           </div>
         </div>
       )}
