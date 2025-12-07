@@ -1,137 +1,132 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import "../../../level.css";
+import React from "react";
 
-export default function MailLevel({ level, onOptionClick, onNextLevel }) {
-  if (!level) return <div>Level data not found.</div>;
-
-  const {
-    level_text,
-    page_title,
-    phish_email,
-    crct_email,
-    from_and_to,
-    subj,
-    category,
-    id,
-  } = level;
-
-  const subject = subj || "No Subject";
-
-  const options = [
-    { key: "correct", label: level.correct_option, correct: true, type: "link" },
-    { key: "wrong", label: level.wrong_option, correct: false, type: "button" },
-    { key: "neutral", label: level.neutral_option, correct: false, type: "button" },
-  ].filter(opt => opt.label);
-
-  const container = {
-    background: "#f8f8f8",
-    maxWidth: "800px",
-    margin: "20px auto",
-    borderRadius: "8px",
-    boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-    fontFamily: "Arial, sans-serif",
-  };
-
-  const header = {
-    background: "#fff",
-    padding: "20px",
-    borderBottom: "1px solid #ddd",
-    display: "flex",
-    alignItems: "center",
-    gap: "15px",
-  };
-
-  const profilePhoto = {
-    width: "50px",
-    height: "50px",
-    borderRadius: "50%",
-    objectFit: "cover",
-  };
-
-  const optionsContainer = {
-    padding: "20px",
-    textAlign: "center",
-  };
-
-  const buttonBase = {
-    margin: "0 10px",
-    padding: "10px 20px",
-    borderRadius: "4px",
-    cursor: "pointer",
-    fontWeight: "600",
-    border: "none",
-    transition: "0.2s",
-  };
-
-  const correctButton = { ...buttonBase, background: "#4CAF50", color: "#fff" };
-  const wrongButton = { ...buttonBase, background: "#f44336", color: "#fff" };
-  const neutralButton = { ...buttonBase, background: "#ccc", color: "#333" };
-  const backButton = { ...buttonBase, background: "#2196F3", color: "#fff" };
-
+export default function EnphisimBrowser({ children }) {
   return (
-    <div>
-      {/* Back to Dashboard */}
-      <div style={{ textAlign: "center", paddingBottom: "20px" }}>
-        <Link to="/dashboard" style={backButton}>
-          Back to Dashboard
-        </Link>
+    <div style={styles.browser}>
+      {/* Top Browser Bar */}
+      <div style={styles.browserTop}>
+        <div style={styles.btns}>
+          <div style={{ ...styles.circle, background: "#ff5f57" }}></div>
+          <div style={{ ...styles.circle, background: "#ffbd2e" }}></div>
+          <div style={{ ...styles.circle, background: "#28c840" }}></div>
+        </div>
+
+        {/* Tabs */}
+        <div style={styles.tabs}>
+          <div style={{ ...styles.tab, ...styles.activeTab }}>ENPHISIM · Mail</div>
+          <div style={styles.tab}>Dashboard</div>
+          <div style={styles.tab}>User Report</div>
+        </div>
+
+        {/* URL Bar */}
+        <div style={styles.urlBar}>
+          <span style={styles.secure}>🔒</span>
+          https://mail.enphisim.com/inbox
+        </div>
       </div>
 
-      <div style={container}>
-        {/* Page Title */}
-        <h2 style={{ textAlign: "center", paddingTop: "15px" }}>{page_title}</h2>
+      {/* Main Content */}
+      <div style={styles.content}>
+        <div style={styles.contentCard}>
+          {/* Render anything inside the browser */}
+          {children ? (
+            children
+          ) : (
+            <>
+              <h2>ENPHISIM Mail Viewer</h2>
+              <p>This is a placeholder. Replace with phishing content or levels.</p>
 
-        {/* Email Header */}
-        <div style={header}>
-          <img
-            src="/avtar.png"
-            alt="Profile"
-            style={profilePhoto}
-          />
-          <div style={{ color: "#333" }}>
-            <p><strong>From/To:</strong> {from_and_to || "sender@example.com"}</p>
-            <p><strong>Subject:</strong> {subject}</p>
-            <p>
-              <strong>Email:</strong>{" "}
-              <span title={crct_email}>{phish_email}</span>
-            </p>
-          </div>
-        </div>
-
-        {/* Email Body */}
-        <div style={{ padding: "20px", background: "#fff", color: "#333" }}>
-          {level_text || "This is the email body."}
-        </div>
-
-        {/* Options */}
-        <div style={optionsContainer}>
-          {options.map(opt => {
-            if (opt.type === "link") {
-              return (
-                <Link
-                  key={opt.key}
-                  to={`/levels/${category}/l${id + 1}`}
-                  style={correctButton}
-                  onClick={() => onOptionClick(opt)}
-                >
-                  {opt.label}
-                </Link>
-              );
-            } else {
-              return (
-                <button
-                  key={opt.key}
-                  style={opt.key === "wrong" ? wrongButton : neutralButton}
-                  onClick={() => onOptionClick(opt)}
-                >
-                  {opt.label}
-                </button>
-              );
-            }
-          })}
+              <ul>
+                <li>Sender: it-supp0rt@enphisim.com</li>
+                <li>Subject: Reset Your Password Urgently</li>
+                <li>Phishing indicators go here…</li>
+              </ul>
+            </>
+          )}
         </div>
       </div>
     </div>
   );
 }
+
+const styles = {
+  browser: {
+    width: "100%",
+    height: "100vh",
+    display: "flex",
+    flexDirection: "column",
+    background: "#161b22",
+    color: "#e6edf3",
+    overflow: "hidden",
+  },
+
+  browserTop: {
+    display: "flex",
+    alignItems: "center",
+    padding: "8px 12px",
+    gap: "8px",
+    background: "#0d1117",
+    borderBottom: "1px solid #21262d",
+  },
+
+  btns: {
+    display: "flex",
+    gap: "6px",
+  },
+
+  circle: {
+    width: "12px",
+    height: "12px",
+    borderRadius: "50%",
+  },
+
+  tabs: {
+    display: "flex",
+    gap: "4px",
+    marginLeft: "10px",
+  },
+
+  tab: {
+    padding: "6px 12px",
+    background: "#21262d",
+    borderRadius: "4px",
+    fontSize: "13px",
+    color: "#c9d1d9",
+  },
+
+  activeTab: {
+    background: "#2d333b",
+    borderBottom: "2px solid #2382f1",
+    color: "#ffffff",
+  },
+
+  urlBar: {
+    flex: 1,
+    background: "#21262d",
+    padding: "6px 10px",
+    borderRadius: "4px",
+    color: "#8b949e",
+    fontSize: "14px",
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+  },
+
+  secure: {
+    color: "#3fb950",
+    marginRight: "6px",
+  },
+
+  content: {
+    flex: 1,
+    background: "#0d1117",
+    padding: "20px",
+    overflowY: "auto",
+  },
+
+  contentCard: {
+    background: "#161b22",
+    border: "1px solid #21262d",
+    padding: "20px",
+    borderRadius: "6px",
+  },
+};
