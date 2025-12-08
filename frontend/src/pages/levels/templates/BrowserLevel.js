@@ -82,7 +82,7 @@ export default function BrowserMock({ children }) {
         </div>
 
         <div className="tabs">
-          <div className="tab active">{page_title}</div>
+          <div className="tab active">{level.page_title}</div>
           <div className="tab">+</div>
         </div>
       </div>
