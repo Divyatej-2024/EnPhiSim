@@ -4,7 +4,19 @@ import { useProgress } from "../../../context/ProgressContext";
 import { levels } from "../../levels/level_data";
 import "../../../level.css"; // make sure to create this file or change the path
 
-export default function BrowserMock({ url, title, children }) {
+export default function BrowserMock({ url,level, onOptionClick, onNextLevel, children }) {
+if (!level) return <div>Level data not found.</div>;
+  const {
+    level_text,
+    page_title,
+    phish_email,
+    crct_email,
+    from_and_to,
+    subj,
+    category,
+    id,
+  } = level;
+
   const { recordAction, completeLevel } = useProgress();
   const navigate = useNavigate();
 
@@ -88,7 +100,7 @@ export default function BrowserMock({ url, title, children }) {
         </div>
 
         <div className="tabs">
-          <div className="tab active">{title || "ENPHISIM"}</div>
+          <div className="tab active">{level.page_title || "ENPHISIM"}</div>
           <div className="tab">New Tab</div>
         </div>
       </div>
