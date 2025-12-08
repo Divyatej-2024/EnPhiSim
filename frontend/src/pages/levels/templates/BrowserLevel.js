@@ -4,7 +4,7 @@ import { useProgress } from "../../../context/ProgressContext";
 import { levels } from "../../levels/level_data";
 import "../../../level.css"; // make sure to create this file or change the path
 
-export default function BrowserMock({ url,level, onOptionClick, onNextLevel, children }) {
+export default function BrowserMock({ url, onOptionClick, onNextLevel, children }) {
 if (!level) return <div>Level data not found.</div>;
   const {
     level_text,
