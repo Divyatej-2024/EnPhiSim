@@ -102,9 +102,12 @@ export default function BrowserMock({ children }) {
       </div>
 
       {/* Render the webpage content (HTML layout you created) */}
-      <div className="webpage-container">
-        {React.cloneElement(children, { handleCheck })}
-      </div>
+<div className="webpage-container">
+  {children
+    ? React.cloneElement(children, { handleCheck })
+    : <div>No webpage content provided</div>}
+</div>
+
 
       {/* Dialog Popup */}
       {dialog.show && (
