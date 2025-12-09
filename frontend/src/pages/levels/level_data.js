@@ -47,7 +47,7 @@ export const levels = [
     correct_option:"Report Phish",
     neutral_option:"Ignore",
     wrong_option:"Click Link",
-    template_type:""
+    template_type:"mail"
   },
   {
     id:4,
@@ -63,7 +63,7 @@ export const levels = [
     correct_option:"Report Phish",
     neutral_option:"Ignore",
     wrong_option:"Claim Prize",
-    template_type:""
+    template_type:"mail"
   },
   {
     id:5,
@@ -79,7 +79,7 @@ export const levels = [
     correct_option:"Report Phish",
     neutral_option:"Ignore",
     wrong_option:"Open Attachment",
-    template_type:""
+    template_type:"mail"
   },
   {
     id:6,
