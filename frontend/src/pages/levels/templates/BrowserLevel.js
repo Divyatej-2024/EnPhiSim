@@ -1,21 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useProgress } from "../../../context/ProgressContext";
-import { levels } from "../../levels/level_data";
 import "../../../level.css";
 
 export default function BrowserMock({ children }) {
-
-  /* ---------------------------
-     🔹 ALWAYS: Hooks go first
-  ----------------------------*/
   const { recordAction, completeLevel } = useProgress();
   const navigate = useNavigate();
 
+  const [levels, setLevels] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-
-  // Get current level (browser type)
-  const level = levels[currentIndex];
 
   const [dialog, setDialog] = useState({
     show: false,
@@ -24,8 +17,24 @@ export default function BrowserMock({ children }) {
   });
 
   /* ---------------------------
-     🔹 Prevent crash if no data
+     🔹 FETCH LEVEL DATA FROM LIVE SERVER
   ----------------------------*/
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_API_URL}/levels`)
+      .then((res) => res.json())
+      .then((data) => setLevels(data))
+      .catch((err) => console.error("Error fetching levels:", err));
+  }, []);
+
+  /* ---------------------------
+     🔹 Prevent crash while loading
+  ----------------------------*/
+  if (levels.length === 0) {
+    return <div>Loading levels...</div>;
+  }
+
+  const level = levels[currentIndex];
+
   if (!level) {
     return <div>Level data not found.</div>;
   }
@@ -36,7 +45,6 @@ export default function BrowserMock({ children }) {
     url,
     hint,
     correct_option,
-    wrong_option,
     correct_info,
   } = level;
 
@@ -55,7 +63,6 @@ export default function BrowserMock({ children }) {
       message: `Correct Info: ${correct_info}\nHint: ${hint}`,
     });
 
-    // Move to next level
     if (isCorrect) {
       setTimeout(() => {
         if (currentIndex < levels.length - 1) {
@@ -72,7 +79,6 @@ export default function BrowserMock({ children }) {
 
   return (
     <div className="browser-window">
-
       {/* Browser Top Bar */}
       <div className="top-bar">
         <div className="traffic-lights">
@@ -82,7 +88,7 @@ export default function BrowserMock({ children }) {
         </div>
 
         <div className="tabs">
-          <div className="tab active">{level.page_title}</div>
+          <div className="tab active">{page_title}</div>
           <div className="tab">+</div>
         </div>
       </div>
@@ -101,13 +107,12 @@ export default function BrowserMock({ children }) {
         />
       </div>
 
-      {/* Render the webpage content (HTML layout you created) */}
-<div className="webpage-container">
-  {children
-    ? React.cloneElement(children, { handleCheck })
-    : <div>No webpage content provided</div>}
-</div>
-
+      {/* Render the webpage content */}
+      <div className="webpage-container">
+        {children
+          ? React.cloneElement(children, { handleCheck })
+          : <div>No webpage content provided</div>}
+      </div>
 
       {/* Dialog Popup */}
       {dialog.show && (
