@@ -1,28 +1,82 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useProgress } from "../../../context/ProgressContext";
 import "../../../level.css";
 
-export default function MailLevel({ level, onOptionClick, onNextLevel }) {
-  if (!level) return <div>Level data not found.</div>;
+export default function BrowserMock({ children }) {
+  const { recordAction, completeLevel } = useProgress();
+  const navigate = useNavigate();
+
+  const [levels, setLevels] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const [dialog, setDialog] = useState({
+    show: false,
+    title: "",
+    message: "",
+  });
+
+  /* ---------------------------
+     🔹 FETCH LEVEL DATA FROM LIVE SERVER
+  ----------------------------*/
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_API_URL}/levels`)
+      .then((res) => res.json())
+      .then((data) => setLevels(data))
+      .catch((err) => console.error("Error fetching levels:", err));
+  }, []);
+
+  /* ---------------------------
+     🔹 Prevent crash while loading
+  ----------------------------*/
+  if (levels.length === 0) {
+    return <div>Loading levels...</div>;
+  }
+
+  const level = levels[currentIndex];
+
+  if (!level) {
+    return <div>Level data not found.</div>;
+  }
 
   const {
-    level_text,
-    page_title,
-    phish_email,
-    crct_email,
-    from_and_to,
-    subj,
-    category,
     id,
+    page_title,
+    url,
+    hint,
+    correct_option,
+    correct_info,
   } = level;
 
-  const subject = subj || "No Subject";
+  /* ---------------------------
+     🔹 When user clicks option
+  ----------------------------*/
+  const handleCheck = (option) => {
+    const isCorrect = option === correct_option;
 
-  const options = [
-    { key: "correct", label: level.correct_option, correct: true, type: "link" },
-    { key: "wrong", label: level.wrong_option, correct: false, type: "button" },
-    { key: "neutral", label: level.neutral_option, correct: false, type: "button" },
-  ].filter(opt => opt.label);
+    recordAction(id, isCorrect);
+    if (isCorrect) completeLevel(id);
+
+    setDialog({
+      show: true,
+      title: isCorrect ? "Correct!" : "Incorrect!",
+      message: `Correct Info: ${correct_info}\nHint: ${hint}`,
+    });
+
+    if (isCorrect) {
+      setTimeout(() => {
+        if (currentIndex < levels.length - 1) {
+          setCurrentIndex((prev) => prev + 1);
+        } else {
+          navigate("/thankyou");
+        }
+      }, 1200);
+    }
+  };
+
+  const closeDialog = () =>
+    setDialog({ ...dialog, show: false });
+
 
   const container = {
     background: "#f8f8f8",

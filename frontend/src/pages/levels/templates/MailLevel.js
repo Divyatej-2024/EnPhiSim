@@ -1,12 +1,94 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useProgress } from "../../../context/ProgressContext";
-import { levels } from "../../levels/level_data";
-import "../../../level.css"; // Keep original styles for buttons/dialogs
+import "../../../level.css";
 
-// Import custom styles for the new Gmail-like layout
-// NOTE: For a real project, you would put the CSS in a dedicated file,
-// but for this example, the styles are included as a string/object for demonstration.
+export default function MockMailTemplate() {
+  const { recordAction, completeLevel } = useProgress();
+  const navigate = useNavigate();
+
+  const [levels, setLevels] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const [dialog, setDialog] = useState({
+    show: false,
+    title: "",
+    message: "",
+  });
+
+  const [hover, setHover] = useState(false);               // FIXED
+  const [emailDialog, setEmailDialog] = useState(false);   // FIXED
+
+  const getSenderInitial = (email) =>                      // FIXED
+    email ? email[0].toUpperCase() : "?";
+
+  const openEmailDialog = () =>                            // FIXED
+    setEmailDialog(true);
+
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_API_URL}/levels`)
+      .then((res) => res.json())
+      .then((data) => setLevels(data))
+      .catch((err) => console.error("Error fetching levels:", err));
+  }, []);
+  /* ---------------------------
+     🔹 Prevent crash while loading
+  ----------------------------*/
+  if (levels.length === 0) {
+    return <div>Loading levels...</div>;
+  }
+
+  const level = levels[currentIndex];
+
+  if (!level) {
+    return <div>Level data not found.</div>;
+  }
+
+  const {
+    id,
+    page_title,
+    url,
+    hint,
+    correct_option,
+    correct_info,
+  } = level;
+const dummyEmails = [
+    { sender: "LinkedIn", subject: "New connection request", content: "..." },
+    { sender: "Amazon", subject: "Your order has shipped", content: "..." },
+    { sender: level.phish_email, subject: level.subj || level.page_title, content: level.level_text, isCurrent: true },
+    { sender: "Netflix", subject: "Update your payment details", content: "..." },
+    { sender: "Bank of America", subject: "Security alert on your account", content: "..." },
+  ];
+  
+  /* ---------------------------
+     🔹 When user clicks option
+  ----------------------------*/
+  const handleCheck = (option) => {
+    const isCorrect = option === correct_option;
+
+    recordAction(id, isCorrect);
+    if (isCorrect) completeLevel(id);
+
+    setDialog({
+      show: true,
+      title: isCorrect ? "Correct!" : "Incorrect!",
+      message: `Correct Info: ${correct_info}\nHint: ${hint}`,
+    });
+
+    if (isCorrect) {
+      setTimeout(() => {
+        if (currentIndex < levels.length - 1) {
+          setCurrentIndex((prev) => prev + 1);
+        } else {
+          navigate("/thankyou");
+        }
+      }, 1200);
+    }
+  };
+
+  const closeDialog = () =>
+    setDialog({ ...dialog, show: false });
+
 
 const gmailStyles = `
   .top-bar {
@@ -163,81 +245,7 @@ const gmailStyles = `
     padding: 10px 20px;
     font-size: 16px;
   }
-  /* Original dialog styles from level.css are assumed to handle the dialog-overlay/box */
-`;
-
-export default function MockMailLevelPage() {
-  const { recordAction, completeLevel } = useProgress();
-  const navigate = useNavigate();
-
-  const [currentIndex, setCurrentIndex] = useState(0);
-  // Ensure the levels data is available. Using the first item for the current "open email"
-  const level = levels[currentIndex] || {};
-
-  const [hover, setHover] = useState(false);
-
-  const [dialog, setDialog] = useState({
-    show: false,
-    title: "",
-    message: "",
-  });
-
-  // Dummy email list items to simulate a full inbox
-  const dummyEmails = [
-    { sender: "LinkedIn", subject: "New connection request", content: "..." },
-    { sender: "Amazon", subject: "Your order has shipped", content: "..." },
-    { sender: level.phish_email, subject: level.subj || level.page_title, content: level.level_text, isCurrent: true },
-    { sender: "Netflix", subject: "Update your payment details", content: "..." },
-    { sender: "Bank of America", subject: "Security alert on your account", content: "..." },
-  ];
-
-  const handleClick = (type) => {
-    const isCorrect = type === level.correct_option;
-
-    recordAction(level.id, isCorrect);
-    if (isCorrect) completeLevel(level.id);
-
-    const title = isCorrect
-      ? "Correct!"
-      : type === level.wrong_option
-      ? "Wrong!"
-      : "Neutral";
-
-    const message = `Correct Email: ${level.crct_email || "N/A"}\nHint: ${level.Hint || "No hint provided"}`;
-
-    setDialog({
-      show: true,
-      title,
-      message,
-    });
-
-    if (isCorrect) {
-      setTimeout(() => {
-        if (currentIndex < levels.length - 1) {
-          setCurrentIndex((prev) => prev + 1);
-        } else {
-          alert("🎉 All levels completed!");
-        }
-      }, 1500);
-    }
-  };
-
-  const closeDialog = () => {
-    setDialog({ ...dialog, show: false });
-  };
-
-  const openEmailDialog = () => {
-    setDialog({
-      show: true,
-      title: "Verified Sender Information",
-      message: `Correct Email: ${level.crct_email || "N/A"}`,
-    });
-  };
-
-  const getSenderInitial = (email) => {
-    return email ? email[0].toUpperCase() : 'U';
-  };
-
+  /* Original dialog styles from level.css are assumed to handle the dialog-overlay/box */`;
   return (
     <>
       {/* Inject custom styles */}
