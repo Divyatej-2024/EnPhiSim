@@ -1,4 +1,4 @@
-import matplotlib.pyplot as plt
+from matplotlib import pyplot as plt
 import seaborn as sns
 from sklearn.metrics import classification_report, confusion_matrix
 import numpy as np
