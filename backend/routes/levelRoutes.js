@@ -1,9 +1,16 @@
 // backend/routes/levelRoutes.js
-const express = require('express');
-const { getLevels, createLevel } = require('../controllers/LevelController');
+import express from "express";
+import Level from "../models/Level.js";
+
 const router = express.Router();
 
-router.get('/', getLevels);
-router.post('/', createLevel);
+router.get("/levels", async (req, res) => {
+  try {
+    const levels = await Level.find();
+    res.json(levels);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
-module.exports = router;
+export default router;

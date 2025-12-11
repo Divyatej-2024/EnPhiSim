@@ -10,11 +10,15 @@ export default function Dashboard() {
   const { progress } = useProgress();
   const [levels, setLevels] = useState([]);
 
+  useEffect(() => {
+  console.log("Levels from backend:", levels);
+}, [levels]);
+
   // Fetch levels from live backend
   useEffect(() => {
     const fetchLevels = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/levels`);
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/levels`);
         const data = await response.json();
         setLevels(data);
       } catch (error) {
@@ -97,13 +101,13 @@ export default function Dashboard() {
         <ul className="level-list">
           {levels.map((lvl) => (
             <li
-              key={lvl.id}
+              key={lvl._id}
               className={
-                progress.completedLevels[lvl.id] ? "completed" : "pending"
+                progress.completedLevels[lvl._id] ? "completed" : "pending"
               }
             >
               <Link to={`/levels/${lvl.category}/${lvl.Level_no}`}>
-                {progress.completedLevels[lvl.id] ? "✅" : "➡️"} {lvl.page_title}
+                {progress.completedLevels[lvl._id] ? "✅" : "➡️"} {lvl.title}
               </Link>
             </li>
           ))}
