@@ -100,16 +100,16 @@ export default function Dashboard() {
 
         <ul className="level-list">
           {levels.map((lvl) => (
-            <li
-              key={lvl._id}
-              className={
-                progress.completedLevels[lvl._id] ? "completed" : "pending"
-              }
-            >
-              <Link to={`/levels/${lvl.category}/${lvl.Level_no}`}>
-                {progress.completedLevels[lvl._id] ? "✅" : "➡️"} {lvl.title}
-              </Link>
-            </li>
+<li
+  key={lvl._id}
+  className={
+    progress.completedLevels[lvl.Level_no] ? "completed" : "pending"
+  }
+>
+  <Link to={`/levels/${lvl.category}/${lvl.Level_no}`}>
+    {progress.completedLevels[lvl.Level_no] ? "✅" : "➡️"} {lvl.title}
+  </Link>
+</li>
           ))}
         </ul>
       </details>
