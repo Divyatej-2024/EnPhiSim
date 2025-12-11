@@ -26,6 +26,15 @@ app.use("/api", mlRoutes);
 
 // Optional root route
 app.get("/", (req, res) => res.send("Backend running. Use /api/levels for data."));
+app.get("/api/levels", async (req, res) => {
+  try {
+    const Level = mongoose.model("Level"); // or import your Level model
+    const levels = await Level.find();
+    res.json(levels);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 app.listen(process.env.PORT || 4000, () =>
   console.log("Backend Running on port:", process.env.PORT || 4000)
