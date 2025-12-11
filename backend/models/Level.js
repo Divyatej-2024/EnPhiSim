@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 const mongoose = require("mongoose");
 
 const LevelSchema = new mongoose.Schema({
@@ -19,3 +21,4 @@ const LevelSchema = new mongoose.Schema({
 }, { collection: "levelDataset" }); // <--- IMPORTANT
 
 module.exports = mongoose.model("Level", LevelSchema);
+export default Level;
