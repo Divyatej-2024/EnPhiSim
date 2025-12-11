@@ -1,9 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useProgress } from "../../../context/ProgressContext";
+import { Link } from "react-router-dom";
 import "../../../level.css";
 
-export default function BrowserMock({ children }) {
+export default function ImageLevel() {
+
+  const { 
+    from_and_to, 
+    subject,
+    crct_email,
+    phish_email,
+    level_text,
+    options,
+    category
+  } = level;
+
+  const onOptionClick = (option) => {
+    // your logic here
+  };
+
+
   const { recordAction, completeLevel } = useProgress();
   const navigate = useNavigate();
 

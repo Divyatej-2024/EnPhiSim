@@ -1,13 +1,19 @@
-import React from "react";
+import React,{useState, useEffect} from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useProgress } from "../context/ProgressContext";
-import { levels } from "./levels/level_data";
 import TemplateRenderer from "./levels/TemplateRenderer";
 
 export default function LevelPage() {
   const { category, levelId } = useParams();
   const navigate = useNavigate();
   const { recordAction, markLevelComplete } = useProgress();
+const [levels, setLevels] = useState([]);
+
+useEffect(() => {
+  fetch(`${process.env.REACT_APP_API_URL}/levels`)
+    .then(res => res.json())
+    .then(data => setLevels(data));
+}, []);
 
   const level = levels.find(
     (l) =>

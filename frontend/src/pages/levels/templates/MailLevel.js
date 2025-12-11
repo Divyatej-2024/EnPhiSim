@@ -3,9 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { useProgress } from "../../../context/ProgressContext";
 import "../../../level.css";
 
+
 export default function MockMailTemplate() {
   const { recordAction, completeLevel } = useProgress();
   const navigate = useNavigate();
+const handleClick = (option) => {
+  console.log("Option clicked:", option);
+};
 
   const [levels, setLevels] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -311,19 +315,19 @@ const gmailStyles = `
                   <p>
                     <strong>
                       {level.phish_email}{" "}
-                      <span
-                        onMouseEnter={() => setHover(true)}
-                        onMouseLeave={() => setHover(false)}
-                        onClick={openEmailDialog}
-                        style={{
-                          cursor: "pointer",
-                          textDecoration: "underline",
-                          color: "#1a73e8",
-                          marginLeft: "5px",
-                        }}
-                      >
-                        &lt;{level.phish_email}&gt;
-                      </span>
+ <span
+  onMouseEnter={() => setHover(true)}
+  onMouseLeave={() => setHover(false)}
+  style={{
+    color: hover ? "red" : "gray",
+    cursor: "pointer",
+    marginLeft: "8px",
+    fontSize: "12px",
+  }}
+>
+  {hover ? level.correct_info : "Show details"}
+</span>
+
                     </strong>
                   </p>
                   <p>

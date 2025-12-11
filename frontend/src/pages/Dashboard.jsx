@@ -1,14 +1,20 @@
 // src/components/Dashboard.js
 
-import React from "react";
+import React,{useState, useEffect} from "react";
 import { Link } from "react-router-dom";
 import { useProgress } from "../context/ProgressContext";
-import { levels } from "./levels/level_data";
 import useDashboardAnalytics from "./useDashboardAnalytics";
 import "./dashboard.css";
 
 export default function Dashboard() {
   const { progress } = useProgress();
+const [levels, setLevels] = useState([]);
+
+useEffect(() => {
+  fetch(`${process.env.REACT_APP_API_URL}/levels`)
+    .then(res => res.json())
+    .then(data => setLevels(data));
+}, []);
 
   const {
     completed,
