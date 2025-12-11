@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-dotenv.config();   // ← MUST COME FIRST
+dotenv.config();   // MUST be first
 
 import express from "express";
 import mongoose from "mongoose";
@@ -13,7 +13,7 @@ app.use(express.json());
 // Debug log
 console.log("Loaded MONGO_URI =", process.env.MONGO_URI);
 
-// MongoDB Connection
+// Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -21,7 +21,11 @@ mongoose.connect(process.env.MONGO_URI, {
 .then(() => console.log("MongoDB Connected"))
 .catch(err => console.log("DB Error:", err));
 
+// Routes
 app.use("/api", mlRoutes);
+
+// Optional root route
+app.get("/", (req, res) => res.send("Backend running. Use /api/levels for data."));
 
 app.listen(process.env.PORT || 4000, () =>
   console.log("Backend Running on port:", process.env.PORT || 4000)
