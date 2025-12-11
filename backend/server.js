@@ -13,8 +13,9 @@ app.use(express.json());
 // Debug log
 console.log("Loaded MONGO_URI =", process.env.MONGO_URI);
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI, {
+const mongoUri = process.env.MONGO_URI || "mongodb://localhost:27017/enphisim";
+
+mongoose.connect(mongoUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
@@ -36,6 +37,6 @@ app.get("/api/levels", async (req, res) => {
   }
 });
 
-app.listen(process.env.PORT || 4000, () =>
-  console.log("Backend Running on port:", process.env.PORT || 4000)
+app.listen(process.env.BPORT || 4000, () =>
+  console.log("Backend Running on port:", process.env.BPORT || 4000)
 );
