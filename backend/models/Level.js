@@ -1,5 +1,4 @@
-// backend/models/Level.js
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const LevelSchema = new mongoose.Schema({
   level: { type: Number, required: true, unique: true },
@@ -12,12 +11,12 @@ const LevelSchema = new mongoose.Schema({
     body: String,
     from: String
   },
-  correctAction: String, // report, delete, click, open_attachment, reply
+  correctAction: String,
   baseXP: Number,
   hint: [String],
   ml_confidence_threshold: Number,
   tags: [String]
 });
 
-module.exports = mongoose.model('Level', LevelSchema);
-
+const Level = mongoose.model("Level", LevelSchema);
+export default Level;
