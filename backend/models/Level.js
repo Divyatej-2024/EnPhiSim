@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-
 const LevelSchema = new mongoose.Schema({
   level: { type: Number, required: true, unique: true },
   title: String,
@@ -17,7 +16,8 @@ const LevelSchema = new mongoose.Schema({
   hint: [String],
   ml_confidence_threshold: Number,
   tags: [String]
-}, { collection: "levelDataset" }); // <--- IMPORTANT
+}, { collection: "levelDataset" }); // important
 
-module.exports = mongoose.model("Level", LevelSchema);
+const Level = mongoose.model("Level", LevelSchema);
+
 export default Level;
