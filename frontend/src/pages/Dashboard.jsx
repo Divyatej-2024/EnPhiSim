@@ -1,6 +1,6 @@
 // src/components/Dashboard.js
 
-import React,{useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useProgress } from "../context/ProgressContext";
 import useDashboardAnalytics from "./useDashboardAnalytics";
@@ -8,13 +8,22 @@ import "./dashboard.css";
 
 export default function Dashboard() {
   const { progress } = useProgress();
-const [levels, setLevels] = useState([]);
+  const [levels, setLevels] = useState([]);
 
-useEffect(() => {
-  fetch(`${process.env.REACT_APP_API_URL}/levels`)
-    .then(res => res.json())
-    .then(data => setLevels(data));
-}, []);
+  // Fetch levels from live backend
+  useEffect(() => {
+    const fetchLevels = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/levels`);
+        const data = await response.json();
+        setLevels(data);
+      } catch (error) {
+        console.error("Error fetching levels:", error);
+      }
+    };
+
+    fetchLevels();
+  }, []);
 
   const {
     completed,
@@ -29,13 +38,14 @@ useEffect(() => {
     buttonText,
   } = useDashboardAnalytics(progress, levels);
 
+  // ensure re-render when progress updates
   const refreshKey = JSON.stringify(progress);
 
   return (
     <div className="dashboard" key={refreshKey}>
       <h1>EnPhiSim Dashboard</h1>
 
-      {/* SUMMARY ANALYTICS */}
+      {/* -------- SUMMARY ANALYTICS -------- */}
       <div className="analytics-cards">
         <div className="card">
           <h3>Total Actions</h3>
@@ -44,7 +54,9 @@ useEffect(() => {
 
         <div className="card">
           <h3>Completed Levels</h3>
-          <p>{completed} / {totalLevels}</p>
+          <p>
+            {completed} / {totalLevels}
+          </p>
         </div>
 
         <div className="card">
@@ -68,7 +80,7 @@ useEffect(() => {
         </div>
       </div>
 
-      {/* CURRENT LEVEL */}
+      {/* -------- CURRENT / NEXT LEVEL -------- */}
       <div className="current-level-card">
         <h2>{nextLevelTitle}</h2>
         <p>Your current phishing training module.</p>
@@ -78,17 +90,16 @@ useEffect(() => {
         </Link>
       </div>
 
-      {/* FULL LEVEL LIST */}
+      {/* -------- FULL LEVEL LIST -------- */}
       <details className="level-list-details">
         <summary>View All Levels</summary>
+
         <ul className="level-list">
-          {levels.map(lvl => (
+          {levels.map((lvl) => (
             <li
               key={lvl.id}
               className={
-                progress.completedLevels[lvl.id]
-                  ? "completed"
-                  : "pending"
+                progress.completedLevels[lvl.id] ? "completed" : "pending"
               }
             >
               <Link to={`/levels/${lvl.category}/${lvl.Level_no}`}>
