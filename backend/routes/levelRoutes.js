@@ -1,6 +1,6 @@
 // backend/routes/levelRoutes.js
 import express from "express";
-import Level from "../models/Level.js";
+import LevelSchema from "../models/Level.js";
 
 const router = express.Router();
 
