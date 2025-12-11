@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-dotenv.config();   // MUST be first
+dotenv.config();  // MUST be first
 
 import express from "express";
 import mongoose from "mongoose";
@@ -10,33 +10,16 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Debug log
+// DEBUG: check env
 console.log("Loaded MONGO_URI =", process.env.MONGO_URI);
 
-const mongoUri = process.env.MONGO_URI || "mongodb://localhost:27017/enphisim";
+// Connect MongoDB
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB Connected"))
+  .catch(err => console.log("DB Error:", err));
 
-mongoose.connect(mongoUri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log("MongoDB Connected"))
-.catch(err => console.log("DB Error:", err));
-
-// Routes
 app.use("/api", mlRoutes);
 
-// Optional root route
-app.get("/", (req, res) => res.send("Backend running. Use /api/levels for data."));
-app.get("/api/levels", async (req, res) => {
-  try {
-    const Level = mongoose.model("Level"); // or import your Level model
-    const levels = await Level.find();
-    res.json(levels);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-app.listen(process.env.BPORT || 4000, () =>
-  console.log("Backend Running on port:", process.env.BPORT || 4000)
+app.listen(process.env.PORT || 4000, () =>
+  console.log("Backend Running on port:", process.env.PORT || 4000)
 );
