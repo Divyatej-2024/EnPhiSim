@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-const mongoose = require("mongoose");
 
 const LevelSchema = new mongoose.Schema({
   level: { type: Number, required: true, unique: true },
