@@ -8,32 +8,21 @@ router.get("/levels", async (req, res) => {
     const docs = await Level.find({});
 
     const mapped = docs.map(d => ({
-      level: d.id,
-      Level_no: d.Level_no,
-
+      id: d.id,
+      level_no: d.Level_no,
       title: d.page_title,
-      category: d.category || "general",
-
-      description: d.level_text,
-
-      sampleEmail: {
-        subject: d.subj,
-        body: d.level_text,
-        from: d.phish_email
-      },
-
-      correctAction: d.correct_option,
-      hint: [d.Hint],
-
-      // actions
-      options: {
-        correct: d.correct_option,
-        neutral: d.neutral_option,
-        wrong: d.wrong_option
-      },
-
+      hint: d.Hint,
       js_path: d.js_path,
-      template_type: d.template_type
+      category: d.category,
+      template_type: d.template_type,
+      correct_option: d.correct_option,
+      neutral_option: d.neutral_option,
+      wrong_option: d.wrong_option,
+      text: d.level_text,
+      subject: d.subj,
+      from_and_to: d.from_and_to,
+      phish_email: d.phish_email,
+      crct_email: d.crct_email
     }));
 
     res.json(mapped);
