@@ -2,24 +2,27 @@ import mongoose from "mongoose";
 
 const LevelSchema = new mongoose.Schema(
   {
-    level: { type: Number, required: true, unique: true },
-    title: String,
-    difficulty: String,
+    id: Number,
+    Level_no: String,
+    page_title: String,
+    Hint: String,
+    js_path: String,
+
     category: String,
-    description: String,
-    sampleEmail: {
-      subject: String,
-      body: String,
-      from: String,
-    },
-    correctAction: String,
-    baseXP: Number,
-    hint: [String],
-    ml_confidence_threshold: Number,
-    tags: [String],
+    from_and_to: String,
+    phish_email: String,
+    crct_email: String,
+
+    level_text: String,
+    subj: String,
+
+    correct_option: String,
+    neutral_option: String,
+    wrong_option: String,
+
+    template_type: String
   },
   { collection: "levelDataset" }
 );
 
-const Level = mongoose.model("Level", LevelSchema);
-export default Level;
+export default mongoose.model("Level", LevelSchema);
