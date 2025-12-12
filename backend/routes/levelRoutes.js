@@ -5,28 +5,33 @@ const router = express.Router();
 
 router.get("/levels", async (req, res) => {
   try {
-    const allLevels = await Level.find();
+    const docs = await Level.find();
 
-    // Convert MongoDB fields to frontend format
-    const levelsFormatted = allLevels.map((lvl) => ({
-      _id: lvl._id,
-      Level_no: lvl.level,      // IMPORTANT FIX
-      title: lvl.title,
-      category: lvl.category,
-      difficulty: lvl.difficulty,
-      description: lvl.description,
-      sampleEmail: lvl.sampleEmail,
-      correctAction: lvl.correctAction,
-      hint: lvl.hint,
-      baseXP: lvl.baseXP,
-      tags: lvl.tags,
+    const formatted = docs.map(d => ({
+      level: d.id, // or parseInt(d.Level_no.replace('l',''))
+      title: d.page_title,
+      difficulty: d.category,
+      category: d.category,
+      description: d.level_text,
+      sampleEmail: {
+        subject: d.subj,
+        body: d.level_text,
+        from: d.phish_email,
+      },
+      correctAction: d.correct_option,
+      wrongAction: d.wrong_option,
+      hint: [d.Hint],
+      tags: [],
+      template_type: d.template_type,
+      js_path: d.js_path
     }));
 
-    res.json(levelsFormatted);
+    res.json(formatted);
   } catch (err) {
-    console.error("Error fetching levels:", err);
+    console.error("Error:", err);
     res.status(500).json({ error: "Failed to fetch levels" });
   }
 });
+
 
 export default router;
