@@ -6,52 +6,64 @@ import { useProgress } from "../context/ProgressContext";
 import useDashboardAnalytics from "./useDashboardAnalytics";
 import "./dashboard.css";
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 export default function Dashboard() {
   const { progress } = useProgress();
+
   const [levels, setLevels] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  /* ---------------- FETCH LEVELS FROM LIVE SERVER ---------------- */
-useEffect(() => {
-  const fetchLevels = async () => {
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/levels`
-      );
-
-      const text = await response.text();
-      console.log("RAW RESPONSE:", text);
-
-      // 🔒 Protect against HTML response
-      if (text.trim().startsWith("<")) {
-        throw new Error("Received HTML instead of JSON. Wrong API URL.");
-      }
-
-      const data = JSON.parse(text);
-
-      if (Array.isArray(data)) {
-        setLevels(data);
-      } else if (Array.isArray(data.levels)) {
-        setLevels(data.levels);
-      } else {
-        console.error("Unexpected API response shape:", data);
-        setLevels([]);
-      }
-    } catch (error) {
-      console.error("Error fetching levels:", error.message);
-      setLevels([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  fetchLevels();
-}, []);
-
-  /* ---------------- DEBUG (KEEP DURING DEV) ---------------- */
+  /* ---------------- FETCH LEVELS FROM LIVE BACKEND ---------------- */
   useEffect(() => {
-    console.log("Levels from backend:", levels);
-  }, [levels]);
+    if (!API_URL) {
+      setError("API URL not configured");
+      setLoading(false);
+      return;
+    }
+
+    const fetchLevels = async () => {
+      try {
+        const endpoint = `${API_URL}/api/levels`;
+        console.log("🔗 Fetching levels from:", endpoint);
+
+        const res = await fetch(endpoint);
+
+        const raw = await res.text();
+        console.log("📦 RAW RESPONSE:", raw);
+
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}`);
+        }
+
+        // ❌ HTML means wrong server (React instead of Express)
+        if (raw.trim().startsWith("<")) {
+          throw new Error("Received HTML instead of JSON (wrong API URL)");
+        }
+
+        const data = JSON.parse(raw);
+
+        // ✅ Accept both array & wrapped responses
+        const levelArray = Array.isArray(data)
+          ? data
+          : Array.isArray(data.levels)
+          ? data.levels
+          : [];
+
+        console.log("✅ Parsed levels:", levelArray);
+        setLevels(levelArray);
+      } catch (err) {
+        console.error("❌ Level fetch failed:", err.message);
+        setError(err.message);
+        setLevels([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLevels();
+  }, []);
 
   /* ---------------- ANALYTICS ---------------- */
   const {
@@ -67,18 +79,28 @@ useEffect(() => {
     buttonText,
   } = useDashboardAnalytics(progress, levels);
 
-  /* Force refresh when progress updates */
   const refreshKey = JSON.stringify(progress);
 
+  /* ---------------- UI STATES ---------------- */
   if (loading) {
-    return <div className="dashboard">Loading dashboard...</div>;
+    return <div className="dashboard">Loading dashboard…</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="dashboard error">
+        <h2>Dashboard Error</h2>
+        <p>{error}</p>
+        <p>Check API URL & backend deployment.</p>
+      </div>
+    );
   }
 
   return (
     <div className="dashboard" key={refreshKey}>
       <h1>EnPhiSim Dashboard</h1>
 
-      {/* ---------------- SUMMARY ANALYTICS ---------------- */}
+      {/* ---------------- SUMMARY CARDS ---------------- */}
       <div className="analytics-cards">
         <div className="card">
           <h3>Total Actions</h3>
@@ -113,10 +135,10 @@ useEffect(() => {
         </div>
       </div>
 
-      {/* ---------------- CURRENT / NEXT LEVEL ---------------- */}
+      {/* ---------------- CURRENT LEVEL ---------------- */}
       <div className="current-level-card">
         <h2>{nextLevelTitle || "All Levels Completed 🎉"}</h2>
-        <p>Your current phishing training module.</p>
+        <p>Your current phishing simulation module.</p>
 
         {nextLevelPath && (
           <Link className="start-current-btn" to={nextLevelPath}>
@@ -125,26 +147,30 @@ useEffect(() => {
         )}
       </div>
 
-      {/* ---------------- FULL LEVEL LIST ---------------- */}
+      {/* ---------------- LEVEL LIST ---------------- */}
       <details className="level-list-details">
         <summary>View All Levels</summary>
 
-        <ul className="level-list">
-          {levels.map((lvl) => {
-            const completed = progress.completedLevels?.[lvl.level_no];
+        {levels.length === 0 ? (
+          <p>No levels found in database.</p>
+        ) : (
+          <ul className="level-list">
+            {levels.map((lvl) => {
+              const done = progress.completedLevels?.[lvl.level_no];
 
-            return (
-              <li
-                key={lvl._id || lvl.level_no}
-                className={completed ? "completed" : "pending"}
-              >
-                <Link to={`/levels/${lvl.category}/${lvl.level_no}`}>
-                  {completed ? "✅" : "➡️"} {lvl.title}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+              return (
+                <li
+                  key={lvl._id || lvl.level_no}
+                  className={done ? "completed" : "pending"}
+                >
+                  <Link to={`/levels/${lvl.category}/${lvl.level_no}`}>
+                    {done ? "✅" : "➡️"} {lvl.title}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        )}
       </details>
     </div>
   );
