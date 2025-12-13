@@ -16,6 +16,14 @@ app.use("/api",levelRoutes);
 // DEBUG: check env
 console.log("Loaded MONGO_URI =", process.env.MONGO_URI);
 
+app.get("/health", (req, res) => {
+  res.json({
+    status: "OK",
+    service: "EnPhiSim Backend",
+    mongo: mongoose.connection.readyState === 1 ? "connected" : "disconnected",
+  });
+});
+
 // Connect MongoDB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
