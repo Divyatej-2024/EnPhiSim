@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const LevelSchema = new mongoose.Schema(
   {
+    _id: Number,
     id: Number,
     Level_no: String,
     page_title: String,
