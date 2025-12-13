@@ -103,10 +103,10 @@ export default function Dashboard() {
 <li
   key={lvl._id}
   className={
-    progress.completedLevels[lvl.Level_no] ? "completed" : "pending"
+    progress.completedLevels[lvl.level_no] ? "completed" : "pending"
   }
 >
-  <Link to={`/levels/${lvl.category}/${lvl.Level_no}`}>
+  <Link to={`/levels/${lvl.category}/${lvl.level_no}`}>
     {progress.completedLevels[lvl.Level_no] ? "✅" : "➡️"} {lvl.title}
   </Link>
 </li>
