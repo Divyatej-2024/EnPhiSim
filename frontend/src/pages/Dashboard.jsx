@@ -1,7 +1,4 @@
 // src/components/Dashboard.js
-import dotenv from "dotenv";
-dotenv.config();
-
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useProgress } from "../context/ProgressContext";
