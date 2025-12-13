@@ -15,11 +15,12 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchLevels = async () => {
       try {
-        const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/api/levels`
-        );
+const response = await fetch(
+  `${process.env.REACT_APP_API_URL}/api/levels`
+);
 
-        const data = await response.json();
+const text = await response.text();
+console.log("RAW RESPONSE:", text);
 
         // ✅ Handle both array and wrapped responses safely
         if (Array.isArray(data)) {
