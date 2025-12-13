@@ -110,6 +110,7 @@ export default function Dashboard() {
     {progress.completedLevels[lvl.Level_no] ? "✅" : "➡️"} {lvl.title}
   </Link>
 </li>
+
           ))}
         </ul>
       </details>
