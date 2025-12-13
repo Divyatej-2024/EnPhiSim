@@ -22,6 +22,8 @@ const response = await fetch(
 const text = await response.text();
 console.log("RAW RESPONSE:", text);
 
+        const data = await response.json();
+
         // ✅ Handle both array and wrapped responses safely
         if (Array.isArray(data)) {
           setLevels(data);
