@@ -12,37 +12,41 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
 
   /* ---------------- FETCH LEVELS FROM LIVE SERVER ---------------- */
-  useEffect(() => {
-    const fetchLevels = async () => {
-      try {
-const response = await fetch(
-  `${process.env.REACT_APP_API_URL}/api/levels`
-);
+useEffect(() => {
+  const fetchLevels = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/levels`
+      );
 
-const text = await response.text();
-console.log("RAW RESPONSE:", text);
+      const text = await response.text();
+      console.log("RAW RESPONSE:", text);
 
-        const data = await response.json();
-
-        // ✅ Handle both array and wrapped responses safely
-        if (Array.isArray(data)) {
-          setLevels(data);
-        } else if (Array.isArray(data.levels)) {
-          setLevels(data.levels);
-        } else {
-          console.error("Unexpected API response shape:", data);
-          setLevels([]);
-        }
-      } catch (error) {
-        console.error("Error fetching levels:", error);
-        setLevels([]);
-      } finally {
-        setLoading(false);
+      // 🔒 Protect against HTML response
+      if (text.trim().startsWith("<")) {
+        throw new Error("Received HTML instead of JSON. Wrong API URL.");
       }
-    };
 
-    fetchLevels();
-  }, []);
+      const data = JSON.parse(text);
+
+      if (Array.isArray(data)) {
+        setLevels(data);
+      } else if (Array.isArray(data.levels)) {
+        setLevels(data.levels);
+      } else {
+        console.error("Unexpected API response shape:", data);
+        setLevels([]);
+      }
+    } catch (error) {
+      console.error("Error fetching levels:", error.message);
+      setLevels([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchLevels();
+}, []);
 
   /* ---------------- DEBUG (KEEP DURING DEV) ---------------- */
   useEffect(() => {
