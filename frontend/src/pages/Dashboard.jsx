@@ -5,7 +5,7 @@ import { useProgress } from "../context/ProgressContext";
 import useDashboardAnalytics from "./useDashboardAnalytics";
 import "./dashboard.css";
 
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = "https://enphisim-1.onrender.com/";
 
 export default function Dashboard() {
   const { progress } = useProgress();
