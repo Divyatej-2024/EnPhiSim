@@ -28,12 +28,12 @@ export default function useDashboardAnalytics(progress, levels) {
     const nextLevel = levels.find(l => !completedLevels[l.id]);
 
     let nextLevelTitle = "Training Completed!";
-    let nextLevelPath = "/levels/email/1";
+    let nextLevelPath = "/Thankyou";
     let buttonText = "Start Training";
 
     if (nextLevel) {
       nextLevelTitle = nextLevel.page_title;
-      nextLevelPath = `/levels/${nextLevel.category}/${nextLevel.Level_no}`;
+      nextLevelPath = `/levels/${nextLevel.category}/${nextLevel.level_no}`;
       buttonText = completed === 0 ? "Start Training" : "Continue Training";
     }
 
