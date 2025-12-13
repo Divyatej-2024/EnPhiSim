@@ -163,7 +163,7 @@ export default function Dashboard() {
                   className={done ? "completed" : "pending"}
                 >
                   <Link to={`/levels/${lvl.category}/${lvl.level_no}`}>
-                    {done ? "✅" : "➡️"} {lvl.title}
+                    {done ? "✅" : "➡️"} {lvl.page_title}
                   </Link>
                 </li>
               );
