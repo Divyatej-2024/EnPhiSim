@@ -36,11 +36,14 @@ export default function Dashboard() {
         }
 
         // ❌ HTML means wrong server (React instead of Express)
-        if (raw.trim().startsWith("<")) {
-          throw new Error("Received HTML instead of JSON (wrong API URL)");
-        }
+        let data;
 
-        const data = JSON.parse(raw);
+try {
+  data = JSON.parse(raw);
+} catch (e) {
+  console.error("❌ Invalid JSON from API:", raw);
+  throw new Error("Backend did not return valid JSON");
+}
 
         // ✅ Accept both array & wrapped responses
         const levelArray = Array.isArray(data)
@@ -50,7 +53,17 @@ export default function Dashboard() {
           : [];
 
         console.log("✅ Parsed levels:", levelArray);
-        setLevels(levelArray);
+        const normalizedLevels = levelArray.map(lvl => ({
+  id: lvl.id,
+  level_no: lvl.Level_no,     // normalize casing
+  category: lvl.category,
+  page_title: lvl.page_title,
+  template_type: lvl.template_type,
+}));
+
+console.log("✅ Normalized Levels:", normalizedLevels);
+setLevels(normalizedLevels);
+
       } catch (err) {
         console.error("❌ Level fetch failed:", err.message);
         setError(err.message);
