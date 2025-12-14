@@ -154,14 +154,14 @@ export default function Dashboard() {
         ) : (
           <ul className="level-list">
             {levels.map((lvl) => {
-              const done = progress.completedLevels?.[lvl.level_no];
+              const done = progress.completedLevels?.[lvl.Level_no];
 
               return (
                 <li
-                  key={lvl._id || lvl.level_no}
+                  key={lvl._id || lvl.Level_no}
                   className={done ? "completed" : "pending"}
                 >
-                  <Link to={`/levels/${lvl.category}/${lvl.level_no}`}>
+                  <Link to={`/levels/${lvl.category}/${lvl.Level_no}`}>
                     {done ? "✅" : "➡️"} {lvl.page_title}
                   </Link>
                 </li>

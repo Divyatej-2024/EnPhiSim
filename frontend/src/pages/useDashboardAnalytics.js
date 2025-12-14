@@ -33,7 +33,7 @@ export default function useDashboardAnalytics(progress, levels) {
 
     if (nextLevel) {
       nextLevelTitle = nextLevel.page_title;
-      nextLevelPath = `/levels/${nextLevel.category}/${nextLevel.level_no}`;
+      nextLevelPath = `/levels/${nextLevel.category}/${nextLevel.Level_no}`;
       buttonText = completed === 0 ? "Start Training" : "Continue Training";
     }
 
