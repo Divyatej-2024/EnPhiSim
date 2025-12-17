@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import {safeFetchJSON} from "../utils/helper";
 import { useProgress } from "../context/ProgressContext";
 import useDashboardAnalytics from "./useDashboardAnalytics";
 import "./dashboard.css";
@@ -25,25 +26,8 @@ export default function Dashboard() {
       try {
         const endpoint = `${API_URL}/api/levels`;
         console.log("🔗 Fetching levels from:", endpoint);
+const data = await safeFetchJSON(endpoint);
 
-        const res = await fetch(endpoint);
-
-        const raw = await res.text();
-        console.log("📦 RAW RESPONSE:", raw);
-
-        if (!res.ok) {
-          throw new Error(`HTTP ${res.status}`);
-        }
-
-        // ❌ HTML means wrong server (React instead of Express)
-        let data;
-
-try {
-  data = JSON.parse(raw);
-} catch (e) {
-  console.error("❌ Invalid JSON from API:", raw);
-  throw new Error("Backend did not return valid JSON");
-}
 
         // ✅ Accept both array & wrapped responses
         const levelArray = Array.isArray(data)
@@ -90,6 +74,8 @@ setLevels(normalizedLevels);
     nextLevelPath,
     buttonText,
   } = useDashboardAnalytics(progress, levels);
+
+
 
   const refreshKey = JSON.stringify(progress);
 
