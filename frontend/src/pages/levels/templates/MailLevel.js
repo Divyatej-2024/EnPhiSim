@@ -29,12 +29,27 @@ const handleClick = (option) => {
   const openEmailDialog = () =>                            // FIXED
     setEmailDialog(true);
 
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/levels`)
-      .then((res) => res.json())
-      .then((data) => setLevels(data))
-      .catch((err) => console.error("Error fetching levels:", err));
-  }, []);
+useEffect(() => {
+  async function loadLevels() {
+    try {
+      const res = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/levels`
+      );
+
+      const text = await res.text();
+
+      if (!res.ok || text.startsWith("<")) {
+        throw new Error("Expected JSON, got HTML");
+      }
+
+      setLevels(JSON.parse(text));
+    } catch (err) {
+      console.error("Error fetching levels:", err.message);
+    }
+  }
+
+  loadLevels();
+}, []);
   /* ---------------------------
      🔹 Prevent crash while loading
   ----------------------------*/

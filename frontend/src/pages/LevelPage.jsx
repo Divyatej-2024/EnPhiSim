@@ -1,4 +1,4 @@
-import React,{useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { safeFetchJSON } from "../utils/helper";
 import { useProgress } from "../context/ProgressContext";
@@ -8,28 +8,37 @@ export default function LevelPage() {
   const { category, levelId } = useParams();
   const navigate = useNavigate();
   const { recordAction, markLevelComplete } = useProgress();
-const [levels, setLevels] = useState([]);
 
-useEffect(() => {
-  async function loadLevels() {
-    try {
-      const data = await safeFetchJSON(
-        `${process.env.REACT_APP_API_URL}/api/levels`
-      );
-      setLevels(data);
-    } catch (err) {
-      console.error("Failed to load levels:", err.message);
+  const [levels, setLevels] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function loadLevels() {
+      try {
+        const data = await safeFetchJSON(
+          `${process.env.REACT_APP_API_URL}/api/levels`
+        );
+        setLevels(data);
+      } catch (err) {
+        console.error("Failed to load levels:", err.message);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
     }
-  }
 
-  loadLevels();
-}, []);
+    loadLevels();
+  }, []);
 
+  /* ---------------- LOADING / ERROR ---------------- */
+  if (loading) return <h2>Loading level…</h2>;
+  if (error) return <h2>Failed to load level</h2>;
 
   const level = levels.find(
     (l) =>
-      (l.category ?? "").toLowerCase().trim() === (category ?? "").toLowerCase().trim() &&
-      (l.Level_no ?? "").toLowerCase().trim() === (levelId ?? "").toLowerCase().trim()
+      l.category?.toLowerCase().trim() === category?.toLowerCase().trim() &&
+      l.Level_no?.toLowerCase().trim() === levelId?.toLowerCase().trim()
   );
 
   if (!level) return <h2>Level not found</h2>;
@@ -51,8 +60,16 @@ useEffect(() => {
     }
   };
 
-  // Add options to level for the renderer
-  level.options = options;
+  /* ✅ Create new object (NO mutation) */
+  const levelWithOptions = {
+    ...level,
+    options,
+  };
 
-  return <TemplateRenderer level={level} onOptionClick={handleOptionClick} />;
+  return (
+    <TemplateRenderer
+      level={levelWithOptions}
+      onOptionClick={handleOptionClick}
+    />
+  );
 }
