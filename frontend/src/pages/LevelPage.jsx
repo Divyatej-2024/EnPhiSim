@@ -1,5 +1,6 @@
 import React,{useState, useEffect} from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { safeFetchJSON } from "../utils/helper";
 import { useProgress } from "../context/ProgressContext";
 import TemplateRenderer from "./levels/TemplateRenderer";
 
@@ -10,10 +11,20 @@ export default function LevelPage() {
 const [levels, setLevels] = useState([]);
 
 useEffect(() => {
-  fetch(`${process.env.REACT_APP_API_URL}/levels`)
-    .then(res => res.json())
-    .then(data => setLevels(data));
+  async function loadLevels() {
+    try {
+      const data = await safeFetchJSON(
+        `${process.env.REACT_APP_API_URL}/api/levels`
+      );
+      setLevels(data);
+    } catch (err) {
+      console.error("Failed to load levels:", err.message);
+    }
+  }
+
+  loadLevels();
 }, []);
+
 
   const level = levels.find(
     (l) =>

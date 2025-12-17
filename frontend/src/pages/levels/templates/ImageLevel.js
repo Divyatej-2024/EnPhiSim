@@ -5,20 +5,19 @@ import { Link } from "react-router-dom";
 import "../../../level.css";
 
 export default function ImageLevel() {
+const onOptionClick = (option) => {
+  const isCorrect = option.key === "correct";
 
-  const { 
-    from_and_to, 
-    subject,
-    crct_email,
-    phish_email,
-    level_text,
-    options,
-    category
-  } = level;
+  recordAction(id, option.key);
 
-  const onOptionClick = (option) => {
-    // your logic here
-  };
+  if (isCorrect) {
+    completeLevel(id);
+    navigate("/dashboard");
+  } else {
+    alert("Incorrect! Try again.");
+  }
+};
+
 
 
   const { recordAction, completeLevel } = useProgress();
@@ -36,12 +35,26 @@ export default function ImageLevel() {
   /* ---------------------------
      🔹 FETCH LEVEL DATA FROM LIVE SERVER
   ----------------------------*/
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/levels`)
-      .then((res) => res.json())
-      .then((data) => setLevels(data))
-      .catch((err) => console.error("Error fetching levels:", err));
-  }, []);
+useEffect(() => {
+  async function loadLevels() {
+    try {
+      const res = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/levels`
+      );
+
+      const text = await res.text();
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      const json = JSON.parse(text);
+      setLevels(Array.isArray(json) ? json : json.levels || []);
+    } catch (err) {
+      console.error("❌ Error fetching levels:", err.message);
+    }
+  }
+
+  loadLevels();
+}, []);
 
   /* ---------------------------
      🔹 Prevent crash while loading
@@ -50,20 +63,24 @@ export default function ImageLevel() {
     return <div>Loading levels...</div>;
   }
 
-  const level = levels[currentIndex];
+const level = levels[currentIndex];
+if (!level) return <div>Level data not found.</div>;
 
-  if (!level) {
-    return <div>Level data not found.</div>;
-  }
-
-  const {
-    id,
-    page_title,
-    url,
-    hint,
-    correct_option,
-    correct_info,
-  } = level;
+const {
+  id,
+  page_title,
+  url,
+  hint,
+  correct_option,
+  correct_info,
+  from_and_to,
+  subject,
+  crct_email,
+  phish_email,
+  level_text,
+  options,
+  category,
+} = level;
 
   /* ---------------------------
      🔹 When user clicks option
