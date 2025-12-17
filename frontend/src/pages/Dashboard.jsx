@@ -53,9 +53,10 @@ try {
           : [];
 
         console.log("✅ Parsed levels:", levelArray);
-        const normalizedLevels = levelArray.map(lvl => ({
-  id: lvl.id,
-  level_no: lvl.Level_no,     // normalize casing
+const normalizedLevels = levelArray.map(lvl => ({
+  _id: lvl._id,              // ✅ MongoDB unique key
+  id: lvl.id,                // numeric (optional)
+  level_no: lvl.Level_no,    // for routing & progress
   category: lvl.category,
   page_title: lvl.page_title,
   template_type: lvl.template_type,
@@ -165,22 +166,24 @@ setLevels(normalizedLevels);
         {levels.length === 0 ? (
           <p>No levels found in database.</p>
         ) : (
-          <ul className="level-list">
-            {levels.map((lvl) => {
-              const done = progress.completedLevels?.[lvl.Level_no];
 
-              return (
-                <li
-                  key={lvl._id || lvl.Level_no}
-                  className={done ? "completed" : "pending"}
-                >
-                  <Link to={`/levels/${lvl.category}/${lvl.Level_no}`}>
-                    {done ? "✅" : "➡️"} {lvl.page_title}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
+
+<ul className="level-list">
+  {levels.map((lvl) => {
+    const done = progress.completedLevels?.[lvl.level_no];
+
+    return (
+      <li
+        key={lvl._id}   // ✅ ALWAYS unique & stable
+        className={done ? "completed" : "pending"}
+      >
+        <Link to={`/levels/${lvl.category}/${lvl.level_no}`}>
+          {done ? "✅" : "➡️"} {lvl.page_title}
+        </Link>
+      </li>
+    );
+  })}
+</ul>
         )}
       </details>
     </div>

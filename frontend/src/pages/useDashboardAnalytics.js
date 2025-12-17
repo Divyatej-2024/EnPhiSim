@@ -25,7 +25,7 @@ export default function useDashboardAnalytics(progress, levels) {
         : 0;
 
     // NEXT LEVEL
-    const nextLevel = levels.find(l => !completedLevels[l.id]);
+    const nextLevel = levels.find(l => !completedLevels[l.Level_no]);
 
     let nextLevelTitle = "Training Completed!";
     let nextLevelPath = "/Thankyou";
