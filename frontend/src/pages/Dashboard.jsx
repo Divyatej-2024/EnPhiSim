@@ -7,7 +7,7 @@ import { useProgress } from "../context/ProgressContext";
 import useDashboardAnalytics from "./useDashboardAnalytics";
 import "./dashboard.css";
 
-const API_URL = "https://enphisim-1.onrender.com";
+const REACT_APP_API_URL = "https://enphisim-1.onrender.com";
 
 export default function Dashboard() {
   const { progress } = useProgress();
@@ -20,11 +20,11 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchLevels = async () => {
       try {
-        if (!API_URL) {
+        if (!REACT_APP_API_URL) {
           throw new Error("API URL not configured");
         }
 
-        const endpoint = `${API_URL}/api/levels`;
+        const endpoint = `${REACT_APP_API_URL}/api/levels`;
         console.log("🔗 Fetching levels from:", endpoint);
 
         const data = await safeFetchJSON(endpoint);
