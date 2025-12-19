@@ -1,6 +1,8 @@
+// src/components/Dashboard.js
+
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import {safeFetchJSON} from "../utils/helper";
+import { safeFetchJSON } from "../utils/helper";
 import { useProgress } from "../context/ProgressContext";
 import useDashboardAnalytics from "./useDashboardAnalytics";
 import "./dashboard.css";
@@ -14,41 +16,41 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  /* ---------------- FETCH LEVELS FROM LIVE BACKEND ---------------- */
+  /* ---------------- FETCH LEVELS ---------------- */
   useEffect(() => {
-    if (!API_URL) {
-      setError("API URL not configured");
-      setLoading(false);
-      return;
-    }
-
     const fetchLevels = async () => {
       try {
+        if (!API_URL) {
+          throw new Error("API URL not configured");
+        }
+
         const endpoint = `${API_URL}/api/levels`;
         console.log("🔗 Fetching levels from:", endpoint);
-const data = await safeFetchJSON(endpoint);
 
+        const data = await safeFetchJSON(endpoint);
 
-        // ✅ Accept both array & wrapped responses
+        // Accept array or wrapped response
         const levelArray = Array.isArray(data)
           ? data
           : Array.isArray(data.levels)
           ? data.levels
           : [];
 
-        console.log("✅ Parsed levels:", levelArray);
-const normalizedLevels = levelArray.map(lvl => ({
-  _id: lvl._id,              // ✅ MongoDB unique key
-  id: lvl.id,                // numeric (optional)
-  level_no: lvl.Level_no,    // for routing & progress
-  category: lvl.category,
-  page_title: lvl.page_title,
-  template_type: lvl.template_type,
-}));
+        if (levelArray.length === 0) {
+          throw new Error("No levels returned from API");
+        }
 
-console.log("✅ Normalized Levels:", normalizedLevels);
-setLevels(normalizedLevels);
+        // Normalize backend data
+        const normalizedLevels = levelArray.map((lvl) => ({
+          id: lvl.id,
+          level_no: lvl.Level_no,
+          category: lvl.category,
+          page_title: lvl.page_title,
+          template_type: lvl.template_type,
+        }));
 
+        console.log("✅ Normalized Levels:", normalizedLevels);
+        setLevels(normalizedLevels);
       } catch (err) {
         console.error("❌ Level fetch failed:", err.message);
         setError(err.message);
@@ -75,8 +77,6 @@ setLevels(normalizedLevels);
     buttonText,
   } = useDashboardAnalytics(progress, levels);
 
-
-
   const refreshKey = JSON.stringify(progress);
 
   /* ---------------- UI STATES ---------------- */
@@ -89,7 +89,7 @@ setLevels(normalizedLevels);
       <div className="dashboard error">
         <h2>Dashboard Error</h2>
         <p>{error}</p>
-        <p>Check API URL & backend deployment.</p>
+        <p>Check backend deployment & API availability.</p>
       </div>
     );
   }
@@ -152,24 +152,22 @@ setLevels(normalizedLevels);
         {levels.length === 0 ? (
           <p>No levels found in database.</p>
         ) : (
+          <ul className="level-list">
+            {levels.map((lvl) => {
+              const done = progress.completedLevels?.[lvl.level_no];
 
-
-<ul className="level-list">
-  {levels.map((lvl) => {
-    const done = progress.completedLevels?.[lvl.level_no];
-
-    return (
-      <li
-        key={lvl._id}   // ✅ ALWAYS unique & stable
-        className={done ? "completed" : "pending"}
-      >
-        <Link to={`/levels/${lvl.category}/${lvl.level_no}`}>
-          {done ? "✅" : "➡️"} {lvl.page_title}
-        </Link>
-      </li>
-    );
-  })}
-</ul>
+              return (
+                <li
+                  key={lvl.level_no}   // ✅ Stable & unique
+                  className={done ? "completed" : "pending"}
+                >
+                  <Link to={`/levels/${lvl.category}/${lvl.level_no}`}>
+                    {done ? "✅" : "➡️"} {lvl.page_title}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
         )}
       </details>
     </div>
