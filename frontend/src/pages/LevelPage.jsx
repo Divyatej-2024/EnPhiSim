@@ -9,40 +9,54 @@ export default function LevelPage() {
   const navigate = useNavigate();
   const { recordAction, markLevelComplete } = useProgress();
 
-  const [levels, setLevels] = useState([]);
+  const [level, setLevel] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    async function loadLevels() {
+    // Defensive check for missing params
+    if (!category || !levelId) {
+      setError("Invalid level URL");
+      setLoading(false);
+      return;
+    }
+
+    async function loadLevel() {
       try {
-        const data = await safeFetchJSON(
-          `${process.env.REACT_APP_API_URL}/api/levels`
+        const apiUrl = process.env.REACT_APP_API_URL;
+        if (!apiUrl) throw new Error("API URL not set");
+
+        // Option 1: Fetch all levels and find the one we need
+        const data = await safeFetchJSON(`${apiUrl}/api/levels`);
+
+        const foundLevel = data.find(
+          (l) =>
+            l.category?.toLowerCase().trim() === category.toLowerCase().trim() &&
+            l.Level_no?.toLowerCase().trim() === levelId.toLowerCase().trim()
         );
-        setLevels(data);
+
+        if (!foundLevel) {
+          setError("Level not found");
+        } else {
+          setLevel(foundLevel);
+        }
       } catch (err) {
-        console.error("Failed to load levels:", err.message);
+        console.error("Failed to load level:", err.message);
         setError(err.message);
       } finally {
         setLoading(false);
       }
     }
 
-    loadLevels();
-  }, []);
+    loadLevel();
+  }, [category, levelId]);
 
-  /* ---------------- LOADING / ERROR ---------------- */
+  // ---------------- LOADING / ERROR ----------------
   if (loading) return <h2>Loading level…</h2>;
-  if (error) return <h2>Failed to load level</h2>;
+  if (error) return <h2>{error}</h2>;
+  if (!level) return null; // Level not found handled above
 
-  const level = levels.find(
-    (l) =>
-      l.category?.toLowerCase().trim() === category?.toLowerCase().trim() &&
-      l.Level_no?.toLowerCase().trim() === levelId?.toLowerCase().trim()
-  );
-
-  if (!level) return <h2>Level not found</h2>;
-
+  // Prepare options
   const options = [
     { key: "correct", label: level.correct_option, correct: true },
     { key: "neutral", label: level.neutral_option, correct: false },
@@ -60,11 +74,7 @@ export default function LevelPage() {
     }
   };
 
-  /* ✅ Create new object (NO mutation) */
-  const levelWithOptions = {
-    ...level,
-    options,
-  };
+  const levelWithOptions = { ...level, options };
 
   return (
     <TemplateRenderer
