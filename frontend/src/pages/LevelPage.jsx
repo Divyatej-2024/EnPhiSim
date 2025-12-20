@@ -23,7 +23,8 @@ export default function LevelPage() {
 
     async function loadLevel() {
       try {
-        const apiUrl = process.env.REACT_APP_API_URL;
+      const apiUrl = process.env.REACT_APP_API_URL || "https://enphisim-1.onrender.com";
+
         if (!apiUrl) throw new Error("API URL not set");
 
         // Option 1: Fetch all levels and find the one we need
