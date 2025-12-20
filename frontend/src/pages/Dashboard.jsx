@@ -88,6 +88,7 @@ export default function Dashboard() {
   const {
     completed,
     totalLevels,
+    totalActions,
     completionRate,
     accuracy,
     safeActions,
@@ -125,7 +126,7 @@ export default function Dashboard() {
 
   <div className="card">
     <h3>Total Actions</h3>
-    <p>{progress.totalActions || 0}</p>
+    <p>{totalActions || 0}</p>
   </div>
 
   <div className="card red">
