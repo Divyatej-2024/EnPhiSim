@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { useProgress } from "../../../context/ProgressContext";
 import "../../../level.css";
 
+
 export default function MockMailTemplate() {
   const { recordAction, completeLevel } = useProgress();
   const navigate = useNavigate();
-  const handleClick = (option) => {
-    console.log("Option clicked:", option);
-  };
+const handleClick = (option) => {
+  console.log("Option clicked:", option);
+};
 
   const [levels, setLevels] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -19,41 +20,36 @@ export default function MockMailTemplate() {
     message: "",
   });
 
-  const [hover, setHover] = useState(false);               
-  const [emailDialog, setEmailDialog] = useState(false);   
+  const [hover, setHover] = useState(false);               // FIXED
+  const [emailDialog, setEmailDialog] = useState(false);   // FIXED
 
-  const getSenderInitial = (email) =>                      
+  const getSenderInitial = (email) =>                      // FIXED
     email ? email[0].toUpperCase() : "?";
 
-  const openEmailDialog = () =>                            
+  const openEmailDialog = () =>                            // FIXED
     setEmailDialog(true);
 
-  useEffect(() => {
-    async function loadLevels() {
-      try {
-        const apiUrl = process.env.REACT_APP_API_URL;
+useEffect(() => {
+  async function loadLevels() {
+    try {
+      const res = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/levels`
+      );
 
-        if (!apiUrl) {
-          throw new Error("API URL not set. Configure REACT_APP_API_URL");
-        }
+      const text = await res.text();
 
-        const res = await fetch(`${apiUrl}/api/levels`);
-        const text = await res.text();
-
-        // Check if response is JSON
-        if (!res.ok || text.trim().startsWith("<")) {
-          throw new Error(`Expected JSON, got HTML: ${text.slice(0, 200)}...`);
-        }
-
-        setLevels(JSON.parse(text));
-      } catch (err) {
-        console.error("Error fetching levels:", err.message);
+      if (!res.ok || text.startsWith("<")) {
+        throw new Error("Expected JSON, got HTML");
       }
+
+      setLevels(JSON.parse(text));
+    } catch (err) {
+      console.error("Error fetching levels:", err.message);
     }
+  }
 
-    loadLevels();
-  }, []);
-
+  loadLevels();
+}, []);
   /* ---------------------------
      🔹 Prevent crash while loading
   ----------------------------*/
@@ -75,8 +71,7 @@ export default function MockMailTemplate() {
     correct_option,
     correct_info,
   } = level;
-
-  const dummyEmails = [
+const dummyEmails = [
     { sender: "LinkedIn", subject: "New connection request", content: "..." },
     { sender: "Amazon", subject: "Your order has shipped", content: "..." },
     { sender: level.phish_email, subject: level.subj || level.page_title, content: level.level_text, isCurrent: true },
@@ -113,13 +108,169 @@ export default function MockMailTemplate() {
   const closeDialog = () =>
     setDialog({ ...dialog, show: false });
 
-  // Gmail styles remain unchanged
-  const gmailStyles = `/* ... same as your original styles ... */`;
 
+const gmailStyles = `
+  .top-bar {
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 10px 20px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  }
+  .top-bar h1 {
+    font-size: 20px;
+    color: #202124;
+    margin: 0;
+    flex-grow: 1;
+    cursor: default;
+  }
+  .top-bar input {
+    padding: 5px 10px;
+    border-radius: 20px;
+    border: 1px solid #dcdcdc;
+    width: 300px;
+  }
+  .container-level {
+    display: flex;
+    height: calc(100vh - 50px);
+    background-color: #f1f3f4;
+  }
+  .sidebar-level {
+    width: 220px;
+    background-color: #ffffff;
+    padding: 20px;
+    box-shadow: 1px 0 2px rgba(0,0,0,0.1);
+  }
+  .sidebar-level button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #1a73e8;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .sidebar-level ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+  }
+  .sidebar-level ul li {
+    padding: 10px 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    color: #333;
+  }
+  .sidebar-level ul li:hover, .sidebar-level ul li.active {
+    background-color: #e8f0fe;
+    color: #1a73e8;
+  }
+  .inbox-level {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .split-level {
+    display: flex;
+    height: 100%;
+  }
+  .email-list-level {
+    width: 350px; /* Wider to show sender/subject */
+    overflow-y: auto;
+    background-color: #ffffff;
+    border-right: 1px solid #e0e0e0;
+  }
+  .email-item-level {
+    background-color: white;
+    padding: 15px 20px;
+    border-bottom: 1px solid #e0e0e0;
+    display: block;
+    cursor: pointer;
+  }
+  .email-item-level:hover {
+    background-color: #f5f5f5;
+  }
+  .email-item-level .sender {
+    font-weight: bold;
+    color: #202124;
+  }
+  .email-item-level .subject {
+    color: #5f6368;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .email-preview-level {
+    flex: 1;
+    padding: 30px;
+    background-color: white;
+    overflow-y: auto;
+  }
+  .email-header-level {
+    font-size: 24px;
+    font-weight: 400;
+    margin-bottom: 20px;
+    color: #202124;
+  }
+  .email-from-level {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .email-from-level .avatar {
+    background-color: #fbbc04;
+    color: white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 15px;
+  }
+  .email-from-level .info p {
+    margin: 0;
+    line-height: 1.4;
+  }
+  .email-from-level .info strong {
+    font-weight: bold;
+    color: #202124;
+  }
+  .email-from-level .info span {
+    font-size: 12px;
+    color: #5f6368;
+  }
+  .email-content-level {
+    line-height: 1.8;
+    color: #333;
+    white-space: pre-wrap; /* To respect line breaks in level_text */
+  }
+  .level-actions-container {
+    padding: 20px 0;
+    border-top: 1px solid #e0e0e0;
+    margin-top: 20px;
+    text-align: center;
+  }
+  .level-actions-container button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+  }
+  /* Original dialog styles from level.css are assumed to handle the dialog-overlay/box */`;
   return (
     <>
+      {/* Inject custom styles */}
       <style>{gmailStyles}</style>
 
+      {/* BACK TO DASHBOARD - moved outside the main mail container */}
       <div style={{ padding: "10px 20px", textAlign: "left", backgroundColor: "#ffffff", borderBottom: "1px solid #dcdcdc" }}>
         <button
           onClick={() => navigate("/dashboard")}
@@ -137,12 +288,14 @@ export default function MockMailTemplate() {
         </button>
       </div>
 
+      {/* TOP BAR */}
       <div className="top-bar">
         <h1>Gmail</h1>
         <input type="text" placeholder="Search mail" readOnly />
       </div>
 
       <div className="container-level">
+        {/* SIDEBAR */}
         <div className="sidebar-level">
           <button>Compose</button>
           <ul>
@@ -154,8 +307,10 @@ export default function MockMailTemplate() {
           </ul>
         </div>
 
+        {/* INBOX/EMAIL VIEW */}
         <div className="inbox-level">
           <div className="split-level">
+            {/* EMAIL LIST */}
             <div className="email-list-level">
               {dummyEmails.map((email, index) => (
                 <div key={index} className="email-item-level" style={email.isCurrent ? { backgroundColor: '#e8f0fe' } : {}}>
@@ -165,6 +320,7 @@ export default function MockMailTemplate() {
               ))}
             </div>
 
+            {/* EMAIL PREVIEW (The current level's content) */}
             <div className="email-preview-level">
               <div className="email-header-level">{level.subj || level.page_title}</div>
 
@@ -174,29 +330,31 @@ export default function MockMailTemplate() {
                   <p>
                     <strong>
                       {level.phish_email}{" "}
-                      <span
-                        onMouseEnter={() => setHover(true)}
-                        onMouseLeave={() => setHover(false)}
-                        style={{
-                          color: hover ? "red" : "gray",
-                          cursor: "pointer",
-                          marginLeft: "8px",
-                          fontSize: "12px",
-                        }}
-                      >
-                        {hover ? level.correct_info : "Show details"}
-                      </span>
+ <span
+  onMouseEnter={() => setHover(true)}
+  onMouseLeave={() => setHover(false)}
+  style={{
+    color: hover ? "red" : "gray",
+    cursor: "pointer",
+    marginLeft: "8px",
+    fontSize: "12px",
+  }}
+>
+  {hover ? level.correct_info : "Show details"}
+</span>
+
                     </strong>
                   </p>
                   <p>
                     <span>to me</span>
                   </p>
+                  {/* Hover pop-up shows correct email - positioned relative to the overall email-preview-level */}
                   {hover && (
                     <div
                       style={{
                         position: "absolute",
-                        top: "180px",
-                        left: "300px",
+                        top: "180px", // Adjust based on final layout
+                        left: "300px", // Adjust based on final layout
                         background: "#f5f5f5",
                         padding: "8px 12px",
                         borderRadius: "6px",
@@ -215,18 +373,30 @@ export default function MockMailTemplate() {
                 </div>
               </div>
 
-              <div className="email-content-level">{level.level_text}</div>
+              <div className="email-content-level">
+                {level.level_text}
+              </div>
 
+              {/* ACTION BUTTONS - integrated into the email body */}
               <div className="level-actions-container">
-                <button className="btn correct" onClick={() => handleClick(level.correct_option)}>
+                <button
+                  className="btn correct"
+                  onClick={() => handleClick(level.correct_option)}
+                >
                   {level.correct_option}
                 </button>
 
-                <button className="btn neutral" onClick={() => handleClick(level.neutral_option)}>
+                <button
+                  className="btn neutral"
+                  onClick={() => handleClick(level.neutral_option)}
+                >
                   {level.neutral_option}
                 </button>
 
-                <button className="btn wrong" onClick={() => handleClick(level.wrong_option)}>
+                <button
+                  className="btn wrong"
+                  onClick={() => handleClick(level.wrong_option)}
+                >
                   {level.wrong_option}
                 </button>
               </div>
@@ -235,11 +405,13 @@ export default function MockMailTemplate() {
         </div>
       </div>
 
+      {/* DIALOG BOX (from original component) */}
       {dialog.show && (
         <div className="dialog-overlay">
           <div className="dialog-box">
             <h3>{dialog.title}</h3>
             <pre className="dialog-message">{dialog.message}</pre>
+
             <button className="dialog-close" onClick={closeDialog}>
               Close
             </button>
