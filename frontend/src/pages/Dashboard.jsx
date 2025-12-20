@@ -1,6 +1,6 @@
 // src/components/Dashboard.js
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { safeFetchJSON } from "../utils/helper";
 import { useProgress } from "../context/ProgressContext";
@@ -15,33 +15,21 @@ export default function Dashboard() {
   const [levels, setLevels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [activeCategory, setActiveCategory] = useState(null);
 
   /* ---------------- FETCH LEVELS ---------------- */
   useEffect(() => {
     const fetchLevels = async () => {
       try {
-        if (!REACT_APP_API_URL) {
-          throw new Error("API URL not configured");
-        }
+        const data = await safeFetchJSON(
+          `${REACT_APP_API_URL}/api/levels`
+        );
 
-        const endpoint = `${REACT_APP_API_URL}/api/levels`;
-        console.log("🔗 Fetching levels from:", endpoint);
-
-        const data = await safeFetchJSON(endpoint);
-
-        // Accept array or wrapped response
         const levelArray = Array.isArray(data)
           ? data
-          : Array.isArray(data.levels)
-          ? data.levels
-          : [];
+          : data.levels || [];
 
-        if (levelArray.length === 0) {
-          throw new Error("No levels returned from API");
-        }
-
-        // Normalize backend data
-        const normalizedLevels = levelArray.map((lvl) => ({
+        const normalized = levelArray.map((lvl) => ({
           id: lvl.id,
           level_no: lvl.Level_no,
           category: lvl.category,
@@ -49,12 +37,9 @@ export default function Dashboard() {
           template_type: lvl.template_type,
         }));
 
-        console.log("✅ Normalized Levels:", normalizedLevels);
-        setLevels(normalizedLevels);
+        setLevels(normalized);
       } catch (err) {
-        console.error("❌ Level fetch failed:", err.message);
         setError(err.message);
-        setLevels([]);
       } finally {
         setLoading(false);
       }
@@ -63,113 +48,172 @@ export default function Dashboard() {
     fetchLevels();
   }, []);
 
+  /* ---------------- GROUP LEVELS ---------------- */
+  const levelsByCategory = useMemo(() => {
+    return levels.reduce((acc, lvl) => {
+      acc[lvl.category] = acc[lvl.category] || [];
+      acc[lvl.category].push(lvl);
+      return acc;
+    }, {});
+  }, [levels]);
+
+  const categoryStats = useMemo(() => {
+    return Object.entries(levelsByCategory).map(
+      ([category, lvls]) => {
+        const completedCount = lvls.filter(
+          (l) => progress.completedLevels?.[l.level_no]
+        ).length;
+
+        const percent = Math.round(
+          (completedCount / lvls.length) * 100
+        );
+
+        const nextLevel =
+          lvls.find(
+            (l) => !progress.completedLevels?.[l.level_no]
+          ) || lvls[0];
+
+        return {
+          category,
+          completedCount,
+          total: lvls.length,
+          percent,
+          nextLevel,
+        };
+      }
+    );
+  }, [levelsByCategory, progress]);
+
   /* ---------------- ANALYTICS ---------------- */
   const {
     completed,
     totalLevels,
     completionRate,
-    totalActions,
+    accuracy,
     safeActions,
     riskyActions,
-    accuracy,
-    nextLevelTitle,
-    nextLevelPath,
-    buttonText,
   } = useDashboardAnalytics(progress, levels);
 
-  const refreshKey = JSON.stringify(progress);
+  /* ---------------- FINAL UNLOCK ---------------- */
+  const finalUnlocked =
+    completionRate >= 75 && accuracy >= 75;
 
   /* ---------------- UI STATES ---------------- */
-  if (loading) {
-    return <div className="dashboard">Loading dashboard…</div>;
-  }
-
-  if (error) {
+  if (loading) return <div className="dashboard">Loading…</div>;
+  if (error)
     return (
       <div className="dashboard error">
-        <h2>Dashboard Error</h2>
+        <h2>Error</h2>
         <p>{error}</p>
-        <p>Check backend deployment & API availability.</p>
       </div>
     );
-  }
 
   return (
-    <div className="dashboard" key={refreshKey}>
+    <div className="dashboard">
       <h1>EnPhiSim Dashboard</h1>
+{/* ---------------- ANALYTICS SUMMARY ---------------- */}
+<div className="analytics-cards">
+  <div className="card">
+    <h3>Levels Completed</h3>
+    <p>{completed} / {totalLevels}</p>
+  </div>
 
-      {/* ---------------- SUMMARY CARDS ---------------- */}
-      <div className="analytics-cards">
-        <div className="card">
-          <h3>Total Actions</h3>
-          <p>{totalActions}</p>
-        </div>
+  <div className="card blue">
+    <h3>Completion Rate</h3>
+    <p>{completionRate}%</p>
+  </div>
 
-        <div className="card">
-          <h3>Completed Levels</h3>
+  <div className="card">
+    <h3>Total Actions</h3>
+    <p>{progress.totalActions || 0}</p>
+  </div>
+
+  <div className="card red">
+    <h3>Accuracy</h3>
+    <p>{accuracy}%</p>
+  </div>
+
+   <div className="card red">
+    <h3>Safe Actions</h3>
+    <p>{safeActions}%</p>
+  </div>
+
+   <div className="card red">
+    <h3>Risk Actions</h3>
+    <p>{riskyActions}%</p>
+  </div>
+</div>
+
+      {/* ---------------- CATEGORY GRID ---------------- */}
+      <h2 style={{ textAlign: "center" }}>
+        Difficulty Progress
+      </h2>
+
+      <div className="levels-grid">
+        {categoryStats.map((cat) => (
+          <div
+            key={cat.category}
+            className="level-card"
+            onClick={() => setActiveCategory(cat)}
+          >
+            <h3>{cat.category}</h3>
+
+            <div className="progress-bar">
+              <div
+                className="progress-fill"
+                style={{ width: `${cat.percent}%` }}
+              />
+            </div>
+
+            <span>
+              {cat.completedCount} / {cat.total} completed (
+              {cat.percent}%)
+            </span>
+
+            <Link
+              className="start-link"
+              to={`/levels/${cat.category}/${cat.nextLevel.level_no}`}
+            >
+              {cat.percent === 100 ? "Replay" : "Start / Continue"}
+            </Link>
+          </div>
+        ))}
+      </div>
+
+      {/* ---------------- ACTIVE CATEGORY PANEL ---------------- */}
+      {activeCategory && (
+        <div className="actions-panel">
+          <h2>Selected Category</h2>
           <p>
-            {completed} / {totalLevels}
+            <strong>{activeCategory.category}</strong>
           </p>
-        </div>
+          <p>
+            Progress: {activeCategory.completedCount} /{" "}
+            {activeCategory.total}
+          </p>
 
-        <div className="card">
-          <h3>Completion Rate</h3>
-          <p>{completionRate}%</p>
-        </div>
-
-        <div className="card blue">
-          <h3>Accuracy</h3>
-          <p>{accuracy}%</p>
-        </div>
-
-        <div className="card green">
-          <h3>Safe Actions</h3>
-          <p>{safeActions}</p>
-        </div>
-
-        <div className="card red">
-          <h3>Risky Actions</h3>
-          <p>{riskyActions}</p>
-        </div>
-      </div>
-
-      {/* ---------------- CURRENT LEVEL ---------------- */}
-      <div className="current-level-card">
-        <h2>{nextLevelTitle || "All Levels Completed 🎉"}</h2>
-        <p>Your current phishing simulation module.</p>
-
-        {nextLevelPath && (
-          <Link className="start-current-btn" to={nextLevelPath}>
-            {buttonText}
+          <Link
+            className="btn primary"
+            to={`/levels/${activeCategory.category}/${activeCategory.nextLevel.level_no}`}
+          >
+            Continue
           </Link>
-        )}
+        </div>
+      )}
+
+      {/* ---------------- FINAL LEVEL ---------------- */}
+      <div
+        className={`final-level ${
+          finalUnlocked ? "unlocked" : "locked"
+        }`}
+      >
+        <h3>Final Simulation</h3>
+        <p>Requires 75% completion & 75% accuracy</p>
+
+        <button disabled={!finalUnlocked}>
+          {finalUnlocked ? "Start Final Level" : "Locked"}
+        </button>
       </div>
-
-      {/* ---------------- LEVEL LIST ---------------- */}
-      <details className="level-list-details">
-        <summary>View All Levels</summary>
-
-        {levels.length === 0 ? (
-          <p>No levels found in database.</p>
-        ) : (
-          <ul className="level-list">
-            {levels.map((lvl) => {
-              const done = progress.completedLevels?.[lvl.level_no];
-
-              return (
-                <li
-                  key={lvl.level_no}   // ✅ Stable & unique
-                  className={done ? "completed" : "pending"}
-                >
-                  <Link to={`/levels/${lvl.category}/${lvl.level_no}`}>
-                    {done ? "✅" : "➡️"} {lvl.page_title}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        )}
-      </details>
     </div>
   );
 }
