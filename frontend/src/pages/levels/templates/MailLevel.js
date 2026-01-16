@@ -329,7 +329,7 @@ const gmailStyles = `
               
               <div className="email-from-level">
                 <div className="avatar">
-                  {getSenderInitial(level.phish_email)}
+                  {/*getSenderInitial(level.phish_email)*/}
                 </div>
                 <div className="info">
                   <strong>{level.phish_email}</strong>
