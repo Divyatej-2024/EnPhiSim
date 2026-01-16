@@ -69,7 +69,7 @@ if (!level) return <div>Level data not found.</div>;
 const {
   id,
   page_title,
-  url,
+  /*url,*/
   hint,
   correct_option,
   correct_info,
@@ -84,7 +84,7 @@ const {
 
   /* ---------------------------
      🔹 When user clicks option
-  ----------------------------*/
+  ----------------------------
   const handleCheck = (option) => {
     const isCorrect = option === correct_option;
 
@@ -111,7 +111,7 @@ const {
   const closeDialog = () =>
     setDialog({ ...dialog, show: false });
 
-
+*/
   const container = {
     background: "#f8f8f8",
     maxWidth: "800px",

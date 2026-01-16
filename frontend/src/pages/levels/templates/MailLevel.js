@@ -19,13 +19,13 @@ export default function MockMailTemplate() {
   });
 
   const [hover, setHover] = useState(false);
-  const [emailDialog, setEmailDialog] = useState(false);
+ /* const [emailDialog, setEmailDialog] = useState(false);
 
   const getSenderInitial = (email) =>
     email ? email[0].toUpperCase() : "?";
 
   const openEmailDialog = () => setEmailDialog(true);
-
+*/
   /* ---------------- FETCH LEVELS ---------------- */
   useEffect(() => {
     async function loadLevels() {
@@ -59,7 +59,7 @@ export default function MockMailTemplate() {
 
   const {
     id,
-    page_title,
+    /*page_title,*/
     hint,
     correct_option,
     correct_info,
@@ -322,11 +322,11 @@ const gmailStyles = `
               ))}
             </div>
 
-            <div className="email-preview-level">
+           <div className="email-preview-level">
               <div className="email-header-level">
-                {level.subj || level.page_title}
+                {/*level.subj || level.page_title*/}
               </div>
-
+              
               <div className="email-from-level">
                 <div className="avatar">
                   {getSenderInitial(level.phish_email)}
