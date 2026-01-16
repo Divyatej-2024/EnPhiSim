@@ -1,0 +1,195 @@
+🟢 EASY – Awareness & Pattern Recognition
+1. Password Expiry Reminder
+
+Idea: Generic IT email claiming password expires today
+Teaches: Urgency + generic greeting
+
+2. Free Storage Upgrade
+
+Idea: “You’ve been selected for a free cloud storage upgrade”
+Teaches: Too-good-to-be-true offers
+
+3. Fake Delivery Update
+
+Idea: Parcel delayed – click to reschedule
+Teaches: Unexpected logistics messages
+
+4. Newsletter Subscription Confirmation
+
+Idea: “Thanks for subscribing” when user never did
+Teaches: Awareness of unsolicited emails
+
+5. Resume Review Attachment
+
+Idea: “HR reviewed your CV – see comments attached”
+Teaches: Suspicious attachments
+
+🟡 ADVANCED EASY – Link & Sender Inspection
+6. Typo-Squatted Login Page
+
+Idea: micros0ft.com instead of microsoft.com
+Teaches: Domain checking
+
+7. URL Shortener Trap
+
+Idea: Bit.ly hides malicious site
+Teaches: Hover-before-click habit
+
+8. Fake Social Media Alert
+
+Idea: “Someone logged into your account”
+Teaches: Link mismatch detection
+
+9. Online Survey Reward
+
+Idea: Survey asks DOB, phone, security Qs
+Teaches: Data harvesting awareness
+
+10. Smishing Bank Alert
+
+Idea: SMS says card blocked, click link
+Teaches: SMS phishing recognition
+
+🟠 NORMAL – Context & Business Awareness
+11. Shared Google Drive File
+
+Idea: Unexpected document shared externally
+Teaches: Cloud-based phishing
+
+12. Fake Invoice from Known Vendor
+
+Idea: Looks real but wrong bank details
+Teaches: Financial verification
+
+13. Account Lockout Warning
+
+Idea: Threatens immediate service loss
+Teaches: Emotional manipulation
+
+14. HR Policy Update
+
+Idea: Requests login to read policy
+Teaches: Internal trust abuse
+
+15. Password Reset Loop
+
+Idea: Multiple reset emails arriving
+Teaches: Session-based anomalies
+
+🔴 PRE-HARD – Multi-Vector & Technical Awareness
+16. CEO Urgent Payment Request (Whaling)
+
+Idea: “Send payment confidentially”
+Teaches: Executive impersonation
+
+17. Email + Phone Follow-Up
+
+Idea: Call references earlier email
+Teaches: Multi-channel attacks
+
+18. QR Code Poster
+
+Idea: “Scan for campus Wi-Fi”
+Teaches: QR phishing (quishing)
+
+19. HTML Attachment Login Page
+
+Idea: .html file opens fake login
+Teaches: File-type exploitation
+
+20. Account Takeover Signals
+
+Idea: Login alerts from new locations
+Teaches: Early compromise detection
+
+⚫ HARD – Trust & Infrastructure Attacks
+21. Compromised Internal Email
+
+Idea: Comes from real colleague account
+Teaches: Behavioural anomaly detection
+
+22. Business Process Change
+
+Idea: “New payment approval process”
+Teaches: Procedural integrity
+
+23. Deepfake Voice Call
+
+Idea: Familiar voice requests urgent action
+Teaches: Audio-based social engineering
+
+24. Man-in-the-Middle Login Page
+
+Idea: Valid URL, repeated credential requests
+Teaches: TLS/session awareness
+
+25. Supply-Chain Software Update
+
+Idea: Vendor update with malicious payload
+Teaches: Third-party risk
+
+🟣 ADVANCED HARD – AI & Adaptive Attacks
+26. AI-Generated Personalized Email
+
+Idea: Perfect grammar + personal context
+Teaches: AI phishing detection limits
+
+27. Unicode Domain Attack
+
+Idea: Cyrillic characters mimic real domain
+Teaches: Homograph attacks
+
+28. Credential Replay Attack
+
+Idea: Old password suddenly works
+Teaches: Password reuse dangers
+
+29. Adaptive BEC Campaign
+
+Idea: Emails evolve based on user actions
+Teaches: Long-term attack detection
+
+30. Multi-Vector Campaign
+
+Idea: Email → SMS → Notification → Call
+Teaches: Attack chaining
+
+🔥 FINAL – Advanced Persistent Phishing
+31. Long-Term Recon Campaign
+
+Idea: Weeks of benign emails → exploit
+Teaches: Patience-based attackers
+
+32. Internal Tool Abuse
+
+Idea: Fake Jira / ServiceNow tickets
+Teaches: SaaS trust exploitation
+
+33. MFA Fatigue Attack
+
+Idea: Repeated MFA push notifications
+Teaches: MFA abuse
+
+34. AI Chat Impersonation
+
+Idea: Fake internal chatbot requests creds
+Teaches: AI system trust issues
+
+35. Executive Calendar Invite
+
+Idea: Meeting invite with malicious link
+Teaches: Calendar-based phishing
+
+🐝 BENIGN / CONTROL SCENARIOS (IMPORTANT)
+36. Educational Infographic
+37. Nature + Technology Article
+38. Legitimate IT Notice (No Links)
+39. Public Awareness Poster
+
+Used to:
+
+Reduce false positives
+
+Balance ML training
+
+Reset user bias
