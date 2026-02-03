@@ -271,7 +271,7 @@ def create_scenarios(levels):
     for level in levels:
         # Only create for phishing levels (not bonus)
         if level["Level_no"].startswith(("l", "f")):
-            for i in range(10):  # Reduced to 10 variations per level for speed
+            for i in range(200):  # Reduced to 10 variations per level for speed
                 # Simple content creation without complex templates
                 if level["template_type"] == "mail":
                     content = f"""From: {level["phish_email"]}
