@@ -65,9 +65,9 @@ const {
   id,
   page_title,
   /*url,*/
-  hint,
-  correct_option,
-  correct_info,
+//   hint,
+//   correct_option,
+//   correct_info,
   from_and_to,
   subject,
   crct_email,
