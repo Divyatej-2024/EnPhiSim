@@ -24,13 +24,8 @@ const onOptionClick = (option) => {
   const navigate = useNavigate();
 
   const [levels, setLevels] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex] = useState(0);
 
-  const [dialog, setDialog] = useState({
-    show: false,
-    title: "",
-    message: "",
-  });
 
   /* ---------------------------
      🔹 FETCH LEVEL DATA FROM LIVE SERVER

@@ -19,13 +19,13 @@ export default function MockMailTemplate() {
   });
 
   const [hover, setHover] = useState(false);
- const [emailDialog, setEmailDialog] = useState(false);
+//  const [emailDialog, setEmailDialog] = useState(false);
 
-  const getSenderInitial = (email) =>
-    email ? email[0].toUpperCase() : "?";
+//   const getSenderInitial = (email) =>
+//     email ? email[0].toUpperCase() : "?";
 
-  const openEmailDialog = () => setEmailDialog(true);
-  /* ---------------- FETCH LEVELS ---------------- */
+//   const openEmailDialog = () => setEmailDialog(true);
+//   /* ---------------- FETCH LEVELS ---------------- */
   useEffect(() => {
     async function loadLevels() {
       try {
