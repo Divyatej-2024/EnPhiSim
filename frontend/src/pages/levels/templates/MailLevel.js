@@ -57,7 +57,7 @@ export default function MockMailTemplate() {
   }
 
   const {
-    id,
+    level_no,
     /*page_title,*/
     hint,
     correct_option,
@@ -83,14 +83,14 @@ export default function MockMailTemplate() {
 
     const isCorrect = option === correct_option;
 
-    recordAction(id, {
+    recordAction(level_no, {
       selected: option,
       correct: isCorrect,
       timestamp: Date.now(),
     });
 
     if (isCorrect) {
-      completeLevel(id);
+      completeLevel(level_no);
     }
 
     setDialog({
