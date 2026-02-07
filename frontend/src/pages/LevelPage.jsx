@@ -1,7 +1,9 @@
+// frontend/src/pages/LevelPage.jsx
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { safeFetchJSON } from "../utils/helper";
 import { useProgress } from "../context/ProgressContext";
+import { normalizeLevelData } from "../utils/LevelHelper"; // Add import
 import TemplateRenderer from "./levels/TemplateRenderer";
 
 export default function LevelPage() {
@@ -14,7 +16,6 @@ export default function LevelPage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Defensive check for missing params
     if (!category || !levelId) {
       setError("Invalid level URL");
       setLoading(false);
@@ -23,27 +24,30 @@ export default function LevelPage() {
 
     async function loadLevel() {
       try {
-      const apiUrl = process.env.REACT_APP_API_URL || "https://enphisim-1.onrender.com";
-
+        const apiUrl = process.env.REACT_APP_API_URL || "https://enphisim-1.onrender.com";
         if (!apiUrl) throw new Error("API URL not set");
 
-        // Option 1: Fetch all levels and find the one we need
         const data = await safeFetchJSON(`${apiUrl}/api/levels`);
-
-        const foundLevel = data.find(
+        const levelArray = Array.isArray(data) ? data : data.levels || [];
+        
+        // Normalize all levels first
+        const normalizedLevels = levelArray.map(normalizeLevelData);
+        
+        // Find using consistent field name
+        const foundLevel = normalizedLevels.find(
           (l) =>
             l.category?.toLowerCase().trim() === category.toLowerCase().trim() &&
-            l.Level_no?.toLowerCase().trim() === levelId.toLowerCase().trim()
+            l.level_no?.toLowerCase().trim() === levelId.toLowerCase().trim()
         );
 
         if (!foundLevel) {
-          setError("Level not found");
+          setError(`Level ${levelId} in category ${category} not found`);
         } else {
           setLevel(foundLevel);
         }
       } catch (err) {
-        console.error("Failed to load level:", err.message);
-        setError(err.message);
+        console.error("Failed to load level:", err);
+        setError(err.message || "Failed to load level");
       } finally {
         setLoading(false);
       }
@@ -52,23 +56,23 @@ export default function LevelPage() {
     loadLevel();
   }, [category, levelId]);
 
-  // ---------------- LOADING / ERROR ----------------
   if (loading) return <h2>Loading level…</h2>;
-  if (error) return <h2>{error}</h2>;
-  if (!level) return null; // Level not found handled above
+  if (error) return <h2>Error: {error}</h2>;
+  if (!level) return <h2>Level not found</h2>;
 
   // Prepare options
   const options = [
     { key: "correct", label: level.correct_option, correct: true },
     { key: "neutral", label: level.neutral_option, correct: false },
     { key: "wrong", label: level.wrong_option, correct: false },
-  ];
+  ].filter(opt => opt.label); // Filter out undefined options
 
   const handleOptionClick = (option) => {
-    recordAction(level.Level_no, option.key);
+    // Use consistent level_no field
+    recordAction(level.level_no, option.key);
 
     if (option.correct) {
-      markLevelComplete(level.Level_no);
+      markLevelComplete(level.level_no);
       navigate("/dashboard");
     } else {
       alert("Incorrect! Try again.");

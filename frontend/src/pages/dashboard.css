@@ -237,7 +237,26 @@
   text-align: center;
   box-shadow: 0 3px 6px rgba(0,0,0,0.1);
 }
+/* Add to dashboard.css */
+.card.green {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+}
 
+.card.orange {
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  color: white;
+}
+
+.card.red {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+}
+
+.card.blue {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+}
 .card h3 {
   font-size: 0.85rem;
   color: #666;

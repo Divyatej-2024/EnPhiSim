@@ -1,17 +1,16 @@
-// src/components/Dashboard.js
-
+// frontend/src/pages/Dashboard.jsx
 import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { safeFetchJSON } from "../utils/helper";
 import { useProgress } from "../context/ProgressContext";
 import useDashboardAnalytics from "./useDashboardAnalytics";
+import { normalizeLevelArray } from "../utils/LevelHelper"; // Add this import
 import "./dashboard.css";
 
-const REACT_APP_API_URL = "https://enphisim-1.onrender.com";
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL || "https://enphisim-1.onrender.com";
 
 export default function Dashboard() {
   const { progress } = useProgress();
-
   const [levels, setLevels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -29,9 +28,10 @@ export default function Dashboard() {
           ? data
           : data.levels || [];
 
-        const normalized = levelArray.map((lvl) => ({
+        // Use the normalization function
+        const normalized = normalizeLevelArray(levelArray).map((lvl) => ({
           id: lvl.id,
-          level_no: lvl.Level_no,
+          level_no: lvl.level_no, // Now consistent lowercase
           category: lvl.category,
           page_title: lvl.page_title,
           template_type: lvl.template_type,
@@ -39,7 +39,8 @@ export default function Dashboard() {
 
         setLevels(normalized);
       } catch (err) {
-        setError(err.message);
+        console.error("Fetch levels error:", err);
+        setError(err.message || "Failed to load levels");
       } finally {
         setLoading(false);
       }
@@ -61,7 +62,7 @@ export default function Dashboard() {
     return Object.entries(levelsByCategory).map(
       ([category, lvls]) => {
         const completedCount = lvls.filter(
-          (l) => progress.completedLevels?.[l.level_no]
+          (l) => progress.completedLevels?.[l.level_no] // Consistent
         ).length;
 
         const percent = Math.round(
@@ -70,7 +71,7 @@ export default function Dashboard() {
 
         const nextLevel =
           lvls.find(
-            (l) => !progress.completedLevels?.[l.level_no]
+            (l) => !progress.completedLevels?.[l.level_no] // Consistent
           ) || lvls[0];
 
         return {
@@ -106,44 +107,46 @@ export default function Dashboard() {
       <div className="dashboard error">
         <h2>Error</h2>
         <p>{error}</p>
+        <button onClick={() => window.location.reload()}>Retry</button>
       </div>
     );
 
   return (
     <div className="dashboard">
       <h1>EnPhiSim Dashboard</h1>
-{/* ---------------- ANALYTICS SUMMARY ---------------- */}
-<div className="analytics-cards">
-  <div className="card">
-    <h3>Levels Completed</h3>
-    <p>{completed} / {totalLevels}</p>
-  </div>
+      
+      {/* ---------------- ANALYTICS SUMMARY ---------------- */}
+      <div className="analytics-cards">
+        <div className="card">
+          <h3>Levels Completed</h3>
+          <p>{completed} / {totalLevels}</p>
+        </div>
 
-  <div className="card blue">
-    <h3>Completion Rate</h3>
-    <p>{completionRate}%</p>
-  </div>
+        <div className="card blue">
+          <h3>Completion Rate</h3>
+          <p>{completionRate}%</p>
+        </div>
 
-  <div className="card">
-    <h3>Total Actions</h3>
-    <p>{totalActions || 0}</p>
-  </div>
+        <div className="card">
+          <h3>Total Actions</h3>
+          <p>{totalActions || 0}</p>
+        </div>
 
-  <div className="card red">
-    <h3>Accuracy</h3>
-    <p>{accuracy}%</p>
-  </div>
+        <div className="card red">
+          <h3>Accuracy</h3>
+          <p>{accuracy}%</p>
+        </div>
 
-   <div className="card red">
-    <h3>Safe Actions</h3>
-    <p>{safeActions}%</p>
-  </div>
+        <div className="card green">
+          <h3>Safe Actions</h3>
+          <p>{safeActions}%</p>
+        </div>
 
-   <div className="card red">
-    <h3>Risk Actions</h3>
-    <p>{riskyActions}%</p>
-  </div>
-</div>
+        <div className="card orange">
+          <h3>Risk Actions</h3>
+          <p>{riskyActions}%</p>
+        </div>
+      </div>
 
       {/* ---------------- CATEGORY GRID ---------------- */}
       <h2 style={{ textAlign: "center" }}>
@@ -153,7 +156,7 @@ export default function Dashboard() {
       <div className="levels-grid">
         {categoryStats.map((cat) => (
           <div
-            key={cat.category}
+            key={cat.category} // Add key
             className="level-card"
             onClick={() => setActiveCategory(cat)}
           >
@@ -173,7 +176,7 @@ export default function Dashboard() {
 
             <Link
               className="start-link"
-              to={`/levels/${cat.category}/${cat.nextLevel.level_no}`}
+              to={`/levels/${cat.category}/${cat.nextLevel.level_no}`} // Consistent
             >
               {cat.percent === 100 ? "Replay" : "Start / Continue"}
             </Link>
@@ -195,7 +198,7 @@ export default function Dashboard() {
 
           <Link
             className="btn primary"
-            to={`/levels/${activeCategory.category}/${activeCategory.nextLevel.level_no}`}
+            to={`/levels/${activeCategory.category}/${activeCategory.nextLevel.level_no}`} // Consistent
           >
             Continue
           </Link>
@@ -211,9 +214,13 @@ export default function Dashboard() {
         <h3>Final Simulation</h3>
         <p>Requires 75% completion & 75% accuracy</p>
 
-        <button disabled={!finalUnlocked}>
-          {finalUnlocked ? "Start Final Level" : "Locked"}
-        </button>
+        {finalUnlocked ? (
+          <Link to="/levels/final/f">
+            <button>Start Final Level</button>
+          </Link>
+        ) : (
+          <button disabled>Locked</button>
+        )}
       </div>
     </div>
   );
