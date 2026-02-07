@@ -37,11 +37,11 @@ export default function LevelPage() {
         const foundLevel = normalizedLevels.find(
           (l) =>
             l.category?.toLowerCase().trim() === category.toLowerCase().trim() &&
-            l.level_no?.toLowerCase().trim() === levelId.toLowerCase().trim()
+            l.level_no?.toLowerCase().trim() === level_no.toLowerCase().trim()
         );
 
         if (!foundLevel) {
-          setError(`Level ${levelId} in category ${category} not found`);
+          setError(`Level ${level_no} in category ${category} not found`);
         } else {
           setLevel(foundLevel);
         }
