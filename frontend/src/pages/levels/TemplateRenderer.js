@@ -18,7 +18,25 @@ const levelTemplates = {
 };
 
 export default function TemplateRenderer({ level, onOptionClick }) {
-  const TemplateComponent = levelTemplates[level.template_type];
-  if (!TemplateComponent) return <h2>Template not found</h2>;
+  const rawType = level.template_type || "";
+
+  const normalizedType = rawType
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .trim();
+
+  const TemplateComponent = levelTemplates[normalizedType];
+
+  console.log("RAW TEMPLATE:", rawType);
+  console.log("NORMALIZED TEMPLATE:", normalizedType);
+
+  if (!TemplateComponent) {
+    return (
+      <h2>
+        Template not found: <code>{rawType}</code>
+      </h2>
+    );
+  }
+
   return <TemplateComponent level={level} onOptionClick={onOptionClick} />;
 }
