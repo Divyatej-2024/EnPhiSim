@@ -7,7 +7,7 @@ import { normalizeLevelData } from "../utils/LevelHelper"; // Add import
 import TemplateRenderer from "./levels/TemplateRenderer";
 
 export default function LevelPage() {
-  const { category, levelId } = useParams();
+  const { category, level_no } = useParams();
   const navigate = useNavigate();
   const { recordAction, markLevelComplete } = useProgress();
 
@@ -16,7 +16,7 @@ export default function LevelPage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!category || !levelId) {
+    if (!category || !level_no) {
       setError("Invalid level URL");
       setLoading(false);
       return;
@@ -54,7 +54,7 @@ export default function LevelPage() {
     }
 
     loadLevel();
-  }, [category, levelId]);
+  }, [category, level_no]);
 
   if (loading) return <h2>Loading level…</h2>;
   if (error) return <h2>Error: {error}</h2>;
