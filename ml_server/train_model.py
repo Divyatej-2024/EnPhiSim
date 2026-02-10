@@ -68,7 +68,7 @@ class DistilBERT_CNN(nn.Module):
 # ===============================
 def train():
     # Load and preprocess data
-    df = preprocess_txt("data/Enphisim_dataset.xlsx")
+    df = preprocess_txt("data/scenarios_simplified.xlsx")
     label_map = {"correct": 0, "neutral": 1, "wrong": 2}
     df["label"] = df["label"].map(label_map)
 

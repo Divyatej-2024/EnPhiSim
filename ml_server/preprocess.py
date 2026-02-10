@@ -1,6 +1,6 @@
 import pandas as pd
 
-def preprocess_txt(fil="data/Enphisim_dataset.xlsx"):
+def preprocess_txt(fil="data/scenarios_simplified.xlsx"):
     # Load Excel file
     df = pd.read_excel(fil)
 
