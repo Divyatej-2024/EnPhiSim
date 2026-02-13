@@ -19,12 +19,10 @@ export default function MockMailTemplate() {
   });
 
   const [hover, setHover] = useState(false);
- const [emailDialog, setEmailDialog] = useState(false);
 
   const getSenderInitial = (email) =>
     email ? email[0].toUpperCase() : "?";
 
-  const openEmailDialog = () => setEmailDialog(true);
 //   /* ---------------- FETCH LEVELS ---------------- */
   useEffect(() => {
     async function loadLevels() {
@@ -55,14 +53,6 @@ export default function MockMailTemplate() {
   if (!level) {
     return <div>Level data not found.</div>;
   }
-
-  const {
-    level_no,
-    /*page_title,*/
-    hint,
-    correct_action,
-    correct_info,
-  } = level;
 
   const dummyEmails = [
     { sender: "LinkedIn", subject: "New connection request" },
