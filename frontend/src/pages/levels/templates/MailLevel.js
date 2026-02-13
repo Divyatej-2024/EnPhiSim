@@ -19,12 +19,12 @@ export default function MockMailTemplate() {
   });
 
   const [hover, setHover] = useState(false);
-//  const [emailDialog, setEmailDialog] = useState(false);
+ const [emailDialog, setEmailDialog] = useState(false);
 
-//   const getSenderInitial = (email) =>
-//     email ? email[0].toUpperCase() : "?";
+  const getSenderInitial = (email) =>
+    email ? email[0].toUpperCase() : "?";
 
-//   const openEmailDialog = () => setEmailDialog(true);
+  const openEmailDialog = () => setEmailDialog(true);
 //   /* ---------------- FETCH LEVELS ---------------- */
   useEffect(() => {
     async function loadLevels() {
@@ -60,7 +60,7 @@ export default function MockMailTemplate() {
     level_no,
     /*page_title,*/
     hint,
-    correct_option,
+    correct_action,
     correct_info,
   } = level;
 
@@ -77,28 +77,35 @@ export default function MockMailTemplate() {
   ];
 
   /* ---------------- CORE LOGIC ---------------- */
-  const handleCheck = (option) => {
-    if (locked) return;
-    setLocked(true);
+const handleCheck = (selectedKey) => {
+  if (locked) return;
+  setLocked(true);
 
-    const isCorrect = option === correct_option;
+  const isCorrect = selectedKey === level.user_action;
 
-    recordAction(level_no, {
-      selected: option,
-      correct: isCorrect,
-      timestamp: Date.now(),
-    });
+  recordAction(level.level_id, {
+    version_id: level.version_id,
+    level_no: level.level_no,
+    selected_action: selectedKey,
+    correct_action: level.user_action,
+    result: isCorrect ? "correct" : "incorrect",
+    category: level.category,
+    difficulty: level.difficulty,
+    timestamp: Date.now(),
+  });
 
-    if (isCorrect) {
-      completeLevel(level_no);
-    }
+  if (isCorrect) {
+    completeLevel(level.level_id);
+  }
 
-    setDialog({
-      show: true,
-      title: isCorrect ? "Correct!" : "Incorrect!",
-      message: `Correct Info: ${correct_info}\nHint: ${hint}`,
-    });
-  };
+  setDialog({
+    show: true,
+    title: isCorrect ? "Correct!" : "Incorrect!",
+    message: isCorrect
+      ? "You correctly handled this phishing attempt."
+      : "This action would expose you to phishing risk.",
+  });
+};
 
   const closeDialog = () => {
     setDialog({ ...dialog, show: false });
@@ -328,7 +335,7 @@ const gmailStyles = `
               
               <div className="email-from-level">
                 <div className="avatar">
-                  {/*getSenderInitial(level.phish_email)*/}
+                  {getSenderInitial(level.phish_email)}
                 </div>
                 <div className="info">
                   <strong>{level.phish_email}</strong>
@@ -352,29 +359,26 @@ const gmailStyles = `
               </div>
 
               <div className="level-actions-container">
-                <button
-                  className="btn correct"
-                  disabled={locked}
-                  onClick={() => handleCheck(level.correct_option)}
-                >
-                  {level.correct_option}
-                </button>
+<button
+  disabled={locked}
+  onClick={() => handleCheck("correct_action")}
+>
+  {level.correct_action}
+</button>
 
-                <button
-                  className="btn neutral"
-                  disabled={locked}
-                  onClick={() => handleCheck(level.neutral_option)}
-                >
-                  {level.neutral_option}
-                </button>
+<button
+  disabled={locked}
+  onClick={() => handleCheck("neutral_action")}
+>
+  {level.neutral_action}
+</button>
 
-                <button
-                  className="btn wrong"
-                  disabled={locked}
-                  onClick={() => handleCheck(level.wrong_option)}
-                >
-                  {level.wrong_option}
-                </button>
+<button
+  disabled={locked}
+  onClick={() => handleCheck("wrong_action")}
+>
+  {level.wrong_action}
+</button>
               </div>
             </div>
           </div>
