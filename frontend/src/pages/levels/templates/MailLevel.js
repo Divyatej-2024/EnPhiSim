@@ -67,18 +67,31 @@ export default function MockMailTemplate() {
   ];
 
   /* ---------------- CORE LOGIC ---------------- */
-const handleCheck = (selectedKey) => {
+const handleCheck = async (selectedAction) => {
   if (locked) return;
   setLocked(true);
 
-  const prediction = await res.json();
+  try {
+    // 🔹 Call ML prediction API
+    const res = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/predict`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          scenario_id: level.scenario_id,
+          email_text: level.level_text,
+        }),
+      }
+    );
 
-    // Artificial latency (2 seconds requirement)
+    const prediction = await res.json();
+
+    // Artificial 2s delay
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     const isCorrect = selectedAction === level.correct_action;
 
-    // Log full dataset structure
     recordAction(level.scenario_id, {
       scenario_id: level.scenario_id,
       level_no: level.level_no,
@@ -92,41 +105,32 @@ const handleCheck = (selectedKey) => {
       correct_action: level.correct_action,
       result: isCorrect ? "correct" : "incorrect",
 
-      ml_prediction_distilbert: prediction.distilbert.label,
-      ml_confidence_distilbert: prediction.distilbert.confidence,
+      ml_prediction_distilbert: prediction?.distilbert?.label || null,
+      ml_confidence_distilbert: prediction?.distilbert?.confidence || null,
 
-      ml_prediction_cnn: prediction.cnn.label,
-      ml_confidence_cnn: prediction.cnn.confidence,
+      ml_prediction_cnn: prediction?.cnn?.label || null,
+      ml_confidence_cnn: prediction?.cnn?.confidence || null,
 
       timestamp: new Date().toISOString(),
-  });
+    });
 
-  if (isCorrect) {
-    completeLevel(level.level_id);
-  }
-
-  setDialog({
-    show: true,
-    title: isCorrect ? "Correct!" : "Incorrect!",
-    message: isCorrect
-      ? "You correctly handled this phishing attempt."
-      : "This action would expose you to phishing risk.",
-  });
-};
-
-  const closeDialog = () => {
-    setDialog({ ...dialog, show: false });
-    setLocked(false);
-
-    if (dialog.title === "Correct!") {
-      if (currentIndex < levels.length - 1) {
-        setCurrentIndex((prev) => prev + 1);
-      } else {
-        navigate("/thankyou");
-      }
+    if (isCorrect) {
+      completeLevel(level.level_id);
     }
-  };
 
+    setDialog({
+      show: true,
+      title: isCorrect ? "Correct!" : "Incorrect!",
+      message: isCorrect
+        ? "You correctly handled this phishing attempt."
+        : "This action would expose you to phishing risk.",
+    });
+
+  } catch (err) {
+    console.error("Prediction error:", err);
+    setLocked(false);
+  }
+};
 const gmailStyles = `
   .top-bar {
     display: flex;
@@ -368,21 +372,21 @@ const gmailStyles = `
               <div className="level-actions-container">
 <button
   disabled={locked}
-  onClick={() => handleCheck("correct_action")}
+  onClick={() => handleCheck(level.correct_action)}
 >
   {level.correct_action}
 </button>
 
 <button
   disabled={locked}
-  onClick={() => handleCheck("neutral_action")}
+  onClick={() => handleCheck(level.neutral_action)}
 >
   {level.neutral_action}
 </button>
 
 <button
   disabled={locked}
-  onClick={() => handleCheck("wrong_action")}
+  onClick={() => handleCheck(level.wrong_action)}
 >
   {level.wrong_action}
 </button>
