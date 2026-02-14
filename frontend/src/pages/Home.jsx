@@ -15,7 +15,7 @@ function Home() {
 
   const handleStart = () => {
     if (localStorage.getItem("researchConsent")) {
-      navigate("/home"); // change to your actual route
+      navigate("/simulation"); // change to your actual route
     } else {
       setShowConsent(true);
     }
@@ -24,7 +24,7 @@ function Home() {
   const handleConsent = () => {
     localStorage.setItem("researchConsent", "true");
     setShowConsent(false);
-    navigate("/simulation"); // change route if needed
+    navigate("/"); // change route if needed
   };
 
   return (
