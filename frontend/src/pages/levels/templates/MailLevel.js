@@ -28,7 +28,7 @@ export default function MockMailTemplate() {
     async function loadLevels() {
       try {
         const res = await fetch(
-          `${process.env.REACT_APP_API_URL.replace(/\/$/, "")}/api/levels`
+          `${process.env.REACT_APP_API_URL}/api/levels`
         );
 
         const text = await res.text();
