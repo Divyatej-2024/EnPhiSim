@@ -71,41 +71,8 @@ export default function BaseLevel({
 
     fetchLevels();
 
-    // Optional WebSocket connection (don't fail if not available)
-    let ws;
-    try {
-      const wsUrl = process.env.REACT_APP_WS_URL;
-      if (wsUrl) {
-        ws = new WebSocket(`${wsUrl}/level-updates`);
-        
-        ws.onopen = () => {
-          console.log('WebSocket connected for real-time updates');
-        };
-        
-        ws.onmessage = (event) => {
-          try {
-            const update = JSON.parse(event.data);
-            if (update.type === levelType) {
-              setLevels(prev => [...prev, update.level]);
-            }
-          } catch (e) {
-            console.error('Error parsing WebSocket message:', e);
-          }
-        };
-        
-        ws.onerror = (error) => {
-          console.warn('WebSocket error (continuing with HTTP only):', error);
-        };
-      }
-    } catch (e) {
-      console.warn('WebSocket connection failed (continuing with HTTP only):', e);
-    }
-
     return () => {
       mounted = false;
-      if (ws && ws.readyState === WebSocket.OPEN) {
-        ws.close();
-      }
     };
   }, [levelType]);
 
@@ -116,32 +83,6 @@ export default function BaseLevel({
     setLocked(true);
 
     try {
-      // Real-time prediction (optional)
-      let prediction = null;
-      if (currentLevel.requires_prediction) {
-        try {
-          const predResponse = await fetch(
-            `${process.env.REACT_APP_API_URL}/api/predict/realtime`,
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                level_id: currentLevel.id,
-                action: action,
-                context: metadata,
-                timestamp: Date.now()
-              })
-            }
-          );
-          if (predResponse.ok) {
-            prediction = await predResponse.json();
-          }
-        } catch (predError) {
-          console.warn('Prediction service unavailable:', predError);
-          // Continue without prediction
-        }
-      }
-
       const isCorrect = action === currentLevel.correct_action;
       
       // Record action with real-time data
@@ -156,7 +97,6 @@ export default function BaseLevel({
         user_action: action,
         correct_action: currentLevel.correct_action,
         result: isCorrect ? "correct" : "incorrect",
-        prediction: prediction,
         timestamp: new Date().toISOString(),
         ...metadata
       };
@@ -174,7 +114,7 @@ export default function BaseLevel({
         message: isCorrect 
           ? currentLevel.success_message || "Great job! You made the right choice."
           : currentLevel.failure_message || "This action could be risky. Try again!",
-        details: prediction?.explanation || currentLevel.hint,
+        details: currentLevel.hint,
         isCorrect
       });
 
@@ -182,8 +122,7 @@ export default function BaseLevel({
         onAction({
           level: currentLevel,
           action,
-          isCorrect,
-          prediction
+          isCorrect
         });
       }
 
@@ -217,19 +156,45 @@ export default function BaseLevel({
     setDialog(prev => ({ ...prev, show: false }));
   };
 
-  // Validate that children is a valid React element
-  if (!children || !React.isValidElement(children)) {
+  // Function to render children properly
+  const renderChildren = () => {
+    if (!children) {
+      return <div>No template provided</div>;
+    }
+
+    // If children is a function, call it with props
+    if (typeof children === 'function') {
+      return children({
+        level: currentLevel,
+        onAction: handleUserAction,
+        locked,
+        currentLevel
+      });
+    }
+
+    // If children is a valid React element, clone it with props
+    if (React.isValidElement(children)) {
+      return React.cloneElement(children, {
+        level: currentLevel,
+        onAction: handleUserAction,
+        locked,
+        currentLevel
+      });
+    }
+
+    // If it's a component type (not an instance), create it with props
+    if (typeof children === 'object' && children.$$typeof === Symbol.for('react.element')) {
+      return React.cloneElement(children, {
+        level: currentLevel,
+        onAction: handleUserAction,
+        locked,
+        currentLevel
+      });
+    }
+
     console.error('BaseLevel: Invalid children provided', children);
-    return (
-      <div className="error-container">
-        <h3>Template Error</h3>
-        <p>Invalid level template provided.</p>
-        <button onClick={() => navigate('/dashboard')}>
-          Return to Dashboard
-        </button>
-      </div>
-    );
-  }
+    return <div>Invalid template format</div>;
+  };
 
   if (loading) {
     return (
@@ -281,12 +246,7 @@ export default function BaseLevel({
 
       {/* Main content */}
       <div className="level-content">
-        {React.cloneElement(children, {
-          level: currentLevel,
-          onAction: handleUserAction,
-          locked,
-          currentLevel
-        })}
+        {renderChildren()}
       </div>
 
       {/* Real-time feedback dialog */}
