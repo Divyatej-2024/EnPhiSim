@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import BaseLevel from "./BaseLevel";
 
 export default function MailLevel() {
   const [selectedEmail, setSelectedEmail] = useState(null);
-  const [hoveredEmail, setHoveredEmail] = useState(null);
   const [showDetails, setShowDetails] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState("inbox");
@@ -412,8 +411,6 @@ export default function MailLevel() {
                       key={idx}
                       className={`email-item ${selectedEmail === idx ? 'selected' : ''} ${email.unread ? 'unread' : ''}`}
                       onClick={() => setSelectedEmail(idx)}
-                      onMouseEnter={() => setHoveredEmail(idx)}
-                      onMouseLeave={() => setHoveredEmail(null)}
                     >
                       <span>{email.unread ? '📧' : '📨'}</span>
                       <span className="email-sender">{email.sender || level.phish_email}</span>

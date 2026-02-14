@@ -4,10 +4,8 @@ import BaseLevel from "./BaseLevel";
 export default function MessageLevel() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const [typingStatus, setTypingStatus] = useState({});
-  const [activeChat, setActiveChat] = useState(null);
-  const messagesEndRef = useRef(null);
   const [isTyping, setIsTyping] = useState(false);
+  const messagesEndRef = useRef(null);
 
   const messageStyles = `
     .messenger-container {
@@ -101,7 +99,6 @@ export default function MessageLevel() {
       overflow-y: auto;
       padding: 24px;
       background: #e5ddd5;
-      background-image: url('data:image/svg+xml,...'); /* WhatsApp pattern */
     }
 
     .message-wrapper {
@@ -332,7 +329,6 @@ export default function MessageLevel() {
   }, [messages]);
 
   useEffect(() => {
-    // Simulate typing indicator
     const typingInterval = setInterval(() => {
       if (Math.random() > 0.8) {
         setIsTyping(true);
@@ -361,7 +357,6 @@ export default function MessageLevel() {
     setMessages(prev => [...prev, message]);
     setNewMessage("");
 
-    // Simulate reply
     setTimeout(() => {
       const reply = {
         id: Date.now() + 1,

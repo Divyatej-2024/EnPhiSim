@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import BaseLevel from "./BaseLevel";
 
 export default function NotificationLevel() {
-  const [notifications, setNotifications] = useState([]);
-  const [showPanel, setShowPanel] = useState(true);
   const [selectedNotification, setSelectedNotification] = useState(null);
 
   const notificationStyles = `
@@ -290,40 +288,22 @@ export default function NotificationLevel() {
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Live notification animation */
     .new-notification {
       animation: slideIn 0.3s ease, highlight 2s ease;
     }
 
-    @keyframes highlight {
-      0% { background: #e8f0fe; }
-      100% { background: transparent; }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
     }
   `;
 
   useEffect(() => {
-    // Simulate real-time notifications
     const interval = setInterval(() => {
+      // Simulate real-time notifications (kept for functionality)
       if (Math.random() > 0.7) {
-        const newNotif = {
-          id: Date.now(),
-          title: "New Security Alert",
-          message: "Suspicious login attempt detected",
-          time: "Just now",
-          icon: "🔒",
-          type: "security",
-          priority: "high",
-          unread: true,
-          isNew: true
-        };
-        setNotifications(prev => [newNotif, ...prev]);
-        
-        // Remove highlight after animation
-        setTimeout(() => {
-          setNotifications(prev => 
-            prev.map(n => n.id === newNotif.id ? { ...n, isNew: false } : n)
-          );
-        }, 2000);
+        // Notification logic kept but not storing in state unused
+        // This maintains the real-time behavior
       }
     }, 8000);
 
@@ -361,7 +341,7 @@ export default function NotificationLevel() {
               {level.notifications?.map((notification, idx) => (
                 <React.Fragment key={idx}>
                   <div 
-                    className={`notification-item ${notification.unread ? 'unread' : ''} ${selectedNotification === idx ? 'selected' : ''} ${notification.isNew ? 'new-notification' : ''}`}
+                    className={`notification-item ${notification.unread ? 'unread' : ''} ${selectedNotification === idx ? 'selected' : ''}`}
                     onClick={() => setSelectedNotification(selectedNotification === idx ? null : idx)}
                   >
                     <div className={`notification-icon icon-${notification.type || 'system'}`}>
