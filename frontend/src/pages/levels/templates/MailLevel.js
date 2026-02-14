@@ -71,17 +71,34 @@ const handleCheck = (selectedKey) => {
   if (locked) return;
   setLocked(true);
 
-  const isCorrect = selectedKey === level.user_action;
+  const prediction = await res.json();
 
-  recordAction(level.level_id, {
-    version_id: level.version_id,
-    level_no: level.level_no,
-    selected_action: selectedKey,
-    correct_action: level.user_action,
-    result: isCorrect ? "correct" : "incorrect",
-    category: level.category,
-    difficulty: level.difficulty,
-    timestamp: Date.now(),
+    // Artificial latency (2 seconds requirement)
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    const isCorrect = selectedAction === level.correct_action;
+
+    // Log full dataset structure
+    recordAction(level.scenario_id, {
+      scenario_id: level.scenario_id,
+      level_no: level.level_no,
+      title: level.page_title,
+      category: level.category,
+      taxonomy: level.taxonomy,
+      difficulty: level.difficulty,
+      template_type: level.template_type,
+
+      user_selected_action: selectedAction,
+      correct_action: level.correct_action,
+      result: isCorrect ? "correct" : "incorrect",
+
+      ml_prediction_distilbert: prediction.distilbert.label,
+      ml_confidence_distilbert: prediction.distilbert.confidence,
+
+      ml_prediction_cnn: prediction.cnn.label,
+      ml_confidence_cnn: prediction.cnn.confidence,
+
+      timestamp: new Date().toISOString(),
   });
 
   if (isCorrect) {
