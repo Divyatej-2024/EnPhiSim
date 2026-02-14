@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import BaseLevel from "./BaseLevel";
 
 export default function BrowserLevel() {
@@ -6,8 +6,6 @@ export default function BrowserLevel() {
   const [isLoading, setIsLoading] = useState(false);
   const [history, setHistory] = useState([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
-  const [bookmarks, setBookmarks] = useState([]);
-  const [showBookmarks, setShowBookmarks] = useState(false);
 
   const browserStyles = `
     .browser-window {
@@ -338,6 +336,20 @@ export default function BrowserLevel() {
       cursor: not-allowed;
     }
 
+    .link-button {
+      background: none;
+      border: none;
+      color: #1a73e8;
+      text-decoration: underline;
+      cursor: pointer;
+      padding: 0;
+      font: inherit;
+    }
+
+    .link-button:hover {
+      color: #1557b0;
+    }
+
     @keyframes spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
@@ -374,6 +386,11 @@ export default function BrowserLevel() {
       setIsLoading(true);
       setTimeout(() => setIsLoading(false), 500);
     }
+  };
+
+  const handleLinkClick = (e, link) => {
+    e.preventDefault();
+    navigateTo(link);
   };
 
   return (
@@ -487,9 +504,30 @@ export default function BrowserLevel() {
                     <div style={{ marginTop: '20px' }}>
                       <h3>Links on this page:</h3>
                       <ul>
-                        <li><a href="#" onClick={(e) => e.preventDefault()}>Official Site</a></li>
-                        <li><a href="#" onClick={(e) => e.preventDefault()}>Login</a></li>
-                        <li><a href="#" onClick={(e) => e.preventDefault()}>Support</a></li>
+                        <li>
+                          <button 
+                            className="link-button" 
+                            onClick={(e) => handleLinkClick(e, 'https://official-site.com')}
+                          >
+                            Official Site
+                          </button>
+                        </li>
+                        <li>
+                          <button 
+                            className="link-button" 
+                            onClick={(e) => handleLinkClick(e, 'https://login-page.com')}
+                          >
+                            Login
+                          </button>
+                        </li>
+                        <li>
+                          <button 
+                            className="link-button" 
+                            onClick={(e) => handleLinkClick(e, 'https://support.com')}
+                          >
+                            Support
+                          </button>
+                        </li>
                       </ul>
                     </div>
                   </div>
