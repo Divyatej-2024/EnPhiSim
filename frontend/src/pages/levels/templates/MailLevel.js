@@ -345,7 +345,7 @@ const gmailStyles = `
               </div>
 
               <div className="email-content-level">
-                {level.level_text}
+                {level.content}
               </div>
 
               <div className="level-actions-container">
