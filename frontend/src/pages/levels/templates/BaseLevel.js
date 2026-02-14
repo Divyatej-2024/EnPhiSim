@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useProgress } from "../../../context/ProgressContext";
 import "../../../level.css";
@@ -24,7 +24,7 @@ export default function BaseLevel({
     details: null
   });
 
-  // Real-time level fetching with WebSocket
+  // Real-time level fetching with HTTP only (WebSocket optional)
   useEffect(() => {
     let mounted = true;
     let retryCount = 0;
@@ -71,45 +71,75 @@ export default function BaseLevel({
 
     fetchLevels();
 
-    // WebSocket for real-time updates
-    const ws = new WebSocket(`${process.env.REACT_APP_WS_URL || 'ws://localhost:8080'}/level-updates`);
-    ws.onmessage = (event) => {
-      const update = JSON.parse(event.data);
-      if (update.type === levelType) {
-        setLevels(prev => [...prev, update.level]);
+    // Optional WebSocket connection (don't fail if not available)
+    let ws;
+    try {
+      const wsUrl = process.env.REACT_APP_WS_URL;
+      if (wsUrl) {
+        ws = new WebSocket(`${wsUrl}/level-updates`);
+        
+        ws.onopen = () => {
+          console.log('WebSocket connected for real-time updates');
+        };
+        
+        ws.onmessage = (event) => {
+          try {
+            const update = JSON.parse(event.data);
+            if (update.type === levelType) {
+              setLevels(prev => [...prev, update.level]);
+            }
+          } catch (e) {
+            console.error('Error parsing WebSocket message:', e);
+          }
+        };
+        
+        ws.onerror = (error) => {
+          console.warn('WebSocket error (continuing with HTTP only):', error);
+        };
       }
-    };
+    } catch (e) {
+      console.warn('WebSocket connection failed (continuing with HTTP only):', e);
+    }
 
     return () => {
       mounted = false;
-      ws.close();
+      if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.close();
+      }
     };
   }, [levelType]);
 
   const currentLevel = levels[currentIndex];
 
-  const handleUserAction = async (action, metadata = {}) => {
+  const handleUserAction = useCallback(async (action, metadata = {}) => {
     if (locked || !currentLevel) return;
     setLocked(true);
 
     try {
-      // Real-time prediction
+      // Real-time prediction (optional)
       let prediction = null;
       if (currentLevel.requires_prediction) {
-        const predResponse = await fetch(
-          `${process.env.REACT_APP_API_URL}/api/predict/realtime`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              level_id: currentLevel.id,
-              action: action,
-              context: metadata,
-              timestamp: Date.now()
-            })
+        try {
+          const predResponse = await fetch(
+            `${process.env.REACT_APP_API_URL}/api/predict/realtime`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                level_id: currentLevel.id,
+                action: action,
+                context: metadata,
+                timestamp: Date.now()
+              })
+            }
+          );
+          if (predResponse.ok) {
+            prediction = await predResponse.json();
           }
-        );
-        prediction = await predResponse.json();
+        } catch (predError) {
+          console.warn('Prediction service unavailable:', predError);
+          // Continue without prediction
+        }
       }
 
       const isCorrect = action === currentLevel.correct_action;
@@ -181,11 +211,25 @@ export default function BaseLevel({
       });
       setLocked(false);
     }
-  };
+  }, [currentLevel, locked, currentIndex, levels.length, navigate, onAction, recordAction, completeLevel]);
 
   const closeDialog = () => {
     setDialog(prev => ({ ...prev, show: false }));
   };
+
+  // Validate that children is a valid React element
+  if (!children || !React.isValidElement(children)) {
+    console.error('BaseLevel: Invalid children provided', children);
+    return (
+      <div className="error-container">
+        <h3>Template Error</h3>
+        <p>Invalid level template provided.</p>
+        <button onClick={() => navigate('/dashboard')}>
+          Return to Dashboard
+        </button>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
@@ -209,7 +253,15 @@ export default function BaseLevel({
   }
 
   if (!currentLevel) {
-    return <div>No levels available</div>;
+    return (
+      <div className="error-container">
+        <h3>No Levels Available</h3>
+        <p>No levels found for type: {levelType}</p>
+        <button onClick={() => navigate('/dashboard')}>
+          Return to Dashboard
+        </button>
+      </div>
+    );
   }
 
   return (
