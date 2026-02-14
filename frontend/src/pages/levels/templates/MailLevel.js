@@ -131,6 +131,18 @@ const handleCheck = async (selectedAction) => {
     setLocked(false);
   }
 };
+  const closeDialog = () => {
+  setDialog((prev) => ({ ...prev, show: false }));
+  setLocked(false);
+
+  if (dialog.title === "Correct!") {
+    if (currentIndex < levels.length - 1) {
+      setCurrentIndex((prev) => prev + 1);
+    } else {
+      navigate("/thankyou");
+    }
+  }
+};
 const gmailStyles = `
   .top-bar {
     display: flex;
