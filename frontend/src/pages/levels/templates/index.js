@@ -15,3 +15,14 @@ export const levelTemplates = {
   "mail + browser": MailBrowserLevel,
   "mail + browser + message": MailBrowserMessageLevel,
 };
+
+// Export individual components for direct use
+export {
+  MailLevel,
+  BrowserLevel,
+  MessageLevel,
+  NotificationLevel,
+  ImageLevel,
+  MailBrowserLevel,
+  MailBrowserMessageLevel
+};
