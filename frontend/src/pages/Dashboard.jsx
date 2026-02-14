@@ -30,7 +30,7 @@ export default function Dashboard() {
           level_no: lvl.level_no.toLowerCase(), // ensure lowercase
           category: lvl.category.toLowerCase(),
           page_title: lvl.page_title || lvl.title || "",
-          template_type: lvl.template || "mail",
+          template_type: lvl.template_type || "mail",
         }));
 
         setLevels(normalized);
