@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import BaseLevel from "./BaseLevel";
 
 export default function ImageLevel() {
-  const [selectedArea, setSelectedArea] = useState(null);
   const [zoomLevel, setZoomLevel] = useState(1);
   const [showAnalysis, setShowAnalysis] = useState(false);
   const [hoveredElement, setHoveredElement] = useState(null);
@@ -330,7 +329,6 @@ export default function ImageLevel() {
                   className="image-container"
                   style={{ transform: `scale(${zoomLevel})` }}
                   onMouseMove={(e) => {
-                    // Show tooltips on hover
                     const rect = e.currentTarget.getBoundingClientRect();
                     const x = e.clientX - rect.left;
                     const y = e.clientY - rect.top;
@@ -343,14 +341,12 @@ export default function ImageLevel() {
                     });
                   }}
                 >
-                  {/* Base image */}
                   <img 
                     src={level.image_url || 'https://via.placeholder.com/600x400'} 
                     alt="Analysis"
                     style={{ maxWidth: '100%', display: 'block' }}
                   />
 
-                  {/* Suspicious areas overlay */}
                   <div className="suspicious-overlay">
                     {level.suspicious_areas?.map((area, idx) => (
                       <div

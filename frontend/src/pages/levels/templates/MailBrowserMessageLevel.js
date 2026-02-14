@@ -3,7 +3,6 @@ import BaseLevel from "./BaseLevel";
 
 export default function MailBrowserMessageLevel() {
   const [activePlatform, setActivePlatform] = useState('email');
-  const [timeline, setTimeline] = useState([]);
 
   const tripleStyles = `
     .triple-container {
