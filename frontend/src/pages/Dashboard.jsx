@@ -123,7 +123,8 @@ const categoryStats = useMemo(() => {
         unlocked,
       };
     });
-}, [levelsByCategory, progress, CATEGORY_ORDER]);
+
+}, [levelsByCategory, progress]);
 
   /* ---------------- ANALYTICS ---------------- */
   const {
