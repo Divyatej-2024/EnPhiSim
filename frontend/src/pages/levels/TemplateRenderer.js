@@ -13,8 +13,8 @@ const levelTemplates = {
   message: MessageLevel,
   notification: NotificationLevel,
   image: ImageLevel,
-  "mail + browser": MailBrowserLevel,
-  "mail + browser + message": MailBrowserMessageLevel,
+  mailbrowser: MailBrowserLevel,
+  mailbrowsermessage: MailBrowserMessageLevel,
 };
 
 export default function TemplateRenderer({ level, onOptionClick }) {
