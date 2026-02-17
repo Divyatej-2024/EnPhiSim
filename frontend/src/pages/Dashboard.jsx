@@ -53,15 +53,6 @@ export default function Dashboard() {
   }, []);
 
   /* ---------------- ORDERED CATEGORY FLOW ---------------- */
-  const CATEGORY_ORDER = [
-    "easy",
-    "adv_easy",
-    "normal",
-    "pre_hard",
-    "hard",
-    "adv_hard",
-    "final",
-  ];
 
   /* ---------------- GROUP + SORT LEVELS ---------------- */
   const levelsByCategory = useMemo(() => {
@@ -86,6 +77,17 @@ export default function Dashboard() {
 
   /* ---------------- CATEGORY STATS ---------------- */
 const categoryStats = useMemo(() => {
+
+  const CATEGORY_ORDER = [
+    "easy",
+    "adv_easy",
+    "normal",
+    "pre_hard",
+    "hard",
+    "adv_hard",
+    "final",
+  ];
+
   return CATEGORY_ORDER
     .filter((cat) => levelsByCategory[cat])
     .map((category, index) => {
