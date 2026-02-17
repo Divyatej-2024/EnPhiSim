@@ -85,56 +85,43 @@ export default function Dashboard() {
   }, [levels]);
 
   /* ---------------- CATEGORY STATS ---------------- */
-  const categoryStats = useMemo(() => {
-    return CATEGORY_ORDER
-      .filter((cat) => levelsByCategory[cat])
-      .map((category, index) => {
-        const lvls = levelsByCategory[category] || [];
+const categoryStats = useMemo(() => {
+  return CATEGORY_ORDER
+    .filter((cat) => levelsByCategory[cat])
+    .map((category, index) => {
+      const lvls = levelsByCategory[category] || [];
 
-        const completedCount = lvls.filter(
-          (l) =>
+      const completedCount = lvls.filter(
+        (l) => progress.completedLevels?.[l.level_no]
+      ).length;
+
+      const percent =
+        lvls.length === 0
+          ? 0
+          : Math.round((completedCount / lvls.length) * 100);
+
+      const previousCategory = CATEGORY_ORDER[index - 1];
+
+      const unlocked =
+        index === 0 ||
+        (levelsByCategory[previousCategory] &&
+          levelsByCategory[previousCategory].every((l) =>
             progress.completedLevels?.[l.level_no]
-        ).length;
+          ));
 
-        const percent =
-          lvls.length === 0
-            ? 0
-            : Math.round(
-                (completedCount / lvls.length) * 100
-              );
+      const nextLevel =
+        lvls.find((l) => !progress.completedLevels?.[l.level_no]) || lvls[0];
 
-        const previousCategory =
-          CATEGORY_ORDER[index - 1];
-
-        const unlocked =
-          index === 0 ||
-          (levelsByCategory[previousCategory] &&
-            levelsByCategory[
-              previousCategory
-            ].every((l) =>
-              progress.completedLevels?.[
-                l.level_no
-              ]
-            ));
-
-        const nextLevel =
-          lvls.find(
-            (l) =>
-              !progress.completedLevels?.[
-                l.level_no
-              ]
-          ) || lvls[0];
-
-        return {
-          category,
-          completedCount,
-          total: lvls.length,
-          percent,
-          nextLevel,
-          unlocked,
-        };
-      });
-  }, [levelsByCategory, progress]);
+      return {
+        category,
+        completedCount,
+        total: lvls.length,
+        percent,
+        nextLevel,
+        unlocked,
+      };
+    });
+}, [levelsByCategory, progress, CATEGORY_ORDER]);
 
   /* ---------------- ANALYTICS ---------------- */
   const {
