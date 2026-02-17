@@ -53,7 +53,7 @@ export default function Dashboard() {
   }, []);
 
   /* ---------------- ORDERED CATEGORY FLOW ---------------- */
-  const categoryOrder = [
+  const CATEGORY_ORDER = [
     "easy",
     "adv_easy",
     "normal",
@@ -86,7 +86,7 @@ export default function Dashboard() {
 
   /* ---------------- CATEGORY STATS ---------------- */
   const categoryStats = useMemo(() => {
-    return categoryOrder
+    return CATEGORY_ORDER
       .filter((cat) => levelsByCategory[cat])
       .map((category, index) => {
         const lvls = levelsByCategory[category] || [];
@@ -104,7 +104,7 @@ export default function Dashboard() {
               );
 
         const previousCategory =
-          categoryOrder[index - 1];
+          CATEGORY_ORDER[index - 1];
 
         const unlocked =
           index === 0 ||
