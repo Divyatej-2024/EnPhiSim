@@ -1,13 +1,14 @@
-// frontend/src/pages/Dashboard.jsx
+// src/pages/Dashboard.jsx
+
 import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { safeFetchJSON } from "../utils/helper";
 import { useProgress } from "../context/ProgressContext";
-import useDashboardAnalytics from "./useDashboardAnalytics";
+import useDashboardAnalytics from "../components/useDashboardAnalytics";
 import "./dashboard.css";
 
-const REACT_APP_API_URL =
-  process.env.REACT_APP_API_URL || "https://enphisim-1.onrender.com";
+const API_URL =
+  process.env.REACT_APP_API_URL ||
+  "https://enphisim-1.onrender.com";
 
 export default function Dashboard() {
   const { progress } = useProgress();
@@ -15,46 +16,39 @@ export default function Dashboard() {
   const [levels, setLevels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  // const [activeCategory, setActiveCategory] = useState(null);
 
   /* ================= FETCH LEVELS ================= */
   useEffect(() => {
     const fetchLevels = async () => {
       try {
-        const data = await safeFetchJSON(
-          `${REACT_APP_API_URL}/api/levels`
-        );
+        const res = await fetch(`${API_URL}/api/levels`);
 
-        const levelArray = Array.isArray(data)
-          ? data
-          : data?.levels || [];
+        if (!res.ok) {
+          throw new Error("Failed to fetch levels");
+        }
 
-        // Normalize backend response safely
-        const normalized = levelArray.map((lvl) => {
-          const levelNo =
-            lvl.level_no ||
+        const data = await res.json();
+
+        const normalized = (Array.isArray(data) ? data : []).map((lvl) => {
+          const id =
             lvl.level_id ||
+            lvl.level_no ||
             lvl.id ||
             "";
 
           return {
-            id: levelNo,
-            level_no: levelNo.toLowerCase(),
-            category:
-              (lvl.category || "easy").toLowerCase(),
-            page_title:
-              lvl.page_title || lvl.title || "",
-            template_type:
-              lvl.template_type ||
-              lvl.type ||
-              "mail",
+            id,
+            level_no: id.toLowerCase(),
+            category: (lvl.category || "easy").toLowerCase(),
+            page_title: lvl.title || lvl.page_title || "",
+            template_type: lvl.type || "mail",
           };
         });
 
         setLevels(normalized);
       } catch (err) {
-        console.error("Fetch levels error:", err);
-        setError(err.message || "Failed to load levels");
+        console.error(err);
+        setError("Unable to load levels");
       } finally {
         setLoading(false);
       }
@@ -63,25 +57,23 @@ export default function Dashboard() {
     fetchLevels();
   }, []);
 
-  /* ================= GROUP + SORT ================= */
-  const levelsByCategory = useMemo(() => {
-    const grouped = levels.reduce((acc, lvl) => {
-      if (!lvl.category) return acc;
+  /* ================= GROUP LEVELS ================= */
+  const groupedLevels = useMemo(() => {
+    const grouped = {};
 
-      acc[lvl.category] =
-        acc[lvl.category] || [];
-      acc[lvl.category].push(lvl);
-      return acc;
-    }, {});
+    levels.forEach((lvl) => {
+      if (!grouped[lvl.category]) {
+        grouped[lvl.category] = [];
+      }
+      grouped[lvl.category].push(lvl);
+    });
 
     Object.keys(grouped).forEach((cat) => {
       grouped[cat].sort((a, b) => {
         const numA =
-          parseInt(a.level_no.replace(/\D/g, "")) ||
-          0;
+          parseInt(a.level_no.replace(/\D/g, "")) || 0;
         const numB =
-          parseInt(b.level_no.replace(/\D/g, "")) ||
-          0;
+          parseInt(b.level_no.replace(/\D/g, "")) || 0;
         return numA - numB;
       });
     });
@@ -89,241 +81,158 @@ export default function Dashboard() {
     return grouped;
   }, [levels]);
 
-  /* ================= CATEGORY STATS ================= */
-  const categoryStats = useMemo(() => {
-    const CATEGORY_ORDER = [
-      "easy",
-      "adv_easy",
-      "normal",
-      "pre_hard",
-      "hard",
-      "adv_hard",
-      "final",
-    ];
-
-    return CATEGORY_ORDER
-      .filter((cat) => levelsByCategory[cat])
-      .map((category, index) => {
-        const lvls =
-          levelsByCategory[category] || [];
-
-        const completedCount = lvls.filter(
-          (l) =>
-            progress.completedLevels?.[
-              l.level_no
-            ]
-        ).length;
-
-        const percent =
-          lvls.length === 0
-            ? 0
-            : Math.round(
-                (completedCount / lvls.length) *
-                  100
-              );
-
-        const previousCategory =
-          CATEGORY_ORDER[index - 1];
-
-        const unlocked =
-          index === 0 ||
-          (levelsByCategory[
-            previousCategory
-          ] &&
-            levelsByCategory[
-              previousCategory
-            ].every((l) =>
-              progress.completedLevels?.[
-                l.level_no
-              ]
-            ));
-
-        const nextLevel =
-          lvls.find(
-            (l) =>
-              !progress.completedLevels?.[
-                l.level_no
-              ]
-          ) || lvls[0];
-
-        return {
-          category,
-          completedCount,
-          total: lvls.length,
-          percent,
-          nextLevel,
-          unlocked,
-        };
-      });
-  }, [levelsByCategory, progress]);
-
   /* ================= ANALYTICS ================= */
-  const {
-    completed,
-    totalLevels,
-    totalActions,
-    completionRate,
-    accuracy,
-    safeActions,
-    riskyActions,
-  } = useDashboardAnalytics(
+  const analytics = useDashboardAnalytics(
     progress,
     levels
   );
 
   const finalUnlocked =
-    completionRate >= 75 &&
-    accuracy >= 75;
+    analytics.completionRate >= 75 &&
+    analytics.accuracy >= 75;
 
-  /* ================= LOADING / ERROR ================= */
+  /* ================= LOADING ================= */
   if (loading)
-    return (
-      <div className="dashboard">
-        Loading…
-      </div>
-    );
+    return <div className="dashboard">Loading...</div>;
 
   if (error)
     return (
-      <div className="dashboard error">
-        <h2>Error</h2>
-        <p>{error}</p>
-        <button
-          onClick={() =>
-            window.location.reload()
-          }
-        >
-          Retry
-        </button>
+      <div className="dashboard">
+        <h2>{error}</h2>
       </div>
     );
 
+  /* ================= UI ================= */
   return (
     <div className="dashboard">
       <h1>EnPhiSim Dashboard</h1>
 
-      {/* ANALYTICS */}
+      {/* ===== Analytics Cards ===== */}
       <div className="analytics-cards">
-        <div className="card">
-          <h3>Levels Completed</h3>
-          <p>
-            {completed} / {totalLevels}
-          </p>
-        </div>
+        <Card title="Levels Completed">
+          {analytics.completed} / {analytics.totalLevels}
+        </Card>
 
-        <div className="card blue">
-          <h3>Completion Rate</h3>
-          <p>{completionRate}%</p>
-        </div>
+        <Card title="Completion Rate">
+          {analytics.completionRate}%
+        </Card>
 
-        <div className="card">
-          <h3>Total Actions</h3>
-          <p>{totalActions || 0}</p>
-        </div>
+        <Card title="Total Actions">
+          {analytics.totalActions}
+        </Card>
 
-        <div className="card red">
-          <h3>Accuracy</h3>
-          <p>{accuracy}%</p>
-        </div>
+        <Card title="Accuracy">
+          {analytics.accuracy}%
+        </Card>
 
-        <div className="card green">
-          <h3>Safe Actions</h3>
-          <p>{safeActions}%</p>
-        </div>
+        <Card title="Safe Actions">
+          {analytics.safeActions}
+        </Card>
 
-        <div className="card orange">
-          <h3>Risk Actions</h3>
-          <p>{riskyActions}%</p>
-        </div>
+        <Card title="Risk Actions">
+          {analytics.riskyActions}
+        </Card>
       </div>
 
-      {/* CATEGORY GRID */}
-      <h2 style={{ textAlign: "center" }}>
-        Difficulty Progress
-      </h2>
+      {/* ===== Categories ===== */}
+      <h2>Difficulty Levels</h2>
 
       <div className="levels-grid">
-        {categoryStats.map((cat) => (
-          <div
-            key={cat.category}
-            className={`level-card ${
-              cat.unlocked
-                ? "unlocked"
-                : "locked"
-            }`}
-            onClick={() =>{}
-              // cat.unlocked &&
-              // setActiveCategory(cat)
-            }
-          >
-            <h3>
-              {cat.category
-                .replace("_", " ")
-                .toUpperCase()}
-            </h3>
+        {Object.keys(groupedLevels).map((category) => {
+          const categoryLevels =
+            groupedLevels[category];
 
-            <div className="progress-bar">
-              <div
-                className="progress-fill"
-                style={{
-                  width: `${cat.percent}%`,
-                }}
-              />
+          const completedCount =
+            categoryLevels.filter((lvl) =>
+              progress.completedLevels?.[
+                lvl.level_no
+              ]
+            ).length;
+
+          const percent =
+            categoryLevels.length > 0
+              ? Math.round(
+                  (completedCount /
+                    categoryLevels.length) *
+                    100
+                )
+              : 0;
+
+          const nextLevel =
+            categoryLevels.find(
+              (lvl) =>
+                !progress.completedLevels?.[
+                  lvl.level_no
+                ]
+            ) || categoryLevels[0];
+
+          return (
+            <div
+              key={category}
+              className="level-card"
+            >
+              <h3>
+                {category
+                  .replace("_", " ")
+                  .toUpperCase()}
+              </h3>
+
+              <div className="progress-bar">
+                <div
+                  className="progress-fill"
+                  style={{
+                    width: `${percent}%`,
+                  }}
+                />
+              </div>
+
+              <p>
+                {completedCount} /{" "}
+                {categoryLevels.length} completed
+              </p>
+
+              {nextLevel && (
+                <Link
+                  to={`/levels/${category}/${nextLevel.level_no}`}
+                >
+                  <button>
+                    {percent === 100
+                      ? "Replay"
+                      : "Start / Continue"}
+                  </button>
+                </Link>
+              )}
             </div>
-
-            <span>
-              {cat.completedCount} /{" "}
-              {cat.total} completed (
-              {cat.percent}%)
-            </span>
-
-            {cat.unlocked ? (
-              <Link
-                className="start-link"
-                to={`/levels/${cat.category}/${cat.nextLevel?.level_no}`}
-              >
-                {cat.percent === 100
-                  ? "Replay"
-                  : "Start / Continue"}
-              </Link>
-            ) : (
-              <button
-                className="locked-btn"
-                disabled
-              >
-                Locked
-              </button>
-            )}
-          </div>
-        ))}
+          );
+        })}
       </div>
 
-      {/* FINAL LEVEL */}
-      <div
-        className={`final-level ${
-          finalUnlocked
-            ? "unlocked"
-            : "locked"
-        }`}
-      >
+      {/* ===== Final Level ===== */}
+      <div className="final-level">
         <h3>Final Simulation</h3>
         <p>
-          Requires 75% completion &
+          Requires 75% completion and
           75% accuracy
         </p>
 
         {finalUnlocked ? (
           <Link to="/levels/final/final-1">
-            <button>
-              Start Final Level
-            </button>
+            <button>Start Final</button>
           </Link>
         ) : (
-          <button disabled>
-            Locked
-          </button>
+          <button disabled>Locked</button>
         )}
       </div>
+    </div>
+  );
+}
+
+/* ===== Simple Card Component ===== */
+function Card({ title, children }) {
+  return (
+    <div className="card">
+      <h4>{title}</h4>
+      <p>{children}</p>
     </div>
   );
 }
