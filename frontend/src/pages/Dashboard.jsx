@@ -76,55 +76,55 @@ export default function Dashboard() {
   }, [levels]);
 
   /* ---------------- CATEGORY STATS ---------------- */
-const categoryStats = useMemo(() => {
+  const categoryStats = useMemo(() => {
 
-  const CATEGORY_ORDER = [
-    "easy",
-    "adv_easy",
-    "normal",
-    "pre_hard",
-    "hard",
-    "adv_hard",
-    "final",
-  ];
+    const CATEGORY_ORDER = [
+      "easy",
+      "adv_easy",
+      "normal",
+      "pre_hard",
+      "hard",
+      "adv_hard",
+      "final",
+    ];
 
-  return CATEGORY_ORDER
-    .filter((cat) => levelsByCategory[cat])
-    .map((category, index) => {
-      const lvls = levelsByCategory[category] || [];
+    return CATEGORY_ORDER
+      .filter((cat) => levelsByCategory[cat])
+      .map((category, index) => {
+        const lvls = levelsByCategory[category] || [];
 
-      const completedCount = lvls.filter(
-        (l) => progress.completedLevels?.[l.level_no]
-      ).length;
+        const completedCount = lvls.filter(
+          (l) => progress.completedLevels?.[l.level_no]
+        ).length;
 
-      const percent =
-        lvls.length === 0
-          ? 0
-          : Math.round((completedCount / lvls.length) * 100);
+        const percent =
+          lvls.length === 0
+            ? 0
+            : Math.round((completedCount / lvls.length) * 100);
 
-      const previousCategory = CATEGORY_ORDER[index - 1];
+        const previousCategory = CATEGORY_ORDER[index - 1];
 
-      const unlocked =
-        index === 0 ||
-        (levelsByCategory[previousCategory] &&
-          levelsByCategory[previousCategory].every((l) =>
-            progress.completedLevels?.[l.level_no]
-          ));
+        const unlocked =
+          index === 0 ||
+          (levelsByCategory[previousCategory] &&
+            levelsByCategory[previousCategory].every((l) =>
+              progress.completedLevels?.[l.level_no]
+            ));
 
-      const nextLevel =
-        lvls.find((l) => !progress.completedLevels?.[l.level_no]) || lvls[0];
+        const nextLevel =
+          lvls.find((l) => !progress.completedLevels?.[l.level_no]) || lvls[0];
 
-      return {
-        category,
-        completedCount,
-        total: lvls.length,
-        percent,
-        nextLevel,
-        unlocked,
-      };
-    });
+        return {
+          category,
+          completedCount,
+          total: lvls.length,
+          percent,
+          nextLevel,
+          unlocked,
+        };
+      });
 
-}, [levelsByCategory, progress]);
+  }, [levelsByCategory, progress]);
 
   /* ---------------- ANALYTICS ---------------- */
   const {
@@ -211,11 +211,10 @@ const categoryStats = useMemo(() => {
         {categoryStats.map((cat) => (
           <div
             key={cat.category}
-            className={`level-card ${
-              cat.unlocked
+            className={`level-card ${cat.unlocked
                 ? "unlocked"
                 : "locked"
-            }`}
+              }`}
             onClick={() =>
               cat.unlocked &&
               setActiveCategory(cat)
@@ -256,7 +255,7 @@ const categoryStats = useMemo(() => {
                 className="locked-btn"
                 disabled
               >
-                🔒 Locked
+                Locked
               </button>
             )}
           </div>
@@ -289,11 +288,10 @@ const categoryStats = useMemo(() => {
 
       {/* ================= FINAL LEVEL ================= */}
       <div
-        className={`final-level ${
-          finalUnlocked
+        className={`final-level ${finalUnlocked
             ? "unlocked"
             : "locked"
-        }`}
+          }`}
       >
         <h3>Final Simulation</h3>
         <p>
@@ -309,7 +307,7 @@ const categoryStats = useMemo(() => {
           </Link>
         ) : (
           <button disabled>
-            🔒 Locked
+            Locked
           </button>
         )}
       </div>
