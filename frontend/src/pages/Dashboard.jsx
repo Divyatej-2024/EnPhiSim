@@ -251,9 +251,9 @@ export default function Dashboard() {
                 ? "unlocked"
                 : "locked"
             }`}
-            onClick={() =>
-              cat.unlocked &&
-              setActiveCategory(cat)
+            onClick={() =>{}
+              // cat.unlocked &&
+              // setActiveCategory(cat)
             }
           >
             <h3>
