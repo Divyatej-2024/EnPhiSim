@@ -15,7 +15,7 @@ export default function Dashboard() {
   const [levels, setLevels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [activeCategory, setActiveCategory] = useState(null);
+  // const [activeCategory, setActiveCategory] = useState(null);
 
   /* ================= FETCH LEVELS ================= */
   useEffect(() => {
