@@ -9,10 +9,13 @@ import levelRoutes from "./routes/levelRoutes.js";
 import mlRoutes from "./routes/mlanalysis.js";
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_URL,
+  credentials: true,
+}));
 app.use(express.json());
 app.use("/api",levelRoutes);
-
+// app.use("/api/ml",mlroutes);
 // DEBUG: check env
 console.log("Loaded MONGO_URI =", process.env.MONGO_URI);
 

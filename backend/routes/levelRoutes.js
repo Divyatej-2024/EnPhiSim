@@ -19,9 +19,9 @@ router.get("/levels", async (req, res) => {
 // Get ONE level with ONE random scenario
 router.get("/levels/:level_id", async (req, res) => {
   try {
-    const { levelId } = req.params;
+    const { level_id } = req.params;
 
-    const level = await Level.findOne({ levelId });
+    const level = await Level.findOne({ level_id });
 
     if (!level) {
       return res.status(404).json({ message: "Level not found" });

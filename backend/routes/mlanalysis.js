@@ -5,14 +5,15 @@ import axios from "axios";
 const router = express.Router();
 
 const ML_SERVER = process.env.ML_SERVER_URL;
-router.get("/analysis/UserID", async(requestAnimationFrame,res) => {
+router.get("/analysis/UserID", async(req,res) => {
     try {
-        const { UserID } = requestAnimationFrame.params;
+        const { UserID } = req.params;
         const actions = await Eaction.find({UserID});
 
-        const mlresponse = await axios.post("${ML_SERVER}/predict",{ data:actions 
-
-});
+        const mlResponse = await axios.post(
+      `${ML_SERVER}/predict`,
+      { data: actions }
+    );
 res.json({
             raw_actions: actions,
             accuracy: mlResponse.data.accuracy,
