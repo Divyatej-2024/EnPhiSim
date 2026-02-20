@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { safeFetchJSON } from "../utils/helper";
 import { useProgress } from "../context/ProgressContext";
 import useDashboardAnalytics from "./useDashboardAnalytics";
-import { normalizeLevelArray } from "../utils/LevelHelper";
 import "./dashboard.css";
 
 const REACT_APP_API_URL =
@@ -12,12 +11,13 @@ const REACT_APP_API_URL =
 
 export default function Dashboard() {
   const { progress } = useProgress();
+
   const [levels, setLevels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeCategory, setActiveCategory] = useState(null);
 
-  /* ---------------- FETCH LEVELS ---------------- */
+  /* ================= FETCH LEVELS ================= */
   useEffect(() => {
     const fetchLevels = async () => {
       try {
@@ -27,18 +27,29 @@ export default function Dashboard() {
 
         const levelArray = Array.isArray(data)
           ? data
-          : data.levels || [];
+          : data?.levels || [];
 
-        const normalized = normalizeLevelArray(levelArray).map(
-          (lvl) => ({
-            id: lvl.id,
-            level_no: lvl.level_no.toLowerCase(),
-            category: lvl.category.toLowerCase(),
-            page_title: lvl.page_title || lvl.title || "",
+        // Normalize backend response safely
+        const normalized = levelArray.map((lvl) => {
+          const levelNo =
+            lvl.level_no ||
+            lvl.level_id ||
+            lvl.id ||
+            "";
+
+          return {
+            id: levelNo,
+            level_no: levelNo.toLowerCase(),
+            category:
+              (lvl.category || "easy").toLowerCase(),
+            page_title:
+              lvl.page_title || lvl.title || "",
             template_type:
-              lvl.template_type || lvl.template || "mail",
-          })
-        );
+              lvl.template_type ||
+              lvl.type ||
+              "mail",
+          };
+        });
 
         setLevels(normalized);
       } catch (err) {
@@ -52,12 +63,13 @@ export default function Dashboard() {
     fetchLevels();
   }, []);
 
-  /* ---------------- ORDERED CATEGORY FLOW ---------------- */
-
-  /* ---------------- GROUP + SORT LEVELS ---------------- */
+  /* ================= GROUP + SORT ================= */
   const levelsByCategory = useMemo(() => {
     const grouped = levels.reduce((acc, lvl) => {
-      acc[lvl.category] = acc[lvl.category] || [];
+      if (!lvl.category) return acc;
+
+      acc[lvl.category] =
+        acc[lvl.category] || [];
       acc[lvl.category].push(lvl);
       return acc;
     }, {});
@@ -65,9 +77,11 @@ export default function Dashboard() {
     Object.keys(grouped).forEach((cat) => {
       grouped[cat].sort((a, b) => {
         const numA =
-          parseInt(a.level_no.split("-")[1]) || 0;
+          parseInt(a.level_no.replace(/\D/g, "")) ||
+          0;
         const numB =
-          parseInt(b.level_no.split("-")[1]) || 0;
+          parseInt(b.level_no.replace(/\D/g, "")) ||
+          0;
         return numA - numB;
       });
     });
@@ -75,9 +89,8 @@ export default function Dashboard() {
     return grouped;
   }, [levels]);
 
-  /* ---------------- CATEGORY STATS ---------------- */
+  /* ================= CATEGORY STATS ================= */
   const categoryStats = useMemo(() => {
-
     const CATEGORY_ORDER = [
       "easy",
       "adv_easy",
@@ -91,28 +104,47 @@ export default function Dashboard() {
     return CATEGORY_ORDER
       .filter((cat) => levelsByCategory[cat])
       .map((category, index) => {
-        const lvls = levelsByCategory[category] || [];
+        const lvls =
+          levelsByCategory[category] || [];
 
         const completedCount = lvls.filter(
-          (l) => progress.completedLevels?.[l.level_no]
+          (l) =>
+            progress.completedLevels?.[
+              l.level_no
+            ]
         ).length;
 
         const percent =
           lvls.length === 0
             ? 0
-            : Math.round((completedCount / lvls.length) * 100);
+            : Math.round(
+                (completedCount / lvls.length) *
+                  100
+              );
 
-        const previousCategory = CATEGORY_ORDER[index - 1];
+        const previousCategory =
+          CATEGORY_ORDER[index - 1];
 
         const unlocked =
           index === 0 ||
-          (levelsByCategory[previousCategory] &&
-            levelsByCategory[previousCategory].every((l) =>
-              progress.completedLevels?.[l.level_no]
+          (levelsByCategory[
+            previousCategory
+          ] &&
+            levelsByCategory[
+              previousCategory
+            ].every((l) =>
+              progress.completedLevels?.[
+                l.level_no
+              ]
             ));
 
         const nextLevel =
-          lvls.find((l) => !progress.completedLevels?.[l.level_no]) || lvls[0];
+          lvls.find(
+            (l) =>
+              !progress.completedLevels?.[
+                l.level_no
+              ]
+          ) || lvls[0];
 
         return {
           category,
@@ -123,10 +155,9 @@ export default function Dashboard() {
           unlocked,
         };
       });
-
   }, [levelsByCategory, progress]);
 
-  /* ---------------- ANALYTICS ---------------- */
+  /* ================= ANALYTICS ================= */
   const {
     completed,
     totalLevels,
@@ -135,12 +166,16 @@ export default function Dashboard() {
     accuracy,
     safeActions,
     riskyActions,
-  } = useDashboardAnalytics(progress, levels);
+  } = useDashboardAnalytics(
+    progress,
+    levels
+  );
 
   const finalUnlocked =
-    completionRate >= 75 && accuracy >= 75;
+    completionRate >= 75 &&
+    accuracy >= 75;
 
-  /* ---------------- LOADING / ERROR ---------------- */
+  /* ================= LOADING / ERROR ================= */
   if (loading)
     return (
       <div className="dashboard">
@@ -167,7 +202,7 @@ export default function Dashboard() {
     <div className="dashboard">
       <h1>EnPhiSim Dashboard</h1>
 
-      {/* ================= ANALYTICS SUMMARY ================= */}
+      {/* ANALYTICS */}
       <div className="analytics-cards">
         <div className="card">
           <h3>Levels Completed</h3>
@@ -202,7 +237,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* ================= DIFFICULTY GRID ================= */}
+      {/* CATEGORY GRID */}
       <h2 style={{ textAlign: "center" }}>
         Difficulty Progress
       </h2>
@@ -211,10 +246,11 @@ export default function Dashboard() {
         {categoryStats.map((cat) => (
           <div
             key={cat.category}
-            className={`level-card ${cat.unlocked
+            className={`level-card ${
+              cat.unlocked
                 ? "unlocked"
                 : "locked"
-              }`}
+            }`}
             onClick={() =>
               cat.unlocked &&
               setActiveCategory(cat)
@@ -262,36 +298,13 @@ export default function Dashboard() {
         ))}
       </div>
 
-      {/* ================= ACTIVE CATEGORY ================= */}
-      {activeCategory && (
-        <div className="actions-panel">
-          <h2>
-            {activeCategory.category
-              .replace("_", " ")
-              .toUpperCase()}
-          </h2>
-
-          <p>
-            Progress:{" "}
-            {activeCategory.completedCount} /{" "}
-            {activeCategory.total}
-          </p>
-
-          <Link
-            className="btn primary"
-            to={`/levels/${activeCategory.category}/${activeCategory.nextLevel?.level_no}`}
-          >
-            Continue
-          </Link>
-        </div>
-      )}
-
-      {/* ================= FINAL LEVEL ================= */}
+      {/* FINAL LEVEL */}
       <div
-        className={`final-level ${finalUnlocked
+        className={`final-level ${
+          finalUnlocked
             ? "unlocked"
             : "locked"
-          }`}
+        }`}
       >
         <h3>Final Simulation</h3>
         <p>
