@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useProgress } from "../context/ProgressContext";
-import useDashboardAnalytics from "../components/useDashboardAnalytics";
+import useDashboardAnalytics from "../useDashboardAnalytics";
 import "./dashboard.css";
 
 const API_URL =
