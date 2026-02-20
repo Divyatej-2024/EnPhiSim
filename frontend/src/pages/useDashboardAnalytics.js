@@ -1,238 +1,74 @@
-// src/pages/Dashboard.jsx
+// src/useDashboardAnalytics.js
 
-import React, { useState, useEffect, useMemo } from "react";
-import { Link } from "react-router-dom";
-import { useProgress } from "../context/ProgressContext";
-import useDashboardAnalytics from "./useDashboardAnalytics";
-import "./dashboard.css";
+import { useMemo } from "react";
 
-const API_URL =
-  process.env.REACT_APP_API_URL ||
-  "https://enphisim-1.onrender.com";
+export default function useDashboardAnalytics(progress, levels) {
+  return useMemo(() => {
+    const completedLevels = progress?.completedLevels || {};
+    const attempts = progress?.attempts || {};
 
-export default function Dashboard() {
-  const { progress } = useProgress();
+    /* ================= LEVEL COMPLETION ================= */
+    const completed = Object.keys(completedLevels).length;
+    const totalLevels = Array.isArray(levels) ? levels.length :0;
 
-  const [levels, setLevels] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+    const completionRate =
+      totalLevels > 0
+        ? Math.round((completed / totalLevels) * 100)
+        : 0;
 
-  /* ================= FETCH LEVELS ================= */
-  useEffect(() => {
-    const fetchLevels = async () => {
-      try {
-        const res = await fetch(`${API_URL}/api/levels`);
+    /* ================= FLATTEN ALL ACTIONS ================= */
+    let actions =[];
+    try {
+      actions = Object.values(attempts || {})
+      .filter(Array.isArray)
+      .flat();
+    } catch (e) {
+      actions=[];
+    }
+    const totalActions = actions.length;
 
-        if (!res.ok) {
-          throw new Error("Failed to fetch levels");
-        }
+    const safeActions = actions.filter(
+      (a) => a.correct === true
+    ).length;
 
-        const data = await res.json();
+    const riskyActions = actions.filter(
+      (a) => a.correct === false
+    ).length;
 
-        const normalized = (Array.isArray(data) ? data : []).map((lvl) => {
-          const id =
-            lvl.level_id ||
-            lvl.level_no ||
-            lvl.id ||
-            "";
+    const accuracy =
+      totalActions > 0
+        ? Math.round((safeActions / totalActions) * 100)
+        : 0;
 
-          return {
-            id,
-            level_no: id.toLowerCase(),
-            category: (lvl.category || "easy").toLowerCase(),
-            page_title: lvl.title || lvl.page_title || "",
-            template_type: lvl.type || "mail",
-          };
-        });
+    /* ================= NEXT LEVEL ================= */
+    const nextLevel = Array.isArray(levels)
+    ? levels.find((l) => !completedLevels[l?.level_no])
+    : null;
 
-        setLevels(normalized);
-      } catch (err) {
-        console.error(err);
-        setError("Unable to load levels");
-      } finally {
-        setLoading(false);
-      }
+    let nextLevelTitle = "Training Completed!";
+    let nextLevelPath = "/Thankyou";
+    let buttonText = "Start Training";
+
+    if (nextLevel) {
+      nextLevelTitle = nextLevel.page_title || "";
+      nextLevelPath = `/levels/${nextLevel.category}/${nextLevel.level_no}`;
+      buttonText =
+        completed === 0
+          ? "Start Training"
+          : "Continue Training";
+    }
+
+    return {
+      completed,
+      totalLevels,
+      completionRate,
+      totalActions,
+      safeActions,
+      riskyActions,
+      accuracy,
+      nextLevelTitle,
+      nextLevelPath,
+      buttonText,
     };
-
-    fetchLevels();
-  }, []);
-
-  /* ================= GROUP LEVELS ================= */
-  const groupedLevels = useMemo(() => {
-    const grouped = {};
-
-    levels.forEach((lvl) => {
-      if (!grouped[lvl.category]) {
-        grouped[lvl.category] = [];
-      }
-      grouped[lvl.category].push(lvl);
-    });
-
-    Object.keys(grouped).forEach((cat) => {
-      grouped[cat].sort((a, b) => {
-        const numA =
-          parseInt(a.level_no.replace(/\D/g, "")) || 0;
-        const numB =
-          parseInt(b.level_no.replace(/\D/g, "")) || 0;
-        return numA - numB;
-      });
-    });
-
-    return grouped;
-  }, [levels]);
-
-  /* ================= ANALYTICS ================= */
-  const analytics = useDashboardAnalytics(
-    progress,
-    levels
-  );
-
-  const finalUnlocked =
-    analytics.completionRate >= 75 &&
-    analytics.accuracy >= 75;
-
-  /* ================= LOADING ================= */
-  if (loading)
-    return <div className="dashboard">Loading...</div>;
-
-  if (error)
-    return (
-      <div className="dashboard">
-        <h2>{error}</h2>
-      </div>
-    );
-
-  /* ================= UI ================= */
-  return (
-    <div className="dashboard">
-      <h1>EnPhiSim Dashboard</h1>
-
-      {/* ===== Analytics Cards ===== */}
-      <div className="analytics-cards">
-        <Card title="Levels Completed">
-          {analytics.completed} / {analytics.totalLevels}
-        </Card>
-
-        <Card title="Completion Rate">
-          {analytics.completionRate}%
-        </Card>
-
-        <Card title="Total Actions">
-          {analytics.totalActions}
-        </Card>
-
-        <Card title="Accuracy">
-          {analytics.accuracy}%
-        </Card>
-
-        <Card title="Safe Actions">
-          {analytics.safeActions}
-        </Card>
-
-        <Card title="Risk Actions">
-          {analytics.riskyActions}
-        </Card>
-      </div>
-
-      {/* ===== Categories ===== */}
-      <h2>Difficulty Levels</h2>
-
-      <div className="levels-grid">
-        {Object.keys(groupedLevels).map((category) => {
-          const categoryLevels =
-            groupedLevels[category];
-
-          const completedCount =
-            categoryLevels.filter((lvl) =>
-              progress.completedLevels?.[
-                lvl.level_no
-              ]
-            ).length;
-
-          const percent =
-            categoryLevels.length > 0
-              ? Math.round(
-                  (completedCount /
-                    categoryLevels.length) *
-                    100
-                )
-              : 0;
-
-          const nextLevel =
-            categoryLevels.find(
-              (lvl) =>
-                !progress.completedLevels?.[
-                  lvl.level_no
-                ]
-            ) || categoryLevels[0];
-
-          return (
-            <div
-              key={category}
-              className="level-card"
-            >
-              <h3>
-                {category
-                  .replace("_", " ")
-                  .toUpperCase()}
-              </h3>
-
-              <div className="progress-bar">
-                <div
-                  className="progress-fill"
-                  style={{
-                    width: `${percent}%`,
-                  }}
-                />
-              </div>
-
-              <p>
-                {completedCount} /{" "}
-                {categoryLevels.length} completed
-              </p>
-
-              {nextLevel && (
-                <Link
-                  to={`/levels/${category}/${nextLevel.level_no}`}
-                >
-                  <button>
-                    {percent === 100
-                      ? "Replay"
-                      : "Start / Continue"}
-                  </button>
-                </Link>
-              )}
-            </div>
-          );
-        })}
-      </div>
-
-      {/* ===== Final Level ===== */}
-      <div className="final-level">
-        <h3>Final Simulation</h3>
-        <p>
-          Requires 75% completion and
-          75% accuracy
-        </p>
-
-        {finalUnlocked ? (
-          <Link to="/levels/final/final-1">
-            <button>Start Final</button>
-          </Link>
-        ) : (
-          <button disabled>Locked</button>
-        )}
-      </div>
-    </div>
-  );
-}
-
-/* ===== Simple Card Component ===== */
-function Card({ title, children }) {
-  return (
-    <div className="card">
-      <h4>{title}</h4>
-      <p>{children}</p>
-    </div>
-  );
+  }, [progress, levels]);
 }
