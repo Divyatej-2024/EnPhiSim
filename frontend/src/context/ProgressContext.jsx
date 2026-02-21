@@ -228,7 +228,8 @@ export function ProgressProvider({ children }) {
         safeActions,
         riskActions,
         isFinalUnlocked,
-        getCategoryStats
+        getCategoryStats,
+        getLevelScenario
       }}
     >
       {children}
