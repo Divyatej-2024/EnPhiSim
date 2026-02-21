@@ -13,6 +13,9 @@ app.use(cors({
   origin: process.env.FRONTEND_URL,
   credentials: true,
 }));
+app.get("/",(req,res) => {
+  res.send("EnPhiSim Backend is running");
+});
 app.use(express.json());
 app.use("/api",levelRoutes);
 // app.use("/api/ml",mlroutes);
