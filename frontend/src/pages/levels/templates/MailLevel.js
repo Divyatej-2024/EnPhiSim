@@ -400,7 +400,7 @@ export default function MailLevel({levelId}) {
   return (
     <>
       <style>{mailStyles}</style>
-      <BaseLevel levelType="mail">
+      <BaseLevel levelType="mail" scenario={levelScenario}>
         {({ level, onAction, locked }) => (
           <div className="mail-container">
             <div className="mail-header">
