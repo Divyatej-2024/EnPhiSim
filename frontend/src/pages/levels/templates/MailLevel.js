@@ -2,7 +2,7 @@ import React, { useState,useEffect } from "react";
 import BaseLevel from "./BaseLevel";
 import { useProgress } from "../../../context/ProgressContext";
 
-export default function MailLevel({levelID}) {
+export default function MailLevel({levelId}) {
   const { getLevelScenario } =useProgress();
   const [selectedEmail, setSelectedEmail, levelScenario, setLevelScenario] = useState(null);
   const [showDetails, setShowDetails] = useState({});
