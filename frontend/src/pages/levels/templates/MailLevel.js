@@ -19,7 +19,7 @@ export default function MailLevel({levelId}) {
     }
 
     // Fetch ONE scenario from the server
-    fetch(`{MONGO_URL}/api/mailScenario?levelId=${levelId}`)
+    fetch(`/mailScenario?levelId=${levelId}`)
       .then(res => res.json())
       .then(scenario => {
         // Save to progress context
