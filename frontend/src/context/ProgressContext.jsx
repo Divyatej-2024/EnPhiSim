@@ -29,31 +29,36 @@ export function ProgressProvider({ children }) {
   // INITIAL STATE (SAFE LOAD)
   // ==============================
 
-  const [progress, setProgress] = useState(() => {
-    try {
-      const saved = localStorage.getItem("enphisim-progress");
+ const [progress, setProgress] = useState(() => {
+  try {
+    const saved = localStorage.getItem("enphisim-progress");
 
-      if (!saved) {
-        return {
-          completedLevels: {},
-          actions: [],
-          xp: 0
-        };
-      }
-
-      return JSON.parse(saved);
-
-    } catch (error) {
-      console.error("Failed to parse progress:", error);
-
+    if (!saved) {
       return {
         completedLevels: {},
         actions: [],
-        xp: 0
+        xp: 0,
+        levelScenarios: {}  // <-- add this
       };
     }
-  });
 
+    const parsed = JSON.parse(saved);
+    return {
+      ...parsed,
+      levelScenarios: parsed.levelScenarios || {} // ensure field exists
+    };
+
+  } catch (error) {
+    console.error("Failed to parse progress:", error);
+
+    return {
+      completedLevels: {},
+      actions: [],
+      xp: 0,
+      levelScenarios: {}
+    };
+  }
+});
   // ==============================
   // AUTO SAVE
   // ==============================
@@ -66,6 +71,26 @@ export function ProgressProvider({ children }) {
     }
   }, [progress]);
 
+  const getLevelScenario = (levelId, scenarios) => {
+  // Return previously assigned scenario if exists
+  if (progress.levelScenarios[levelId]) {
+    return progress.levelScenarios[levelId];
+  }
+
+  // Pick a scenario randomly
+  const chosen = scenarios[Math.floor(Math.random() * scenarios.length)];
+
+  // Save it to progress
+  setProgress(prev => ({
+    ...prev,
+    levelScenarios: {
+      ...prev.levelScenarios,
+      [levelId]: chosen
+    }
+  }));
+
+  return chosen;
+};
   // ==============================
   // RECORD USER ACTION
   // ==============================
