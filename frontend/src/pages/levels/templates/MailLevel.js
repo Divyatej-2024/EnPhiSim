@@ -6,11 +6,12 @@ import { BACKEND_URL } from "../../../api";
 export default function MailLevel({levelId}) {
   useProgress();
   const [selectedEmail, setSelectedEmail] = useState(null);
-  //const [levelScenario, setLevelScenario] = useState(null);
+  const [levelScenario, setLevelScenario] = useState(null);
   const [showDetails, setShowDetails] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState("inbox");
 
+  const activeLevel = levelScenario || {};
   // const BACKEND_URL =
   // process.env.REACT_APP_API_URL || "https://your-backend-domain.com";
 
@@ -440,22 +441,22 @@ export default function MailLevel({levelId}) {
 
               <div className="mail-content">
                 <div className="email-list">
-                  {level.emails?.map((email, idx) => (
+                  {activeLevel.emails?.map((email, idx) => (
                     <div
                       key={idx}
                       className={`email-item ${selectedEmail === idx ? 'selected' : ''} ${email.unread ? 'unread' : ''}`}
                       onClick={() => setSelectedEmail(idx)}
                     >
                       <span>{email.unread ? '📧' : '📨'}</span>
-                      <span className="email-sender">{email.sender || level.phish_email}</span>
-                      <span className="email-subject">{email.subject || level.subject}</span>
+                      <span className="email-sender">{email.sender || activeLevel.phish_email}</span>
+                      <span className="email-subject">{email.subject || activeLevel.subject}</span>
                       <span className="email-date">{email.time || '10:30 AM'}</span>
                     </div>
                   ))}
                 </div>
 
                 <div className="email-preview">
-                  {level.show_warning && (
+                  {activeLevel.show_warning && (
                     <div className="phishing-warning-badge">
                       <span></span>
                       <span><strong>Security Alert:</strong> This email contains suspicious elements</span>
@@ -464,21 +465,21 @@ export default function MailLevel({levelId}) {
 
                   <div className="email-header">
                     <div className="avatar">
-                      {level.phish_email?.[0]?.toUpperCase() || '?'}
+                      {activeLevel.phish_email?.[0]?.toUpperCase() || '?'}
                     </div>
                     <div className="sender-details">
                       <div className="sender-name">
-                        {level.from_and_to?.split('<')[0]?.trim() || 'Unknown Sender'}
+                        {activeLevel.from_and_to?.split('<')[0]?.trim() || 'Unknown Sender'}
                       </div>
                       <div 
                         className="sender-email"
                         onMouseEnter={() => setShowDetails(prev => ({ ...prev, [level.id]: true }))}
                         onMouseLeave={() => setShowDetails(prev => ({ ...prev, [level.id]: false }))}
                       >
-                        {level.phish_email}
-                        {showDetails[level.id] && (
+                        {activeLevel.phish_email}
+                        {showDetails[activeLevel.id] && (
                           <span className="email-tooltip">
-                             Real sender: {level.crct_email}
+                             Real sender: {activeLevel.crct_email}
                           </span>
                         )}
                       </div>
@@ -486,10 +487,10 @@ export default function MailLevel({levelId}) {
                   </div>
 
                   <div className="email-body">
-                    {level.level_text || level.content || "No content available"}
+                    {activeLevel.level_text || activeLevel.content || "No content available"}
                   </div>
 
-                  {level.has_attachments && (
+                  {activeLevel.has_attachments && (
                     <div className="attachment-area">
                       <div className="attachment">
                          invoice.pdf (2.4 MB)
@@ -505,7 +506,7 @@ export default function MailLevel({levelId}) {
                       className="mail-action-btn phish"
                       disabled={locked}
                       onClick={() => onAction('report', { 
-                        email: level.phish_email,
+                        email: activeLevel.phish_email,
                         type: 'phishing'
                       })}
                     >
@@ -515,7 +516,7 @@ export default function MailLevel({levelId}) {
                       className="mail-action-btn delete"
                       disabled={locked}
                       onClick={() => onAction('delete', { 
-                        email: level.phish_email 
+                        email: activeLevel.phish_email 
                       })}
                     >
                        Delete
@@ -524,7 +525,7 @@ export default function MailLevel({levelId}) {
                       className="mail-action-btn safe"
                       disabled={locked}
                       onClick={() => onAction('safe', { 
-                        email: level.phish_email 
+                        email: activeLevel.phish_email 
                       })}
                     >
                        Mark Safe
