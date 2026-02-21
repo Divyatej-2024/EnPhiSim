@@ -11,8 +11,8 @@ export default function MailLevel({levelId}) {
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState("inbox");
 
-  const BACKEND_URL =
-  process.env.REACT_APP_API_URL || "https://your-backend-domain.com";
+  // const BACKEND_URL =
+  // process.env.REACT_APP_API_URL || "https://your-backend-domain.com";
 
 
   // Check if a scenario was already picked in progress
