@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from "react";
 import BaseLevel from "./BaseLevel";
-import { useProgress } from "../../context/ProgressContext";
+import { useProgress } from "../../../context/ProgressContext";
 
 export default function MailLevel() {
   const { getLevelScenario } =useProgress();
