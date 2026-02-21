@@ -1,12 +1,36 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import BaseLevel from "./BaseLevel";
+import { useProgress } from "../../context/ProgressContext";
 
 export default function MailLevel() {
-  const [selectedEmail, setSelectedEmail] = useState(null);
+  const { getLevelScenario } =useProgress();
+  const [selectedEmail, setSelectedEmail, levelScenario, setLevelScenario] = useState(null);
   const [showDetails, setShowDetails] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState("inbox");
 
+  useEffect(() => {
+    // Check if a scenario was already picked in progress
+    const existingScenario = getLevelScenario(levelId, []); 
+    if (existingScenario) {
+      setLevelScenario(existingScenario);
+      return;
+    }
+
+    // Fetch ONE scenario from the server
+    fetch(`https://yourserver.com/api/mailScenario?levelId=${levelId}`)
+      .then(res => res.json())
+      .then(scenario => {
+        // Save to progress context
+        getLevelScenario(levelId, [scenario]); // store scenario
+        setLevelScenario(scenario);
+      })
+      .catch(err => console.error(err));
+  }, [levelId, getLevelScenario]);
+
+  if (!levelScenario) return <div>Loading...</div>;
+    
+    
   const mailStyles = `
     .mail-container {
       max-width: 1200px;
@@ -387,19 +411,19 @@ export default function MailLevel() {
                 <button className="compose-btn">+ Compose</button>
                 <ul className="folder-list">
                   <li className={`folder-item ${filter === 'inbox' ? 'active' : ''}`} onClick={() => setFilter('inbox')}>
-                    📥 Inbox <span className="folder-count">{level.inbox_count || '12'}</span>
+                    Inbox <span className="folder-count">{level.inbox_count || '12'}</span>
                   </li>
                   <li className={`folder-item ${filter === 'starred' ? 'active' : ''}`} onClick={() => setFilter('starred')}>
-                    ⭐ Starred
+                     Starred
                   </li>
                   <li className={`folder-item ${filter === 'sent' ? 'active' : ''}`} onClick={() => setFilter('sent')}>
-                    📤 Sent
+                     Sent
                   </li>
                   <li className={`folder-item ${filter === 'drafts' ? 'active' : ''}`} onClick={() => setFilter('drafts')}>
-                    📝 Drafts
+                     Drafts
                   </li>
                   <li className={`folder-item ${filter === 'spam' ? 'active' : ''}`} onClick={() => setFilter('spam')}>
-                    ⚠️ Spam
+                     Spam
                   </li>
                 </ul>
               </div>
@@ -423,7 +447,7 @@ export default function MailLevel() {
                 <div className="email-preview">
                   {level.show_warning && (
                     <div className="phishing-warning-badge">
-                      <span>⚠️</span>
+                      <span></span>
                       <span><strong>Security Alert:</strong> This email contains suspicious elements</span>
                     </div>
                   )}
@@ -444,7 +468,7 @@ export default function MailLevel() {
                         {level.phish_email}
                         {showDetails[level.id] && (
                           <span className="email-tooltip">
-                            🔍 Real sender: {level.crct_email}
+                             Real sender: {level.crct_email}
                           </span>
                         )}
                       </div>
@@ -458,10 +482,10 @@ export default function MailLevel() {
                   {level.has_attachments && (
                     <div className="attachment-area">
                       <div className="attachment">
-                        📎 invoice.pdf (2.4 MB)
+                         invoice.pdf (2.4 MB)
                       </div>
                       <div className="attachment">
-                        📎 document.docx (1.1 MB)
+                        document.docx (1.1 MB)
                       </div>
                     </div>
                   )}
@@ -475,7 +499,7 @@ export default function MailLevel() {
                         type: 'phishing'
                       })}
                     >
-                      🚫 Report Phishing
+                       Report Phishing
                     </button>
                     <button
                       className="mail-action-btn delete"
@@ -484,7 +508,7 @@ export default function MailLevel() {
                         email: level.phish_email 
                       })}
                     >
-                      🗑️ Delete
+                       Delete
                     </button>
                     <button
                       className="mail-action-btn safe"
@@ -493,7 +517,7 @@ export default function MailLevel() {
                         email: level.phish_email 
                       })}
                     >
-                      ✅ Mark Safe
+                       Mark Safe
                     </button>
                   </div>
                 </div>
