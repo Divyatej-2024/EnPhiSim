@@ -9,9 +9,19 @@ import levelRoutes from "./routes/levelRoutes.js";
 import mlRoutes from "./routes/mlanalysis.js";
 
 const app = express();
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://en-phi-sim.vercel.app"
+];
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL,
-  credentials: true,
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  }
 }));
 app.get("/",(req,res) => {
   res.send("EnPhiSim Backend is running");
