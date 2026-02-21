@@ -4,7 +4,8 @@ import { useProgress } from "../../../context/ProgressContext";
 
 export default function MailLevel({levelId}) {
   const { getLevelScenario } =useProgress();
-  const [selectedEmail, setSelectedEmail, levelScenario, setLevelScenario] = useState(null);
+  const [selectedEmail, setSelectedEmail] = useState(null);
+  const [levelScenario, setLevelScenario] = useState(null);
   const [showDetails, setShowDetails] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState("inbox");
