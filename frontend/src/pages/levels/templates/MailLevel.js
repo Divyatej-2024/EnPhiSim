@@ -1,6 +1,7 @@
 import React, { useState,useEffect } from "react";
 import BaseLevel from "./BaseLevel";
 import { useProgress } from "../../../context/ProgressContext";
+//import BACKEND_URL from "../../../api";
 
 export default function MailLevel({levelId}) {
   const { getLevelScenario } =useProgress();
@@ -10,26 +11,34 @@ export default function MailLevel({levelId}) {
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState("inbox");
 
+  const BACKEND_URL =
+  process.env.REACT_APP_API_URL || "https://your-backend-domain.com";
+
+
+  // Check if a scenario was already picked in progress
   useEffect(() => {
-    // Check if a scenario was already picked in progress
-    const existingScenario = getLevelScenario(levelId, []); 
-    if (existingScenario) {
-      setLevelScenario(existingScenario);
-      return;
+  const fetchScenario = async () => {
+    try {
+      const response = await fetch(
+        `${BACKEND_URL}/api/scenarios?level_no=l1&limit=1`
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch scenario");
+      }
+
+      const data = await response.json();
+
+      console.log("MailLevel API:", data);
+
+      setLevelScenario(data[0]); // because backend returns array
+    } catch (error) {
+      console.error("MailLevel fetch error:", error);
     }
+  };
 
-    // Fetch ONE scenario from the server
-    fetch(`/mailScenario?levelId=${levelId}`)
-      .then(res => res.json())
-      .then(scenario => {
-        // Save to progress context
-        getLevelScenario(levelId, [scenario]); // store scenario
-        setLevelScenario(scenario);
-      })
-      .catch(err => console.error(err));
-  }, [levelId, getLevelScenario]);
-
-  if (!levelScenario) return <div>Loading...</div>;
+  fetchScenario();
+}, []);
     
     
   const mailStyles = `
