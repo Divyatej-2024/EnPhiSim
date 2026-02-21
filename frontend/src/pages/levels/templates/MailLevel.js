@@ -19,7 +19,7 @@ export default function MailLevel({levelId}) {
     }
 
     // Fetch ONE scenario from the server
-    fetch(`https://yourserver.com/api/mailScenario?levelId=${levelId}`)
+    fetch(`{REACT_APP_API_URL}/api/mailScenario?levelId=${levelId}`)
       .then(res => res.json())
       .then(scenario => {
         // Save to progress context
