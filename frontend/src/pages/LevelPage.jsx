@@ -34,11 +34,6 @@ export default function LevelPage() {
         // Normalize all levels first
         const normalizedLevel = normalizeLevelData(data);
         setLevel(normalizedLevel);
-        if (!foundLevel) {
-          setError(`Level ${level_no} in category ${category} not found`);
-        } else {
-          setLevel(foundLevel);
-        }
       } catch (err) {
         console.error("Failed to load level:", err);
         setError(err.message || "Failed to load level");
