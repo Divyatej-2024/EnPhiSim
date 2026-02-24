@@ -27,19 +27,13 @@ export default function LevelPage() {
         const apiUrl = process.env.REACT_APP_API_URL || "https://enphisim-1.onrender.com";
         if (!apiUrl) throw new Error("API URL not set");
 
-        const data = await safeFetchJSON(`${apiUrl}/api/levels`);
-        const levelArray = Array.isArray(data) ? data : data.levels || [];
+        const data = await safeFetchJSON(
+          `${apiUrl}/api/levels/${category}/${level_no}`
+        );
         
         // Normalize all levels first
-        const normalizedLevels = levelArray.map(normalizeLevelData);
-        
-        // Find using consistent field name
-        const foundLevel = normalizedLevels.find(
-          (l) =>
-            l.category?.toLowerCase().trim() === category.toLowerCase().trim() &&
-            l.level_no?.toLowerCase().trim() === level_no.toLowerCase().trim()
-        );
-
+        const normalizedLevel = normalizeLevelData(data);
+        setLevel(normalizedLevel);
         if (!foundLevel) {
           setError(`Level ${level_no} in category ${category} not found`);
         } else {
