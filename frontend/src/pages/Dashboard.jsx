@@ -87,8 +87,8 @@ grouped[cat].sort(
   );
 
   const finalUnlocked =
-    analytics.completionRate >= 75 &&
-    analytics.accuracy >= 75;
+    Number(analytics.completionRate) >= 75 &&
+    Number(analytics.accuracy) >= 75;
 
   /* ================= LOADING ================= */
   if (loading)
@@ -143,7 +143,7 @@ grouped[cat].sort(
 
           const completedCount =
             categoryLevels.filter((lvl) =>
-              progress.completedLevels?.[
+              progress?.completedLevels?.[
                 lvl.level_no
               ]
             ).length;
@@ -160,7 +160,7 @@ grouped[cat].sort(
           const nextLevel =
             categoryLevels.find(
               (lvl) =>
-                !progress.completedLevels?.[
+                !progress?.completedLevels?.[
                   lvl.level_no
                 ]
             ) || categoryLevels[0];
