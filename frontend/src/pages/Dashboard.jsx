@@ -30,20 +30,22 @@ export default function Dashboard() {
         const data = await res.json();
 
 const normalized = (Array.isArray(data) ? data : []).map((lvl) => {
-  const rawLevelNo =
-    lvl.level_no || lvl.level_id || lvl.id || 0;
+  const rawLevelNo = lvl.level_no || "";
 
   return {
     id: rawLevelNo,
 
-    // 🔥 Keep numeric level number ONLY
-    level_no: Number(rawLevelNo),
+    // Keep original like "l1"
+    level_no: rawLevelNo,
+
+    // 🔥 Extract numeric part for sorting
+    level_number: parseInt(rawLevelNo.replace(/\D/g, "")) || 0,
 
     category: (lvl.category || "easy").toLowerCase(),
 
     page_title: lvl.title || lvl.page_title || "",
 
-    template_type: lvl.type || "mail",
+    template_type: lvl.template_type || "mail",
   };
 });
         setLevels(normalized);
@@ -70,13 +72,9 @@ const normalized = (Array.isArray(data) ? data : []).map((lvl) => {
     });
 
     Object.keys(grouped).forEach((cat) => {
-      grouped[cat].sort((a, b) => {
-        const numA =
-          parseInt(a.level_no.replace(/\D/g, "")) || 0;
-        const numB =
-          parseInt(b.level_no.replace(/\D/g, "")) || 0;
-        return numA - numB;
-      });
+grouped[cat].sort(
+  (a, b) => a.level_number - b.level_number
+);
     });
 
     return grouped;
