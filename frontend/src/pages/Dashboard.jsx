@@ -29,22 +29,23 @@ export default function Dashboard() {
 
         const data = await res.json();
 
-        const normalized = (Array.isArray(data) ? data : []).map((lvl) => {
-          const id =
-            lvl.level_id ||
-            lvl.level_no ||
-            lvl.id ||
-            "";
+const normalized = (Array.isArray(data) ? data : []).map((lvl) => {
+  const rawLevelNo =
+    lvl.level_no || lvl.level_id || lvl.id || 0;
 
-          return {
-            id,
-            level_no: id.toLowerCase(),
-            category: (lvl.category || "easy").toLowerCase(),
-            page_title: lvl.title || lvl.page_title || "",
-            template_type: lvl.type || "mail",
-          };
-        });
+  return {
+    id: rawLevelNo,
 
+    // 🔥 Keep numeric level number ONLY
+    level_no: Number(rawLevelNo),
+
+    category: (lvl.category || "easy").toLowerCase(),
+
+    page_title: lvl.title || lvl.page_title || "",
+
+    template_type: lvl.type || "mail",
+  };
+});
         setLevels(normalized);
       } catch (err) {
         console.error(err);
