@@ -16,6 +16,7 @@ export default function LevelPage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    let isMounted = true;
     if (!category || !level_no) {
       setError("Invalid level URL");
       setLoading(false);
@@ -35,14 +36,18 @@ export default function LevelPage() {
         const normalizedLevel = normalizeLevelData(data);
         setLevel(normalizedLevel);
       } catch (err) {
+        if (!isMounted) return;
         console.error("Failed to load level:", err);
         setError(err.message || "Failed to load level");
       } finally {
-        setLoading(false);
+      if (isMounted)  setLoading(false);
       }
     }
 
     loadLevel();
+    return () => {
+      isMounted =false;
+    };
   }, [category, level_no]);
 
   if (loading) return <h2>Loading level…</h2>;
