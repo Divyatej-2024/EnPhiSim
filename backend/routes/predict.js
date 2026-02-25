@@ -1,4 +1,7 @@
-const axios = require("axios");
+import express from "express";
+import axios from "axios";
+
+const router = express.Router();
 
 router.post("/predict", async (req, res) => {
   try {
@@ -12,3 +15,5 @@ router.post("/predict", async (req, res) => {
     res.status(500).json({ error: "ML API unreachable" });
   }
 });
+
+export default router;

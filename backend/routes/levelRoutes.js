@@ -3,38 +3,31 @@ import Level from "../models/Level.js";
 
 const router = express.Router();
 
-
-// Get all levels (for dashboard only)
+// Get all levels for dashboard listing.
 router.get("/levels", async (req, res) => {
   try {
-    const levels = await Level.find({}, { scenarios: 0 }); 
-    // Exclude scenarios for performance
+    const levels = await Level.find({});
     res.json(levels);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-
-// Get ONE level with ONE random scenario
+// Get one level by category + level number.
 router.get("/levels/:category/:level_no", async (req, res) => {
   try {
     const { category, level_no } = req.params;
 
-    const scenarios = await Level.findOne({ category,level_no });
-
-    if (!scenarios || scenarios.length ==0 ) {
-      return res.status(404).json({ message: "Scenarios Not Found" });
-    }
-
-    // Random scenario
-    const randomIndex = Math.floor(Math.random() * scenarios.length);
-    const randomScenario = scenarios[randomIndex];
-
-    res.json({
-      randomScenario
+    const level = await Level.findOne({
+      category,
+      Level_no: String(level_no),
     });
 
+    if (!level) {
+      return res.status(404).json({ message: "Level not found" });
+    }
+
+    res.json(level);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

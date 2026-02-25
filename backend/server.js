@@ -1,36 +1,36 @@
 import dotenv from "dotenv";
-dotenv.config();  // MUST be first
+dotenv.config();
 
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
-//import levelRoutes from "./routes/levels.js";
 import levelRoutes from "./routes/levelRoutes.js";
 import mlRoutes from "./routes/mlanalysis.js";
+import predictRoutes from "./routes/predict.js";
 
 const app = express();
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://en-phi-sim.vercel.app"
+  "https://en-phi-sim.vercel.app",
 ];
 
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  }
-}));
-app.get("/",(req,res) => {
+app.use(
+  cors({
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+  })
+);
+
+app.use(express.json());
+
+app.get("/", (req, res) => {
   res.send("EnPhiSim Backend is running");
 });
-app.use(express.json());
-app.use("/api",levelRoutes);
-// app.use("/api/ml",mlroutes);
-// DEBUG: check env
-console.log("Loaded MONGO_URI =", process.env.MONGO_URI);
 
 app.get("/health", (req, res) => {
   res.json({
@@ -40,12 +40,14 @@ app.get("/health", (req, res) => {
   });
 });
 
-// Connect MongoDB
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected"))
-  .catch(err => console.log("DB Error:", err));
-
+app.use("/api", levelRoutes);
 app.use("/api", mlRoutes);
+app.use("/api", predictRoutes);
+
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB Connected"))
+  .catch((err) => console.log("DB Error:", err));
 
 app.listen(process.env.PORT || 4000, () =>
   console.log("Backend Running on port:", process.env.PORT || 4000)
