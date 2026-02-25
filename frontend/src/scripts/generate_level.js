@@ -38,7 +38,7 @@ function jsxEscape(text) {
   if (!text && text !== 0) return "";
   return String(text)
     .replace(/\\/g, "\\\\")
-    .replace(/\`/g, "\\`");
+    .replace(/`/g, "\\`");
 }
 
 (async () => {
@@ -70,7 +70,6 @@ function jsxEscape(text) {
         neutral_option,
         wrong_option,
         nextRoute,
-        level_type,
       } = opts;
 
       const compName = `L_${Level_no.replace(/[^a-zA-Z0-9_]/g, "_")}`;

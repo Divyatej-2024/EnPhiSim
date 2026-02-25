@@ -9,6 +9,7 @@ import mlRoutes from "./routes/mlanalysis.js";
 import predictRoutes from "./routes/predict.js";
 
 const app = express();
+const PORT = process.env.PORT || 4000;
 const allowedOrigins = [
   "http://localhost:3000",
   "https://en-phi-sim.vercel.app",
@@ -44,11 +45,28 @@ app.use("/api", levelRoutes);
 app.use("/api", mlRoutes);
 app.use("/api", predictRoutes);
 
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected"))
-  .catch((err) => console.log("DB Error:", err));
+async function connectToDatabase() {
+  const mongoUri = process.env.MONGO_URI;
 
-app.listen(process.env.PORT || 4000, () =>
-  console.log("Backend Running on port:", process.env.PORT || 4000)
-);
+  if (!mongoUri) {
+    console.warn("MONGO_URI is not set. Starting backend without a database connection.");
+    return;
+  }
+
+  try {
+    await mongoose.connect(mongoUri);
+    console.log("MongoDB Connected");
+  } catch (err) {
+    console.error("DB Error:", err.message);
+  }
+}
+
+async function startServer() {
+  await connectToDatabase();
+
+  app.listen(PORT, () => {
+    console.log("Backend Running on port:", PORT);
+  });
+}
+
+startServer();
