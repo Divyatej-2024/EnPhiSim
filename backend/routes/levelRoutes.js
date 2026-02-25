@@ -24,11 +24,11 @@ router.get("/levels/:category/:level_no", async (req, res) => {
     const scenarios = await Level.findOne({ category,level_no });
 
     if (!scenarios || scenarios.length ==0 ) {
-      return res.status(404).json({ message: "Level not found" });
+      return res.status(404).json({ message: "Scenarios Not Found" });
     }
 
     // Random scenario
-    const randomIndex = Math.floor(Math.random() * level.scenarios.length);
+    const randomIndex = Math.floor(Math.random() * scenarios.length);
     const randomScenario = scenarios[randomIndex];
 
     res.json({
