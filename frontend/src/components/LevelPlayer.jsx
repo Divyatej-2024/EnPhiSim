@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-// frontend/src/components/LevelPlayer.jsx
-import React, { useState } from 'react';
-import { submitAttempt, mlPredict } from '../services/api';
+import React, { useState } from "react";
 
 export default function LevelPlayer({ level }) {
   const [result, setResult] = useState(null);
@@ -9,83 +6,66 @@ export default function LevelPlayer({ level }) {
 
   const handleAction = async (action) => {
     setLoading(true);
-    const payload = { action, timeTaken: 10, hintsUsed: 0, userId: 'student1' };
+
     try {
-      const res = await submitAttempt(level.level, payload);
-      setResult(res.data);
+      const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:4000";
+      const text = level?.sampleEmail?.body || level?.level_text || "";
+
+      const predRes = await fetch(`${apiUrl}/api/predict`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text }),
+      });
+
+      const pred = await predRes.json();
+      const correct = action === "report";
+
+      setResult({
+        correct,
+        xpAwarded: correct ? 10 : 0,
+        mlPrediction: pred.prediction ?? "unknown",
+        mlConfidence: pred.confidence ?? null,
+      });
     } catch (err) {
       console.error(err);
-      setResult({ error: 'Failed' });
+      setResult({ error: "Failed" });
     }
+
     setLoading(false);
   };
 
   return (
     <div>
-      <h2>{level.title}</h2>
-      <p><strong>From:</strong> {level.sampleEmail.from}</p>
-      <p><strong>Subject:</strong> {level.sampleEmail.subject}</p>
-      <pre>{level.sampleEmail.body}</pre>
+      <h2>{level?.title || level?.page_title || "Level"}</h2>
+      <p>
+        <strong>From:</strong> {level?.sampleEmail?.from || level?.from_and_to || "N/A"}
+      </p>
+      <p>
+        <strong>Subject:</strong> {level?.sampleEmail?.subject || level?.subj || "N/A"}
+      </p>
+      <pre>{level?.sampleEmail?.body || level?.phish_email || level?.level_text || ""}</pre>
 
       <div style={{ marginTop: 10 }}>
-        <button onClick={() => handleAction('report')} disabled={loading}>Report</button>
-        <button onClick={() => handleAction('delete')} disabled={loading}>Delete</button>
-        <button onClick={() => handleAction('click')} disabled={loading}>Click link</button>
+        <button onClick={() => handleAction("report")} disabled={loading}>
+          Report
+        </button>
+        <button onClick={() => handleAction("delete")} disabled={loading}>
+          Delete
+        </button>
+        <button onClick={() => handleAction("click")} disabled={loading}>
+          Click link
+        </button>
       </div>
 
       {result && (
         <div style={{ marginTop: 10 }}>
           <p>Correct: {String(result.correct)}</p>
           <p>XP awarded: {result.xpAwarded}</p>
-          <p>ML prediction: {result.mlPrediction} ({result.mlConfidence})</p>
+          <p>
+            ML prediction: {result.mlPrediction} ({String(result.mlConfidence)})
+          </p>
         </div>
       )}
     </div>
   );
 }
-=======
-// frontend/src/components/LevelPlayer.jsx
-import React, { useState } from 'react';
-import { submitAttempt, mlPredict } from '../services/api';
-
-export default function LevelPlayer({ level }) {
-  const [result, setResult] = useState(null);
-  const [loading, setLoading] = useState(false);
-
-  const handleAction = async (action) => {
-    setLoading(true);
-    const payload = { action, timeTaken: 10, hintsUsed: 0, userId: 'student1' };
-    try {
-      const res = await submitAttempt(level.level, payload);
-      setResult(res.data);
-    } catch (err) {
-      console.error(err);
-      setResult({ error: 'Failed' });
-    }
-    setLoading(false);
-  };
-
-  return (
-    <div>
-      <h2>{level.title}</h2>
-      <p><strong>From:</strong> {level.sampleEmail.from}</p>
-      <p><strong>Subject:</strong> {level.sampleEmail.subject}</p>
-      <pre>{level.sampleEmail.body}</pre>
-
-      <div style={{ marginTop: 10 }}>
-        <button onClick={() => handleAction('report')} disabled={loading}>Report</button>
-        <button onClick={() => handleAction('delete')} disabled={loading}>Delete</button>
-        <button onClick={() => handleAction('click')} disabled={loading}>Click link</button>
-      </div>
-
-      {result && (
-        <div style={{ marginTop: 10 }}>
-          <p>Correct: {String(result.correct)}</p>
-          <p>XP awarded: {result.xpAwarded}</p>
-          <p>ML prediction: {result.mlPrediction} ({result.mlConfidence})</p>
-        </div>
-      )}
-    </div>
-  );
-}
->>>>>>> 622a2f58a21cb608242fa59b8e4c35dfb00d67b0

@@ -1,0 +1,171 @@
+Apply these manual changes.
+
+1. `frontend/src/pages/levels/templates/MailLevel.js`  
+Inside `mailStyles` add this at the end:
+```css
+@media (max-width: 1024px) {
+  .mail-layout { grid-template-columns: 1fr; min-height: auto; }
+  .mail-sidebar { border-right: 0; border-bottom: 1px solid #e0e0e0; }
+  .mail-content { grid-template-columns: 1fr; }
+  .email-list { max-height: 280px; }
+}
+
+@media (max-width: 768px) {
+  .mail-header { flex-direction: column; align-items: stretch; gap: 10px; }
+  .mail-search { width: 100%; }
+  .email-item { grid-template-columns: 20px 1fr auto; }
+  .email-sender { max-width: 120px; }
+  .email-preview { padding: 16px; }
+  .action-buttons { flex-wrap: wrap; }
+  .mail-action-btn { width: 100%; justify-content: center; }
+}
+
+@media (max-width: 480px) {
+  .mail-container { border-radius: 0; }
+  .mail-sidebar { padding: 12px; }
+  .email-item { padding: 10px; gap: 8px; }
+  .avatar { width: 40px; height: 40px; font-size: 16px; }
+}
+```
+
+2. `frontend/src/pages/levels/templates/BrowserLevel.js`  
+Inside `browserStyles` add:
+```css
+@media (max-width: 768px) {
+  .browser-title-bar { padding: 8px; gap: 8px; }
+  .browser-tab { min-width: 110px; padding: 6px 10px; }
+  .navigation-bar { padding: 8px; }
+  .nav-button { width: 32px; height: 32px; font-size: 16px; }
+  .url-input { font-size: 13px; padding: 8px 34px 8px 12px; }
+  .browser-viewport { min-height: 320px; padding: 12px; }
+  .status-bar { flex-direction: column; gap: 4px; align-items: flex-start; }
+  .action-bar-bottom { flex-wrap: wrap; }
+  .browser-action { width: 100%; justify-content: center; }
+}
+
+@media (max-width: 480px) {
+  .window-controls { display: none; }
+  .bookmarks-bar { font-size: 12px; gap: 8px; }
+}
+```
+
+3. `frontend/src/pages/levels/templates/MessageLevel.js`  
+Inside `messageStyles` add:
+```css
+@media (max-width: 768px) {
+  .messenger-header { padding: 12px; gap: 10px; }
+  .chat-avatar { width: 40px; height: 40px; font-size: 16px; }
+  .chat-name { font-size: 15px; }
+  .header-actions { gap: 8px; }
+  .messages-area { height: 360px; padding: 12px; }
+  .message-bubble { max-width: 88%; }
+  .input-area { padding: 10px; gap: 8px; }
+  .send-button { width: 42px; height: 42px; }
+  .action-buttons { flex-wrap: wrap; padding: 12px; }
+  .message-action-btn { width: 100%; }
+}
+```
+
+4. `frontend/src/pages/levels/templates/NotificationLevel.js`  
+Inside `notificationStyles` add:
+```css
+@media (max-width: 768px) {
+  .notification-header { padding: 12px; }
+  .header-title { font-size: 15px; }
+  .notification-filters { overflow-x: auto; white-space: nowrap; }
+  .notification-item { padding: 12px; gap: 10px; }
+  .notification-icon { width: 32px; height: 32px; font-size: 16px; }
+  .notification-details { padding: 14px; }
+  .action-buttons { flex-direction: column; }
+  .notification-action { width: 100%; justify-content: center; }
+}
+```
+
+5. `frontend/src/pages/levels/templates/ImageLevel.js`  
+Inside `imageStyles` add:
+```css
+@media (max-width: 1024px) {
+  .image-workspace { grid-template-columns: 1fr; }
+  .analysis-panel { max-height: none; border-top: 1px solid #e0e0e0; }
+}
+
+@media (max-width: 768px) {
+  .image-header { padding: 12px; flex-direction: column; align-items: flex-start; gap: 10px; }
+  .image-controls { width: 100%; flex-wrap: wrap; }
+  .control-btn { flex: 1 1 calc(50% - 8px); justify-content: center; }
+  .image-viewer { padding: 10px; }
+  .image-container { min-height: 250px; }
+  .action-buttons { flex-direction: column; }
+  .image-action { width: 100%; }
+}
+```
+
+6. `frontend/src/pages/levels/templates/MailBrowserLevel.js`  
+Inside `combinedStyles` add:
+```css
+@media (max-width: 1024px) {
+  .split-view { grid-template-columns: 1fr; }
+  .split-panel { min-height: auto; }
+}
+
+@media (max-width: 768px) {
+  .combined-header { flex-wrap: wrap; gap: 10px; }
+  .view-controls { margin-left: 0; width: 100%; }
+  .view-btn { flex: 1; text-align: center; }
+  .combined-tabs { overflow-x: auto; white-space: nowrap; }
+  .action-bar-large { flex-direction: column; }
+  .combined-action { width: 100%; }
+}
+```
+
+7. `frontend/src/pages/levels/templates/MailBrowserMessageLevel.js`  
+Inside `tripleStyles` add:
+```css
+@media (max-width: 1200px) {
+  .triple-content { grid-template-columns: 1fr; }
+  .timeline-panel, .insights-panel { border: 0; border-top: 1px solid #e0e0e0; }
+}
+
+@media (max-width: 768px) {
+  .threat-header { padding: 12px; }
+  .threat-title { flex-wrap: wrap; }
+  .threat-stats { flex-direction: column; gap: 8px; }
+  .platform-tabs { overflow-x: auto; white-space: nowrap; padding: 0 10px; }
+  .platform-tab { padding: 12px; }
+  .threat-actions { flex-direction: column; }
+  .threat-action-btn { width: 100%; }
+}
+```
+
+8. `frontend/src/pages/levels/templates/MailLevel.js` tooltip touch fix  
+Replace hover-only behavior:
+```jsx
+onMouseEnter={() => setShowDetails(prev => ({ ...prev, [level.id]: true }))}
+onMouseLeave={() => setShowDetails(prev => ({ ...prev, [level.id]: false }))}
+```
+with:
+```jsx
+onClick={() =>
+  setShowDetails((prev) => ({ ...prev, [activeLevel.id]: !prev[activeLevel.id] }))
+}
+```
+And change:
+```jsx
+{showDetails[activeLevel.id] && (
+```
+to keep using `activeLevel.id` consistently everywhere in that block.
+
+9. Encoding cleanup (replace mojibake text)  
+- In `BaseLevel.js`:
+  - `"âœ“ Correct!"` -> `"Correct!"`
+  - `"âœ— Incorrect!"` -> `"Incorrect!"`
+  - `'Continue â†’'` -> `'Continue ->'`
+- In templates, replace garbled icons/text with plain ASCII labels where needed (or proper unicode if your file encoding is UTF-8).
+
+10. Quick sanity check after edits  
+Run:
+```powershell
+cd frontend
+npm start
+```
+Then test at widths: `375px`, `768px`, `1024px`, `1440px`.

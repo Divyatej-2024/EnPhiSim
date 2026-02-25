@@ -1,0 +1,368 @@
+Use these exact replacements.
+
+1. `backend/routes/levelRoutes.js`
+```js
+import express from "express";
+import Level from "../models/Level.js";
+
+const router = express.Router();
+
+// Get all levels for dashboard listing.
+router.get("/levels", async (req, res) => {
+  try {
+    const levels = await Level.find({});
+    res.json(levels);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Get one level by category + level number.
+router.get("/levels/:category/:level_no", async (req, res) => {
+  try {
+    const { category, level_no } = req.params;
+
+    const level = await Level.findOne({
+      category,
+      Level_no: String(level_no),
+    });
+
+    if (!level) {
+      return res.status(404).json({ message: "Level not found" });
+    }
+
+    res.json(level);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+export default router;
+```
+
+2. `backend/routes/mlanalysis.js`
+```js
+import express from "express";
+import Eaction from "../models/E_action.js";
+import axios from "axios";
+
+const router = express.Router();
+const ML_SERVER = process.env.ML_SERVER_URL;
+
+router.get("/analysis/:UserID", async (req, res) => {
+  try {
+    const { UserID } = req.params;
+    const actions = await Eaction.find({ UserID });
+
+    const mlResponse = await axios.post(`${ML_SERVER}/predict`, { data: actions });
+
+    res.json({
+      raw_actions: actions,
+      accuracy: mlResponse.data.accuracy,
+      probabilities: mlResponse.data.probabilities,
+      risk_score: mlResponse.data.risk_score,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Server Error" });
+  }
+});
+
+export default router;
+```
+
+3. `backend/routes/predict.js`
+```js
+import express from "express";
+import axios from "axios";
+
+const router = express.Router();
+
+router.post("/predict", async (req, res) => {
+  try {
+    const response = await axios.post(
+      `${process.env.ML_API_URL}/predict`,
+      req.body
+    );
+    res.json(response.data);
+  } catch (error) {
+    console.error("Error:", error.message);
+    res.status(500).json({ error: "ML API unreachable" });
+  }
+});
+
+export default router;
+```
+
+4. `backend/routes/levels.js`
+```js
+import express from "express";
+import Level from "../models/Level.js";
+
+const router = express.Router();
+
+router.get("/levels", async (req, res) => {
+  try {
+    const levels = await Level.find();
+    res.json(levels);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch levels" });
+  }
+});
+
+export default router;
+```
+
+5. `backend/server.js`
+```js
+import dotenv from "dotenv";
+dotenv.config();
+
+import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
+import levelRoutes from "./routes/levelRoutes.js";
+import mlRoutes from "./routes/mlanalysis.js";
+import predictRoutes from "./routes/predict.js";
+
+const app = express();
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://en-phi-sim.vercel.app",
+];
+
+app.use(
+  cors({
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+  })
+);
+
+app.use(express.json());
+
+app.get("/", (req, res) => {
+  res.send("EnPhiSim Backend is running");
+});
+
+app.get("/health", (req, res) => {
+  res.json({
+    status: "OK",
+    service: "EnPhiSim Backend",
+    mongo: mongoose.connection.readyState === 1 ? "connected" : "disconnected",
+  });
+});
+
+app.use("/api", levelRoutes);
+app.use("/api", mlRoutes);
+app.use("/api", predictRoutes);
+
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB Connected"))
+  .catch((err) => console.log("DB Error:", err));
+
+app.listen(process.env.PORT || 4000, () =>
+  console.log("Backend Running on port:", process.env.PORT || 4000)
+);
+```
+
+6. `backend/config/index.js`
+```js
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const config = {
+  nodeEnv: process.env.NODE_ENV || "development",
+  port: Number(process.env.PORT || 4000),
+  mongoUri: process.env.MONGO_URI || "",
+  mlServerUrl: process.env.ML_SERVER_URL || "",
+  mlApiUrl: process.env.ML_API_URL || "",
+};
+
+export default config;
+```
+
+7. `backend/middleware/actionTracker.js`
+```js
+export function actionTracker(req, res, next) {
+  try {
+    if (req && req.method && req.originalUrl) {
+      console.log(`[ACTION] ${req.method} ${req.originalUrl}`);
+    }
+  } catch (err) {
+    // Non-blocking middleware.
+  }
+  next();
+}
+
+export default actionTracker;
+```
+
+8. `backend/models/Scenario.js`
+```js
+import mongoose from "mongoose";
+
+const ScenarioSchema = new mongoose.Schema(
+  {
+    category: String,
+    level_no: String,
+    scenarios: [mongoose.Schema.Types.Mixed],
+  },
+  { collection: "scenarios" }
+);
+
+const Scenario = mongoose.model("Scenario", ScenarioSchema);
+export default Scenario;
+```
+
+9. `backend/utils/mlClient.js`
+```js
+import axios from "axios";
+
+export async function mlPredict(payload) {
+  const baseUrl = process.env.ML_SERVER_URL || process.env.ML_API_URL;
+  if (!baseUrl) {
+    throw new Error("ML server URL is not configured");
+  }
+
+  const url = baseUrl.endsWith("/predict") ? baseUrl : `${baseUrl}/predict`;
+  const response = await axios.post(url, payload, { timeout: 10000 });
+  return response.data;
+}
+
+export default mlPredict;
+```
+
+10. `frontend/src/components/LevelPlayer.jsx`
+```jsx
+import React, { useState } from "react";
+
+export default function LevelPlayer({ level }) {
+  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleAction = async (action) => {
+    setLoading(true);
+
+    try {
+      const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:4000";
+      const text = level?.sampleEmail?.body || level?.level_text || "";
+
+      const predRes = await fetch(`${apiUrl}/api/predict`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text }),
+      });
+
+      const pred = await predRes.json();
+      const correct = action === "report";
+
+      setResult({
+        correct,
+        xpAwarded: correct ? 10 : 0,
+        mlPrediction: pred.prediction ?? "unknown",
+        mlConfidence: pred.confidence ?? null,
+      });
+    } catch (err) {
+      console.error(err);
+      setResult({ error: "Failed" });
+    }
+
+    setLoading(false);
+  };
+
+  return (
+    <div>
+      <h2>{level?.title || level?.page_title || "Level"}</h2>
+      <p>
+        <strong>From:</strong> {level?.sampleEmail?.from || level?.from_and_to || "N/A"}
+      </p>
+      <p>
+        <strong>Subject:</strong> {level?.sampleEmail?.subject || level?.subj || "N/A"}
+      </p>
+      <pre>{level?.sampleEmail?.body || level?.phish_email || level?.level_text || ""}</pre>
+
+      <div style={{ marginTop: 10 }}>
+        <button onClick={() => handleAction("report")} disabled={loading}>
+          Report
+        </button>
+        <button onClick={() => handleAction("delete")} disabled={loading}>
+          Delete
+        </button>
+        <button onClick={() => handleAction("click")} disabled={loading}>
+          Click link
+        </button>
+      </div>
+
+      {result && (
+        <div style={{ marginTop: 10 }}>
+          <p>Correct: {String(result.correct)}</p>
+          <p>XP awarded: {result.xpAwarded}</p>
+          <p>
+            ML prediction: {result.mlPrediction} ({String(result.mlConfidence)})
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+11. `frontend/src/api.js`
+```js
+import axios from "axios";
+
+export const BACKEND_URL =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:4000"
+    : "https://enphisim-backend.onrender.com";
+
+export async function getUserAnalysis(userId) {
+  try {
+    const res = await axios.get(`${BACKEND_URL}/api/analysis/${userId}`);
+    return res.data;
+  } catch (err) {
+    console.error("Error fetching user analysis:", err);
+    throw err;
+  }
+}
+
+export const sendUserAction = async (actionData) => {
+  try {
+    const res = await axios.post(`${BACKEND_URL}/api/actions`, actionData);
+    return res.data;
+  } catch (err) {
+    console.error("Error sending user action:", err);
+    throw err;
+  }
+};
+
+export async function getPrediction({ userId = "user_001", levelId = null, text }) {
+  const res = await axios.post(`${BACKEND_URL}/api/predict`, { userId, levelId, text });
+  return res.data;
+}
+```
+
+12. `ml_server/utils/preprocess.py`
+```py
+# ml-server/utils/preprocess.py
+import re
+
+
+def preprocess_text(text):
+    if not isinstance(text, str):
+        return ""
+    text = text.lower()
+    text = re.sub(r"http\S+", " ", text)
+    text = re.sub(r"[^a-z0-9\s]", " ", text)
+    text = re.sub(r"\s+", " ", text).strip()
+    return text
+```
+
+If you want, I can next give you a short command checklist to verify manually after you paste these.
