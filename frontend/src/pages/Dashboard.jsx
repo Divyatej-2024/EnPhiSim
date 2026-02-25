@@ -30,7 +30,7 @@ export default function Dashboard() {
         const data = await res.json();
 
 const normalized = (Array.isArray(data) ? data : []).map((lvl) => {
-  const rawLevelNo = lvl.level_no || "";
+  const rawLevelNo = lvl.Level_no || lvl.level_no || "";
 
   return {
     id: rawLevelNo,

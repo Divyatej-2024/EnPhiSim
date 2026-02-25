@@ -5,7 +5,8 @@ export default function LevelsPage() {
   const navigate = useNavigate();
 
   // ⚠️ DO NOT change variable name
-  const API_URL = process.env.REACT_APP_API_URL;
+  const API_URL =
+  process.env.REACT_APP_API_URL || "https://enphisim-1.onrender.com";
 
   const [levels, setLevels] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -58,8 +59,7 @@ export default function LevelsPage() {
               <div
                 key={level.id}
                 className="level-card"
-                onClick={() => navigate(`/level/${level.Level_no}`)}
-              >
+                onClick={() => navigate("/levels/" + (level.category || category || "easy").toLowerCase() + "/" + (level.Level_no || level.level_no))}>
                 <h3>{level.page_title}</h3>
                 <p className="hint">{level.Hint}</p>
                 <span className="email">{level.phish_email}</span>

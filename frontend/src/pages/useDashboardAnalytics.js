@@ -5,7 +5,7 @@ import { useMemo } from "react";
 export default function useDashboardAnalytics(progress, levels) {
   return useMemo(() => {
     const completedLevels = progress?.completedLevels || {};
-    const attempts = progress?.attempts || {};
+    const rawActions = Array.isArray(progress?.actions) ? progress.actions : [];
 
     /* ================= LEVEL COMPLETION ================= */
     const completed = Object.keys(completedLevels).length;
@@ -17,22 +17,14 @@ export default function useDashboardAnalytics(progress, levels) {
         : 0;
 
     /* ================= FLATTEN ALL ACTIONS ================= */
-    let actions =[];
-    try {
-      actions = Object.values(attempts || {})
-      .filter(Array.isArray)
-      .flat();
-    } catch (e) {
-      actions=[];
-    }
-    const totalActions = actions.length;
+    const totalActions = rawActions.length;
 
-    const safeActions = actions.filter(
-      (a) => a.correct === true
+    const safeActions = rawActions.filter(
+      (a) => (a?.isCorrect ?? a?.correct) === true
     ).length;
 
-    const riskyActions = actions.filter(
-      (a) => a.correct === false
+    const riskyActions = rawActions.filter(
+      (a) => (a?.isCorrect ?? a?.correct) === false
     ).length;
 
     const accuracy =

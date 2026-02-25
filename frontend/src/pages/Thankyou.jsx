@@ -6,12 +6,12 @@ export default function ThankYouPage() {
   const { progress } = useProgress();
 
   const timeTaken = progress?.timeTaken || "{timeTaken}";
-  const totalActions = Object.values(progress?.attempts || {}).flat().length || 0;
+  const totalActions = Array.isArray(progress?.actions) ? progress.actions.length : 0;
 
 
-  const actions = Object.values(progress?.attempts || {}).flat();
-  const safe = actions.filter(a => a.correct).length;
-  const risky = actions.filter(a => !a.correct).length;
+  const actions = Array.isArray(progress?.actions) ? progress.actions : [];
+  const safe = actions.filter(a => (a?.isCorrect ?? a?.correct) === true).length;
+  const risky = actions.filter(a => (a?.isCorrect ?? a?.correct) === false).length;
   const accuracy = totalActions > 0 ? ((safe / totalActions) * 100).toFixed(1) : "0";
 
   const completedLevels = Object.keys(progress?.completedLevels || {}).length;

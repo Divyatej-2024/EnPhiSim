@@ -96,18 +96,36 @@ export function ProgressProvider({ children }) {
   // ==============================
 
   const recordAction = (levelId, actionType, isCorrect) => {
-    setProgress(prev => ({
-      ...prev,
-      actions: [
-        ...prev.actions,
-        {
+    setProgress(prev => {
+      const timestamp = new Date().toISOString();
+
+      let record;
+      if (actionType && typeof actionType === "object" && !Array.isArray(actionType)) {
+        record = { ...actionType };
+        if (!record.timestamp) record.timestamp = timestamp;
+        if (record.levelId == null && levelId != null) record.levelId = levelId;
+      } else {
+        record = {
           levelId,
           actionType,
           isCorrect,
-          timestamp: new Date().toISOString()
-        }
-      ]
-    }));
+          timestamp
+        };
+      }
+
+      return {
+        ...prev,
+        actions: [
+          ...prev.actions,
+          record
+        ]
+      };
+    });
+  };
+
+  const addAction = (actionRecord) => {
+    const levelId = actionRecord?.levelId ?? actionRecord?.level_no ?? actionRecord?.level;
+    recordAction(levelId, actionRecord);
   };
 
   // ==============================
@@ -132,6 +150,8 @@ export function ProgressProvider({ children }) {
       };
     });
   };
+
+  const completeLevel = (levelId) => markLevelComplete(levelId);
 
   // ==============================
   // DERIVED METRICS
@@ -204,7 +224,8 @@ export function ProgressProvider({ children }) {
     setProgress({
       completedLevels: {},
       actions: [],
-      xp: 0
+      xp: 0,
+      levelScenarios: {}
     });
   };
 
@@ -217,7 +238,9 @@ export function ProgressProvider({ children }) {
       value={{
         progress,
         recordAction,
+        addAction,
         markLevelComplete,
+        completeLevel,
         resetProgress,
         LEVEL_CONFIG,
         TOTAL_LEVELS,

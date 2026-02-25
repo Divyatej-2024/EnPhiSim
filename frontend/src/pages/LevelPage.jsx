@@ -63,7 +63,7 @@ export default function LevelPage() {
 
   const handleOptionClick = (option) => {
     // Use consistent level_no field
-    recordAction(level.level_no, option.key);
+    recordAction(level.level_no, option.key, option.correct);
 
     if (option.correct) {
       markLevelComplete(level.level_no);

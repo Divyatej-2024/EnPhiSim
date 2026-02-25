@@ -1,9 +1,10 @@
 import axios from "axios";
 
 export const BACKEND_URL =
-  process.env.NODE_ENV === "development"
+  process.env.REACT_APP_API_URL ||
+  (process.env.NODE_ENV === "development"
     ? "http://localhost:4000"
-    : "https://enphisim-backend.onrender.com";
+    : "https://enphisim-1.onrender.com");
 
 export async function getUserAnalysis(userId) {
   try {
