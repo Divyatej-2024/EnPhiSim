@@ -2,6 +2,7 @@ import express from "express";
 import Level from "../models/Level.js";
 
 const router = express.Router();
+const escapeRegex = (value) => String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 // Get all levels for dashboard listing.
 router.get("/levels", async (req, res) => {
@@ -17,10 +18,32 @@ router.get("/levels", async (req, res) => {
 router.get("/levels/:category/:level_no", async (req, res) => {
   try {
     const { category, level_no } = req.params;
+    const rawLevelNo = String(level_no || "").trim();
+    const normalizedNumber = rawLevelNo.replace(/^l/i, "");
+    const categoryPattern = new RegExp(`^${escapeRegex(String(category || "").trim())}$`, "i");
+
+    const levelNoPatterns = [new RegExp(`^${escapeRegex(rawLevelNo)}$`, "i")];
+    if (normalizedNumber && normalizedNumber !== rawLevelNo) {
+      levelNoPatterns.push(new RegExp(`^l?${escapeRegex(normalizedNumber)}$`, "i"));
+    }
 
     const level = await Level.findOne({
-      category,
-      Level_no: String(level_no),
+      $and: [
+        {
+          $or: [
+            { category: categoryPattern },
+            { level_category: categoryPattern },
+            { difficulty: categoryPattern },
+          ],
+        },
+        {
+          $or: [
+            { Level_no: { $in: levelNoPatterns } },
+            { level_no: { $in: levelNoPatterns } },
+            { id: { $in: levelNoPatterns } },
+          ],
+        },
+      ],
     });
 
     if (!level) {
