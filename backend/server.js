@@ -9,22 +9,44 @@ import mlRoutes from "./routes/mlanalysis.js";
 import predictRoutes from "./routes/predict.js";
 
 const app = express();
-const allowedOrigins = [
+const explicitAllowedOrigins = new Set([
   "http://localhost:3000",
+  "http://127.0.0.1:3000",
   "https://en-phi-sim.vercel.app",
+  "https://www.en-phi-sim.vercel.app",
+]);
+
+if (process.env.CORS_ORIGINS) {
+  process.env.CORS_ORIGINS.split(",")
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .forEach((origin) => explicitAllowedOrigins.add(origin));
+}
+
+const allowedOriginPatterns = [
+  /^https:\/\/.*\.vercel\.app$/,
 ];
 
-app.use(
-  cors({
-    origin(origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-  })
-);
+function isAllowedOrigin(origin) {
+  if (!origin) return true;
+  if (explicitAllowedOrigins.has(origin)) return true;
+  return allowedOriginPatterns.some((pattern) => pattern.test(origin));
+}
+
+const corsOptions = {
+  origin(origin, callback) {
+    if (isAllowedOrigin(origin)) {
+      callback(null, true);
+      return;
+    }
+    callback(new Error(`Not allowed by CORS: ${origin}`));
+  },
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 app.use(express.json());
 
