@@ -183,6 +183,20 @@ export default function MailBrowserLevel() {
       background: #f1f3f4;
       color: #5f6368;
     }
+
+    @media (max-width: 1024px) {
+      .split-view { grid-template-columns: 1fr; }
+      .split-panel { min-height: auto; }
+    }
+
+    @media (max-width: 768px) {
+      .combined-header { flex-wrap: wrap; gap: 10px; }
+      .view-controls { margin-left: 0; width: 100%; }
+      .view-btn { flex: 1; text-align: center; }
+      .combined-tabs { overflow-x: auto; white-space: nowrap; }
+      .action-bar-large { flex-direction: column; }
+      .combined-action { width: 100%; }
+    }
   `;
 
   return (

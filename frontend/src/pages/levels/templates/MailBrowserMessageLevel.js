@@ -239,6 +239,21 @@ export default function MailBrowserMessageLevel() {
     .threat-action-btn.emergency:hover:not(:disabled) {
       background: #b4231a;
     }
+
+    @media (max-width: 1200px) {
+      .triple-content { grid-template-columns: 1fr; }
+      .timeline-panel, .insights-panel { border: 0; border-top: 1px solid #e0e0e0; }
+    }
+
+    @media (max-width: 768px) {
+      .threat-header { padding: 12px; }
+      .threat-title { flex-wrap: wrap; }
+      .threat-stats { flex-direction: column; gap: 8px; }
+      .platform-tabs { overflow-x: auto; white-space: nowrap; padding: 0 10px; }
+      .platform-tab { padding: 12px; }
+      .threat-actions { flex-direction: column; }
+      .threat-action-btn { width: 100%; }
+    }
   `;
 
   const renderPlatformContent = () => {

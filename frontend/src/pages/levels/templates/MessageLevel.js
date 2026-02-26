@@ -322,6 +322,19 @@ export default function MessageLevel() {
       from { transform: translateY(-20px); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
     }
+
+    @media (max-width: 768px) {
+      .messenger-header { padding: 12px; gap: 10px; }
+      .chat-avatar { width: 40px; height: 40px; font-size: 16px; }
+      .chat-name { font-size: 15px; }
+      .header-actions { gap: 8px; }
+      .messages-area { height: 360px; padding: 12px; }
+      .message-bubble { max-width: 88%; }
+      .input-area { padding: 10px; gap: 8px; }
+      .send-button { width: 42px; height: 42px; }
+      .action-buttons { flex-wrap: wrap; padding: 12px; }
+      .message-action-btn { width: 100%; }
+    }
   `;
 
   useEffect(() => {

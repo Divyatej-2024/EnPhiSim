@@ -296,6 +296,17 @@ export default function NotificationLevel() {
       from { opacity: 0; transform: translateX(-20px); }
       to { opacity: 1; transform: translateX(0); }
     }
+
+    @media (max-width: 768px) {
+      .notification-header { padding: 12px; }
+      .header-title { font-size: 15px; }
+      .notification-filters { overflow-x: auto; white-space: nowrap; }
+      .notification-item { padding: 12px; gap: 10px; }
+      .notification-icon { width: 32px; height: 32px; font-size: 16px; }
+      .notification-details { padding: 14px; }
+      .action-buttons { flex-direction: column; }
+      .notification-action { width: 100%; justify-content: center; }
+    }
   `;
 
   useEffect(() => {

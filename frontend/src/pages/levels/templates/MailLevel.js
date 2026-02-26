@@ -395,6 +395,30 @@ export default function MailLevel({levelId}) {
       50% { opacity: 0.5; transform: scale(1.1); }
       100% { opacity: 1; transform: scale(1); }
     }
+
+    @media (max-width: 1024px) {
+      .mail-layout { grid-template-columns: 1fr; min-height: auto; }
+      .mail-sidebar { border-right: 0; border-bottom: 1px solid #e0e0e0; }
+      .mail-content { grid-template-columns: 1fr; }
+      .email-list { max-height: 280px; }
+    }
+
+    @media (max-width: 768px) {
+      .mail-header { flex-direction: column; align-items: stretch; gap: 10px; }
+      .mail-search { width: 100%; }
+      .email-item { grid-template-columns: 20px 1fr auto; }
+      .email-sender { max-width: 120px; }
+      .email-preview { padding: 16px; }
+      .action-buttons { flex-wrap: wrap; }
+      .mail-action-btn { width: 100%; justify-content: center; }
+    }
+
+    @media (max-width: 480px) {
+      .mail-container { border-radius: 0; }
+      .mail-sidebar { padding: 12px; }
+      .email-item { padding: 10px; gap: 8px; }
+      .avatar { width: 40px; height: 40px; font-size: 16px; }
+    }
   `;
 
   return (
@@ -473,8 +497,9 @@ export default function MailLevel({levelId}) {
                       </div>
                       <div 
                         className="sender-email"
-                        onMouseEnter={() => setShowDetails(prev => ({ ...prev, [level.id]: true }))}
-                        onMouseLeave={() => setShowDetails(prev => ({ ...prev, [level.id]: false }))}
+                        onClick={() =>
+                          setShowDetails((prev) => ({ ...prev, [activeLevel.id]: !prev[activeLevel.id] }))
+                        }
                       >
                         {activeLevel.phish_email}
                         {showDetails[activeLevel.id] && (

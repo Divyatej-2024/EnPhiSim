@@ -359,6 +359,23 @@ export default function BrowserLevel() {
       from { transform: translateY(-20px); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
     }
+
+    @media (max-width: 768px) {
+      .browser-title-bar { padding: 8px; gap: 8px; }
+      .browser-tab { min-width: 110px; padding: 6px 10px; }
+      .navigation-bar { padding: 8px; }
+      .nav-button { width: 32px; height: 32px; font-size: 16px; }
+      .url-input { font-size: 13px; padding: 8px 34px 8px 12px; }
+      .browser-viewport { min-height: 320px; padding: 12px; }
+      .status-bar { flex-direction: column; gap: 4px; align-items: flex-start; }
+      .action-bar-bottom { flex-wrap: wrap; }
+      .browser-action { width: 100%; justify-content: center; }
+    }
+
+    @media (max-width: 480px) {
+      .window-controls { display: none; }
+      .bookmarks-bar { font-size: 12px; gap: 8px; }
+    }
   `;
 
   const navigateTo = (newUrl) => {

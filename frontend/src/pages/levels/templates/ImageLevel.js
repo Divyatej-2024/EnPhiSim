@@ -299,6 +299,21 @@ export default function ImageLevel() {
       50% { opacity: 0.6; }
       100% { opacity: 1; }
     }
+
+    @media (max-width: 1024px) {
+      .image-workspace { grid-template-columns: 1fr; }
+      .analysis-panel { max-height: none; border-top: 1px solid #e0e0e0; }
+    }
+
+    @media (max-width: 768px) {
+      .image-header { padding: 12px; flex-direction: column; align-items: flex-start; gap: 10px; }
+      .image-controls { width: 100%; flex-wrap: wrap; }
+      .control-btn { flex: 1 1 calc(50% - 8px); justify-content: center; }
+      .image-viewer { padding: 10px; }
+      .image-container { min-height: 250px; }
+      .action-buttons { flex-direction: column; }
+      .image-action { width: 100%; }
+    }
   `;
 
   return (

@@ -110,7 +110,7 @@ export default function BaseLevel({
       // Show real-time feedback
       setDialog({
         show: true,
-        title: isCorrect ? "✓ Correct!" : "✗ Incorrect!",
+        title: isCorrect ? "Correct!" : "Incorrect!",
         message: isCorrect 
           ? currentLevel.success_message || "Great job! You made the right choice."
           : currentLevel.failure_message || "This action could be risky. Try again!",
@@ -265,7 +265,7 @@ export default function BaseLevel({
               onClick={closeDialog}
               autoFocus
             >
-              {dialog.isCorrect ? 'Continue →' : 'Try Again'}
+              {dialog.isCorrect ? 'Continue ->' : 'Try Again'}
             </button>
           </div>
         </div>
