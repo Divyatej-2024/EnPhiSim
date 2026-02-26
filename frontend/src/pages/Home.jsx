@@ -14,9 +14,9 @@ function Home() {
   }, []);
 
   const handleStart = () => {
-    const consent =localStorage.getItem("researchConsent");
+    const consent = localStorage.getItem("researchConsent");
     if (consent === "true") {
-      navigate("/Disclaimer"); // change to your actual route
+      navigate("/disclaimer");
     } else {
       setShowConsent(true);
     }

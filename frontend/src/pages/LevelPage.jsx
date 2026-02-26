@@ -1,10 +1,10 @@
-// frontend/src/pages/LevelPage.jsx
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { safeFetchJSON } from "../utils/helper";
 import { useProgress } from "../context/ProgressContext";
-import { normalizeLevelData } from "../utils/LevelHelper"; // Add import
+import { normalizeLevelData } from "../utils/LevelHelper";
 import TemplateRenderer from "./levels/TemplateRenderer";
+import { BACKEND_URL } from "../api";
 
 export default function LevelPage() {
   const { category, level_no } = useParams();
@@ -17,6 +17,7 @@ export default function LevelPage() {
 
   useEffect(() => {
     let isMounted = true;
+
     if (!category || !level_no) {
       setError("Invalid level URL");
       setLoading(false);
@@ -25,60 +26,51 @@ export default function LevelPage() {
 
     async function loadLevel() {
       try {
-        const apiUrl = process.env.REACT_APP_API_URL || "https://enphisim-1.onrender.com";
+        const apiUrl = BACKEND_URL;
         if (!apiUrl) throw new Error("API URL not set");
 
-        const data = await safeFetchJSON(
-          `${apiUrl}/api/levels/${category}/${level_no}`
-        );
-        
-        // Normalize all levels first
+        const data = await safeFetchJSON(`${apiUrl}/api/levels/${category}/${level_no}`);
         const normalizedLevel = normalizeLevelData(data);
-        setLevel(normalizedLevel);
+        if (isMounted) setLevel(normalizedLevel);
       } catch (err) {
         if (!isMounted) return;
         console.error("Failed to load level:", err);
         setError(err.message || "Failed to load level");
       } finally {
-      if (isMounted)  setLoading(false);
+        if (isMounted) setLoading(false);
       }
     }
 
     loadLevel();
     return () => {
-      isMounted =false;
+      isMounted = false;
     };
   }, [category, level_no]);
 
-  if (loading) return <h2>Loading level…</h2>;
+  if (loading) return <h2>Loading level...</h2>;
   if (error) return <h2>Error: {error}</h2>;
   if (!level) return <h2>Level not found</h2>;
 
-  // Prepare options
   const options = [
     { key: "correct", label: level.correct_option, correct: true },
     { key: "neutral", label: level.neutral_option, correct: false },
     { key: "wrong", label: level.wrong_option, correct: false },
-  ].filter(opt => opt.label); // Filter out undefined options
+  ].filter((opt) => opt.label);
 
   const handleOptionClick = (option) => {
-    // Use consistent level_no field
     recordAction(level.level_no, option.key, option.correct);
 
     if (option.correct) {
       markLevelComplete(level.level_no);
-      navigate("/dashboard");
+      if (String(level.category || "").toLowerCase() === "final") {
+        navigate("/thankyou");
+      } else {
+        navigate("/dashboard");
+      }
     } else {
       alert("Incorrect! Try again.");
     }
   };
 
-  const levelWithOptions = { ...level, options };
-
-  return (
-    <TemplateRenderer
-      level={levelWithOptions}
-      onOptionClick={handleOptionClick}
-    />
-  );
+  return <TemplateRenderer level={{ ...level, options }} onOptionClick={handleOptionClick} />;
 }

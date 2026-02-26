@@ -21,7 +21,7 @@ export default function MailLevel({levelId}) {
   const fetchScenario = async () => {
     try {
       const response = await fetch(
-        `${BACKEND_URL}/api/scenarios?level_no=l1&limit=1`
+        `${BACKEND_URL}/api/scenarios?level_no=${encodeURIComponent(levelId || "l1")}&limit=1`
       );
 
       if (!response.ok) {
@@ -39,7 +39,7 @@ export default function MailLevel({levelId}) {
   };
 
   fetchScenario();
-}, []);
+}, [levelId]);
     
     
   const mailStyles = `

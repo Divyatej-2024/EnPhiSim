@@ -38,16 +38,13 @@ export default function useDashboardAnalytics(progress, levels) {
     : null;
 
     let nextLevelTitle = "Training Completed!";
-    let nextLevelPath = "/Thankyou";
-    let buttonText = "Start Training";
+    let nextLevelPath = "/thankyou";
+    let buttonText = "View Summary";
 
     if (nextLevel) {
       nextLevelTitle = nextLevel.page_title || "";
       nextLevelPath = `/levels/${nextLevel.category}/${nextLevel.level_no}`;
-      buttonText =
-        completed === 0
-          ? "Start Training"
-          : "Continue Training";
+      buttonText = completed === 0 ? "Start Training" : "Continue Training";
     }
 
     return {

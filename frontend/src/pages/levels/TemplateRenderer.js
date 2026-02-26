@@ -38,5 +38,11 @@ export default function TemplateRenderer({ level, onOptionClick }) {
     );
   }
 
-  return <TemplateComponent level={level} onOptionClick={onOptionClick} />;
+  return (
+    <TemplateComponent
+      level={level}
+      onOptionClick={onOptionClick}
+      levelId={level?.level_no}
+    />
+  );
 }

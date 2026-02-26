@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { BACKEND_URL } from "../api";
 
 export default function LevelsPage() {
   const navigate = useNavigate();
 
   // ⚠️ DO NOT change variable name
-  const API_URL =
-  process.env.REACT_APP_API_URL || "https://enphisim-1.onrender.com";
+  const API_URL = BACKEND_URL;
 
   const [levels, setLevels] = useState([]);
   const [loading, setLoading] = useState(true);
