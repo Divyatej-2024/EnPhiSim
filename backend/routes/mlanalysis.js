@@ -10,22 +10,13 @@ router.get("/analysis/:UserID", async (req, res) => {
     const { UserID } = req.params;
     const actions = await Eaction.find({ UserID });
 
-    if (!ML_SERVER) {
-      return res.status(500).json({
-        error: "ML server URL is not configured",
-        raw_actions: actions
-      });
-    }
-
     const mlResponse = await axios.post(`${ML_SERVER}/predict`, { data: actions });
 
     res.json({
       raw_actions: actions,
-      accuracy: mlResponse.data.accuracy ?? mlResponse.data.model_accuracy ?? null,
-      probabilities: mlResponse.data.probabilities ?? null,
-      risk_score: mlResponse.data.risk_score ?? null,
-      prediction: mlResponse.data.prediction ?? null,
-      confidence: mlResponse.data.confidence ?? null
+      accuracy: mlResponse.data.accuracy,
+      probabilities: mlResponse.data.probabilities,
+      risk_score: mlResponse.data.risk_score,
     });
   } catch (err) {
     console.log(err);
