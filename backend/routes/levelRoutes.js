@@ -21,29 +21,30 @@ router.get("/levels/:category/:level_no", async (req, res) => {
     const rawLevelNo = String(level_no || "").trim();
     const normalizedNumber = rawLevelNo.replace(/^l/i, "");
     const categoryPattern = new RegExp(`^${escapeRegex(String(category || "").trim())}$`, "i");
-
-    const levelNoPatterns = [new RegExp(`^${escapeRegex(rawLevelNo)}$`, "i")];
-    if (normalizedNumber && normalizedNumber !== rawLevelNo) {
-      levelNoPatterns.push(new RegExp(`^l?${escapeRegex(normalizedNumber)}$`, "i"));
+    const levelNoSet = new Set([rawLevelNo.toLowerCase()]);
+    if (normalizedNumber) {
+      levelNoSet.add(normalizedNumber.toLowerCase());
+      levelNoSet.add(`l${normalizedNumber}`.toLowerCase());
     }
 
-    const level = await Level.findOne({
-      $and: [
-        {
-          $or: [
-            { category: categoryPattern },
-            { level_category: categoryPattern },
-            { difficulty: categoryPattern },
-          ],
-        },
-        {
-          $or: [
-            { Level_no: { $in: levelNoPatterns } },
-            { level_no: { $in: levelNoPatterns } },
-            { id: { $in: levelNoPatterns } },
-          ],
-        },
+    const candidates = await Level.find({
+      $or: [
+        { category: categoryPattern },
+        { level_category: categoryPattern },
+        { difficulty: categoryPattern },
       ],
+    }).lean();
+
+    const level = candidates.find((item) => {
+      const valueCandidates = [
+        item?.Level_no,
+        item?.level_no,
+        item?.id,
+      ]
+        .filter((v) => v !== undefined && v !== null)
+        .map((v) => String(v).trim().toLowerCase());
+
+      return valueCandidates.some((v) => levelNoSet.has(v));
     });
 
     if (!level) {
