@@ -2,10 +2,8 @@ import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useProgress } from "../context/ProgressContext";
 import useDashboardAnalytics from "./useDashboardAnalytics";
-import { BACKEND_URL } from "../api";
+import { BACKEND_URL_CANDIDATES } from "../api";
 import "./dashboard.css";
-
-const API_URL = BACKEND_URL;
 
 export default function Dashboard() {
   const { progress } = useProgress();
@@ -16,8 +14,25 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchLevels = async () => {
       try {
-        const res = await fetch(`${API_URL}/api/levels`);
-        if (!res.ok) throw new Error("Failed to fetch levels");
+        let res = null;
+        let lastError = null;
+
+        for (const baseUrl of BACKEND_URL_CANDIDATES) {
+          try {
+            const attempt = await fetch(`${baseUrl}/api/levels`);
+            if (attempt.ok) {
+              res = attempt;
+              break;
+            }
+            lastError = new Error(`HTTP ${attempt.status} from ${baseUrl}`);
+          } catch (err) {
+            lastError = err;
+          }
+        }
+
+        if (!res) {
+          throw lastError || new Error("Failed to fetch levels");
+        }
 
         const data = await res.json();
         const normalized = (Array.isArray(data) ? data : [])
@@ -39,7 +54,7 @@ export default function Dashboard() {
         setLevels(normalized);
       } catch (err) {
         console.error(err);
-        setError("Unable to load levels");
+        setError(`Unable to load levels. ${String(err?.message || "")}`.trim());
       } finally {
         setLoading(false);
       }

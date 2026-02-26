@@ -1,9 +1,20 @@
 import axios from "axios";
 
+const PROD_BACKEND_FALLBACKS = [
+  "https://enphisim-backend.onrender.com",
+  "https://enphisim-1.onrender.com",
+];
+
 export const BACKEND_URL =
-  process.env.NODE_ENV === "development"
+  process.env.REACT_APP_API_URL ||
+  (process.env.NODE_ENV === "development"
     ? "http://localhost:4000"
-    : "https://enphisim-backend.onrender.com";
+    : PROD_BACKEND_FALLBACKS[0]);
+
+export const BACKEND_URL_CANDIDATES = [
+  BACKEND_URL,
+  ...PROD_BACKEND_FALLBACKS,
+].filter((url, index, arr) => Boolean(url) && arr.indexOf(url) === index);
 
 export async function getUserAnalysis(userId) {
   try {
