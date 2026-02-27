@@ -9,6 +9,17 @@ export default function MailLevel({ level }) {
   const [filter, setFilter] = useState("inbox");
 
   const activeLevel = level || {};
+  const emails =
+    Array.isArray(activeLevel.emails) && activeLevel.emails.length > 0
+      ? activeLevel.emails
+      : [
+          {
+            unread: true,
+            sender: activeLevel.phish_email || "unknown@example.com",
+            subject: activeLevel.subj || activeLevel.subject || "Security notification",
+            time: "10:30 AM",
+          },
+        ];
     
     
   const mailStyles = `
@@ -434,13 +445,13 @@ export default function MailLevel({ level }) {
 
               <div className="mail-content">
                 <div className="email-list">
-                  {activeLevel.emails?.map((email, idx) => (
+                  {emails.map((email, idx) => (
                     <div
                       key={idx}
                       className={`email-item ${selectedEmail === idx ? 'selected' : ''} ${email.unread ? 'unread' : ''}`}
                       onClick={() => setSelectedEmail(idx)}
                     >
-                      <span>{email.unread ? '📧' : '📨'}</span>
+                      <span>{email.unread ? "N" : "R"}</span>
                       <span className="email-sender">{email.sender || activeLevel.phish_email}</span>
                       <span className="email-subject">{email.subject || activeLevel.subject}</span>
                       <span className="email-date">{email.time || '10:30 AM'}</span>
