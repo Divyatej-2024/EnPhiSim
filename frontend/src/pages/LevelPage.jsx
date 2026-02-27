@@ -23,11 +23,20 @@ export default function LevelPage() {
     async function loadLevel() {
       try {
         let loaded = null;
+        let scenarioDoc = null;
         let lastError = null;
 
         for (const apiUrl of BACKEND_URL_CANDIDATES) {
           try {
             loaded = await safeFetchJSON(`${apiUrl}/api/levels/${category}/${level_no}`);
+
+            try {
+              scenarioDoc = await safeFetchJSON(`${apiUrl}/api/scenarios/${category}/${level_no}`);
+            } catch (scenarioErr) {
+              // Scenario data is optional per level.
+              scenarioDoc = null;
+            }
+
             break;
           } catch (err) {
             lastError = err;
@@ -37,7 +46,16 @@ export default function LevelPage() {
         if (!loaded) throw lastError || new Error("Failed to load level");
 
         if (isMounted) {
-          setLevel(normalizeLevelData(loaded));
+          const normalized = normalizeLevelData(loaded);
+          const scenarios = Array.isArray(scenarioDoc?.scenarios) ? scenarioDoc.scenarios : [];
+          const chosenScenario =
+            scenarios.length > 0 ? scenarios[Math.floor(Math.random() * scenarios.length)] : null;
+
+          setLevel({
+            ...normalized,
+            ...(chosenScenario || {}),
+            scenario_pool: scenarios,
+          });
           setError(null);
         }
       } catch (err) {
