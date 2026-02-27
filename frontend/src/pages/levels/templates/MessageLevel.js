@@ -21,7 +21,7 @@ export default function MessageLevel({ level: scenario }) {
               ];
 
         return (
-          <div style={{ maxWidth: 900, margin: "0 auto", background: "#fff", borderRadius: 12, overflow: "hidden" }}>
+          <div style={{ width: "100%", maxWidth: 900, margin: "0 auto", background: "#fff", borderRadius: 12, overflow: "hidden" }}>
             <div style={{ padding: 14, background: "#0f766e", color: "#fff" }}>
               <strong>{level.contact_name || "Contact"}</strong>
               <div style={{ fontSize: 12, opacity: 0.9 }}>{level.status || "Online"}</div>
@@ -41,7 +41,7 @@ export default function MessageLevel({ level: scenario }) {
                       display: "inline-block",
                       padding: "10px 12px",
                       borderRadius: 10,
-                      maxWidth: "80%",
+                      maxWidth: "min(80%, 520px)",
                       background: msg.sender === "user" ? "#dcfce7" : "#fff",
                     }}
                   >
@@ -53,13 +53,13 @@ export default function MessageLevel({ level: scenario }) {
               ))}
             </div>
 
-            <div style={{ padding: 12, borderTop: "1px solid #e5e7eb", display: "flex", gap: 8 }}>
+            <div style={{ padding: 12, borderTop: "1px solid #e5e7eb", display: "flex", gap: 8, flexWrap: "wrap" }}>
               <input
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
                 placeholder="Type a response..."
                 disabled={locked}
-                style={{ flex: 1, padding: 10, borderRadius: 20, border: "1px solid #cbd5e1" }}
+                style={{ flex: "1 1 240px", minWidth: 0, padding: 10, borderRadius: 20, border: "1px solid #cbd5e1" }}
               />
               <button disabled={!draft.trim() || locked} onClick={() => setDraft("")}>
                 Send

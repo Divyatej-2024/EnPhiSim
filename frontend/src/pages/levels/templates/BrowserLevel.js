@@ -15,14 +15,14 @@ export default function BrowserLevel({ level: scenario }) {
   return (
     <BaseLevel levelType="browser" scenario={scenario}>
       {({ level, onAction, locked }) => (
-        <div style={{ maxWidth: 1100, margin: "0 auto", background: "#fff", borderRadius: 12, overflow: "hidden" }}>
+        <div style={{ width: "100%", maxWidth: 1100, margin: "0 auto", background: "#fff", borderRadius: 12, overflow: "hidden" }}>
           <div style={{ padding: 12, borderBottom: "1px solid #e5e7eb", background: "#f8fafc" }}>
             <div style={{ marginBottom: 8, fontWeight: 600 }}>{level.page_title || "Browser Simulation"}</div>
-            <div style={{ display: "flex", gap: 8 }}>
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
               <input
                 value={currentUrl}
                 onChange={(e) => setUrl(e.target.value)}
-                style={{ flex: 1, padding: 10, borderRadius: 20, border: "1px solid #cbd5e1" }}
+                style={{ flex: "1 1 260px", minWidth: 0, padding: 10, borderRadius: 20, border: "1px solid #cbd5e1" }}
               />
               <span style={{ alignSelf: "center", fontSize: 12, color: currentUrl.startsWith("https") ? "#166534" : "#991b1b" }}>
                 {currentUrl.startsWith("https") ? "HTTPS" : "UNSECURED"}
@@ -52,7 +52,7 @@ export default function BrowserLevel({ level: scenario }) {
             )}
           </div>
 
-          <div style={{ borderTop: "1px solid #e5e7eb", padding: 12, fontSize: 12, color: "#475569", display: "flex", gap: 16 }}>
+          <div style={{ borderTop: "1px solid #e5e7eb", padding: 12, fontSize: 12, color: "#475569", display: "flex", gap: 16, flexWrap: "wrap" }}>
             <span>Host: {host}</span>
             <span>Session: {new Date().toLocaleTimeString()}</span>
           </div>

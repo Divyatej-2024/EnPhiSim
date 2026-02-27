@@ -7,8 +7,8 @@ export default function MailBrowserLevel({ level: scenario }) {
   return (
     <BaseLevel levelType="mail+browser" scenario={scenario}>
       {({ level, onAction, locked }) => (
-        <div style={{ maxWidth: 1200, margin: "0 auto", background: "#fff", borderRadius: 12, overflow: "hidden" }}>
-          <div style={{ padding: 14, background: "#1d4ed8", color: "#fff", display: "flex", justifyContent: "space-between" }}>
+        <div style={{ width: "100%", maxWidth: 1200, margin: "0 auto", background: "#fff", borderRadius: 12, overflow: "hidden" }}>
+          <div style={{ padding: 14, background: "#1d4ed8", color: "#fff", display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap" }}>
             <strong>Cross-Channel Investigation</strong>
             <div style={{ display: "flex", gap: 8 }}>
               <button onClick={() => setView("split")} style={{ background: view === "split" ? "#fff" : "transparent", color: view === "split" ? "#1d4ed8" : "#fff" }}>
@@ -21,7 +21,7 @@ export default function MailBrowserLevel({ level: scenario }) {
           </div>
 
           {view === "split" ? (
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 1, background: "#e5e7eb" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 1, background: "#e5e7eb" }}>
               <div style={{ background: "#fff", padding: 14 }}>
                 <h4>Email Evidence</h4>
                 <p><strong>From:</strong> {level.phish_email || "Unknown"}</p>

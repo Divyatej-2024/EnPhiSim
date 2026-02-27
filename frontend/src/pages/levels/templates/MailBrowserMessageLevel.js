@@ -36,18 +36,18 @@ export default function MailBrowserMessageLevel({ level: scenario }) {
   return (
     <BaseLevel levelType="mail+browser+message" scenario={scenario}>
       {({ level, onAction, locked }) => (
-        <div style={{ maxWidth: 1300, margin: "0 auto", background: "#fff", borderRadius: 12, overflow: "hidden" }}>
+        <div style={{ width: "100%", maxWidth: 1300, margin: "0 auto", background: "#fff", borderRadius: 12, overflow: "hidden" }}>
           <div style={{ padding: 14, background: "#b91c1c", color: "#fff" }}>
             <strong>Multi-Channel Threat Simulation</strong>
           </div>
 
-          <div style={{ display: "flex", gap: 8, padding: 12, borderBottom: "1px solid #e5e7eb" }}>
+          <div style={{ display: "flex", gap: 8, padding: 12, borderBottom: "1px solid #e5e7eb", flexWrap: "wrap" }}>
             <button onClick={() => setPlatform("email")}>Email</button>
             <button onClick={() => setPlatform("browser")}>Browser</button>
             <button onClick={() => setPlatform("message")}>Message</button>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "260px 1fr 320px", minHeight: 420 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", minHeight: 420 }}>
             <aside style={{ padding: 14, background: "#f8fafc", borderRight: "1px solid #e5e7eb" }}>
               <h4>Timeline</h4>
               <ol>

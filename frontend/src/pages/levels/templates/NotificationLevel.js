@@ -24,7 +24,7 @@ export default function NotificationLevel({ level: scenario }) {
         const current = selected != null ? notifications[selected] : null;
 
         return (
-          <div style={{ maxWidth: 850, margin: "0 auto", background: "#fff", borderRadius: 12, overflow: "hidden" }}>
+          <div style={{ width: "100%", maxWidth: 850, margin: "0 auto", background: "#fff", borderRadius: 12, overflow: "hidden" }}>
             <div style={{ padding: 14, background: "#1d4ed8", color: "#fff" }}>
               <strong>Notification Center</strong>
             </div>

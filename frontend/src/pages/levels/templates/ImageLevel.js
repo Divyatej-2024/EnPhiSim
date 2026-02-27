@@ -5,12 +5,12 @@ export default function ImageLevel({ level: scenario }) {
   return (
     <BaseLevel levelType="image" scenario={scenario}>
       {({ level, onAction, locked }) => (
-        <div style={{ maxWidth: 1000, margin: "0 auto", background: "#fff", borderRadius: 12, overflow: "hidden" }}>
+        <div style={{ width: "100%", maxWidth: 1000, margin: "0 auto", background: "#fff", borderRadius: 12, overflow: "hidden" }}>
           <div style={{ padding: 14, background: "#111827", color: "#fff" }}>
             <strong>{level.page_title || "Image Analysis"}</strong>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 320px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))" }}>
             <div style={{ padding: 16 }}>
               <img
                 src={level.image_url || "https://via.placeholder.com/800x450?text=Simulation+Image"}
