@@ -10,7 +10,7 @@ export default function MailBrowserLevel({ level: scenario }) {
         <div style={{ width: "100%", maxWidth: 1200, margin: "0 auto", background: "#fff", borderRadius: 12, overflow: "hidden" }}>
           <div style={{ padding: 14, background: "#1d4ed8", color: "#fff", display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap" }}>
             <strong>Cross-Channel Investigation</strong>
-            <div style={{ display: "flex", gap: 8 }}>
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
               <button onClick={() => setView("split")} style={{ background: view === "split" ? "#fff" : "transparent", color: view === "split" ? "#1d4ed8" : "#fff" }}>
                 Split
               </button>
@@ -22,13 +22,13 @@ export default function MailBrowserLevel({ level: scenario }) {
 
           {view === "split" ? (
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 1, background: "#e5e7eb" }}>
-              <div style={{ background: "#fff", padding: 14 }}>
+              <div style={{ background: "#fff", padding: 14, overflowWrap: "anywhere" }}>
                 <h4>Email Evidence</h4>
                 <p><strong>From:</strong> {level.phish_email || "Unknown"}</p>
                 <p><strong>Subject:</strong> {level.subj || level.email_subject || "Security message"}</p>
                 <p>{level.email_preview || level.level_text || "No message content provided."}</p>
               </div>
-              <div style={{ background: "#fff", padding: 14 }}>
+              <div style={{ background: "#fff", padding: 14, overflowWrap: "anywhere" }}>
                 <h4>Web Evidence</h4>
                 <p><strong>URL:</strong> {level.suspicious_url || level.url || "Unknown URL"}</p>
                 <p>{level.browser_note || "Review domain mismatch and credential collection patterns."}</p>

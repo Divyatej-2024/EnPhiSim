@@ -20,6 +20,11 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
 }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -454,7 +459,8 @@ p {
   background: white;
   padding: 25px;
   border-radius: 12px;
-  width: 350px;
+  width: min(350px, calc(100vw - 32px));
+  max-width: 100%;
   text-align: center;
   box-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
@@ -557,9 +563,9 @@ p {
 /* --- Page Layout --- */
 .level-container {
   width: 100%;
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 20px;
+  max-width: min(1280px, 100%);
+  margin: 0 auto;
+  padding: clamp(12px, 2.5vw, 24px);
   animation: fadein 0.5s ease;
 }
 
@@ -734,11 +740,13 @@ p {
 
 /* ---------- Shared components ---------- */
 .level-content {
-  max-width: 700px;
+  width: 100%;
+  max-width: 100%;
  /* background: rgba(255, 255, 255, 0.1);*/
-  padding: 2rem;
+  padding: clamp(10px, 2vw, 24px);
   border-radius: 1rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  overflow-x: hidden;
 }
 
 .level-button {

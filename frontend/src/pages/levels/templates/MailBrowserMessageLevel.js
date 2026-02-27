@@ -7,7 +7,7 @@ export default function MailBrowserMessageLevel({ level: scenario }) {
   const renderPanel = (level) => {
     if (platform === "email") {
       return (
-        <div>
+        <div style={{ overflowWrap: "anywhere" }}>
           <h4>Email Channel</h4>
           <p><strong>From:</strong> {level.phish_email || "Unknown"}</p>
           <p><strong>Subject:</strong> {level.subj || "Security Alert"}</p>
@@ -17,7 +17,7 @@ export default function MailBrowserMessageLevel({ level: scenario }) {
     }
     if (platform === "browser") {
       return (
-        <div>
+        <div style={{ overflowWrap: "anywhere" }}>
           <h4>Browser Channel</h4>
           <p><strong>URL:</strong> {level.suspicious_url || level.url || "Unknown URL"}</p>
           <p>Page behavior indicates credential harvesting risk.</p>
@@ -25,7 +25,7 @@ export default function MailBrowserMessageLevel({ level: scenario }) {
       );
     }
     return (
-      <div>
+      <div style={{ overflowWrap: "anywhere" }}>
         <h4>Message Channel</h4>
         <p><strong>Sender:</strong> {level.suspicious_phone || level.contact_name || "Unknown contact"}</p>
         <p>{level.message_text || "Follow-up message reinforces urgency and requests immediate verification."}</p>
@@ -57,7 +57,7 @@ export default function MailBrowserMessageLevel({ level: scenario }) {
               </ol>
             </aside>
 
-            <main style={{ padding: 14 }}>{renderPanel(level)}</main>
+            <main style={{ padding: 14, minWidth: 0 }}>{renderPanel(level)}</main>
 
             <aside style={{ padding: 14, background: "#f8fafc", borderLeft: "1px solid #e5e7eb" }}>
               <h4>Risk Summary</h4>

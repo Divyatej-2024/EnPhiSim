@@ -19,7 +19,7 @@ export default function ImageLevel({ level: scenario }) {
               />
             </div>
 
-            <div style={{ padding: 16, background: "#f8fafc", borderLeft: "1px solid #e5e7eb" }}>
+            <div style={{ padding: 16, background: "#f8fafc", borderLeft: "1px solid #e5e7eb", overflowWrap: "anywhere" }}>
               <div style={{ marginBottom: 10 }}><strong>Risk Score:</strong> {level.risk_score || 0}%</div>
               <div style={{ marginBottom: 10 }}><strong>Risk Level:</strong> {level.risk_level || "unknown"}</div>
 

@@ -35,17 +35,17 @@ export default function MailLevel({ level }) {
     }
 
     .mail-header {
-    width:100%;
       background: #f8f9fa;
       padding: 16px 24px;
       border-bottom: 1px solid #e0e0e0;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
     .live-indicator {
-    width:100%;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -145,7 +145,6 @@ export default function MailLevel({ level }) {
     }
 
     .mail-content {
-    width:100%;
       display: grid;
       grid-template-columns: 400px 1fr;
       background: #fff;
@@ -188,16 +187,14 @@ export default function MailLevel({ level }) {
     }
 
     .email-sender {
-width:100%;
-    color: #202124;
+      color: #202124;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
 
     .email-subject {
-    width:100%;  
-    color: #5f6368;
+      color: #5f6368;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -210,7 +207,6 @@ width:100%;
     }
 
     .email-preview {
-    width:100%;
       padding: 30px;
       background: #fff;
     }
@@ -256,6 +252,7 @@ width:100%;
       gap: 8px;
       cursor: help;
       position: relative;
+      overflow-wrap: anywhere;
     }
 
     .email-tooltip {
@@ -275,8 +272,7 @@ width:100%;
     }
 
     .email-body {
-    width:100%;  
-    line-height: 1.8;
+      line-height: 1.8;
       color: #333;
       font-size: 15px;
       min-height: 300px;
@@ -404,6 +400,8 @@ width:100%;
     @media (max-width: 768px) {
       .mail-header { flex-direction: column; align-items: stretch; gap: 10px; }
       .mail-search { width: 100%; }
+      .live-indicator { width: 100%; justify-content: center; }
+      .email-header { align-items: flex-start; }
       .email-item { grid-template-columns: 20px 1fr auto; grid-template-rows: auto auto; align-items: start; }
       .email-sender { grid-column: 2; grid-row: 1; max-width: none; }
       .email-subject { grid-column: 2 / span 2; grid-row: 2; }

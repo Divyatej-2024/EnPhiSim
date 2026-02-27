@@ -46,7 +46,7 @@ export default function MessageLevel({ level: scenario }) {
                     }}
                   >
                     {msg.sender !== "user" && <div style={{ fontSize: 12, fontWeight: 600 }}>{msg.sender_name || level.contact_name}</div>}
-                    <div>{msg.text}</div>
+                    <div style={{ overflowWrap: "anywhere" }}>{msg.text}</div>
                     {msg.has_link && <div style={{ marginTop: 4, fontSize: 12, color: "#b91c1c" }}>Contains external link</div>}
                   </div>
                 </div>

@@ -41,8 +41,8 @@ export default function NotificationLevel({ level: scenario }) {
                     borderBottom: "1px solid #f1f5f9",
                   }}
                 >
-                  <div style={{ fontWeight: 600 }}>{n.title}</div>
-                  <div style={{ fontSize: 14, color: "#475569" }}>{n.message}</div>
+                  <div style={{ fontWeight: 600, overflowWrap: "anywhere" }}>{n.title}</div>
+                  <div style={{ fontSize: 14, color: "#475569", overflowWrap: "anywhere" }}>{n.message}</div>
                   <div style={{ fontSize: 12, color: "#64748b" }}>{n.time || "Now"}</div>
                 </div>
               ))}
@@ -51,7 +51,9 @@ export default function NotificationLevel({ level: scenario }) {
             {current && (
               <div style={{ padding: 14, background: "#f8fafc" }}>
                 <div><strong>From:</strong> {current.sender || "System"}</div>
-                <div style={{ marginTop: 8, whiteSpace: "pre-wrap" }}>{current.full_message || current.message}</div>
+                <div style={{ marginTop: 8, whiteSpace: "pre-wrap", overflowWrap: "anywhere" }}>
+                  {current.full_message || current.message}
+                </div>
                 {current.suspicious && (
                   <div style={{ marginTop: 10, color: "#b91c1c" }}>This notification looks suspicious.</div>
                 )}

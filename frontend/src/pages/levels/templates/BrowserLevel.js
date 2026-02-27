@@ -37,8 +37,10 @@ export default function BrowserLevel({ level: scenario }) {
               </div>
             )}
 
-            <h3 style={{ margin: "8px 0" }}>{level.page_title || "Website Content"}</h3>
-            <p style={{ whiteSpace: "pre-wrap", lineHeight: 1.6 }}>{level.content || level.level_text || "No content available."}</p>
+            <h3 style={{ margin: "8px 0", overflowWrap: "anywhere" }}>{level.page_title || "Website Content"}</h3>
+            <p style={{ whiteSpace: "pre-wrap", lineHeight: 1.6, overflowWrap: "anywhere" }}>
+              {level.content || level.level_text || "No content available."}
+            </p>
 
             {Array.isArray(level.suspicious_elements) && level.suspicious_elements.length > 0 && (
               <div style={{ marginTop: 14 }}>
