@@ -24,6 +24,7 @@ export default function MailLevel({ level }) {
     
   const mailStyles = `
     .mail-container {
+      width: 100%;
       max-width: 1200px;
       margin: 0 auto;
       background: #fff;
@@ -147,6 +148,10 @@ export default function MailLevel({ level }) {
       background: #fff;
     }
 
+    .mail-content > * {
+      min-width: 0;
+    }
+
     .email-list {
       border-right: 1px solid #e0e0e0;
       overflow-y: auto;
@@ -256,7 +261,9 @@ export default function MailLevel({ level }) {
       font-size: 12px;
       bottom: 100%;
       left: 0;
-      white-space: nowrap;
+      white-space: normal;
+      max-width: min(280px, 90vw);
+      overflow-wrap: anywhere;
       z-index: 1000;
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     }
@@ -267,6 +274,7 @@ export default function MailLevel({ level }) {
       font-size: 15px;
       min-height: 300px;
       white-space: pre-wrap;
+      overflow-wrap: anywhere;
     }
 
     .attachment-area {
@@ -275,6 +283,9 @@ export default function MailLevel({ level }) {
       background: #f8f9fa;
       border-radius: 8px;
       border: 1px dashed #dadce0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
     }
 
     .attachment {
@@ -285,7 +296,7 @@ export default function MailLevel({ level }) {
       background: #fff;
       border: 1px solid #dadce0;
       border-radius: 24px;
-      margin-right: 12px;
+      margin-right: 0;
       cursor: pointer;
     }
 
@@ -386,8 +397,10 @@ export default function MailLevel({ level }) {
     @media (max-width: 768px) {
       .mail-header { flex-direction: column; align-items: stretch; gap: 10px; }
       .mail-search { width: 100%; }
-      .email-item { grid-template-columns: 20px 1fr auto; }
-      .email-sender { max-width: 120px; }
+      .email-item { grid-template-columns: 20px 1fr auto; grid-template-rows: auto auto; align-items: start; }
+      .email-sender { grid-column: 2; grid-row: 1; max-width: none; }
+      .email-subject { grid-column: 2 / span 2; grid-row: 2; }
+      .email-date { grid-column: 3; grid-row: 1; text-align: right; }
       .email-preview { padding: 16px; }
       .action-buttons { flex-wrap: wrap; }
       .mail-action-btn { width: 100%; justify-content: center; }
