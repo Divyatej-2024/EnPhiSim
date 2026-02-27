@@ -207,6 +207,7 @@ export default function MailLevel({ level }) {
     }
 
     .email-preview {
+    width:100%;
       padding: 30px;
       background: #fff;
     }
