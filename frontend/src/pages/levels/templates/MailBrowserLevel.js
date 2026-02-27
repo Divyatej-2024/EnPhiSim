@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import BaseLevel from "./BaseLevel";
 
-export default function MailBrowserLevel() {
+export default function MailBrowserLevel({ level: scenario }) {
   const [activeTab, setActiveTab] = useState('email');
   const [splitView, setSplitView] = useState(true);
 
@@ -202,7 +202,7 @@ export default function MailBrowserLevel() {
   return (
     <>
       <style>{combinedStyles}</style>
-      <BaseLevel levelType="mail+browser">
+      <BaseLevel levelType="mail+browser" scenario={scenario}>
         {({ level, onAction, locked }) => (
           <div className="combined-container">
             <div className="combined-header">

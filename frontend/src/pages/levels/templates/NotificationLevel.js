@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import BaseLevel from "./BaseLevel";
 
-export default function NotificationLevel() {
+export default function NotificationLevel({ level: scenario }) {
   const [selectedNotification, setSelectedNotification] = useState(null);
 
   const notificationStyles = `
@@ -324,7 +324,7 @@ export default function NotificationLevel() {
   return (
     <>
       <style>{notificationStyles}</style>
-      <BaseLevel levelType="notification">
+      <BaseLevel levelType="notification" scenario={scenario}>
         {({ level, onAction, locked }) => (
           <div className="notification-center">
             <div className="notification-header">

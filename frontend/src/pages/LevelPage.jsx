@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { safeFetchJSON } from "../utils/helper";
-import { useProgress } from "../context/ProgressContext";
 import { normalizeLevelData } from "../utils/LevelHelper";
 import TemplateRenderer from "./levels/TemplateRenderer";
-import { BACKEND_URL } from "../api";
+import { BACKEND_URL_CANDIDATES } from "../api";
 
 export default function LevelPage() {
   const { category, level_no } = useParams();
-  const navigate = useNavigate();
-  const { recordAction, markLevelComplete } = useProgress();
-
   const [level, setLevel] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -26,12 +22,24 @@ export default function LevelPage() {
 
     async function loadLevel() {
       try {
-        const apiUrl = BACKEND_URL;
-        if (!apiUrl) throw new Error("API URL not set");
+        let loaded = null;
+        let lastError = null;
 
-        const data = await safeFetchJSON(`${apiUrl}/api/levels/${category}/${level_no}`);
-        const normalizedLevel = normalizeLevelData(data);
-        if (isMounted) setLevel(normalizedLevel);
+        for (const apiUrl of BACKEND_URL_CANDIDATES) {
+          try {
+            loaded = await safeFetchJSON(`${apiUrl}/api/levels/${category}/${level_no}`);
+            break;
+          } catch (err) {
+            lastError = err;
+          }
+        }
+
+        if (!loaded) throw lastError || new Error("Failed to load level");
+
+        if (isMounted) {
+          setLevel(normalizeLevelData(loaded));
+          setError(null);
+        }
       } catch (err) {
         if (!isMounted) return;
         console.error("Failed to load level:", err);
@@ -51,26 +59,5 @@ export default function LevelPage() {
   if (error) return <h2>Error: {error}</h2>;
   if (!level) return <h2>Level not found</h2>;
 
-  const options = [
-    { key: "correct", label: level.correct_option, correct: true },
-    { key: "neutral", label: level.neutral_option, correct: false },
-    { key: "wrong", label: level.wrong_option, correct: false },
-  ].filter((opt) => opt.label);
-
-  const handleOptionClick = (option) => {
-    recordAction(level.level_no, option.key, option.correct);
-
-    if (option.correct) {
-      markLevelComplete(level.level_no);
-      if (String(level.category || "").toLowerCase() === "final") {
-        navigate("/thankyou");
-      } else {
-        navigate("/dashboard");
-      }
-    } else {
-      alert("Incorrect! Try again.");
-    }
-  };
-
-  return <TemplateRenderer level={{ ...level, options }} onOptionClick={handleOptionClick} />;
+  return <TemplateRenderer level={level} />;
 }

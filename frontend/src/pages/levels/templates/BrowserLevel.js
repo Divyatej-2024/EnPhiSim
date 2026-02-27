@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import BaseLevel from "./BaseLevel";
 
-export default function BrowserLevel() {
+export default function BrowserLevel({ level: scenario }) {
   const [url, setUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [history, setHistory] = useState([]);
@@ -413,7 +413,7 @@ export default function BrowserLevel() {
   return (
     <>
       <style>{browserStyles}</style>
-      <BaseLevel levelType="browser">
+      <BaseLevel levelType="browser" scenario={scenario}>
         {({ level, onAction, locked }) => (
           <div className="browser-window">
             <div className="browser-title-bar">

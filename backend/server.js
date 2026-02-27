@@ -7,6 +7,7 @@ import cors from "cors";
 import levelRoutes from "./routes/levelRoutes.js";
 import mlRoutes from "./routes/mlanalysis.js";
 import predictRoutes from "./routes/predict.js";
+import actionRoutes from "./routes/actionRoutes.js";
 
 const app = express();
 const explicitAllowedOrigins = new Set([
@@ -64,6 +65,7 @@ app.get("/health", (req, res) => {
 app.use("/api", levelRoutes);
 app.use("/api", mlRoutes);
 app.use("/api", predictRoutes);
+app.use("/api", actionRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI)

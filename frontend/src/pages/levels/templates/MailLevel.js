@@ -1,45 +1,14 @@
-import React, { useState,useEffect } from "react";
+import React, { useState } from "react";
 import BaseLevel from "./BaseLevel";
 import { useProgress } from "../../../context/ProgressContext";
-import { BACKEND_URL } from "../../../api";
-
-export default function MailLevel({levelId}) {
+export default function MailLevel({ level }) {
   useProgress();
   const [selectedEmail, setSelectedEmail] = useState(null);
-  const [levelScenario, setLevelScenario] = useState(null);
   const [showDetails, setShowDetails] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState("inbox");
 
-  const activeLevel = levelScenario || {};
-  // const BACKEND_URL =
-  // process.env.REACT_APP_API_URL || "https://your-backend-domain.com";
-
-
-  // Check if a scenario was already picked in progress
-  useEffect(() => {
-  const fetchScenario = async () => {
-    try {
-      const response = await fetch(
-        `${BACKEND_URL}/api/scenarios?level_no=${encodeURIComponent(levelId || "l1")}&limit=1`
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch scenario");
-      }
-
-      const data = await response.json();
-
-      console.log("MailLevel API:", data);
-
-      setLevelScenario(data[0]); // because backend returns array
-    } catch (error) {
-      console.error("MailLevel fetch error:", error);
-    }
-  };
-
-  fetchScenario();
-}, [levelId]);
+  const activeLevel = level || {};
     
     
   const mailStyles = `
@@ -424,13 +393,13 @@ export default function MailLevel({levelId}) {
   return (
     <>
       <style>{mailStyles}</style>
-      <BaseLevel levelType="mail" scenario={levelScenario}>
+      <BaseLevel levelType="mail" scenario={activeLevel}>
         {({ level, onAction, locked }) => (
           <div className="mail-container">
             <div className="mail-header">
               <div className="live-indicator">
                 <span className="live-dot"></span>
-                <span>Live Email Simulation • {new Date().toLocaleTimeString()}</span>
+                <span>Live Email Simulation | {new Date().toLocaleTimeString()}</span>
               </div>
               <input 
                 type="text" 

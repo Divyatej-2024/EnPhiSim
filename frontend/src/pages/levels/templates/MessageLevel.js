@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import BaseLevel from "./BaseLevel";
 
-export default function MessageLevel() {
+export default function MessageLevel({ level: scenario }) {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
@@ -385,7 +385,7 @@ export default function MessageLevel() {
   return (
     <>
       <style>{messageStyles}</style>
-      <BaseLevel levelType="message">
+      <BaseLevel levelType="message" scenario={scenario}>
         {({ level, onAction, locked }) => (
           <div className="messenger-container">
             <div className="messenger-header">

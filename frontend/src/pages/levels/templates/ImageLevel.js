@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import BaseLevel from "./BaseLevel";
 
-export default function ImageLevel() {
+export default function ImageLevel({ level: scenario }) {
   const [zoomLevel, setZoomLevel] = useState(1);
   const [showAnalysis, setShowAnalysis] = useState(false);
   const [hoveredElement, setHoveredElement] = useState(null);
@@ -319,7 +319,7 @@ export default function ImageLevel() {
   return (
     <>
       <style>{imageStyles}</style>
-      <BaseLevel levelType="image">
+      <BaseLevel levelType="image" scenario={scenario}>
         {({ level, onAction, locked }) => (
           <div className="image-analysis-container">
             <div className="image-header">

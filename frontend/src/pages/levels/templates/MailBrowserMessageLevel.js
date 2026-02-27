@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import BaseLevel from "./BaseLevel";
 
-export default function MailBrowserMessageLevel() {
+export default function MailBrowserMessageLevel({ level: scenario }) {
   const [activePlatform, setActivePlatform] = useState('email');
 
   const tripleStyles = `
@@ -298,7 +298,7 @@ export default function MailBrowserMessageLevel() {
   return (
     <>
       <style>{tripleStyles}</style>
-      <BaseLevel levelType="mail+browser+message">
+      <BaseLevel levelType="mail+browser+message" scenario={scenario}>
         {({ level, onAction, locked }) => (
           <div className="triple-container">
             <div className="threat-header">

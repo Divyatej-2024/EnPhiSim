@@ -17,7 +17,7 @@ const levelTemplates = {
   mailbrowsermessage: MailBrowserMessageLevel,
 };
 
-export default function TemplateRenderer({ level, onOptionClick }) {
+export default function TemplateRenderer({ level }) {
   const rawType = level.template_type || "";
 
   const normalizedType = rawType
@@ -41,7 +41,6 @@ export default function TemplateRenderer({ level, onOptionClick }) {
   return (
     <TemplateComponent
       level={level}
-      onOptionClick={onOptionClick}
       levelId={level?.level_no}
     />
   );
