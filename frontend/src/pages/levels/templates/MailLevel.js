@@ -188,14 +188,16 @@ export default function MailLevel({ level }) {
     }
 
     .email-sender {
-      color: #202124;
+width:100%;
+    color: #202124;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
 
     .email-subject {
-      color: #5f6368;
+    width:100%;  
+    color: #5f6368;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -273,7 +275,8 @@ export default function MailLevel({ level }) {
     }
 
     .email-body {
-      line-height: 1.8;
+    width:100%;  
+    line-height: 1.8;
       color: #333;
       font-size: 15px;
       min-height: 300px;
