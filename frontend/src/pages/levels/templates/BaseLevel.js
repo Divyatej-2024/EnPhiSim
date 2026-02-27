@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useProgress } from "../../../context/ProgressContext";
+import { sendUserAction } from "../../../api";
 import "../../../level.css";
 
 function toKey(value) {
@@ -23,6 +24,20 @@ function inferCorrectness(level, action, metadata) {
     .map(toKey);
 
   return candidates.includes(actionKey);
+}
+
+function getClientUserId() {
+  try {
+    const key = "enphisim-user-id";
+    const saved = localStorage.getItem(key);
+    if (saved) return saved;
+
+    const generated = `user_${Math.random().toString(36).slice(2, 10)}`;
+    localStorage.setItem(key, generated);
+    return generated;
+  } catch (err) {
+    return "anonymous";
+  }
 }
 
 export default function BaseLevel({ children, levelType, scenario, onAction, customStyles }) {
@@ -62,6 +77,15 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
         };
 
         await recordAction(levelId, actionRecord);
+
+        void sendUserAction({
+          userId: getClientUserId(),
+          levelId: levelId,
+          action: action,
+          ...metadata,
+        }).catch((err) => {
+          console.warn("Failed to send action to backend:", err?.message || err);
+        });
 
         if (isCorrect) {
           await completeLevel(levelId);
