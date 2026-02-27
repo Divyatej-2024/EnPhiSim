@@ -145,6 +145,7 @@ export default function MailLevel({ level }) {
     }
 
     .mail-content {
+    width:100%;
       display: grid;
       grid-template-columns: 400px 1fr;
       background: #fff;
