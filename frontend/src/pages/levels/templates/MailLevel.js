@@ -35,6 +35,7 @@ export default function MailLevel({ level }) {
     }
 
     .mail-header {
+    width:100%;
       background: #f8f9fa;
       padding: 16px 24px;
       border-bottom: 1px solid #e0e0e0;
@@ -44,6 +45,7 @@ export default function MailLevel({ level }) {
     }
 
     .live-indicator {
+    width:100%;
       display: flex;
       align-items: center;
       gap: 8px;
