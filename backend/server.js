@@ -1,45 +1,24 @@
-// backend/server.js - Top of file
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+
 import levelRoutes from "./routes/levelRoutes.js";
 import mlRoutes from "./routes/mlanalysis.js";
 import predictRoutes from "./routes/predict.js";
 import actionRoutes from "./routes/actionRoutes.js";
 import levelDatasetRoutes from "./routes/levelDataset.js";
 import scenarioRoutes from "./routes/scenarioRoutes.js";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import analyticsRoutes from './routes/analytics.js';
 
 dotenv.config();
-
-// Import routes
-import analyticsRoutes from './routes/analytics.js';
-// Import your other routes similarly
 
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-// Middleware
-app.use(cors(corsOptions));
-app.use(express.json());
-
-// Routes
-app.use('/api/analytics', analyticsRoutes);
-// Add your other routes here
-
-// MongoDB connection
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.error('MongoDB connection error:', err));
-
-app.listen(process.env.PORT || 4000, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// ==============================
+// CORS CONFIGURATION
+// ==============================
 
 const explicitAllowedOrigins = new Set([
   "http://localhost:3000",
@@ -65,21 +44,36 @@ function isAllowedOrigin(origin) {
   return allowedOriginPatterns.some((pattern) => pattern.test(origin));
 }
 
-const corsOptions = {
+app.use(cors({
   origin(origin, callback) {
     if (isAllowedOrigin(origin)) {
       callback(null, true);
-      return;
+    } else {
+      callback(new Error(`Not allowed by CORS: ${origin}`));
     }
-    callback(new Error(`Not allowed by CORS: ${origin}`));
   },
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   optionsSuccessStatus: 204,
-};
+}));
 
-app.use(cors(corsOptions));
+// ==============================
+// MIDDLEWARE
+// ==============================
+
+app.use(express.json());
+
+// ==============================
+// ROUTES
+// ==============================
 
 app.use('/api/analytics', analyticsRoutes);
+app.use("/api", levelRoutes);
+app.use("/api", scenarioRoutes);
+app.use('/api/scenarios', levelDatasetRoutes);
+app.use("/api", mlRoutes);
+app.use("/api", predictRoutes);
+app.use("/api", actionRoutes);
+
 app.get("/", (req, res) => {
   res.send("EnPhiSim Backend is running");
 });
@@ -88,22 +82,34 @@ app.get("/health", (req, res) => {
   res.json({
     status: "OK",
     service: "EnPhiSim Backend",
-    mongo: mongoose.connection.readyState === 1 ? "connected" : "disconnected",
+    mongo: mongoose.connection.readyState === 1
+      ? "connected"
+      : "disconnected",
   });
 });
 
-app.use("/api", levelRoutes);
-app.use("/api", scenarioRoutes);
-app.use('/api/scenarios', levelDatasetRoutes);
-app.use("/api", mlRoutes);
-app.use("/api", predictRoutes);
-app.use("/api", actionRoutes);
+// ==============================
+// DATABASE + SERVER STARTUP
+// ==============================
 
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected"))
-  .catch((err) => console.log("DB Error:", err));
+async function startServer() {
+  try {
+    if (!process.env.MONGODB_URI) {
+      throw new Error("MONGODB_URI not defined in environment variables");
+    }
 
-app.listen(process.env.PORT || 4000, () =>
-  console.log("Backend Running on port:", process.env.PORT || 4000)
-);
+    await mongoose.connect(process.env.MONGODB_URI);
+
+    console.log("MongoDB Connected");
+
+    app.listen(PORT, () => {
+      console.log(`Backend running on port ${PORT}`);
+    });
+
+  } catch (err) {
+    console.error("Startup failed:", err);
+    process.exit(1);
+  }
+}
+
+startServer();
