@@ -193,7 +193,7 @@ export default function PhishingGame() {
           </div>
           <div className="email-field">
             <span className="field-label">Reply-To:</span>
-            <span className="field-value warning">{currentScenario.reply_to}</span>
+            <span className="field-value warning">{currentScenario.reply_to || "No-Reply to"}</span>
           </div>
           <div className="email-field">
             <span className="field-label">To:</span>

@@ -1,24 +1,26 @@
-import express from "express";
-import mlPredict from "../utils/mlClient.js";
+// backend/routes/predict.js
+import express from 'express';
+import axios from 'axios';
 
 const router = express.Router();
-router.post("/predict", async (req, res) => {
+
+router.post('/', async (req, res) => {
   try {
-    console.log("[/api/predict] incoming body:", req.body);
-
-    const data = await mlPredict(req.body);
-
-    console.log("[/api/predict] ML response:", data);
-    res.json(data);
-  } catch (error) {
-    console.error("[/api/predict] ERROR:", {
-      message: error.message,
-      stack: error.stack,
-      responseData: error.response?.data,
-      code: error.code,
+    const { text, links } = req.body;
+    
+    // Forward to your ML server
+    const mlResponse = await axios.post('http://localhost:8000/predict', {
+      text,
+      links
     });
-
-    res.status(500).json({ error: "ML API unreachable" });
+    
+    res.json(mlResponse.data);
+  } catch (error) {
+    console.error('ML prediction failed:', error);
+    res.json({
+      distilbert: { prediction: 'unknown', confidence: 0 },
+      cnn: { prediction: 'unknown', confidence: 0 }
+    });
   }
 });
 
