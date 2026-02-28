@@ -1,16 +1,45 @@
-import dotenv from "dotenv";
-dotenv.config();
-
-import express from "express";
-import mongoose from "mongoose";
-import cors from "cors";
+// backend/server.js - Top of file
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 import levelRoutes from "./routes/levelRoutes.js";
 import mlRoutes from "./routes/mlanalysis.js";
 import predictRoutes from "./routes/predict.js";
 import actionRoutes from "./routes/actionRoutes.js";
 import scenarioRoutes from "./routes/scenarioRoutes.js";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+dotenv.config();
+
+// Import routes
+import analyticsRoutes from './routes/analytics.js';
+// Import your other routes similarly
+
 const app = express();
+const PORT = process.env.PORT || 4000;
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// Routes
+app.use('/api/analytics', analyticsRoutes);
+// Add your other routes here
+
+// MongoDB connection
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.error('MongoDB connection error:', err));
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
 const explicitAllowedOrigins = new Set([
   "http://localhost:3000",
   "http://127.0.0.1:3000",

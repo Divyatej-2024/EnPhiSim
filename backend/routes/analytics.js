@@ -1,14 +1,15 @@
-const express = require('express');
-const router = express.Router();
-const { MongoClient } = require('mongodb');
+// backend/routes/analytics.js - ES Module version
+import express from 'express';
+import { MongoClient } from 'mongodb';
 
-// Replace with your MongoDB connection
-const uri = process.env.MONGODB_URI;
-const client = new MongoClient(uri);
+const router = express.Router();
 
 // Get analytics for a session
 router.get('/:sessionId', async (req, res) => {
+  let client;
   try {
+    const uri = process.env.MONGODB_URI;
+    client = new MongoClient(uri);
     await client.connect();
     const database = client.db('enphisim');
     const actions = database.collection('user_actions');
@@ -30,7 +31,7 @@ router.get('/:sessionId', async (req, res) => {
     // Get all actions for session
     const userActions = await actions.find({
       session_id: sessionId,
-      timestamp: dateFilter
+      timestamp: { $exists: true }
     }).sort({ timestamp: -1 }).toArray();
     
     // Calculate basic stats
@@ -48,18 +49,22 @@ router.get('/:sessionId', async (req, res) => {
     // Calculate ML performance
     const mlPerf = {
       distilbert: {
-        correct: userActions.filter(a => 
-          a.ml_distilbert?.prediction === 
-          (a.correct_action === 'Report Phish' ? 'phishing' : 'legitimate')
-        ).length,
-        total: userActions.filter(a => a.ml_distilbert?.prediction).length
+        correct: userActions.filter(a => {
+          const mlPred = a.ml_predictions?.distilbert?.prediction;
+          const correctAction = a.correct_action;
+          const expected = correctAction === 'Report Phish' ? 'phishing' : 'legitimate';
+          return mlPred === expected;
+        }).length,
+        total: userActions.filter(a => a.ml_predictions?.distilbert?.prediction).length
       },
       cnn: {
-        correct: userActions.filter(a => 
-          a.ml_cnn?.prediction === 
-          (a.correct_action === 'Report Phish' ? 'phishing' : 'legitimate')
-        ).length,
-        total: userActions.filter(a => a.ml_cnn?.prediction).length
+        correct: userActions.filter(a => {
+          const mlPred = a.ml_predictions?.cnn?.prediction;
+          const correctAction = a.correct_action;
+          const expected = correctAction === 'Report Phish' ? 'phishing' : 'legitimate';
+          return mlPred === expected;
+        }).length,
+        total: userActions.filter(a => a.ml_predictions?.cnn?.prediction).length
       }
     };
     
@@ -72,24 +77,25 @@ router.get('/:sessionId', async (req, res) => {
     }).reverse();
     
     for (const date of last7Days) {
-      const dayActions = userActions.filter(a => 
-        a.timestamp?.toISOString().split('T')[0] === date
-      );
+      const dayActions = userActions.filter(a => {
+        const ts = a.timestamp;
+        return ts && new Date(ts).toISOString().split('T')[0] === date;
+      });
       const dayCorrect = dayActions.filter(a => a.correct).length;
       trend.push({
         date,
         accuracy: dayActions.length > 0 ? 
           ((dayCorrect / dayActions.length) * 100).toFixed(2) : 0,
-        avg_accuracy: 65 + Math.random() * 10 // Placeholder for global average
+        avg_accuracy: 65 + Math.random() * 10
       });
     }
     
     // Identify weaknesses
     const weaknesses = [];
-    const phishingTypes = [...new Set(userActions.map(a => a.taxonomy))];
+    const phishingTypes = [...new Set(userActions.map(a => a.taxonomy || 'Credential Phishing'))];
     
     for (const type of phishingTypes) {
-      const typeActions = userActions.filter(a => a.taxonomy === type);
+      const typeActions = userActions.filter(a => (a.taxonomy || 'Credential Phishing') === type);
       const typeCorrect = typeActions.filter(a => a.correct).length;
       const typeAccuracy = (typeCorrect / typeActions.length) * 100;
       
@@ -129,7 +135,7 @@ router.get('/:sessionId', async (req, res) => {
     console.error('Analytics error:', error);
     res.status(500).json({ error: error.message });
   } finally {
-    await client.close();
+    if (client) await client.close();
   }
 });
 
@@ -152,4 +158,4 @@ function getTipForType(type, accuracy) {
   return tips[type] || 'When in doubt, report it. Better safe than sorry.';
 }
 
-module.exports = router;
+export default router;
