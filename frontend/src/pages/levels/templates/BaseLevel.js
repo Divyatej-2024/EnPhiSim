@@ -14,16 +14,51 @@ function toKey(value) {
 function inferCorrectness(level, action, metadata) {
   if (typeof metadata?.correct === "boolean") return metadata.correct;
 
-  const actionKey = toKey(action);
+  const normalizeTokens = (value) =>
+    toKey(value)
+      .split("_")
+      .filter(Boolean);
+
+  const canonicalAction = (value) => {
+    const key = toKey(value);
+
+    if (/(report|flag|phish)/.test(key)) return "report";
+    if (/(mark_safe|safe|legitimate|false_positive)/.test(key)) return "safe";
+    if (/(delete|trash|remove)/.test(key)) return "delete";
+    if (/(ignore|dismiss)/.test(key)) return "ignore";
+    if (/(close|exit)/.test(key)) return "close";
+    if (/(block|ban)/.test(key)) return "block";
+    if (/(investigate|review|analyze)/.test(key)) return "investigate";
+    if (/(escalate|authorit)/.test(key)) return "report";
+
+    return key;
+  };
+
+  const actionKey = canonicalAction(action);
+  const actionTokens = new Set(normalizeTokens(action));
   const candidates = [
     level?.correct_action,
     level?.correct_option,
     level?.answer,
   ]
     .filter(Boolean)
-    .map(toKey);
+    .map((item) => ({
+      raw: item,
+      key: toKey(item),
+      canonical: canonicalAction(item),
+      tokens: new Set(normalizeTokens(item)),
+    }));
 
-  return candidates.includes(actionKey);
+  return candidates.some((candidate) => {
+    if (candidate.key === actionKey || candidate.canonical === actionKey) return true;
+    if (candidate.key.includes(actionKey) || actionKey.includes(candidate.key)) return true;
+
+    let overlap = 0;
+    for (const token of actionTokens) {
+      if (candidate.tokens.has(token)) overlap += 1;
+    }
+    return overlap > 0;
+  });
 }
 
 function getClientUserId() {

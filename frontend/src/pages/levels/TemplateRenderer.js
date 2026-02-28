@@ -22,7 +22,7 @@ export default function TemplateRenderer({ level }) {
 
   const normalizedType = rawType
     .toLowerCase()
-    .replace(/[\s_]+/g, "")
+    .replace(/[^a-z0-9]/g, "")
     .trim();
 
   const TemplateComponent = levelTemplates[normalizedType];

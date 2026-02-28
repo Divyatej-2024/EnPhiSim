@@ -4,9 +4,11 @@ import { safeFetchJSON } from "../utils/helper";
 import { normalizeLevelData } from "../utils/LevelHelper";
 import TemplateRenderer from "./levels/TemplateRenderer";
 import { BACKEND_URL_CANDIDATES } from "../api";
+import { useProgress } from "../context/ProgressContext";
 
 export default function LevelPage() {
   const { category, level_no } = useParams();
+  const { getLevelScenario } = useProgress();
   const [level, setLevel] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -48,8 +50,9 @@ export default function LevelPage() {
         if (isMounted) {
           const normalized = normalizeLevelData(loaded);
           const scenarios = Array.isArray(scenarioDoc?.scenarios) ? scenarioDoc.scenarios : [];
+          const scenarioKey = `${category}:${level_no}`;
           const chosenScenario =
-            scenarios.length > 0 ? scenarios[Math.floor(Math.random() * scenarios.length)] : null;
+            scenarios.length > 0 ? getLevelScenario(scenarioKey, scenarios) : null;
 
           setLevel({
             ...normalized,
@@ -71,7 +74,7 @@ export default function LevelPage() {
     return () => {
       isMounted = false;
     };
-  }, [category, level_no]);
+  }, [category, level_no, getLevelScenario]);
 
   if (loading) return <h2>Loading level...</h2>;
   if (error) return <h2>Error: {error}</h2>;
