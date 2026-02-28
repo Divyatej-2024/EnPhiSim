@@ -3,7 +3,7 @@ import Eaction from "../models/E_action.js";
 
 const router = express.Router();
 
-router.post("/actions", async (req, res) => {
+router.post("/action", async (req, res) => {
   try {
     const payload = req.body || {};
     const actionText =
