@@ -19,7 +19,7 @@ export default function PhishingGame() {
   useEffect(() => {
     localStorage.setItem('sessionId', sessionId);
     loadScenarios();
-  }, []);
+  }, [sessionId]);
 
   useEffect(() => {
     // When level changes, load scenarios for that level
