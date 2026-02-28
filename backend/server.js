@@ -80,7 +80,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use(express.json());
-app.use('/api/analytics', require('./routes/analytics'));
+app.use('/api/analytics', analyticsRoutes);
 app.get("/", (req, res) => {
   res.send("EnPhiSim Backend is running");
 });
