@@ -33,14 +33,14 @@ body {
 }
 
 /* Background Logo Watermark */
-body::before {
+/* body::before {
   content: '';
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url('/Enphisim.png'); /* Your logo path */
+  background-image: url('/Enphisim.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: 30%;
@@ -48,7 +48,7 @@ body::before {
   pointer-events: none;
   z-index: -1;
   animation: slowPulse 10s ease-in-out infinite;
-}
+} */
 
 @keyframes slowPulse {
   0%, 100% { opacity: 0.03; }
