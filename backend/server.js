@@ -10,6 +10,7 @@ import actionRoutes from "./routes/actionRoutes.js";
 import levelDatasetRoutes from "./routes/levelDataset.js";
 import scenarioRoutes from "./routes/scenarioRoutes.js";
 import analyticsRoutes from './routes/analytics.js';
+import consentRoutes from './routes/consent.js';
 
 dotenv.config();
 
@@ -72,6 +73,7 @@ app.use("/api", levelRoutes);
 app.use("/api", scenarioRoutes);
 app.use('/api/scenarios', levelDatasetRoutes);
 app.use("/api", mlRoutes);
+app.use("/api/consent", consentRoutes);
 app.use("/api", predictRoutes);
 app.use("/api", actionRoutes);
 
