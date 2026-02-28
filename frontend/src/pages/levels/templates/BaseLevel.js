@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useProgress } from "../../../context/ProgressContext";
-import { sendUserAction } from "../../../api";
+import { getPrediction, sendUserAction } from "../../../api";
 import "../../../level.css";
 
 function toKey(value) {
@@ -40,6 +40,19 @@ function getClientUserId() {
   }
 }
 
+function createMlInputText(level, action) {
+  const parts = [
+    level?.page_title,
+    level?.level_text || level?.content,
+    level?.subj || level?.email_subject,
+    level?.phish_email || level?.from_and_to,
+    level?.suspicious_url || level?.url,
+    `User action: ${action}`,
+  ].filter(Boolean);
+
+  return parts.join("\n");
+}
+
 export default function BaseLevel({ children, levelType, scenario, onAction, customStyles }) {
   const { recordAction, completeLevel } = useProgress();
   const navigate = useNavigate();
@@ -50,6 +63,8 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
     message: "",
     details: null,
     isCorrect: false,
+    mlPrediction: null,
+    mlConfidence: null,
   });
 
   const currentLevel = scenario || null;
@@ -62,6 +77,19 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
       try {
         const isCorrect = inferCorrectness(currentLevel, action, metadata);
         const levelId = currentLevel.level_no || currentLevel.Level_no || currentLevel.id;
+        const userId = getClientUserId();
+        const mlText = createMlInputText(currentLevel, action);
+        let mlResult = null;
+
+        try {
+          mlResult = await getPrediction({
+            userId,
+            levelId,
+            text: mlText,
+          });
+        } catch (mlErr) {
+          console.warn("ML prediction unavailable:", mlErr?.message || mlErr);
+        }
 
         const actionRecord = {
           level_id: currentLevel.id,
@@ -73,15 +101,21 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
           correct_action: currentLevel.correct_action || currentLevel.correct_option,
           result: isCorrect ? "correct" : "incorrect",
           timestamp: new Date().toISOString(),
+          ml_prediction: mlResult?.prediction ?? null,
+          ml_confidence: mlResult?.confidence ?? null,
+          ml_probabilities: mlResult?.probabilities ?? null,
           ...metadata,
         };
 
         await recordAction(levelId, actionRecord);
 
         void sendUserAction({
-          userId: getClientUserId(),
+          userId,
           levelId: levelId,
           action: action,
+          actionText: mlText,
+          mlPrediction: mlResult?.prediction ?? null,
+          mlConfidence: mlResult?.confidence ?? null,
           ...metadata,
         }).catch((err) => {
           console.warn("Failed to send action to backend:", err?.message || err);
@@ -99,6 +133,8 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
             : currentLevel.failure_message || "This action could be risky. Try again!",
           details: currentLevel.hint || currentLevel.Hint || null,
           isCorrect,
+          mlPrediction: mlResult?.prediction ?? null,
+          mlConfidence: mlResult?.confidence ?? null,
         });
 
         if (onAction) {
@@ -120,6 +156,8 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
           message: "Something went wrong. Please try again.",
           details: null,
           isCorrect: false,
+          mlPrediction: null,
+          mlConfidence: null,
         });
         setLocked(false);
       }
@@ -175,6 +213,16 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
             {dialog.details && (
               <div className="dialog-details">
                 <small>{dialog.details}</small>
+              </div>
+            )}
+            {dialog.mlPrediction && (
+              <div className="dialog-details">
+                <small>
+                  ML Detection: {dialog.mlPrediction}
+                  {typeof dialog.mlConfidence === "number"
+                    ? ` (${Math.round(dialog.mlConfidence * 100)}% confidence)`
+                    : ""}
+                </small>
               </div>
             )}
             <button className="dialog-button" onClick={closeDialog} autoFocus>

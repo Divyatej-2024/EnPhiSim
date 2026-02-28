@@ -1,0 +1,254 @@
+ 
+Computing, Engineering & Digital Technologies Ethics Review 2025-26 
+Application Form Information
+30 October 2025                                                                                                                                   
+Reference #:   2025 Oct 31565 PENDELA 
+Page 1 of 9
+By using this online form, you are applying for ethics review by a School Research Ethics Committee
+based in the:
+SCHOOL of COMPUTING, ENGINEERING & DIGITAL
+TECHNOLOGIES
+(SCEDT)
+ 
+This form is NOT to be used if you are based in any other School.
+If you are not based in SCEDT and continue to use this form, it will be rejected
+and you will have to create and complete an entirely new application on the correct School application form. You
+will not be able to use this form in any other School.
+You should 
+NOT use this form if your application will need to be reviewed by an external research ethics committee via
+the IRAS application system.
+.
+ 
+Structure of the application form and how to complete it
+The application form consists of a series of questions over a number of web screens. The number of questions
+that you will be required to answer depends on how you respond. Some question pages are short consisting of
+only a single question. Other pages may have multiple questions. Screen pages may increase in length as other
+questions appear below as you answer the first questions. Guidance on some questions is provided if there is
+an 'i' in a circle to the top right of the question. 
+So that the application form shows you exactly the questions that you need to answer, you should start
+at the top of the form and click through each page in order. Make sure you scroll down to the bottom of
+each page. When you reach the bottom of each web page, use the 'Next' button located on the left hand
+sidebar to progress. To go back to a previous page, use the 'Previous' button. To return to the top
+page of your project, use the 'Navigate' button. 
+All questions are mandatory because you will not be shown questions you do not need to answer. You will not be
+able to submit your application unless you have answered all mandatory questions. Use the 'Completeness
+Check' button on the left side bar to check if all questions are completed. You may also be required to upload
+documents. Student applicants will be required to enter supervisor name and email to authorise submission, so
+ensure that you have this information before starting. Student applicants should ensure that they have shared their
+application with their supervisor. Staff making applications for projects as part of a qualification for which they are
+studying (ie; PhD) will also require a supervisor signature.
+NOW CLICK ON 'NEXT' AT THE TOP OF THE LEFT SIDEBAR TO
+START YOUR APPLICATION
+or USE THE 'NEXT PAGE' BUTTON DIRECTLY BELOW THIS
+MESSAGE
+Applicant Type
+30 October 2025                                                                                                                                   
+Reference #:   2025 Oct 31565 PENDELA 
+Page 2 of 9
+What type of applicant are you?
+Undergraduate Student
+As a student applicant, have you remembered to share your application with your supervisor? If you have not shared your
+application, you may be delayed when trying to submit your completed application and you may not be able to obtain your
+supervisor's signature, which will mean that you are not able to submit your application.
+If you have not yet shared your application, click the 'Roles' button that you can see on the left-hand sidebar. Add
+your supervisor's email address and confirm. If your supervisor's email address is not found, invite them by clicking
+'Invite'.
+In which department of the School of Computing, Engineering and Digital Technologies are you based?
+Computing and Games
+Department-Discipline
+Will your project recruit human participants  for collection of primary data?
+Recruiting human participants means actively seeking participants to take part in your research
+OR
+Will your project involve human participants in any other way  for collection of primary data ?
+You may involve human participants even if you do not actively recruit them, ie: observation of people in person or online or through other means
+where they do not know research is taking place
+Yes
+No
+Human Participation
+Security Sensitivity
+30 October 2025                                                                                                                                   
+Reference #:   2025 Oct 31565 PENDELA 
+Page 3 of 9
+Please confirm whether your project will undertake research in any of the areas below which constitute 'security-sensitive'
+activities.
+By "security-sensitive" is meant any activity that is deemed to be potentially compromising to UK national interests or that
+involves access to materials which are classified or that could be linked to terrorist/extremist activity. Use the 'i' help for more
+information, which also links to external sites giving details on these sorts of activities.
+This is an important question that has significant legal implications. Please make sure that you understand what is being
+asked. If you answer this question incorrectly, this is likely to mean a delay to the review of your application.
+Will your research involve any of the following:
+Access to or use of materials covered by the Official Secrets Act
+Access to or use of materials that might be considered as 'extremist' as defined by Counter Terrorism legislation
+Research commissioned by the military
+Security clearance will be required from one of the UK's security services to undertake the research (note: this excludes
+private security services or permissions)
+None of the above
+Does this project only involve a study of material in the public domain? This could include published
+literature, such as books, research articles, reports or other text materials; and/or multimedia, such as film,
+music, videos, video or computer games; or other online content.
+A study of this type  does not generate any primary data collected specifically for the current project and the main aim of the project is an analysis or evaluation of
+the published work or media.  If you are proposing this type of study, answer 'Yes' to this question.
+If your study proposes to  use an existing set of data  ('secondary data') from a previous study or another source for analysis, answer this question 'No', even if this
+data set is publicly available. A later question will ask you about this kind of data.
+Yes
+No
+Material in Public Domain
+Locations of Research Activity
+30 October 2025                                                                                                                                   
+Reference #:   2025 Oct 31565 PENDELA 
+Page 4 of 9
+Identify all the locations where this research will be carried out
+On Teesside University campuses (Middlesbrough, Darlington, London)
+Online research from Teesside University campus facilities
+Online research from home
+Online research from another off-campus location
+In a partner college of the University
+In Schools (primary, secondary)
+In another Higher Education Institution (any other than Teesside University)
+In NHS facilities or premises
+On another type of organisation's premises
+In prison(s)
+In care homes
+In public space(s)
+An international location (another country than the UK)
+Other
+We need to know in detail about the aims and methods of your proposed research
+There is no minimum or maximum length of text that may be entered in these fields. Please read the help 'i' (at the top right) on what is expected. However, you
+should note that insufficient detail for this question is likely to result in your application being returned for further information, delaying a decision on your application.
+If you need to enter a lot of text, it may be best to create a document and use the upload button provided below, than to use the free text fields.
+If you prefer, you may upload a detailed research design document(s) here
+If you upload a document, you still need to answer the questions directly below about your principal objective and state how your proposed methods
+will meet this objective
+ 
+What is the principal objective of this research and/or what is the principal research question
+that you hope to answer?
+You must answer this question even if you have attached a detailed research design document
+• Create a Walkthrough phishing simulation system with level-based awareness modules.
+• Gather and pre-process phishing and legitimate email datasets for model training.
+• Using a hybrid DistilBERT + CNN model for text-based phishing classification.
+• Explain the model using factors like accuracy, precision, recall, and F1-score.
+• Integrate real-time phishing detection in the simulation environment.
+• Develop a web-based dashboard for analytics and user progress tracking.
+• To secure data along with session running throughout the simulation and use demo companies in simulation
+• Every milestone contains a similarity knowledge about the computer technology and nature around us.
+• Uphold ethical data handling standards and anonymisation during dataset use.
+Project Aims and Methods
+30 October 2025                                                                                                                                   
+Reference #:   2025 Oct 31565 PENDELA 
+Page 5 of 9
+State how the methods you are proposing to use will achieve the principal objective(s) you
+have stated above
+You must answer this question even if you have attached a detailed research design document
+The Methods I am going to use to achieve my Objectives are:
+1. Data Collection
+2. Data Pre-processing
+3. Model Development
+4. Testing and Evaluation.
+5. Simulator Integration.
+6. Deployment.
+Fully describe the aims of your project
+You do not need to complete this field if you have attached a document above. If so, then please enter "see attached document" in this field
+The main aim of my Project is to give full awareness of Phishing types, how every action in this Phishing effects us in our day to day  
+technical activities, along with that you can track your progress throughout the project along with feedback to every action you take in  
+that activity, also helps you to understand ethics and use of AI and Machine Learning in Cybersecurity awareness.
+Fully describe the methods you will use
+You do not need to complete this field if you have attached a document above. If so, then please enter "see attached document" in this field.
+The methods i will be using for the project:
+The machine learning and python frameworks used are DistilBERT + CNN and PyTorch/ TensorFlow for the Machine Learning  
+concepts.
+Data Pre-processing tools used for this are pandas, Numpy, and Scikit-learn, flask for cleaning and feature extraction.
+Web Technologies i will be using for the project React.js for the frontend, Node.js/Express for the backend and MongoDB for data  
+storage.
+Deployment platforms used for this project Render for Backend API and ML server and Vercel for frontend and MongoDB atlas for  
+Data storage.
+For security and Ethics, secure session, Encrypted communication using HTTPS, Anonymised dataset handling following ethical  
+research standards.
+These are the detailed methodology used for the project.
+If you have other documents to upload, you may do this here. You may upload as many documents as you need.
+Has the project in this application been part of a previously submitted but unapproved application?
+Yes
+No
+Project Title
+30 October 2025                                                                                                                                   
+Reference #:   2025 Oct 31565 PENDELA 
+Page 6 of 9
+Please provide the title by which your project will be known
+The title used should be specific (ie: do not use 'Dissertation', 'Ethics Application' or anything generic.)
+EnPhiSim- A Hybrid Walkthrough Phishing simulator with Machine Learning
+When is it expected that the project will begin?
+Once all permissions and ethics Clearance have been obtained
+On or around a date
+You may tell us here if you are making an early application for ethics Clearance for a project that will
+begin in the next academic year
+If so, then use a date any time after 1 September of the year in the duration calendar above
+You do not need to complete this field if you are making a standard time frame application
+Approximately how many months will the project take to complete?
+If it is expected that the project will be shorter than one month, enter '1' here
+6
+Project Duration
+Applicant First Name (Main Contact)
+DIVYA TEJ
+Applicant Surname (Main Contact)
+PENDELA
+Applicant Email (Main Contact)
+D3604526@live.tees.ac.uk
+Applicant Details
+30 October 2025                                                                                                                                   
+Reference #:   2025 Oct 31565 PENDELA 
+Page 7 of 9
+Supervisor First Name (Main Contact)
+Diyan
+Supervisor Surname (Main Contact)
+Muhammad
+Supervisor Email (Main Contact)
+M.Diyan@tees.ac.uk
+Supervisor Details
+Please tick this box to confirm and sign your application
+SCEDT-Sup
+I confirm that I have completed this form accurately
+Applicant Signature
+30 October 2025                                                                                                                                   
+Reference #:   2025 Oct 31565 PENDELA 
+Page 8 of 9
+STUDENT APPLICANT DECLARATION
+I confirm that I have read and understand the University's Six Principles of Research Ethics and that my research will abide by the following:
+Harm to research participants must be avoided: the protection of the dignity, rights, safety and well being of all actual and potential participants, researchers, non-
+participating members of the public, and the environment takes precedence over scientific, or any other, considerations or interests.
+Research should be designed, reviewed and undertaken to ensure adherence to the highest standards of quality, integrity, ethical propriety and governance, and legal
+compliance.
+Researchers and participants must normally be informed as fully as possible about the purposes, methods and intended possible uses of the research, what their
+participation in the research entails, and what risks and benefits are involved. This information should be accurate, clear, and easily understood by the potential
+participant, who should have the capacity to understand what is involved in their participation. Research proposing variation from this principle may be approved but
+only in very specific contexts in which the lack of proper information must be justified by the value of the research.
+Research participants must consent to participate in a voluntary way, free from any coercion, undue influence, or manipulation. Use of inducements to encourage
+participation must be carefully monitored.
+The confidentiality of information supplied by research participants, and their anonymity, must be respected except in cases where illegal behaviour is discovered. 
+All data and other materials from and about research participants will be collected, processed, retained, stored, and disposed of, in accordance with current legal
+requirements.
+The independence of research must be clear, and any conflicts of interest or partiality must be disclosed. Publication of research results must be done fairly and with
+the public good taking priority over private
+I confirm that I have the competence and experience to undertake the proposed research safely and ethically.
+ 
+ 
+AS A STUDENT APPLICANT, YOU MUST NOW REQUEST A SIGNATURE FROM YOUR ACADEMIC SUPERVISOR
+TO AUTHORISE YOUR SUBMISSION. DO THIS BY CLICKING ON THE 'REQUEST SIGNATURE' BUTTON BELOW
+YOUR FORM WILL BE LOCKED AFTER YOU HAVE REQUESTED A SIGNATURE AND YOU WILL NOT BE ABLE
+TO MAKE ANY FURTHER CHANGES ONCE THE FORM IS LOCKED
+You will be asked to add your supervisor's email address in a pop-up window to send this request before
+submitting.
+IMPORTANT: Your form will be locked once you have requested a signature for your application and you will not be able to
+change any of your answers or upload any further documents to your application once you have requested a signature.
+Ensure that you have remembered to include everything needed for your application before requesting a signature . If you
+need a supervisor to check your application for completeness do this by SHARING your application with them first, not by
+requesting their signature.
+If your signature request has been sent successfully, a blue box will appear beneath this section confirming
+that the request was sent, with your supervisor's name and the date and time at which it was sent. If you
+do not see this blue box, your request HAS NOT been sent so you should make the request again.
+Clicking 'NEXT' will return you to the top of your application or you may return to the Work Area by clicking 'Work Area'.
+ONCE YOUR SUPERVISOR HAS AUTHORISED YOUR APPLICATION, YOU WILL RECEIVE
+TWO EMAILS: ONE CONFIRMING THAT YOUR APPLICATION HAS BEEN SIGNED AND
+ANOTHER TO CONFIRM THAT YOUR APPLICATION SUBMISSION HAS BEEN MADE
+Signed: Signed: This form was signed by Muhammad Diyan (M.Diyan@tees.ac.uk) This form was signed by Muhammad Diyan (M.Diyan@tees.ac.uk) on on 30/10/2025 14:4330/10/2025 14:43
+30 October 2025                                                                                                                                   
+Reference #:   2025 Oct 31565 PENDELA 
+Page 9 of 9

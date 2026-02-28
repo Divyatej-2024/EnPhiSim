@@ -5,11 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import numpy as np
 import json
 import os
-import tensorflow as tf
-from tensorflow import keras
-from keras import models
-from models import load_model
-import joblib
+from keras.models import load_model
 import torch
 from transformers import DistilBertTokenizerFast, DistilBertModel
 
@@ -52,7 +48,7 @@ except Exception as e:
 # ---- Pydantic request model ----
 class PredictRequest(BaseModel):
     userId: str | None = "user_001"  # single-user mode default
-    levelId: int | None = None
+    levelId: str | int | None = None
     text: str
 
 class BatchPredictRequest(BaseModel):

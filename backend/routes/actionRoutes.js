@@ -6,10 +6,18 @@ const router = express.Router();
 router.post("/actions", async (req, res) => {
   try {
     const payload = req.body || {};
+    const actionText =
+      payload.actionText ||
+      payload.text ||
+      payload.action ||
+      payload.Action ||
+      payload.user_action ||
+      "";
+
     const action = await Eaction.create({
       UserID: payload.userId || payload.UserID || "anonymous",
       LevelID: payload.levelId || payload.LevelID || payload.level_no || "",
-      Action: payload.action || payload.Action || payload.user_action || "",
+      Action: actionText,
     });
 
     res.status(201).json({
