@@ -25,7 +25,7 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Routes
@@ -33,11 +33,11 @@ app.use('/api/analytics', analyticsRoutes);
 // Add your other routes here
 
 // MongoDB connection
-await mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 
-app.listen(PORT, () => {
+app.listen(process.env.PORT || 4000, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
@@ -79,7 +79,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.use(express.json());
 app.use('/api/analytics', analyticsRoutes);
 app.get("/", (req, res) => {
   res.send("EnPhiSim Backend is running");
