@@ -8,19 +8,23 @@ router.post('/', async (req, res) => {
   try {
     const { text, links } = req.body;
     
-    // Forward to your ML server
-    const mlResponse = await axios.post('http://localhost:8000/predict', {
-      text,
-      links
-    });
+    // Forward to your ML server (if running)
+    // For now, return mock predictions
+    const mockResponse = {
+      distilbert: { 
+        prediction: Math.random() > 0.5 ? 'phishing' : 'legitimate', 
+        confidence: Math.random() 
+      },
+      cnn: { 
+        prediction: Math.random() > 0.5 ? 'phishing' : 'legitimate', 
+        confidence: Math.random() 
+      }
+    };
     
-    res.json(mlResponse.data);
+    res.json(mockResponse);
   } catch (error) {
-    console.error('ML prediction failed:', error);
-    res.json({
-      distilbert: { prediction: 'unknown', confidence: 0 },
-      cnn: { prediction: 'unknown', confidence: 0 }
-    });
+    console.error('Prediction error:', error);
+    res.status(500).json({ error: 'Prediction failed' });
   }
 });
 

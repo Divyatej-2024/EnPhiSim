@@ -74,8 +74,8 @@ app.use("/api", scenarioRoutes);
 app.use('/api/scenarios', levelDatasetRoutes);
 app.use("/api", mlRoutes);
 app.use("/api/consent", consentRoutes);
-app.use("/api", predictRoutes);
-app.use("/api", actionRoutes);
+app.use("/api/predict", predictRoutes);
+app.use("/api/action", actionRoutes);
 
 app.get("/", (req, res) => {
   res.send("EnPhiSim Backend is running");
