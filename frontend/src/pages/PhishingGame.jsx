@@ -1,8 +1,8 @@
 // frontend/src/pages/PhishingGame.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import './PhishingGame.css';
-import './Dashboard';
 
 export default function PhishingGame() {
   const [levels, setLevels] = useState({});
@@ -12,13 +12,24 @@ export default function PhishingGame() {
   const [score, setScore] = useState(0);
   const [feedback, setFeedback] = useState(null);
   const [loading, setLoading] = useState(true);
-  // const [mlPrediction, setMlPrediction] = useState(null);
+  const [levelComplete, setLevelComplete] = useState(false);
   const [sessionId] = useState(() => localStorage.getItem('sessionId') || generateSessionId());
+  const navigate = useNavigate();
 
   useEffect(() => {
     localStorage.setItem('sessionId', sessionId);
     loadScenarios();
-  }, [sessionId]);
+  }, []);
+
+  useEffect(() => {
+    // When level changes, load scenarios for that level
+    if (levels[currentLevel]) {
+      setScenarios(levels[currentLevel]);
+      setCurrentScenarioIndex(0);
+      setLevelComplete(false);
+      sessionStorage.setItem('scenario_start', Date.now().toString());
+    }
+  }, [currentLevel, levels]);
 
   const generateSessionId = () => {
     return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
@@ -32,15 +43,17 @@ export default function PhishingGame() {
       
       // Group by level
       const grouped = allScenarios.reduce((acc, scenario) => {
-        if (!acc[scenario.level_no]) {
-          acc[scenario.level_no] = [];
+        const level = scenario.level_no || 'l1';
+        if (!acc[level]) {
+          acc[level] = [];
         }
-        acc[scenario.level_no].push(scenario);
+        acc[level].push(scenario);
         return acc;
       }, {});
       
       setLevels(grouped);
       setScenarios(grouped['l1'] || []);
+      console.log('Levels loaded:', Object.keys(grouped));
     } catch (error) {
       console.error('Failed to load scenarios:', error);
     } finally {
@@ -50,12 +63,10 @@ export default function PhishingGame() {
 
   const getMLPrediction = async (emailText, links) => {
     try {
-      // Call your ML server
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/predict`, {
         text: emailText,
         links: links
       });
-      
       return response.data;
     } catch (error) {
       console.error('ML prediction failed:', error);
@@ -71,88 +82,148 @@ export default function PhishingGame() {
     const startTime = sessionStorage.getItem('scenario_start');
     const timeTaken = startTime ? (Date.now() - parseInt(startTime)) / 1000 : 0;
     
-    // Show loading state
     setFeedback({ loading: true });
     
-    // Get ML prediction
     const mlResults = await getMLPrediction(
-      currentScenario.body_text,
+      currentScenario.body_text || currentScenario.content,
       currentScenario.links
     );
     
-    // Save action to backend
-    const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/action`, {
-      scenario_id: currentScenario.scenario_id,
-      user_action: action,
-      ml_predictions: mlResults,
-      time_taken_seconds: timeTaken,
-      session_id: sessionId
-    });
+    const isCorrect = action === currentScenario.correct_action;
     
-    const isCorrect = response.data.correct;
-    
-    // Update score
     if (isCorrect) {
       setScore(prev => prev + 100);
     }
     
-    // Show feedback
+    // Save to backend
+    try {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/action`, {
+        scenario_id: currentScenario.scenario_id,
+        user_action: action,
+        ml_predictions: mlResults,
+        time_taken_seconds: timeTaken,
+        session_id: sessionId,
+        level: currentLevel
+      });
+    } catch (error) {
+      console.error('Failed to save action:', error);
+    }
+    
     setFeedback({
       show: true,
       isCorrect,
       userAction: action,
       correctAction: currentScenario.correct_action,
       mlResults,
-      explanation: getExplanation(currentScenario, action, mlResults)
+      explanation: getExplanation(action, isCorrect)
     });
     
-    // Auto-advance after 3 seconds
     setTimeout(() => {
       setFeedback(null);
       
-      // Move to next scenario
       if (currentScenarioIndex < scenarios.length - 1) {
         setCurrentScenarioIndex(prev => prev + 1);
         sessionStorage.setItem('scenario_start', Date.now().toString());
       } else {
         // Level complete
-        alert(`Level ${currentLevel} complete! Moving to next level...`);
-        const nextLevel = getNextLevel(currentLevel);
-        if (nextLevel) {
-          setCurrentLevel(nextLevel);
-          setScenarios(levels[nextLevel] || []);
-          setCurrentScenarioIndex(0);
-        }
+        setLevelComplete(true);
       }
     }, 3000);
   };
 
-  const getExplanation = (scenario, action, mlResults) => {
-    const explanations = {
-      'Trust & Click': 'Clicking suspicious links can lead to credential theft.',
-      'Ignore': 'Ignoring is safe but reporting helps protect others.',
-      'Report Phish': 'Reporting helps security teams block future attacks!'
-    };
-    
-    const mlAdvice = mlResults.distilbert?.prediction === 'phishing' 
-      ? 'Our AI also detected this as phishing.' 
-      : 'Our AI is learning to detect this type.';
-    
-    return `${explanations[action] || ''} ${mlAdvice}`;
+  const getExplanation = (action, isCorrect) => {
+    if (isCorrect) {
+      return "✅ Correct! " + (action === 'Report Phish' 
+        ? "Reporting helps protect everyone." 
+        : "Good judgment!");
+    } else {
+      return "❌ Incorrect. " + (action === 'Trust & Click' 
+        ? "Never click suspicious links." 
+        : "This should be reported.");
+    }
   };
 
-  const getNextLevel = (current) => {
-    const levelOrder = ['l1', 'l2', 'l3', 'l4', 'l5'];
-    const currentIndex = levelOrder.indexOf(current);
-    return currentIndex < levelOrder.length - 1 ? levelOrder[currentIndex + 1] : null;
+  const handleLevelChange = (event) => {
+    setCurrentLevel(event.target.value);
+  };
+
+  const goToDashboard = () => {
+    navigate('/dashboard');
+  };
+
+  const resetLevel = () => {
+    setCurrentScenarioIndex(0);
+    setScore(0);
+    setLevelComplete(false);
+    sessionStorage.setItem('scenario_start', Date.now().toString());
   };
 
   if (loading) {
-    return <div className="loading-screen">Loading Phishing Training Scenarios...</div>;
+    return (
+      <div className="loading-screen">
+        <div className="loading-spinner"></div>
+        <p>Loading Phishing Training Scenarios...</p>
+      </div>
+    );
+  }
+
+  if (Object.keys(levels).length === 0) {
+    return (
+      <div className="error-screen">
+        <h2>No Levels Found</h2>
+        <p>Please check back later or contact support.</p>
+        <button onClick={() => navigate('/')} className="back-button">
+          Back to Home
+        </button>
+      </div>
+    );
+  }
+
+  if (levelComplete) {
+    return (
+      <div className="level-complete">
+        <div className="complete-content">
+          <h1>🎉 Level Complete!</h1>
+          <p>You scored {score} points</p>
+          <p>Completed {scenarios.length} scenarios</p>
+          
+          <div className="complete-actions">
+            <button onClick={resetLevel} className="replay-btn">
+              🔄 Replay Level
+            </button>
+            <button onClick={goToDashboard} className="dashboard-btn">
+              📊 View Dashboard
+            </button>
+            <select 
+              onChange={handleLevelChange} 
+              value={currentLevel}
+              className="level-select"
+            >
+              {Object.keys(levels).sort().map(level => (
+                <option key={level} value={level}>
+                  Level {level.toUpperCase()} ({levels[level].length} scenarios)
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (scenarios.length === 0) {
-    return <div className="error-screen">No scenarios found for this level.</div>;
+    return (
+      <div className="error-screen">
+        <h2>No Scenarios in Level {currentLevel}</h2>
+        <select onChange={handleLevelChange} value={currentLevel}>
+          {Object.keys(levels).sort().map(level => (
+            <option key={level} value={level}>
+              Level {level.toUpperCase()} ({levels[level].length} scenarios)
+            </option>
+          ))}
+        </select>
+      </div>
+    );
   }
 
   const currentScenario = scenarios[currentScenarioIndex];
@@ -162,25 +233,41 @@ export default function PhishingGame() {
       {/* GAME HEADER */}
       <div className="game-header">
         <div className="level-info">
-          <span className="level-badge">Level {currentLevel}</span>
+          <span className="level-badge">Level {currentLevel.toUpperCase()}</span>
           <span className="scenario-progress">
             Scenario {currentScenarioIndex + 1} / {scenarios.length}
           </span>
-          {/* <Link to="/dashboard" className="dashboard-link">
-  📊 View Dashboard
-</Link> */}
         </div>
-        <div className="score-display">
-          <span className="score-label">Score</span>
-          <span className="score-value">{score}</span>
+        
+        <div className="header-controls">
+          <div className="score-display">
+            <span className="score-label">Score</span>
+            <span className="score-value">{score}</span>
+          </div>
+          
+          <button onClick={goToDashboard} className="dashboard-button">
+            📊 Dashboard
+          </button>
+          
+          <select 
+            onChange={handleLevelChange} 
+            value={currentLevel}
+            className="level-select-header"
+          >
+            {Object.keys(levels).sort().map(level => (
+              <option key={level} value={level}>
+                Level {level.toUpperCase()} ({levels[level].length})
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
       {/* PHISHING TYPE INFO */}
       <div className="phishing-type-header">
-        <h2>{currentScenario.taxonomy}</h2>
-        <span className={`difficulty-badge ${currentScenario.category}`}>
-          {currentScenario.category}
+        <h2>{currentScenario.taxonomy || 'Phishing Simulation'}</h2>
+        <span className={`difficulty-badge ${currentScenario.category || 'medium'}`}>
+          {currentScenario.category || 'Training'}
         </span>
       </div>
 
@@ -189,33 +276,54 @@ export default function PhishingGame() {
         <div className="email-header">
           <div className="email-field">
             <span className="field-label">From:</span>
-            <span className="field-value">{currentScenario.from_address}</span>
+            <span className="field-value">{currentScenario.from_address || 'Unknown'}</span>
           </div>
           <div className="email-field">
             <span className="field-label">Reply-To:</span>
-            <span className="field-value warning">{currentScenario.reply_to || "No-Reply to"}</span>
+            <span className="field-value warning">{currentScenario.reply_to || 'None'}</span>
           </div>
           <div className="email-field">
             <span className="field-label">To:</span>
-            <span className="field-value">{currentScenario.to_address}</span>
+            <span className="field-value">{currentScenario.to_address || 'Unknown'}</span>
           </div>
         </div>
 
         <div className="email-body">
-          <h3>{currentScenario.title}</h3>
-          <div 
-            className="email-content"
-            dangerouslySetInnerHTML={{ __html: currentScenario.body_html }}
-          />
+          <h3>{currentScenario.title || 'Phishing Email'}</h3>
+          
+          {currentScenario.body_html ? (
+            <div 
+              className="email-content"
+              dangerouslySetInnerHTML={{ __html: currentScenario.body_html }}
+            />
+          ) : (
+            <div className="email-content">
+              <p>{currentScenario.content || currentScenario.body_text || 'No content available'}</p>
+            </div>
+          )}
           
           {/* LINKS SECTION */}
           {currentScenario.links && currentScenario.links.length > 0 && (
             <div className="links-section">
-              <p className="links-label">Links in this email:</p>
+              <p className="links-label">🔗 Links in this email:</p>
               <ul className="links-list">
                 {currentScenario.links.map((link, index) => (
                   <li key={index} className="suspicious-link">
-                    🔗 {link}
+                    {link}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* ATTACHMENTS SECTION */}
+          {currentScenario.has_attachment && currentScenario.attachments && (
+            <div className="attachments-section">
+              <p className="attachments-label">📎 Attachments:</p>
+              <ul className="attachments-list">
+                {currentScenario.attachments.map((att, index) => (
+                  <li key={index} className="attachment-item">
+                    {att.name || 'file.pdf'} ({att.size || 'Unknown'})
                   </li>
                 ))}
               </ul>
@@ -229,21 +337,21 @@ export default function PhishingGame() {
         <div className="action-buttons">
           <button 
             className="action-btn trust"
-            onClick={() => handleAction('Trust & Click')}
+            onClick={() => handleAction(currentScenario.wrong_action || 'Trust & Click')}
           >
-            🔗 Trust & Click
+            🔗 {currentScenario.wrong_action || 'Trust & Click'}
           </button>
           <button 
             className="action-btn ignore"
-            onClick={() => handleAction('Ignore')}
+            onClick={() => handleAction(currentScenario.neutral_action || 'Ignore')}
           >
-            ⏭️ Ignore
+            ⏭️ {currentScenario.neutral_action || 'Ignore'}
           </button>
           <button 
             className="action-btn report"
-            onClick={() => handleAction('Report Phish')}
+            onClick={() => handleAction(currentScenario.correct_action || 'Report Phish')}
           >
-            🚨 Report Phish
+            🚨 {currentScenario.correct_action || 'Report Phish'}
           </button>
         </div>
       )}
@@ -260,29 +368,33 @@ export default function PhishingGame() {
             </div>
 
             {/* ML FEEDBACK */}
-            <div className="ml-feedback">
-              <h3>🤖 AI Analysis</h3>
-              <div className="ml-models">
-                <div className="ml-model">
-                  <span className="model-name">DistilBERT:</span>
-                  <span className={`prediction ${feedback.mlResults.distilbert?.prediction}`}>
-                    {feedback.mlResults.distilbert?.prediction}
-                  </span>
-                  <span className="confidence">
-                    {(feedback.mlResults.distilbert?.confidence * 100).toFixed(0)}% confident
-                  </span>
-                </div>
-                <div className="ml-model">
-                  <span className="model-name">CNN:</span>
-                  <span className={`prediction ${feedback.mlResults.cnn?.prediction}`}>
-                    {feedback.mlResults.cnn?.prediction}
-                  </span>
-                  <span className="confidence">
-                    {(feedback.mlResults.cnn?.confidence * 100).toFixed(0)}% confident
-                  </span>
+            {feedback.mlResults && (
+              <div className="ml-feedback">
+                <h3>🤖 AI Analysis</h3>
+                <div className="ml-models">
+                  <div className="ml-model">
+                    <span className="model-name">DistilBERT:</span>
+                    <span className={`prediction ${feedback.mlResults.distilbert?.prediction}`}>
+                      {feedback.mlResults.distilbert?.prediction || 'Unknown'}
+                    </span>
+                    <span className="confidence">
+                      {feedback.mlResults.distilbert?.confidence ? 
+                        `${(feedback.mlResults.distilbert.confidence * 100).toFixed(0)}%` : ''}
+                    </span>
+                  </div>
+                  <div className="ml-model">
+                    <span className="model-name">CNN:</span>
+                    <span className={`prediction ${feedback.mlResults.cnn?.prediction}`}>
+                      {feedback.mlResults.cnn?.prediction || 'Unknown'}
+                    </span>
+                    <span className="confidence">
+                      {feedback.mlResults.cnn?.confidence ? 
+                        `${(feedback.mlResults.cnn.confidence * 100).toFixed(0)}%` : ''}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
 
             <p className="explanation">{feedback.explanation}</p>
             <p className="next-hint">Next scenario in 3 seconds...</p>
