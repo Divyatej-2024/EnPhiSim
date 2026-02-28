@@ -12,13 +12,13 @@ export default function PhishingGame() {
   const [score, setScore] = useState(0);
   const [feedback, setFeedback] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [mlPrediction, setMlPrediction] = useState(null);
+  // const [mlPrediction, setMlPrediction] = useState(null);
   const [sessionId] = useState(() => localStorage.getItem('sessionId') || generateSessionId());
 
   useEffect(() => {
     localStorage.setItem('sessionId', sessionId);
     loadScenarios();
-  }, []);
+  }, [sessionId]);
 
   const generateSessionId = () => {
     return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);

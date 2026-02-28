@@ -39,7 +39,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     fetchAnalytics();
-  }, [timeRange]);
+  }, [timeRange, sessionId]);
 
   const fetchAnalytics = async () => {
     try {
