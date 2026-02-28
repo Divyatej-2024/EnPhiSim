@@ -1,5 +1,5 @@
 // frontend/src/pages/Dashboard.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import {
   Chart as ChartJS,
@@ -37,23 +37,23 @@ export default function Dashboard() {
   const [timeRange, setTimeRange] = useState('week');
   const [sessionId] = useState(() => localStorage.getItem('sessionId') || 'anonymous');
 
-  useEffect(() => {
-    fetchAnalytics();
-  }, [timeRange, sessionId, fetchAnalytics]);
+const fetchAnalytics = useCallback(async () => {
+  try {
+    setLoading(true); 
+  const response = await axios.get(
+      `${process.env.REACT_APP_API_URL}/api/analytics/${sessionId}?range=${timeRange}`
+    );
+    setAnalytics(response.data);
+  } catch (error) {
+    console.error('Failed to fetch analytics:', error);
+  } finally {
+    setLoading(false);
+  }
+}, [sessionId, timeRange]); // Dependencies HERE
 
-  const fetchAnalytics = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/analytics/${sessionId}?range=${timeRange}`
-      );
-      setAnalytics(response.data);
-    } catch (error) {
-      console.error('Failed to fetch analytics:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+useEffect(() => {
+  fetchAnalytics();
+}, [fetchAnalytics]); 
 
   if (loading) {
     return (
