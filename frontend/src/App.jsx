@@ -26,7 +26,6 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <BackgroundWrapper>
         <div className="App">
           <Routes>
             {/* Public routes - NO CONSENT NEEDED */}
@@ -55,7 +54,6 @@ export default function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </div>
-      </BackgroundWrapper>
     </BrowserRouter>
   );
 }
