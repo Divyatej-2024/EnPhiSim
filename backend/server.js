@@ -33,7 +33,7 @@ app.use('/api/analytics', analyticsRoutes);
 // Add your other routes here
 
 // MongoDB connection
-mongoose.connect(process.env.MONGODB_URI)
+await mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 
