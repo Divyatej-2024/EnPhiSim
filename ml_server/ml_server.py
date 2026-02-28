@@ -11,8 +11,12 @@ from transformers import DistilBertTokenizerFast, DistilBertModel
 
 # ---- CONFIG ----
 MODEL_DIR = os.getenv("MODEL_DIR", "./models")   # folder containing cnn_model.h5 & meta.json
-CNN_MODEL_PATH = os.path.join(MODEL_DIR, "cnn_model.h5")
+MODEL_CANDIDATES = [
+    os.path.join(MODEL_DIR, "cnn_model.h5"),
+    os.path.join(MODEL_DIR, "cnn_options_model.h5"),
+]
 META_PATH = os.path.join(MODEL_DIR, "meta.json")
+MAX_TEXT_CHARS = int(os.getenv("MAX_TEXT_CHARS", "4000"))
 
 # ---- FASTAPI APP ----
 app = FastAPI(title="EnPhiSim ML Server - DistilBERT + CNN")
@@ -33,11 +37,16 @@ try:
     bert.eval()  # inference mode
 
     print("Loading CNN classifier...")
+    CNN_MODEL_PATH = next((path for path in MODEL_CANDIDATES if os.path.exists(path)), None)
+    if not CNN_MODEL_PATH:
+        raise FileNotFoundError(f"No CNN model found in {MODEL_DIR}")
     cnn_model = load_model(CNN_MODEL_PATH)
 
     print("Loading meta...")
-    with open(META_PATH, "r") as f:
-        meta = json.load(f)
+    meta = {}
+    if os.path.exists(META_PATH):
+        with open(META_PATH, "r") as f:
+            meta = json.load(f)
     LABELS = meta.get("labels", ["correct", "neutral", "wrong"])  # ordering
     MODEL_ACCURACY = meta.get("accuracy", None)
 
@@ -75,15 +84,24 @@ def predict(req: PredictRequest):
     text = req.text
     if not text or not isinstance(text, str):
         raise HTTPException(status_code=400, detail="text is required")
+    text = text.strip()[:MAX_TEXT_CHARS]
+    if not text:
+        raise HTTPException(status_code=400, detail="text is empty")
 
-    # get token-level embeddings
-    emb = get_embeddings([text])  # shape (1, seq_len, hidden)
-    # the CNN was trained to expect shape (batch, seq_len, hidden)
-    preds = cnn_model.predict(emb, verbose=0)  # shape (1, n_classes)
-    probs = preds[0].tolist()
+    try:
+        # get token-level embeddings
+        emb = get_embeddings([text])  # shape (1, seq_len, hidden)
+        # the CNN was trained to expect shape (batch, seq_len, hidden)
+        preds = cnn_model.predict(emb, verbose=0)  # shape (1, n_classes)
+        probs = preds[0].tolist()
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"inference_failed: {exc}")
 
     # prepare response
-    top_idx = int(np.argmax(probs))
+    width = min(len(LABELS), len(probs))
+    if width == 0:
+        raise HTTPException(status_code=500, detail="invalid_model_output")
+    top_idx = int(np.argmax(probs[:width]))
     label = LABELS[top_idx]
     confidence = float(probs[top_idx])
 
@@ -91,7 +109,7 @@ def predict(req: PredictRequest):
         "levelId": req.levelId,
         "userId": req.userId,
         "prediction": label,
-        "probabilities": { LABELS[i]: float(probs[i]) for i in range(len(LABELS)) },
+        "probabilities": { LABELS[i]: float(probs[i]) for i in range(width) },
         "confidence": confidence,
         "model_accuracy": MODEL_ACCURACY  # may be null if not provided
     }
@@ -101,27 +119,39 @@ def predict(req: PredictRequest):
 @app.post("/predict/batch")
 def predict_batch(req: BatchPredictRequest):
     items = req.items
-    texts = [it.get("text","") for it in items]
+    texts = [str(it.get("text", "")).strip()[:MAX_TEXT_CHARS] for it in items]
     if not texts:
         raise HTTPException(status_code=400, detail="items required")
 
-    emb = get_embeddings(texts)
-    preds = cnn_model.predict(emb, verbose=0)
+    try:
+        emb = get_embeddings(texts)
+        preds = cnn_model.predict(emb, verbose=0)
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"batch_inference_failed: {exc}")
     results = []
     for i, p in enumerate(preds):
-        top_idx = int(np.argmax(p))
+        width = min(len(LABELS), len(p))
+        if width == 0:
+            continue
+        top_idx = int(np.argmax(p[:width]))
         label = LABELS[top_idx]
         confidence = float(p[top_idx])
         results.append({
             "levelId": items[i].get("levelId"),
             "userId": items[i].get("userId"),
             "prediction": label,
-            "probabilities": { LABELS[j]: float(p[j]) for j in range(len(LABELS)) },
+            "probabilities": { LABELS[j]: float(p[j]) for j in range(width) },
             "confidence": confidence
         })
-    return {"results": results, "model_accuracy": MODEL_ACCURACY}
+    return {"results": results, "model_accuracy": MODEL_ACCURACY, "model_path": CNN_MODEL_PATH}
 
 # ---- Health ---
 @app.get("/health")
 def health():
-    return {"status": "ok", "model_loaded": True, "labels": LABELS, "model_accuracy": MODEL_ACCURACY}
+    return {
+        "status": "ok",
+        "model_loaded": True,
+        "labels": LABELS,
+        "model_accuracy": MODEL_ACCURACY,
+        "model_path": CNN_MODEL_PATH,
+    }
