@@ -6,20 +6,22 @@ export default function Consent() {
   const [agreed, setAgreed] = useState(false);
   const navigate = useNavigate();
 
-  const handleConsent = async () => {
-    // Record consent in backend
-    await fetch(`${process.env.REACT_APP_API_URL}/api/consent`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        agreed: true,
-        timestamp: new Date().toISOString(),
-        sessionId: localStorage.getItem('sessionId') || generateSessionId()
-      })
-    });
-    
-    navigate('/dashboard');
-  };
+const handleConsent = async () => {
+  await fetch(`${process.env.REACT_APP_API_URL}/api/consent`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      agreed: true,
+      timestamp: new Date().toISOString(),
+      sessionId: localStorage.getItem('sessionId') || generateSessionId()
+    })
+  });
+
+  // 🔥 ADD THIS LINE
+  localStorage.setItem("consentGiven", "true");
+
+  navigate('/dashboard');
+};
 
   return (
     <div className="consent-container">
