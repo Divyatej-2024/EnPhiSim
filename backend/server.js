@@ -9,6 +9,7 @@ import levelRoutes from "./routes/levelRoutes.js";
 import mlRoutes from "./routes/mlanalysis.js";
 import predictRoutes from "./routes/predict.js";
 import actionRoutes from "./routes/actionRoutes.js";
+import levelDatasetRoutes from "./routes/levelDataset.js";
 import scenarioRoutes from "./routes/scenarioRoutes.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -94,6 +95,7 @@ app.get("/health", (req, res) => {
 
 app.use("/api", levelRoutes);
 app.use("/api", scenarioRoutes);
+app.use('/api/scenarios', levelDatasetRoutes);
 app.use("/api", mlRoutes);
 app.use("/api", predictRoutes);
 app.use("/api", actionRoutes);
