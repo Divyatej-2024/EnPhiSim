@@ -165,6 +165,9 @@ export default function PhishingGame() {
           <span className="scenario-progress">
             Scenario {currentScenarioIndex + 1} / {scenarios.length}
           </span>
+          <Link to="/dashboard" className="dashboard-link">
+  📊 View Dashboard
+</Link>
         </div>
         <div className="score-display">
           <span className="score-label">Score</span>
