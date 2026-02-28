@@ -1,21 +1,13 @@
 import express from 'express';
+import UserAction from '../models/UserAction.js';
 
 const router = express.Router();
 
-// =============================
-// GET Analytics for a Session
-// =============================
 router.get('/:sessionId', async (req, res) => {
   try {
-    const db = req.app.locals.db;
-    const actions = db.collection('user_actions');
-
     const sessionId = req.params.sessionId;
     const timeRange = req.query.range || 'week';
 
-    // -----------------------------
-    // 1. Input Validation
-    // -----------------------------
     if (!sessionId || sessionId.length < 10) {
       return res.status(400).json({ error: 'Invalid session ID' });
     }
@@ -25,9 +17,6 @@ router.get('/:sessionId', async (req, res) => {
       return res.status(400).json({ error: 'Invalid time range' });
     }
 
-    // -----------------------------
-    // 2. Date Filtering
-    // -----------------------------
     const now = new Date();
     let startDate = null;
 
@@ -55,10 +44,9 @@ router.get('/:sessionId', async (req, res) => {
       query.timestamp = { $gte: startDate };
     }
 
-    const userActions = await actions
-      .find(query)
+    const userActions = await UserAction.find(query)
       .sort({ timestamp: -1 })
-      .toArray();
+      .lean();
 
     const total = userActions.length;
 
@@ -70,20 +58,14 @@ router.get('/:sessionId', async (req, res) => {
       });
     }
 
-    // =============================
-    // 3. Single Pass Analytics
-    // =============================
-
     let correctCount = 0;
     let trust = 0;
     let ignore = 0;
     let report = 0;
-
     let distilCorrect = 0;
     let distilTotal = 0;
     let cnnCorrect = 0;
     let cnnTotal = 0;
-
     let totalTime = 0;
 
     const taxonomyStats = {};
@@ -102,7 +84,6 @@ router.get('/:sessionId', async (req, res) => {
           ? 'phishing'
           : 'legitimate';
 
-      // DistilBERT
       if (a.ml_predictions?.distilbert?.prediction) {
         distilTotal++;
         if (a.ml_predictions.distilbert.prediction === expected) {
@@ -110,7 +91,6 @@ router.get('/:sessionId', async (req, res) => {
         }
       }
 
-      // CNN
       if (a.ml_predictions?.cnn?.prediction) {
         cnnTotal++;
         if (a.ml_predictions.cnn.prediction === expected) {
@@ -118,7 +98,6 @@ router.get('/:sessionId', async (req, res) => {
         }
       }
 
-      // Taxonomy tracking
       const type = a.taxonomy || 'Credential Phishing';
       if (!taxonomyStats[type]) {
         taxonomyStats[type] = { total: 0, correct: 0 };
@@ -128,40 +107,27 @@ router.get('/:sessionId', async (req, res) => {
       if (a.correct) taxonomyStats[type].correct++;
     }
 
-    // =============================
-    // 4. Derived Metrics
-    // =============================
-
     const accuracy = ((correctCount / total) * 100).toFixed(2);
     const avgTime = (totalTime / total).toFixed(2);
 
     const mlPerformance = {
       distilbert: {
-        accuracy:
-          distilTotal > 0
-            ? ((distilCorrect / distilTotal) * 100).toFixed(2)
-            : 0,
+        accuracy: distilTotal > 0
+          ? ((distilCorrect / distilTotal) * 100).toFixed(2)
+          : 0,
         total: distilTotal
       },
       cnn: {
-        accuracy:
-          cnnTotal > 0
-            ? ((cnnCorrect / cnnTotal) * 100).toFixed(2)
-            : 0,
+        accuracy: cnnTotal > 0
+          ? ((cnnCorrect / cnnTotal) * 100).toFixed(2)
+          : 0,
         total: cnnTotal
       }
     };
 
-    // =============================
-    // 5. Weakness Analysis
-    // Threshold justified in report (e.g., <70%)
-    // =============================
-
     const weaknesses = Object.entries(taxonomyStats)
       .map(([type, stats]) => {
-        const typeAccuracy =
-          (stats.correct / stats.total) * 100;
-
+        const typeAccuracy = (stats.correct / stats.total) * 100;
         return {
           type,
           accuracy: typeAccuracy.toFixed(2),
@@ -173,21 +139,13 @@ router.get('/:sessionId', async (req, res) => {
       .sort((a, b) => a.accuracy - b.accuracy)
       .slice(0, 4);
 
-    // =============================
-    // 6. Response
-    // =============================
-
     res.json({
       session_id: sessionId,
       total_actions: total,
       correct_actions: correctCount,
       accuracy_percent: accuracy,
       average_response_time_seconds: avgTime,
-      action_distribution: {
-        trust,
-        ignore,
-        report
-      },
+      action_distribution: { trust, ignore, report },
       ml_performance: mlPerformance,
       weaknesses,
       recent_actions: userActions.slice(0, 10)
@@ -195,15 +153,9 @@ router.get('/:sessionId', async (req, res) => {
 
   } catch (error) {
     console.error("Analytics Route Error:", error);
-    res.status(500).json({
-      error: "Internal server error"
-    });
+    res.status(500).json({ error: "Internal server error" });
   }
 });
-
-// =============================
-// Phishing Advice Engine
-// =============================
 
 function getTipForType(type) {
   const tips = {
