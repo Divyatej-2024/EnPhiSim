@@ -17,13 +17,19 @@ export const BACKEND_URL_CANDIDATES = [
 ].filter((url, index, arr) => Boolean(url) && arr.indexOf(url) === index);
 
 export async function getUserAnalysis(userId) {
-  try {
-    const res = await axios.get(`${BACKEND_URL}/api/analysis/${userId}`);
-    return res.data;
-  } catch (err) {
-    console.error("Error fetching user analysis:", err);
-    throw err;
+  let lastError = null;
+
+  for (const baseUrl of BACKEND_URL_CANDIDATES) {
+    try {
+      const res = await axios.get(`${baseUrl}/api/analysis/${userId}`);
+      return res.data;
+    } catch (err) {
+      lastError = err;
+    }
   }
+
+  console.error("Error fetching user analysis:", lastError);
+  throw lastError;
 }
 
 export const sendUserAction = async (actionData) => {

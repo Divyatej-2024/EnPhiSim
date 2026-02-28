@@ -2,6 +2,7 @@ import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useProgress } from "../../../context/ProgressContext";
 import { getPrediction, sendUserAction } from "../../../api";
+import { getClientUserId } from "../../../utils/userIdentity";
 import "../../../level.css";
 
 function toKey(value) {
@@ -59,20 +60,6 @@ function inferCorrectness(level, action, metadata) {
     }
     return overlap > 0;
   });
-}
-
-function getClientUserId() {
-  try {
-    const key = "enphisim-user-id";
-    const saved = localStorage.getItem(key);
-    if (saved) return saved;
-
-    const generated = `user_${Math.random().toString(36).slice(2, 10)}`;
-    localStorage.setItem(key, generated);
-    return generated;
-  } catch (err) {
-    return "anonymous";
-  }
 }
 
 function createMlInputText(level, action) {

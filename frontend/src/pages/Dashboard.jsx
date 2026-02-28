@@ -2,12 +2,14 @@ import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useProgress } from "../context/ProgressContext";
 import useDashboardAnalytics from "./useDashboardAnalytics";
-import { BACKEND_URL_CANDIDATES } from "../api";
+import { BACKEND_URL_CANDIDATES, getUserAnalysis } from "../api";
+import { getClientUserId } from "../utils/userIdentity";
 import "./dashboard.css";
 
 export default function Dashboard() {
   const { progress } = useProgress();
   const [levels, setLevels] = useState([]);
+  const [mlAnalysis, setMlAnalysis] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -63,6 +65,26 @@ export default function Dashboard() {
     fetchLevels();
   }, []);
 
+  useEffect(() => {
+    let active = true;
+
+    const fetchMlAnalysis = async () => {
+      try {
+        const userId = getClientUserId();
+        const analysis = await getUserAnalysis(userId);
+        if (active) setMlAnalysis(analysis);
+      } catch (err) {
+        // Keep dashboard functional even if ML analysis endpoint is temporarily unavailable.
+        if (active) setMlAnalysis(null);
+      }
+    };
+
+    fetchMlAnalysis();
+    return () => {
+      active = false;
+    };
+  }, []);
+
   const groupedLevels = useMemo(() => {
     const grouped = {};
     levels.forEach((lvl) => {
@@ -77,7 +99,7 @@ export default function Dashboard() {
     return grouped;
   }, [levels]);
 
-  const analytics = useDashboardAnalytics(progress, levels);
+  const analytics = useDashboardAnalytics(progress, levels, mlAnalysis);
   const finalUnlocked =
     Number(analytics.completionRate) >= 75 &&
     Number(analytics.accuracy) >= 75;
@@ -114,6 +136,13 @@ export default function Dashboard() {
         <Card title="Accuracy">{analytics.accuracy}%</Card>
         <Card title="Safe Actions">{analytics.safeActions}</Card>
         <Card title="Risk Actions">{analytics.riskyActions}</Card>
+        <Card title="ML Status">{analytics.mlActive ? "Active" : "Offline"}</Card>
+        <Card title="ML Risk Score">
+          {analytics.riskScore == null ? "-" : `${analytics.riskScore}%`}
+        </Card>
+        <Card title="Model Accuracy">
+          {analytics.modelAccuracy == null ? "-" : `${Math.round(analytics.modelAccuracy * 100)}%`}
+        </Card>
       </div>
 
       <h2>Difficulty Levels</h2>

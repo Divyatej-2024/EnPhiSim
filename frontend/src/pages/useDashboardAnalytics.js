@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 
-export default function useDashboardAnalytics(progress, levels) {
+export default function useDashboardAnalytics(progress, levels, mlAnalysis = null) {
   return useMemo(() => {
     const completedLevels = progress?.completedLevels || {};
     const rawActions = Array.isArray(progress?.actions) ? progress.actions : [];
@@ -17,7 +17,7 @@ export default function useDashboardAnalytics(progress, levels) {
         : 0;
 
     /* ================= FLATTEN ALL ACTIONS ================= */
-    const totalActions = rawActions.length;
+    const localTotalActions = rawActions.length;
 
     const safeActions = rawActions.filter(
       (a) => (a?.isCorrect ?? a?.correct) === true
@@ -27,10 +27,24 @@ export default function useDashboardAnalytics(progress, levels) {
       (a) => (a?.isCorrect ?? a?.correct) === false
     ).length;
 
-    const accuracy =
-      totalActions > 0
-        ? Math.round((safeActions / totalActions) * 100)
+    const localAccuracy =
+      localTotalActions > 0
+        ? Math.round((safeActions / localTotalActions) * 100)
         : 0;
+
+    const totalActions = Number.isFinite(Number(mlAnalysis?.results?.length))
+      ? mlAnalysis.results.length
+      : localTotalActions;
+    const accuracy = Number.isFinite(Number(mlAnalysis?.accuracy))
+      ? Math.round(Number(mlAnalysis.accuracy))
+      : localAccuracy;
+    const riskScore = Number.isFinite(Number(mlAnalysis?.risk_score))
+      ? Number(mlAnalysis.risk_score)
+      : null;
+    const modelAccuracy = Number.isFinite(Number(mlAnalysis?.model_accuracy))
+      ? Number(mlAnalysis.model_accuracy)
+      : null;
+    const mlActive = Boolean(mlAnalysis);
 
     /* ================= NEXT LEVEL ================= */
     const nextLevel = Array.isArray(levels)
@@ -55,9 +69,12 @@ export default function useDashboardAnalytics(progress, levels) {
       safeActions,
       riskyActions,
       accuracy,
+      riskScore,
+      modelAccuracy,
+      mlActive,
       nextLevelTitle,
       nextLevelPath,
       buttonText,
     };
-  }, [progress, levels]);
+  }, [progress, levels, mlAnalysis]);
 }
