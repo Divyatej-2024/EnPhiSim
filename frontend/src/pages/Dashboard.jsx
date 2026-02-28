@@ -15,7 +15,7 @@ import {
   Filler
 } from 'chart.js';
 import { Line, Bar, Doughnut } from 'react-chartjs-2';
-import './Dashboard.css';
+import './Dashboard1.css';
 
 // Register ChartJS components
 ChartJS.register(
