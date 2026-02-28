@@ -46,12 +46,13 @@ function isAllowedOrigin(origin) {
 
 app.use(cors({
   origin(origin, callback) {
-    if (isAllowedOrigin(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error(`Not allowed by CORS: ${origin}`));
-    }
-  },
+  if (isAllowedOrigin(origin)) {
+    callback(null, true);
+  } else {
+    console.warn("Blocked CORS origin:", origin);
+    callback(new Error("Not allowed by CORS"));
+  }
+},
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   optionsSuccessStatus: 204,
 }));
@@ -98,10 +99,19 @@ async function startServer() {
       throw new Error("MONGODB_URI not defined in environment variables");
     }
 
-    await mongoose.connect(process.env.MONGODB_URI);
+await mongoose.connect(process.env.MONGODB_URI);
 
-    console.log("MongoDB Connected");
+app.locals.db = mongoose.connection.db;
 
+console.log("MongoDB Connected");
+
+mongoose.connection.on("error", (err) => {
+  console.error("MongoDB error:", err);
+});
+
+mongoose.connection.on("disconnected", () => {
+  console.warn("MongoDB disconnected");
+});
     app.listen(PORT, () => {
       console.log(`Backend running on port ${PORT}`);
     });
@@ -111,5 +121,9 @@ async function startServer() {
     process.exit(1);
   }
 }
+app.use((err, req, res, next) => {
+  console.error("Unhandled server error:", err);
+  res.status(500).json({ error: "Internal server error" });
+});
 
 startServer();
