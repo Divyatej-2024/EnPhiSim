@@ -13,7 +13,8 @@ import Thankyou from "./pages/Thankyou";
 import './App.css';
 import BackgroundWrapper from "./components/BackgroundWrapper";
 
-function App() {
+export default function App() {
+
   // Check if user has consented
   const hasConsented = localStorage.getItem('consentGiven') === 'true';
   
