@@ -1,98 +1,343 @@
 /* frontend/src/pages/Consent.css */
-.consent-container {
-  max-width: 800px;
-  margin: 40px auto;
+.consent-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 20px;
+  position: relative;
 }
 
+.consent-container {
+  max-width: 800px;
+  width: 100%;
+  animation: slideUp 0.6s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* University Header */
 .university-header {
-  text-align: center;
-  margin-bottom: 30px;
-  padding: 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--primary-gradient);
   color: white;
-  border-radius: 15px;
+  padding: 40px 30px;
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.university-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .university-header h1 {
-  margin: 0;
-  font-size: 2em;
+  font-size: 2.5em;
+  margin-bottom: 10px;
+  position: relative;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
 }
 
 .university-header h2 {
-  margin: 10px 0;
   font-size: 1.2em;
   font-weight: 400;
-  opacity: 0.9;
+  opacity: 0.95;
+  margin-bottom: 15px;
+  position: relative;
 }
 
-.ethics-ref {
-  font-family: monospace;
-  background: rgba(255,255,255,0.2);
-  padding: 5px 10px;
-  border-radius: 5px;
+.ethics-badge {
   display: inline-block;
-  margin: 10px 0 0;
+  background: rgba(255,255,255,0.2);
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-family: monospace;
+  font-size: 0.9em;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255,255,255,0.3);
+  position: relative;
 }
 
-.consent-box {
+/* Consent Card */
+.consent-card {
   background: white;
   padding: 40px;
-  border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+  box-shadow: var(--shadow-lg);
 }
 
-.consent-content {
-  margin: 30px 0;
-  line-height: 1.6;
-  color: #333;
+.consent-card h2 {
+  color: var(--text-dark);
+  margin-bottom: 20px;
+  font-size: 1.8em;
+  position: relative;
+  padding-bottom: 15px;
 }
 
-.consent-content h3 {
-  color: #667eea;
-  margin: 25px 0 10px;
+.consent-card h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 4px;
+  background: var(--primary-gradient);
+  border-radius: 2px;
 }
 
-.consent-content h3:first-child {
-  margin-top: 0;
+/* Consent Sections */
+.consent-section {
+  margin-bottom: 30px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  border-left: 4px solid var(--primary-color);
+  transition: all 0.3s ease;
 }
 
-.consent-checkbox {
+.consent-section:hover {
+  transform: translateX(5px);
+  box-shadow: var(--shadow-sm);
+}
+
+.consent-section h3 {
+  color: var(--primary-color);
+  margin-bottom: 15px;
   display: flex;
   align-items: center;
   gap: 10px;
-  margin: 30px 0;
+}
+
+.consent-section h3 i {
+  font-size: 1.2em;
+}
+
+.consent-section p {
+  color: var(--text-light);
+  line-height: 1.8;
+  margin-bottom: 10px;
+}
+
+.consent-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.consent-section li {
+  padding: 8px 0 8px 30px;
+  position: relative;
+  color: var(--text-light);
+}
+
+.consent-section li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--success-color);
+  font-weight: bold;
+}
+
+/* Data Points */
+.data-points {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.data-point {
+  background: white;
   padding: 15px;
-  background: #f8f9fa;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.data-point .point-icon {
+  font-size: 2em;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.data-point .point-label {
+  font-weight: bold;
+  color: var(--text-dark);
+  display: block;
+  margin-bottom: 3px;
+}
+
+.data-point .point-desc {
+  font-size: 0.85em;
+  color: var(--text-light);
+}
+
+/* Checkbox */
+.consent-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 20px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
   border-radius: 10px;
+  margin: 30px 0;
   cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.consent-checkbox:hover {
+  background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
 }
 
 .consent-checkbox input {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   cursor: pointer;
+  accent-color: var(--primary-color);
 }
 
+.consent-checkbox span {
+  flex: 1;
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+/* Enter Button */
 .enter-button {
   width: 100%;
-  padding: 15px;
+  padding: 18px;
   font-size: 1.2em;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  background: var(--primary-gradient);
   color: white;
   border: none;
-  border-radius: 10px;
+  border-radius: 50px;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-weight: 600;
+  position: relative;
+  overflow: hidden;
+}
+
+.enter-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.enter-button:hover::before {
+  width: 300px;
+  height: 300px;
 }
 
 .enter-button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
 }
 
 .enter-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  background: #ccc;
+}
+
+.enter-button:disabled::before {
+  display: none;
+}
+
+/* Contact Info */
+.contact-info {
+  margin-top: 30px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 0.95em;
+  color: var(--text-light);
+}
+
+.contact-info p {
+  margin: 5px 0;
+}
+
+.contact-info a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.contact-info a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .university-header h1 {
+    font-size: 1.8em;
+  }
+  
+  .university-header h2 {
+    font-size: 1em;
+  }
+  
+  .consent-card {
+    padding: 25px;
+  }
+  
+  .consent-card h2 {
+    font-size: 1.5em;
+  }
+  
+  .data-points {
+    grid-template-columns: 1fr;
+  }
+  
+  .consent-section {
+    padding: 15px;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .university-header {
+    background: none;
+    color: black;
+    padding: 20px;
+  }
+  
+  .consent-card {
+    box-shadow: none;
+  }
+  
+  .enter-button {
+    display: none;
+  }
 }

@@ -613,3 +613,112 @@
     page-break-inside: avoid;
   }
 }
+/* Add to existing Dashboard.css - Enhancements */
+
+/* Dashboard Container with background */
+.dashboard-container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Glass morphism cards */
+.summary-card, .chart-card, .recent-activity, .weakness-analysis {
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.summary-card::before, .chart-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 30% 30%, rgba(102,126,234,0.03), transparent 70%);
+  pointer-events: none;
+}
+
+/* Card icons enhancement */
+.card-icon {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-size: 2em;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Chart cards */
+.chart-card {
+  transition: all 0.3s ease;
+}
+
+.chart-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+.chart-card h3 {
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.chart-card h3::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 3px;
+  background: var(--primary-gradient);
+  border-radius: 2px;
+}
+
+/* Activity table enhancement */
+.activity-table tbody tr {
+  transition: all 0.3s ease;
+}
+
+.activity-table tbody tr:hover {
+  transform: scale(1.01);
+  box-shadow: var(--shadow-sm);
+  background: white !important;
+}
+
+/* Weakness card enhancement */
+.weakness-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.weakness-card::before {
+  content: '💡';
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  font-size: 2em;
+  opacity: 0.1;
+}
+
+/* Progress bar animation */
+.progress-fill {
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
