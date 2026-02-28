@@ -1,0 +1,98 @@
+/* frontend/src/pages/Consent.css */
+.consent-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.university-header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 15px;
+}
+
+.university-header h1 {
+  margin: 0;
+  font-size: 2em;
+}
+
+.university-header h2 {
+  margin: 10px 0;
+  font-size: 1.2em;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+.ethics-ref {
+  font-family: monospace;
+  background: rgba(255,255,255,0.2);
+  padding: 5px 10px;
+  border-radius: 5px;
+  display: inline-block;
+  margin: 10px 0 0;
+}
+
+.consent-box {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+}
+
+.consent-content {
+  margin: 30px 0;
+  line-height: 1.6;
+  color: #333;
+}
+
+.consent-content h3 {
+  color: #667eea;
+  margin: 25px 0 10px;
+}
+
+.consent-content h3:first-child {
+  margin-top: 0;
+}
+
+.consent-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 30px 0;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.consent-checkbox input {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.enter-button {
+  width: 100%;
+  padding: 15px;
+  font-size: 1.2em;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.enter-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+}
+
+.enter-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

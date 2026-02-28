@@ -13,8 +13,18 @@ import Thankyou from "./pages/Thankyou";
 import './App.css';
 import BackgroundWrapper from "./components/BackgroundWrapper";
 
+function App() {
+  // Check if user has consented
+  const hasConsented = localStorage.getItem('consentGiven') === 'true';
+  
+  // Generate session ID if not exists
+  React.useEffect(() => {
+    if (!localStorage.getItem('sessionId')) {
+      const sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+      localStorage.setItem('sessionId', sessionId);
+    }
+  }, []);
 
-export default function App() {
   return (
     <BrowserRouter>
     <BackgroundWrapper>
