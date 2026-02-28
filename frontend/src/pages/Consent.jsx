@@ -18,7 +18,7 @@ export default function Consent() {
       })
     });
     
-    navigate('/simulator');
+    navigate('/dashboard');
   };
 
   return (
