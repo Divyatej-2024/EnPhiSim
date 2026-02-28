@@ -34,7 +34,6 @@ export default function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/disclaimer" element={<Disclaimer />} />
         <Route path="/about" element={< About/>}/>
-        <Route path="/dashboard" element={<Dashboard />} />
 
         {/* 👇👇👇 THE FIX: Captures BOTH category and levelId parameters 👇👇👇 */}
         <Route path="/levels/:category/:level_no" element={<LevelPage />} />
