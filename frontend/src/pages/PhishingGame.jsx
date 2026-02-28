@@ -28,7 +28,7 @@ export default function PhishingGame() {
     try {
       setLoading(true);
       const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/levels`);
-      const allScenarios = response.data.all;
+      const allScenarios = response.data;
       
       // Group by level
       const grouped = allScenarios.reduce((acc, scenario) => {
