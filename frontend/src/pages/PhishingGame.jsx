@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './PhishingGame.css';
+import './Dashboard';
 
 export default function PhishingGame() {
   const [levels, setLevels] = useState({});
@@ -165,9 +166,9 @@ export default function PhishingGame() {
           <span className="scenario-progress">
             Scenario {currentScenarioIndex + 1} / {scenarios.length}
           </span>
-          <Link to="/dashboard" className="dashboard-link">
+          {/* <Link to="/dashboard" className="dashboard-link">
   📊 View Dashboard
-</Link>
+</Link> */}
         </div>
         <div className="score-display">
           <span className="score-label">Score</span>
