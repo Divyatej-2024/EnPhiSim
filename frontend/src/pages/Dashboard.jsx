@@ -15,9 +15,9 @@ export default function Dashboard() {
 
   useEffect(() => {
     fetchAnalytics();
-  }, [timeRange, fetchAnalytics]);
+  }, [timeRange]);
 
-  const fetchAnalytics = async () => {
+ const fetchAnalytics = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -29,7 +29,7 @@ export default function Dashboard() {
     } finally {
       setLoading(false);
     }
-  };
+ });
 
   // Handler for levels button
   const goToLevels = () => {
