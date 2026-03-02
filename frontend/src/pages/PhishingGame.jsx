@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import TemplateRenderer from '../levels/TemplateRenderer';
+import TemplateRenderer from './levels/TemplateRenderer';
 import './PhishingGame.css';
 
 const API_BASE = process.env.REACT_APP_API_URL || "https://enphisim-1.onrender.com";
