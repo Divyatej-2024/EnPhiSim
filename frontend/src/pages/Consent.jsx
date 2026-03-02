@@ -6,103 +6,111 @@ export default function Consent() {
   const [agreed, setAgreed] = useState(false);
   const navigate = useNavigate();
 
-const handleConsent = async () => {
-  await fetch(`${process.env.REACT_APP_API_URL}/api/consent`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      agreed: true,
-      timestamp: new Date().toISOString(),
-      sessionId: localStorage.getItem('sessionId') || generateSessionId()
-    })
-  });
+  const handleConsent = async () => {
+    if (!agreed) return;
 
-  // 🔥 ADD THIS LINE
-  localStorage.setItem("consentGiven", "true");
+    const sessionId =
+      localStorage.getItem('sessionId') || generateSessionId();
 
-  navigate('/dashboard');
-};
+    // Store consent locally first (so routing works immediately)
+    localStorage.setItem("consentGiven", "true");
+
+    // Redirect immediately (do not block UI on backend)
+    navigate('/dashboard');
+
+    // Send consent to backend (non-blocking)
+    try {
+      await fetch(`${process.env.REACT_APP_API_URL}/api/consent`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          agreed: true,
+          timestamp: new Date().toISOString(),
+          sessionId,
+          consentVersion: "1.0",
+          projectType: "Prototype Demonstration"
+        })
+      });
+    } catch (error) {
+      console.error("Consent logging failed:", error);
+      // For prototype, do not interrupt user experience
+    }
+  };
 
   return (
-    <div className="consent-container">
-      <div className="university-header">
-        <h1>Teesside University</h1>
-        <h2>School of Computing, Engineering & Digital Technologies</h2>
-        <p>Ethics Reference: 2025 Oct 31565 PENDELA</p>
-        <p>Supervisor: Dr. Diyan Muhammad (m.diyan@tees.ac.uk)</p>
-        <p>Researcher: Divya Tej Pendela (d3604526@live.tees.ac.uk)</p>
-      </div>
+    <div className="consent-page">
+      <div className="consent-container">
 
-      <div className="consent-content">
-        <h3>Informed Consent for Research Participation</h3>
-        
-        <section>
-          <h4>Study Purpose</h4>
-          <p>This research evaluates how users interact with phishing simulations and compares the effectiveness of DistilBERT vs CNN machine learning classifiers in detecting phishing attempts.</p>
-        </section>
+        <div className="university-header">
+          <h1>Teesside University</h1>
+          <h2>School of Computing, Engineering & Digital Technologies</h2>
+          <p>Ethics Reference: 2025 Oct 31565 PENDELA</p>
+          <p>Supervisor: Dr. Diyan Muhammad</p>
+          <p>Researcher: Divya Tej Pendela</p>
+        </div>
 
-        <section>
-          <h4>What Participation Involves</h4>
-          <ul>
-            <li>You will complete a series of phishing simulation levels</li>
-            <li>Each level presents email scenarios requiring decisions</li>
-            <li>Your choices and response times are recorded</li>
-            <li>The ML model provides real-time feedback on your decisions</li>
-            <li>Total time: approximately 15-20 minutes</li>
-          </ul>
-        </section>
+        <div className="consent-card">
+          <h2>Prototype Participation Information</h2>
 
-        <section>
-          <h4>Data Collection & Privacy</h4>
-          <p><strong>NO personal identifiers are collected:</strong></p>
-          <ul>
-            <li>✅ No names, emails, or IP addresses</li>
-            <li>✅ No browser fingerprints or tracking cookies</li>
-            <li>✅ Only anonymous interaction data: scenario choices, response times, ML predictions</li>
-            <li>✅ All data stored in MongoDB Atlas with encryption</li>
-            <li>✅ Data retained for 12 months, then permanently deleted</li>
-          </ul>
-        </section>
+          <section className="consent-section">
+            <h3>Project Purpose</h3>
+            <p>
+              EnPhiSim is a prototype phishing simulation platform developed
+              as part of a BSc Cybersecurity Final Year Project.
+            </p>
+            <p>
+              It demonstrates phishing scenario interaction and integration
+              of machine learning classifiers for automated feedback.
+            </p>
+          </section>
 
-        <section>
-          <h4>Your Rights</h4>
-          <ul>
-            <li>✅ Participation is completely voluntary</li>
-            <li>✅ You may withdraw at ANY time by closing your browser</li>
-            <li>✅ To withdraw already submitted data: email d3604526@live.tees.ac.uk with your session date/time</li>
-            <li>✅ No consequences for withdrawal</li>
-          </ul>
-        </section>
+          <section className="consent-section">
+            <h3>Participation</h3>
+            <ul>
+              <li>Simulated phishing email scenarios</li>
+              <li>User decision-making tasks</li>
+              <li>ML-based feedback demonstration</li>
+              <li>Approximate duration: 15–20 minutes</li>
+            </ul>
+          </section>
 
-        <section>
-          <h4>Contact</h4>
-          <p>Questions about the research: d3604526@live.tees.ac.uk</p>
-          <p>Ethics concerns: m.diyan@tees.ac.uk</p>
-        </section>
+          <section className="consent-section">
+            <h3>Privacy</h3>
+            <ul>
+              <li>No personal identifiers intentionally collected</li>
+              <li>No account registration required</li>
+              <li>Anonymous interaction data only</li>
+              <li>Stored securely for academic evaluation purposes</li>
+            </ul>
+          </section>
 
-        <label className="consent-checkbox">
-          <input 
-            type="checkbox" 
-            checked={agreed}
-            onChange={(e) => setAgreed(e.target.checked)}
-          />
-          I have read and understood the information above and agree to participate in this research study under the terms described.
-        </label>
+          <label className="consent-checkbox">
+            <input
+              type="checkbox"
+              checked={agreed}
+              onChange={(e) => setAgreed(e.target.checked)}
+            />
+            I agree to participate in this prototype demonstration.
+          </label>
 
-        <button 
-          onClick={handleConsent}
-          disabled={!agreed}
-          className="enter-button"
-        >
-          Enter Simulator
-        </button>
+          <button
+            onClick={handleConsent}
+            disabled={!agreed}
+            className="enter-button"
+          >
+            Enter Simulator
+          </button>
+
+        </div>
       </div>
     </div>
   );
 }
 
 function generateSessionId() {
-  const id = Math.random().toString(36).substring(2) + Date.now().toString(36);
+  const array = new Uint32Array(4);
+  window.crypto.getRandomValues(array);
+  const id = Array.from(array, (dec) => dec.toString(16)).join('');
   localStorage.setItem('sessionId', id);
   return id;
 }

@@ -1,47 +1,40 @@
-import React from "react";
-import MailLevel from "./templates/MailLevel";
-import BrowserLevel from "./templates/BrowserLevel";
-import MessageLevel from "./templates/MessageLevel";
-import NotificationLevel from "./templates/NotificationLevel";
-import ImageLevel from "./templates/ImageLevel";
-import MailBrowserLevel from "./templates/MailBrowserLevel";
-import MailBrowserMessageLevel from "./templates/MailBrowserMessageLevel";
+import React from 'react';
 
-const levelTemplates = {
-  mail: MailLevel,
-  browser: BrowserLevel,
-  message: MessageLevel,
-  notification: NotificationLevel,
-  image: ImageLevel,
-  mailbrowser: MailBrowserLevel,
-  mailbrowsermessage: MailBrowserMessageLevel,
-};
-
-export default function TemplateRenderer({ level }) {
-  const rawType = level.template_type || "";
-
-  const normalizedType = rawType
-    .toLowerCase()
-    .replace(/[^a-z0-9]/g, "")
-    .trim();
-
-  const TemplateComponent = levelTemplates[normalizedType];
-
-  console.log("RAW TEMPLATE:", rawType);
-  console.log("NORMALIZED TEMPLATE:", normalizedType);
-
-  if (!TemplateComponent) {
-    return (
-      <h2>
-        Template not found: <code>{rawType}</code>
-      </h2>
-    );
+export default function TemplateRenderer({ scenario, onAction, locked }) {
+  if (!scenario) {
+    return <div>No scenario data</div>;
   }
 
   return (
-    <TemplateComponent
-      level={level}
-      levelId={level?.level_no}
-    />
+    <div className="email-card">
+      <h3>{scenario.title || 'Phishing Email'}</h3>
+      <p><strong>From:</strong> {scenario.from_address || 'Unknown'}</p>
+      <p><strong>Reply-To:</strong> {scenario.reply_to || 'None'}</p>
+      <p><strong>To:</strong> {scenario.to_address || 'Unknown'}</p>
+      <p>{scenario.content || scenario.body_text}</p>
+      
+      {scenario.links && scenario.links.length > 0 && (
+        <div className="links-section">
+          <p><strong>Links:</strong></p>
+          <ul>
+            {scenario.links.map((link, i) => (
+              <li key={i}>{link}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+      
+      <div className="action-buttons">
+        <button onClick={() => onAction('Trust & Click')} disabled={locked}>
+          Trust & Click
+        </button>
+        <button onClick={() => onAction('Ignore')} disabled={locked}>
+          Ignore
+        </button>
+        <button onClick={() => onAction('Report Phish')} disabled={locked}>
+          Report Phish
+        </button>
+      </div>
+    </div>
   );
 }

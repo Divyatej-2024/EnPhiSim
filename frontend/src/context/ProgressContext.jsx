@@ -1,263 +1,40 @@
-// frontend/src/context/ProgressContext.jsx
+// frontend/src/context/ProgressContext.js
+import React, { createContext, useContext, useState } from 'react';
 
-import React, { createContext, useContext, useState, useEffect } from "react";
-
-export const ProgressContext = createContext();
-
-/*
-  Curriculum Structure
-  Total = 39 Levels
-*/
-
-const LEVEL_CONFIG = {
-  EASY: 6,
-  ADV_EASY: 6,
-  NORMAL: 6,
-  PRE_HARD: 5,
-  HARD: 5,
-  ADV_HARD: 4,
-  BONUS: 6,
-  FINAL: 1
-};
-
-const TOTAL_LEVELS = Object.values(LEVEL_CONFIG)
-  .reduce((a, b) => a + b, 0);
+const ProgressContext = createContext();
 
 export function ProgressProvider({ children }) {
+  const [completedLevels, setCompletedLevels] = useState([]);
+  const [actions, setActions] = useState([]);
 
-  // ==============================
-  // INITIAL STATE (SAFE LOAD)
-  // ==============================
-
- const [progress, setProgress] = useState(() => {
-  try {
-    const saved = localStorage.getItem("enphisim-progress");
-
-    if (!saved) {
-      return {
-        completedLevels: {},
-        actions: [],
-        xp: 0,
-        levelScenarios: {}  // <-- add this
-      };
-    }
-
-    const parsed = JSON.parse(saved);
-    return {
-      ...parsed,
-      levelScenarios: parsed.levelScenarios || {} // ensure field exists
-    };
-
-  } catch (error) {
-    console.error("Failed to parse progress:", error);
-
-    return {
-      completedLevels: {},
-      actions: [],
-      xp: 0,
-      levelScenarios: {}
-    };
-  }
-});
-  // ==============================
-  // AUTO SAVE
-  // ==============================
-
-  useEffect(() => {
-    try {
-      localStorage.setItem("enphisim-progress", JSON.stringify(progress));
-    } catch (error) {
-      console.error("Failed to save progress:", error);
-    }
-  }, [progress]);
-
-  const getLevelScenario = (levelId, scenarios) => {
-  // Return previously assigned scenario if exists
-  if (progress.levelScenarios[levelId]) {
-    return progress.levelScenarios[levelId];
-  }
-
-  // Pick a scenario randomly
-  const chosen = scenarios[Math.floor(Math.random() * scenarios.length)];
-
-  // Save it to progress
-  setProgress(prev => ({
-    ...prev,
-    levelScenarios: {
-      ...prev.levelScenarios,
-      [levelId]: chosen
-    }
-  }));
-
-  return chosen;
-};
-  // ==============================
-  // RECORD USER ACTION
-  // ==============================
-
-  const recordAction = (levelId, actionType, isCorrect) => {
-    setProgress(prev => {
-      const timestamp = new Date().toISOString();
-
-      let record;
-      if (actionType && typeof actionType === "object" && !Array.isArray(actionType)) {
-        record = { ...actionType };
-        if (!record.timestamp) record.timestamp = timestamp;
-        if (record.levelId == null && levelId != null) record.levelId = levelId;
-      } else {
-        record = {
-          levelId,
-          actionType,
-          isCorrect,
-          timestamp
-        };
-      }
-
-      return {
-        ...prev,
-        actions: [
-          ...prev.actions,
-          record
-        ]
-      };
-    });
+  const recordAction = async (levelId, actionRecord) => {
+    setActions(prev => [...prev, actionRecord]);
+    console.log('Action recorded:', levelId, actionRecord);
+    return true;
   };
 
-  const addAction = (actionRecord) => {
-    const levelId = actionRecord?.levelId ?? actionRecord?.level_no ?? actionRecord?.level;
-    recordAction(levelId, actionRecord);
+  const completeLevel = async (levelId) => {
+    setCompletedLevels(prev => [...prev, levelId]);
+    console.log('Level completed:', levelId);
+    return true;
   };
-
-  // ==============================
-  // MARK LEVEL COMPLETE
-  // ==============================
-
-  const markLevelComplete = (levelId) => {
-    setProgress(prev => {
-
-      // Prevent duplicate XP if already completed
-      if (prev.completedLevels[levelId]) {
-        return prev;
-      }
-
-      return {
-        ...prev,
-        completedLevels: {
-          ...prev.completedLevels,
-          [levelId]: true
-        },
-        xp: prev.xp + 100
-      };
-    });
-  };
-
-  const completeLevel = (levelId) => markLevelComplete(levelId);
-
-  // ==============================
-  // DERIVED METRICS
-  // ==============================
-
-  const completedCount =
-    Object.keys(progress.completedLevels).length;
-
-  const completionRate =
-    TOTAL_LEVELS === 0
-      ? 0
-      : Math.round((completedCount / TOTAL_LEVELS) * 100);
-
-  const totalActions = progress.actions.length;
-
-  const correctActions =
-    progress.actions.filter(a => a.isCorrect).length;
-
-  const accuracy =
-    totalActions === 0
-      ? 0
-      : Math.round((correctActions / totalActions) * 100);
-
-  const safeActions = correctActions;
-
-  const riskActions =
-    progress.actions.filter(a => !a.isCorrect).length;
-
-  // ==============================
-  // CATEGORY STATS
-  // ==============================
-
-  const getCategoryStats = (category) => {
-
-    const total = LEVEL_CONFIG[category];
-
-    if (!total) {
-      return { completed: 0, total: 0, percent: 0 };
-    }
-
-    const prefix = category.toLowerCase().replace("_", "");
-
-    const completed =
-      Object.keys(progress.completedLevels)
-        .filter(id =>
-          id.toLowerCase().startsWith(prefix)
-        ).length;
-
-    const percent =
-      total === 0
-        ? 0
-        : Math.round((completed / total) * 100);
-
-    return { completed, total, percent };
-  };
-
-  // ==============================
-  // UNLOCK LOGIC
-  // ==============================
-
-  const isFinalUnlocked =
-    completionRate >= 75 && accuracy >= 75;
-
-  // ==============================
-  // RESET FUNCTION (Optional)
-  // ==============================
-
-  const resetProgress = () => {
-    localStorage.removeItem("enphisim-progress");
-    setProgress({
-      completedLevels: {},
-      actions: [],
-      xp: 0,
-      levelScenarios: {}
-    });
-  };
-
-  // ==============================
-  // PROVIDER
-  // ==============================
 
   return (
-    <ProgressContext.Provider
-      value={{
-        progress,
-        recordAction,
-        addAction,
-        markLevelComplete,
-        completeLevel,
-        resetProgress,
-        LEVEL_CONFIG,
-        TOTAL_LEVELS,
-        completedCount,
-        completionRate,
-        totalActions,
-        accuracy,
-        safeActions,
-        riskActions,
-        isFinalUnlocked,
-        getCategoryStats,
-        getLevelScenario
-      }}
-    >
+    <ProgressContext.Provider value={{
+      completedLevels,
+      actions,
+      recordAction,
+      completeLevel
+    }}>
       {children}
     </ProgressContext.Provider>
   );
 }
 
-export const useProgress = () => useContext(ProgressContext);
+export function useProgress() {
+  const context = useContext(ProgressContext);
+  if (!context) {
+    throw new Error('useProgress must be used within a ProgressProvider');
+  }
+  return context;
+}

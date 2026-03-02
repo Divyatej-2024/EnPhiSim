@@ -1,4 +1,10 @@
 /* frontend/src/components/BackgroundWrapper.css */
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #073A78;
+}
 .bg-wrapper {
   position: relative;
   min-height: 100vh;
@@ -16,7 +22,7 @@
   background-position: center;
   background-attachment: fixed;
   background-size: 400px auto;
-  opacity: 0.06;
+  opacity: 0.6;
   z-index: -1;
   pointer-events: none;
 }

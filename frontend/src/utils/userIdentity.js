@@ -1,13 +1,15 @@
+// frontend/src/utils/userIdentity.js
 export function getClientUserId() {
-  try {
-    const key = "enphisim-user-id";
-    const saved = localStorage.getItem(key);
-    if (saved) return saved;
-
-    const generated = `user_${Math.random().toString(36).slice(2, 10)}`;
-    localStorage.setItem(key, generated);
-    return generated;
-  } catch (err) {
-    return "anonymous";
+  // Try to get from localStorage first
+  let userId = localStorage.getItem('sessionId');
+  
+  // If not found, generate a new one
+  if (!userId) {
+    const array = new Uint32Array(4);
+    window.crypto.getRandomValues(array);
+    userId = Array.from(array, dec => dec.toString(16)).join('');
+    localStorage.setItem('sessionId', userId);
   }
+  
+  return userId;
 }

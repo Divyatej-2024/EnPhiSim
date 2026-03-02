@@ -1,9 +1,10 @@
+// frontend/src/pages/levels/templates/BaseLevel.js
 import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { useProgress } from "../../../context/ProgressContext";
-import { getPrediction, sendUserAction } from "../../../api";
-import { getClientUserId } from "../../../utils/userIdentity";
-import "../../../level.css";
+// import { useProgress } from "../../../context/ProgressContext";
+// import { getPrediction, sendUserAction } from "../../../api";
+// import { getClientUserId } from "../../../utils/userIdentity";
+import "../level.css";
 
 function toKey(value) {
   return String(value || "")
@@ -76,7 +77,7 @@ function createMlInputText(level, action) {
 }
 
 export default function BaseLevel({ children, levelType, scenario, onAction, customStyles }) {
-  const { recordAction, completeLevel } = useProgress();
+  // const { recordAction, completeLevel } = useProgress();
   const navigate = useNavigate();
   const [locked, setLocked] = useState(false);
   const [dialog, setDialog] = useState({
@@ -99,53 +100,53 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
       try {
         const isCorrect = inferCorrectness(currentLevel, action, metadata);
         const levelId = currentLevel.level_no || currentLevel.Level_no || currentLevel.id;
-        const userId = getClientUserId();
+        // const userId = getClientUserId();
         const mlText = createMlInputText(currentLevel, action);
         let mlResult = null;
 
-        try {
-          mlResult = await getPrediction({
-            userId,
-            levelId,
-            text: mlText,
-          });
-        } catch (mlErr) {
-          console.warn("ML prediction unavailable:", mlErr?.message || mlErr);
-        }
+        // try {
+        //   mlResult = await getPrediction({
+        //     userId,
+        //     levelId,
+        //     text: mlText,
+        //   });
+        // } catch (mlErr) {
+        //   console.warn("ML prediction unavailable:", mlErr?.message || mlErr);
+        // }
 
-        const actionRecord = {
-          level_id: currentLevel.id,
-          level_no: currentLevel.level_no || currentLevel.Level_no,
-          title: currentLevel.page_title,
-          category: currentLevel.category,
-          template_type: currentLevel.template_type || levelType,
-          user_action: action,
-          correct_action: currentLevel.correct_action || currentLevel.correct_option,
-          result: isCorrect ? "correct" : "incorrect",
-          timestamp: new Date().toISOString(),
-          ml_prediction: mlResult?.prediction ?? null,
-          ml_confidence: mlResult?.confidence ?? null,
-          ml_probabilities: mlResult?.probabilities ?? null,
-          ...metadata,
-        };
+        // const actionRecord = {
+        //   level_id: currentLevel.id,
+        //   level_no: currentLevel.level_no || currentLevel.Level_no,
+        //   title: currentLevel.page_title,
+        //   category: currentLevel.category,
+        //   template_type: currentLevel.template_type || levelType,
+        //   user_action: action,
+        //   correct_action: currentLevel.correct_action || currentLevel.correct_option,
+        //   result: isCorrect ? "correct" : "incorrect",
+        //   timestamp: new Date().toISOString(),
+        //   ml_prediction: mlResult?.prediction ?? null,
+        //   ml_confidence: mlResult?.confidence ?? null,
+        //   ml_probabilities: mlResult?.probabilities ?? null,
+        //   ...metadata,
+        // };
 
-        await recordAction(levelId, actionRecord);
+        // await recordAction(levelId, actionRecord);
 
-        void sendUserAction({
-          userId,
-          levelId: levelId,
-          action: action,
-          actionText: mlText,
-          mlPrediction: mlResult?.prediction ?? null,
-          mlConfidence: mlResult?.confidence ?? null,
-          ...metadata,
-        }).catch((err) => {
-          console.warn("Failed to send action to backend:", err?.message || err);
-        });
+        // void sendUserAction({
+        //   userId,
+        //   levelId: levelId,
+        //   action: action,
+        //   actionText: mlText,
+        //   mlPrediction: mlResult?.prediction ?? null,
+        //   mlConfidence: mlResult?.confidence ?? null,
+        //   ...metadata,
+        // }).catch((err) => {
+        //   console.warn("Failed to send action to backend:", err?.message || err);
+        // });
 
-        if (isCorrect) {
-          await completeLevel(levelId);
-        }
+        // if (isCorrect) {
+        //   await completeLevel(levelId);
+        // }
 
         setDialog({
           show: true,
@@ -166,7 +167,7 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
         setTimeout(() => {
           if (isCorrect) {
             const isFinal = toKey(currentLevel.category) === "final";
-            navigate(isFinal ? "/thankyou" : "/dashboard");
+            navigate(isFinal ? "/thankyou" : "/game");
           }
           setLocked(false);
         }, isCorrect ? 1000 : 1500);
@@ -184,7 +185,7 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
         setLocked(false);
       }
     },
-    [locked, currentLevel, levelType, navigate, onAction, recordAction, completeLevel]
+    [locked, currentLevel, levelType, navigate, onAction]
   );
 
   const closeDialog = () => setDialog((prev) => ({ ...prev, show: false }));
@@ -248,7 +249,7 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
               </div>
             )}
             <button className="dialog-button" onClick={closeDialog} autoFocus>
-              {dialog.isCorrect ? "Continue ->" : "Try Again"}
+              {dialog.isCorrect ? "Continue →" : "Try Again"}
             </button>
           </div>
         </div>

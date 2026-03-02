@@ -1,11 +1,9 @@
 /* frontend/src/pages/Consent.css */
 .consent-page {
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-items: center;
   padding: 20px;
-  position: relative;
 }
 
 .consent-container {
