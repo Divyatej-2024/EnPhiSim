@@ -9,9 +9,13 @@ router.get('/:sessionId', async (req, res) => {
     const sessionId = req.params.sessionId;
     const timeRange = req.query.range || 'week';
     
-    console.log('📊 Analytics requested for:', sessionId);
+    console.log('📊 Analytics for:', sessionId);
     
     const uri = process.env.MONGODB_URI;
+    if (!uri) {
+      throw new Error('MONGODB_URI not set');
+    }
+    
     client = new MongoClient(uri);
     await client.connect();
     
@@ -34,44 +38,16 @@ router.get('/:sessionId', async (req, res) => {
       timestamp: { $exists: true }
     }).sort({ timestamp: -1 }).toArray();
     
-    console.log(`Found ${userActions.length} actions for session`);
-    
-    // If no actions, return empty structure
-    if (userActions.length === 0) {
-      return res.json({
-        session_id: sessionId,
-        total_actions: 0,
-        correct_actions: 0,
-        accuracy_percent: 0,
-        action_distribution: { trust: 0, ignore: 0, report: 0 },
-        recent_actions: []
-      });
-    }
-    
-    // Calculate stats
     const total = userActions.length;
     const correct = userActions.filter(a => a.is_correct).length;
-    const accuracy = ((correct / total) * 100).toFixed(2);
-    
-    const actionDist = {
-      trust: userActions.filter(a => a.user_action === 'Trust & Click').length,
-      ignore: userActions.filter(a => a.user_action === 'Ignore').length,
-      report: userActions.filter(a => a.user_action === 'Report Phish').length
-    };
+    const accuracy = total > 0 ? ((correct / total) * 100).toFixed(2) : 0;
     
     res.json({
       session_id: sessionId,
       total_actions: total,
       correct_actions: correct,
       accuracy_percent: accuracy,
-      action_distribution: actionDist,
-      recent_actions: userActions.slice(0, 10).map(a => ({
-        timestamp: a.timestamp,
-        taxonomy: a.taxonomy || 'Unknown',
-        user_action: a.user_action,
-        correct_action: a.correct_action,
-        is_correct: a.is_correct
-      }))
+      recent_actions: userActions.slice(0, 10)
     });
     
   } catch (error) {

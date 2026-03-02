@@ -5,10 +5,9 @@ const router = express.Router();
 router.post('/', async (req, res) => {
   try {
     const { text, links } = req.body;
+    console.log('🤖 Prediction for text length:', text?.length);
     
-    console.log('🤖 ML Prediction requested for text length:', text?.length);
-    
-    // MOCK PREDICTIONS - Replace with real ML later
+    // Mock predictions - replace with real ML later
     const mockResponse = {
       distilbert: { 
         prediction: Math.random() > 0.5 ? 'phishing' : 'legitimate', 
