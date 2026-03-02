@@ -13,10 +13,6 @@ export default function Dashboard() {
   const [timeRange, setTimeRange] = useState('week');
   const [sessionId] = useState(() => localStorage.getItem('sessionId') || 'anonymous');
 
-  useEffect(() => {
-    fetchAnalytics();
-  }, [timeRange]);
-
  const fetchAnalytics = useCallback(async () => {
     try {
       setLoading(true);
@@ -29,8 +25,13 @@ export default function Dashboard() {
     } finally {
       setLoading(false);
     }
- });
+ },[sessionId, timeRange]);
 
+ 
+  useEffect(() => {
+    fetchAnalytics();
+  }, [fetchAnalytics]);
+  
   // Handler for levels button
   const goToLevels = () => {
     navigate('/game'); // or '/levels' depending on your route
