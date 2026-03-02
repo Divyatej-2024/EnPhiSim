@@ -15,7 +15,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     fetchAnalytics();
-  }, [timeRange]);
+  }, [timeRange, fetchAnalytics]);
 
   const fetchAnalytics = async () => {
     try {
