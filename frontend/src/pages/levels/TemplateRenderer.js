@@ -71,7 +71,7 @@ console.log('using template type:', templateType);
 const TemplateComponent = templateMap[templateType] || templateMap['default'];
 
 if (!TemplateComponent) {
- console.error('No template found for type:' ${templateType}); 
+ console.error('No template found for type:', ${templateType}); 
 }
 
 return (
