@@ -1,9 +1,6 @@
 // frontend/src/pages/levels/templates/BaseLevel.js
 import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-// import { useProgress } from "../../../context/ProgressContext";
-// import { getPrediction, sendUserAction } from "../../../api";
-// import { getClientUserId } from "../../../utils/userIdentity";
 import "../level.css";
 
 function toKey(value) {
@@ -14,6 +11,11 @@ function toKey(value) {
 }
 
 function inferCorrectness(level, action, metadata) {
+  // Direct comparison with your data structure
+  if (level?.correct_action) {
+    return action === level.correct_action;
+  }
+  
   if (typeof metadata?.correct === "boolean") return metadata.correct;
 
   const normalizeTokens = (value) =>
@@ -64,20 +66,25 @@ function inferCorrectness(level, action, metadata) {
 }
 
 function createMlInputText(level, action) {
+  // Enhanced to use ALL your rich data fields
   const parts = [
-    level?.page_title,
-    level?.level_text || level?.content,
-    level?.subj || level?.email_subject,
-    level?.phish_email || level?.from_and_to,
-    level?.suspicious_url || level?.url,
-    `User action: ${action}`,
+    `TITLE: ${level?.title || ''}`,
+    `CONTENT: ${level?.content || level?.level_text || ''}`,
+    `BODY: ${level?.body_text || ''}`,
+    `FROM: ${level?.from_address || ''}`,
+    `REPLY-TO: ${level?.reply_to || ''}`,
+    `TO: ${level?.to_address || ''}`,
+    `PHISH TYPE: ${level?.taxonomy || ''}`,
+    `CATEGORY: ${level?.category || ''}`,
+    `LINKS: ${level?.links?.join(', ') || 'none'}`,
+    `ATTACHMENT: ${level?.has_attachment ? 'yes' : 'no'}`,
+    `USER ACTION: ${action}`,
   ].filter(Boolean);
 
   return parts.join("\n");
 }
 
 export default function BaseLevel({ children, levelType, scenario, onAction, customStyles }) {
-  // const { recordAction, completeLevel } = useProgress();
   const navigate = useNavigate();
   const [locked, setLocked] = useState(false);
   const [dialog, setDialog] = useState({
@@ -92,87 +99,80 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
 
   const currentLevel = scenario || null;
 
+  // Log the scenario data for debugging
+  console.log('📦 BaseLevel received:', {
+    id: currentLevel?.scenario_id,
+    title: currentLevel?.title,
+    type: currentLevel?.taxonomy,
+    template: levelType
+  });
+
   const handleUserAction = useCallback(
     async (action, metadata = {}) => {
       if (locked || !currentLevel) return;
       setLocked(true);
 
       try {
+        // Determine correctness using your data
         const isCorrect = inferCorrectness(currentLevel, action, metadata);
         const levelId = currentLevel.level_no || currentLevel.Level_no || currentLevel.id;
-        // const userId = getClientUserId();
+        
+        // Create rich ML text from your data
         const mlText = createMlInputText(currentLevel, action);
-        let mlResult = null;
+        
+        console.log('🎯 Action taken:', {
+          scenario_id: currentLevel.scenario_id,
+          level_no: currentLevel.level_no,
+          action,
+          isCorrect,
+          correct_action: currentLevel.correct_action,
+          taxonomy: currentLevel.taxonomy
+        });
 
-        // try {
-        //   mlResult = await getPrediction({
-        //     userId,
-        //     levelId,
-        //     text: mlText,
-        //   });
-        // } catch (mlErr) {
-        //   console.warn("ML prediction unavailable:", mlErr?.message || mlErr);
-        // }
+        // Call parent onAction with ALL data
+        if (onAction) {
+          await onAction(action, {
+            levelId,
+            isCorrect,
+            metadata,
+            scenario: currentLevel,
+            mlText
+          });
+        }
 
-        // const actionRecord = {
-        //   level_id: currentLevel.id,
-        //   level_no: currentLevel.level_no || currentLevel.Level_no,
-        //   title: currentLevel.page_title,
-        //   category: currentLevel.category,
-        //   template_type: currentLevel.template_type || levelType,
-        //   user_action: action,
-        //   correct_action: currentLevel.correct_action || currentLevel.correct_option,
-        //   result: isCorrect ? "correct" : "incorrect",
-        //   timestamp: new Date().toISOString(),
-        //   ml_prediction: mlResult?.prediction ?? null,
-        //   ml_confidence: mlResult?.confidence ?? null,
-        //   ml_probabilities: mlResult?.probabilities ?? null,
-        //   ...metadata,
-        // };
+        // Create feedback message using your data
+        const feedbackMessage = isCorrect
+          ? currentLevel.success_message || `✅ Correct! ${currentLevel.correct_action} was the right choice.`
+          : currentLevel.failure_message || `❌ Incorrect. The correct action was: ${currentLevel.correct_action}`;
 
-        // await recordAction(levelId, actionRecord);
-
-        // void sendUserAction({
-        //   userId,
-        //   levelId: levelId,
-        //   action: action,
-        //   actionText: mlText,
-        //   mlPrediction: mlResult?.prediction ?? null,
-        //   mlConfidence: mlResult?.confidence ?? null,
-        //   ...metadata,
-        // }).catch((err) => {
-        //   console.warn("Failed to send action to backend:", err?.message || err);
-        // });
-
-        // if (isCorrect) {
-        //   await completeLevel(levelId);
-        // }
+        const feedbackDetails = currentLevel.hint || 
+                               currentLevel.explanation || 
+                               `This is a ${currentLevel.taxonomy || 'phishing'} attack. ` +
+                               `Look for: spoofed sender (${currentLevel.reply_to !== currentLevel.crct_mail ? 'reply-to mismatch' : ''})`;
 
         setDialog({
           show: true,
-          title: isCorrect ? "Correct!" : "Incorrect!",
-          message: isCorrect
-            ? currentLevel.success_message || "Great job! You made the right choice."
-            : currentLevel.failure_message || "This action could be risky. Try again!",
-          details: currentLevel.hint || currentLevel.Hint || null,
+          title: isCorrect ? "✅ Correct!" : "❌ Incorrect",
+          message: feedbackMessage,
+          details: feedbackDetails,
           isCorrect,
-          mlPrediction: mlResult?.prediction ?? null,
-          mlConfidence: mlResult?.confidence ?? null,
+          mlPrediction: null, // Will be filled by parent when ML is ready
+          mlConfidence: null,
         });
 
-        if (onAction) {
-          onAction({ level: currentLevel, action, isCorrect });
-        }
-
+        // Auto-close dialog and unlock
         setTimeout(() => {
-          if (isCorrect) {
-            const isFinal = toKey(currentLevel.category) === "final";
-            navigate(isFinal ? "/thankyou" : "/game");
-          }
+          setDialog(prev => ({ ...prev, show: false }));
           setLocked(false);
-        }, isCorrect ? 1000 : 1500);
+          
+          // Navigate if correct (optional - adjust based on your flow)
+          if (isCorrect && onAction) {
+            // Navigation handled by parent
+          }
+        }, 2000);
+
       } catch (err) {
-        console.error("Action error:", err);
+        console.error("❌ Action error:", err);
         setDialog({
           show: true,
           title: "Error",
@@ -185,7 +185,7 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
         setLocked(false);
       }
     },
-    [locked, currentLevel, levelType, navigate, onAction]
+    [locked, currentLevel, onAction]
   );
 
   const closeDialog = () => setDialog((prev) => ({ ...prev, show: false }));
@@ -241,7 +241,7 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
             {dialog.mlPrediction && (
               <div className="dialog-details">
                 <small>
-                  ML Detection: {dialog.mlPrediction}
+                  🤖 ML Detection: {dialog.mlPrediction}
                   {typeof dialog.mlConfidence === "number"
                     ? ` (${Math.round(dialog.mlConfidence * 100)}% confidence)`
                     : ""}
