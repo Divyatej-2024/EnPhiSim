@@ -1,4 +1,7 @@
+// frontend/src/pages/levels/TemplateRenderer.js
 import React from 'react';
+
+// Import all template components
 import MailLevel from './templates/MailLevel';
 import BrowserLevel from './templates/BrowserLevel';
 import MessageLevel from './templates/MessageLevel';
@@ -39,8 +42,8 @@ const templateMap = {
   'mail+browser': MailBrowserLevel,
   'email+web': MailBrowserLevel,
   
-  'mail + browser + message': MailBrowserMessageLevel,
-  'mail+browser+message': MailBrowserMessageLevel,
+  'mail + browser + message': MailBrowserMessageLevel,  // ✅ Check this line
+  'mail+browser+message': MailBrowserMessageLevel,       // ✅ And this one
   'multi': MailBrowserMessageLevel,
   
   // Default fallback
@@ -49,69 +52,52 @@ const templateMap = {
 
 export default function TemplateRenderer({ scenario, onAction, locked }) {
   if (!scenario) {
-    return <div>No scenario data</div>;
+    console.error('TemplateRenderer: No scenario provided');
+    return (
+      <div className="error-container">
+        <h3>No Scenario Data</h3>
+        <p>Unable to load this level.</p>
+      </div>
+    );
   }
 
-console.log('Rendering scenario:', {
-  id : scenario.scenario_id,
-  title: scenario.title,
-  template: scenario.template,
-  template_type: scenario.template_type,
-  taxonomy: scenario.taxonomy
-});  
+  // Log the scenario for debugging
+  console.log('🎯 Rendering scenario:', {
+    id: scenario.scenario_id,
+    title: scenario.title,
+    template: scenario.template,
+    template_type: scenario.template_type,
+    taxonomy: scenario.taxonomy
+  });
 
-const templateType = 
-  scenario.template ||
-  scenario.template_type ||
-  scenario.type ||
-  'default';
+  // Determine template type - check multiple possible fields
+  const templateType = 
+    scenario.template || 
+    scenario.template_type || 
+    scenario.type || 
+    'default';
+  
+  console.log('📋 Using template type:', templateType);
 
-console.log('using template type:', templateType);
-
-const TemplateComponent = templateMap[templateType] || templateMap['default'];
-
-if (!TemplateComponent) {
- console.error('No template found for type:', ${templateType}); 
-}
-
-return (
-    <div className="email-card">
-      <h3>{scenario.title || 'Phishing Email'}</h3>
-      <p><strong>From:</strong> {scenario.from_address || 'Unknown'}</p>
-      <p><strong>Reply-To:</strong> {scenario.reply_to || 'None'}</p>
-      <p><strong>To:</strong> {scenario.to_address || 'Unknown'}</p>
-      <p>{scenario.content || scenario.body_text}</p>
-      
-      {scenario.links && scenario.links.length > 0 && (
-        <div className="links-section">
-          <p><strong>Links:</strong></p>
-          <ul>
-            {scenario.links.map((link, i) => (
-              <li key={i}>{link}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-      
-      <div className="action-buttons">
-        <button onClick={() => onAction('Trust & Click')} disabled={locked}>
-          Trust & Click
-        </button>
-        <button onClick={() => onAction('Ignore')} disabled={locked}>
-          Ignore
-        </button>
-        <button onClick={() => onAction('Report Phish')} disabled={locked}>
-          Report Phish
-        </button>
+  // Get the appropriate template component
+  const TemplateComponent = templateMap[templateType] || templateMap['default'];
+  
+  if (!TemplateComponent) {
+    console.error(`No template found for type: ${templateType}`);
+    return (
+      <div className="error-container">
+        <h3>Template Not Found</h3>
+        <p>Type: {templateType}</p>
       </div>
-    </div>
-  );
+    );
+  }
 
+  // Render the template with ALL scenario data
   return (
-    <TemplateComponent
-    level={scenario}
-    onAction={onAction}
-    locked={locked}
+    <TemplateComponent 
+      level={scenario}
+      onAction={onAction}
+      locked={locked}
     />
   );
 }
