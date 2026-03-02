@@ -11,7 +11,7 @@ import levelsRoutes from './routes/levels.js';
 import actionRoutes from './routes/action.js';
 import analyticsRoutes from './routes/analytics.js';
 import predictRoutes from './routes/predict.js';
-import consentRoutes from '.routes/consent.js';
+import consentRoutes from './routes/consent.js';
 
 const app = express();
 const PORT = process.env.PORT || 4000;
