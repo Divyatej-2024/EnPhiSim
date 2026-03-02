@@ -1,5 +1,5 @@
 // frontend/src/pages/Dashboard.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom'; // Add this import
 import api from '../services/api';
 import './Dashboard1.css';
