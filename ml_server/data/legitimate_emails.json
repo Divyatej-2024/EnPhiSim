@@ -1,0 +1,102 @@
+[
+  {
+    "text": "Your Amazon order #123-4567890-1234567 has shipped and will arrive tomorrow.",
+    "label": "legitimate",
+    "category": "shipping"
+  },
+  {
+    "text": "Meeting reminder: Team sync at 2:00 PM in Conference Room B. Please bring your updates.",
+    "label": "legitimate",
+    "category": "work"
+  },
+  {
+    "text": "Your password was successfully changed. If this wasn't you, please contact support immediately.",
+    "label": "legitimate",
+    "category": "security"
+  },
+  {
+    "text": "Thank you for your purchase! Your receipt is attached. Order #INV-2025-001",
+    "label": "legitimate",
+    "category": "receipt"
+  },
+  {
+    "text": "Weekly newsletter: Top stories in technology this week. Read more on our blog.",
+    "label": "legitimate",
+    "category": "newsletter"
+  },
+  {
+    "text": "Your appointment with Dr. Smith is confirmed for March 15th at 10:00 AM.",
+    "label": "legitimate",
+    "category": "appointment"
+  },
+  {
+    "text": "Invoice #INV-2025-001 for $49.99 is now available for viewing in your account.",
+    "label": "legitimate",
+    "category": "invoice"
+  },
+  {
+    "text": "Your friend Sarah Johnson sent you a friend request on LinkedIn.",
+    "label": "legitimate",
+    "category": "social"
+  },
+  {
+    "text": "Welcome to our newsletter! Click to confirm your subscription.",
+    "label": "legitimate",
+    "category": "subscription"
+  },
+  {
+    "text": "Your refund of $29.99 has been processed and will appear in 3-5 business days.",
+    "label": "legitimate",
+    "category": "refund"
+  },
+  {
+    "text": "Team lunch this Friday at 12:30 PM. Please RSVP by Wednesday.",
+    "label": "legitimate",
+    "category": "work"
+  },
+  {
+    "text": "Your annual leave request for March 20-24 has been approved.",
+    "label": "legitimate",
+    "category": "work"
+  },
+  {
+    "text": "Project deadline extended to next Friday. Updated timeline attached.",
+    "label": "legitimate",
+    "category": "work"
+  },
+  {
+    "text": "New comment on your post: 'Great work on the presentation!'",
+    "label": "legitimate",
+    "category": "social"
+  },
+  {
+    "text": "Your software license for Adobe Creative Cloud will expire in 30 days.",
+    "label": "legitimate",
+    "category": "software"
+  },
+  {
+    "text": "Security update: Two-factor authentication is now available for your account.",
+    "label": "legitimate",
+    "category": "security"
+  },
+  {
+    "text": "Your monthly statement for March is ready to view online.",
+    "label": "legitimate",
+    "category": "finance"
+  },
+  {
+    "text": "Invitation: Webinar on Cybersecurity Best Practices - March 25th at 1:00 PM",
+    "label": "legitimate",
+    "category": "event"
+  },
+  {
+    "text": "Your package has been delivered to the reception desk. Tracking #1Z999AA10123456784",
+    "label": "legitimate",
+    "category": "shipping"
+  },
+  {
+    "text": "Reminder: Performance reviews are due by end of month. Submit in HR portal.",
+    "label": "legitimate",
+    "category": "work"
+  }
+]
