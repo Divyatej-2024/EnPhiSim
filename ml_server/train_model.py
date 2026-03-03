@@ -50,7 +50,7 @@ class HybridPhishingClassifier(nn.Module):
 
 # ==================== DATASET CLASS ====================
 class PhishingDataset(Dataset):
-    def __init__(self, texts, labels, tokenizer, max_len=512):
+    def __init__(self, texts, labels, tokenizer, max_len=256):
         self.texts = texts
         self.labels = labels
         self.tokenizer = tokenizer
@@ -368,9 +368,9 @@ def main():
     val_dataset = PhishingDataset(X_val, y_val, tokenizer)
     test_dataset = PhishingDataset(X_test, y_test, tokenizer)
     
-    train_loader = DataLoader(train_dataset, batch_size=4 if len(X_train) < 50 else 8, shuffle=True)
-    val_loader = DataLoader(val_dataset, batch_size=4)
-    test_loader = DataLoader(test_dataset, batch_size=4)
+    train_loader = DataLoader(train_dataset, batch_size=2, shuffle=true)
+    val_loader = DataLoader(val_dataset, batch_size=2)
+    test_loader = DataLoader(test_dataset, batch_size=2)
     
     # 5. Train model
     print("\n🏋️ Training model...")
