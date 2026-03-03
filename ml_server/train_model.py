@@ -177,23 +177,30 @@ def train_model(model, train_loader, val_loader, epochs=15, lr=2e-5):
     train_losses = []
     val_accuracies = []
     
+    # Gradient accumulation steps
+    accumulation_steps = 4
+    
     for epoch in range(epochs):
         # Training
         model.train()
         total_loss = 0
+        optimizer.zero_grad()
         
-        for batch in train_loader:
+        for i, batch in enumerate(train_loader):
             input_ids = batch['input_ids'].to(device)
             attention_mask = batch['attention_mask'].to(device)
             labels = batch['label'].to(device)
             
-            optimizer.zero_grad()
             outputs = model(input_ids, attention_mask)
             loss = criterion(outputs, labels)
+            loss = loss / accumulation_steps  # Normalize loss
             loss.backward()
-            optimizer.step()
             
-            total_loss += loss.item()
+            if (i + 1) % accumulation_steps == 0:
+                optimizer.step()
+                optimizer.zero_grad()
+            
+            total_loss += loss.item() * accumulation_steps
         
         avg_loss = total_loss / len(train_loader)
         train_losses.append(avg_loss)
