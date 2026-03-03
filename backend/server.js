@@ -12,7 +12,7 @@ import actionRoutes from './routes/action.js';
 import analyticsRoutes from './routes/analytics.js';
 import predictRoutes from './routes/predict.js';
 import consentRoutes from './routes/consent.js';
-
+import modelMetricsRoutes from './routes/modelMetrics.js';
 const app = express();
 const PORT = process.env.PORT || 4000;
 
@@ -29,6 +29,7 @@ app.use((req, res, next) => {
 // Routes
 app.use('/api/levels', levelsRoutes);
 app.use('/api/action', actionRoutes);
+app.use('/api/model-metrics', modelMetricsRoutes);
 app.use('/api/consent', consentRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/predict', predictRoutes);
