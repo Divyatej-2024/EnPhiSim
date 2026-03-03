@@ -1,402 +1,102 @@
 [
   {
-    "id": "legit_000",
-    "type": "work",
-    "subject": "Meeting notes 0",
-    "from": "colleague0@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 0",
-    "is_phishing": false
+    "text": "Your Amazon order #123-4567890-1234567 has shipped and will arrive tomorrow.",
+    "label": "legitimate",
+    "category": "shipping"
   },
   {
-    "id": "legit_001",
-    "type": "work",
-    "subject": "Meeting notes 1",
-    "from": "colleague1@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 1",
-    "is_phishing": false
+    "text": "Meeting reminder: Team sync at 2:00 PM in Conference Room B. Please bring your updates.",
+    "label": "legitimate",
+    "category": "work"
   },
   {
-    "id": "legit_002",
-    "type": "work",
-    "subject": "Meeting notes 2",
-    "from": "colleague2@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 2",
-    "is_phishing": false
+    "text": "Your password was successfully changed. If this wasn't you, please contact support immediately.",
+    "label": "legitimate",
+    "category": "security"
   },
   {
-    "id": "legit_003",
-    "type": "work",
-    "subject": "Meeting notes 3",
-    "from": "colleague3@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 3",
-    "is_phishing": false
+    "text": "Thank you for your purchase! Your receipt is attached. Order #INV-2025-001",
+    "label": "legitimate",
+    "category": "receipt"
   },
   {
-    "id": "legit_004",
-    "type": "work",
-    "subject": "Meeting notes 4",
-    "from": "colleague4@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 4",
-    "is_phishing": false
+    "text": "Weekly newsletter: Top stories in technology this week. Read more on our blog.",
+    "label": "legitimate",
+    "category": "newsletter"
   },
   {
-    "id": "legit_005",
-    "type": "work",
-    "subject": "Meeting notes 5",
-    "from": "colleague5@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 5",
-    "is_phishing": false
+    "text": "Your appointment with Dr. Smith is confirmed for March 15th at 10:00 AM.",
+    "label": "legitimate",
+    "category": "appointment"
   },
   {
-    "id": "legit_006",
-    "type": "work",
-    "subject": "Meeting notes 6",
-    "from": "colleague6@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 6",
-    "is_phishing": false
+    "text": "Invoice #INV-2025-001 for $49.99 is now available for viewing in your account.",
+    "label": "legitimate",
+    "category": "invoice"
   },
   {
-    "id": "legit_007",
-    "type": "work",
-    "subject": "Meeting notes 7",
-    "from": "colleague7@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 7",
-    "is_phishing": false
+    "text": "Your friend Sarah Johnson sent you a friend request on LinkedIn.",
+    "label": "legitimate",
+    "category": "social"
   },
   {
-    "id": "legit_008",
-    "type": "work",
-    "subject": "Meeting notes 8",
-    "from": "colleague8@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 8",
-    "is_phishing": false
+    "text": "Welcome to our newsletter! Click to confirm your subscription.",
+    "label": "legitimate",
+    "category": "subscription"
   },
   {
-    "id": "legit_009",
-    "type": "work",
-    "subject": "Meeting notes 9",
-    "from": "colleague9@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 9",
-    "is_phishing": false
+    "text": "Your refund of $29.99 has been processed and will appear in 3-5 business days.",
+    "label": "legitimate",
+    "category": "refund"
   },
   {
-    "id": "legit_010",
-    "type": "work",
-    "subject": "Meeting notes 10",
-    "from": "colleague10@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 10",
-    "is_phishing": false
+    "text": "Team lunch this Friday at 12:30 PM. Please RSVP by Wednesday.",
+    "label": "legitimate",
+    "category": "work"
   },
   {
-    "id": "legit_011",
-    "type": "work",
-    "subject": "Meeting notes 11",
-    "from": "colleague11@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 11",
-    "is_phishing": false
+    "text": "Your annual leave request for March 20-24 has been approved.",
+    "label": "legitimate",
+    "category": "work"
   },
   {
-    "id": "legit_012",
-    "type": "work",
-    "subject": "Meeting notes 12",
-    "from": "colleague12@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 12",
-    "is_phishing": false
+    "text": "Project deadline extended to next Friday. Updated timeline attached.",
+    "label": "legitimate",
+    "category": "work"
   },
   {
-    "id": "legit_013",
-    "type": "work",
-    "subject": "Meeting notes 13",
-    "from": "colleague13@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 13",
-    "is_phishing": false
+    "text": "New comment on your post: 'Great work on the presentation!'",
+    "label": "legitimate",
+    "category": "social"
   },
   {
-    "id": "legit_014",
-    "type": "work",
-    "subject": "Meeting notes 14",
-    "from": "colleague14@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 14",
-    "is_phishing": false
+    "text": "Your software license for Adobe Creative Cloud will expire in 30 days.",
+    "label": "legitimate",
+    "category": "software"
   },
   {
-    "id": "legit_015",
-    "type": "work",
-    "subject": "Meeting notes 15",
-    "from": "colleague15@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 15",
-    "is_phishing": false
+    "text": "Security update: Two-factor authentication is now available for your account.",
+    "label": "legitimate",
+    "category": "security"
   },
   {
-    "id": "legit_016",
-    "type": "work",
-    "subject": "Meeting notes 16",
-    "from": "colleague16@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 16",
-    "is_phishing": false
+    "text": "Your monthly statement for March is ready to view online.",
+    "label": "legitimate",
+    "category": "finance"
   },
   {
-    "id": "legit_017",
-    "type": "work",
-    "subject": "Meeting notes 17",
-    "from": "colleague17@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 17",
-    "is_phishing": false
+    "text": "Invitation: Webinar on Cybersecurity Best Practices - March 25th at 1:00 PM",
+    "label": "legitimate",
+    "category": "event"
   },
   {
-    "id": "legit_018",
-    "type": "work",
-    "subject": "Meeting notes 18",
-    "from": "colleague18@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 18",
-    "is_phishing": false
+    "text": "Your package has been delivered to the reception desk. Tracking #1Z999AA10123456784",
+    "label": "legitimate",
+    "category": "shipping"
   },
   {
-    "id": "legit_019",
-    "type": "work",
-    "subject": "Meeting notes 19",
-    "from": "colleague19@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 19",
-    "is_phishing": false
-  },
-  {
-    "id": "legit_020",
-    "type": "work",
-    "subject": "Meeting notes 20",
-    "from": "colleague20@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 20",
-    "is_phishing": false
-  },
-  {
-    "id": "legit_021",
-    "type": "work",
-    "subject": "Meeting notes 21",
-    "from": "colleague21@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 21",
-    "is_phishing": false
-  },
-  {
-    "id": "legit_022",
-    "type": "work",
-    "subject": "Meeting notes 22",
-    "from": "colleague22@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 22",
-    "is_phishing": false
-  },
-  {
-    "id": "legit_023",
-    "type": "work",
-    "subject": "Meeting notes 23",
-    "from": "colleague23@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 23",
-    "is_phishing": false
-  },
-  {
-    "id": "legit_024",
-    "type": "work",
-    "subject": "Meeting notes 24",
-    "from": "colleague24@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 24",
-    "is_phishing": false
-  },
-  {
-    "id": "legit_025",
-    "type": "work",
-    "subject": "Meeting notes 25",
-    "from": "colleague25@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 25",
-    "is_phishing": false
-  },
-  {
-    "id": "legit_026",
-    "type": "work",
-    "subject": "Meeting notes 26",
-    "from": "colleague26@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 26",
-    "is_phishing": false
-  },
-  {
-    "id": "legit_027",
-    "type": "work",
-    "subject": "Meeting notes 27",
-    "from": "colleague27@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 27",
-    "is_phishing": false
-  },
-  {
-    "id": "legit_028",
-    "type": "work",
-    "subject": "Meeting notes 28",
-    "from": "colleague28@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 28",
-    "is_phishing": false
-  },
-  {
-    "id": "legit_029",
-    "type": "work",
-    "subject": "Meeting notes 29",
-    "from": "colleague29@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 29",
-    "is_phishing": false
-  },
-  {
-    "id": "legit_030",
-    "type": "work",
-    "subject": "Meeting notes 30",
-    "from": "colleague30@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 30",
-    "is_phishing": false
-  },
-  {
-    "id": "legit_031",
-    "type": "work",
-    "subject": "Meeting notes 31",
-    "from": "colleague31@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 31",
-    "is_phishing": false
-  },
-  {
-    "id": "legit_032",
-    "type": "work",
-    "subject": "Meeting notes 32",
-    "from": "colleague32@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 32",
-    "is_phishing": false
-  },
-  {
-    "id": "legit_033",
-    "type": "work",
-    "subject": "Meeting notes 33",
-    "from": "colleague33@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 33",
-    "is_phishing": false
-  },
-  {
-    "id": "legit_034",
-    "type": "work",
-    "subject": "Meeting notes 34",
-    "from": "colleague34@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 34",
-    "is_phishing": false
-  },
-  {
-    "id": "legit_035",
-    "type": "work",
-    "subject": "Meeting notes 35",
-    "from": "colleague35@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 35",
-    "is_phishing": false
-  },
-  {
-    "id": "legit_036",
-    "type": "work",
-    "subject": "Meeting notes 36",
-    "from": "colleague36@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 36",
-    "is_phishing": false
-  },
-  {
-    "id": "legit_037",
-    "type": "work",
-    "subject": "Meeting notes 37",
-    "from": "colleague37@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 37",
-    "is_phishing": false
-  },
-  {
-    "id": "legit_038",
-    "type": "work",
-    "subject": "Meeting notes 38",
-    "from": "colleague38@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 38",
-    "is_phishing": false
-  },
-  {
-    "id": "legit_039",
-    "type": "work",
-    "subject": "Meeting notes 39",
-    "from": "colleague39@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 39",
-    "is_phishing": false
-  },
-  {
-    "id": "legit_040",
-    "type": "work",
-    "subject": "Meeting notes 40",
-    "from": "colleague40@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 40",
-    "is_phishing": false
-  },
-  {
-    "id": "legit_041",
-    "type": "work",
-    "subject": "Meeting notes 41",
-    "from": "colleague41@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 41",
-    "is_phishing": false
-  },
-  {
-    "id": "legit_042",
-    "type": "work",
-    "subject": "Meeting notes 42",
-    "from": "colleague42@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 42",
-    "is_phishing": false
-  },
-  {
-    "id": "legit_043",
-    "type": "work",
-    "subject": "Meeting notes 43",
-    "from": "colleague43@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 43",
-    "is_phishing": false
-  },
-  {
-    "id": "legit_044",
-    "type": "work",
-    "subject": "Meeting notes 44",
-    "from": "colleague44@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 44",
-    "is_phishing": false
-  },
-  {
-    "id": "legit_045",
-    "type": "work",
-    "subject": "Meeting notes 45",
-    "from": "colleague45@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 45",
-    "is_phishing": false
-  },
-  {
-    "id": "legit_046",
-    "type": "work",
-    "subject": "Meeting notes 46",
-    "from": "colleague46@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 46",
-    "is_phishing": false
-  },
-  {
-    "id": "legit_047",
-    "type": "work",
-    "subject": "Meeting notes 47",
-    "from": "colleague47@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 47",
-    "is_phishing": false
-  },
-  {
-    "id": "legit_048",
-    "type": "work",
-    "subject": "Meeting notes 48",
-    "from": "colleague48@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 48",
-    "is_phishing": false
-  },
-  {
-    "id": "legit_049",
-    "type": "work",
-    "subject": "Meeting notes 49",
-    "from": "colleague49@enphisim.com",
-    "body": "Hi team,\n\nPlease find attached the meeting notes.\n\nBest regards,\nColleague 49",
-    "is_phishing": false
+    "text": "Reminder: Performance reviews are due by end of month. Submit in HR portal.",
+    "label": "legitimate",
+    "category": "work"
   }
 ]

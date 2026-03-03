@@ -1,0 +1,163 @@
+/* frontend/src/pages/ModelMetrics.css */
+.metrics-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.metrics-container h1 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.model-description {
+  color: #666;
+  margin-bottom: 30px;
+  font-size: 1.1rem;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.metric-card {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  text-align: center;
+  border-left: 5px solid #667eea;
+}
+
+.metric-card h3 {
+  color: #666;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+}
+
+.metric-value {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.metric-desc {
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.confusion-matrix {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  margin-bottom: 40px;
+}
+
+.confusion-matrix h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.matrix-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.matrix-cell {
+  padding: 25px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.matrix-cell.tl {
+  background: #e8f5e9;
+  border: 2px solid #4caf50;
+}
+
+.matrix-cell.tr {
+  background: #ffebee;
+  border: 2px solid #f44336;
+}
+
+.matrix-cell.bl {
+  background: #ffebee;
+  border: 2px solid #f44336;
+}
+
+.matrix-cell.br {
+  background: #e8f5e9;
+  border: 2px solid #4caf50;
+}
+
+.matrix-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.matrix-value {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.matrix-desc {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.model-info {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+}
+
+.model-info h3 {
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.model-info ul {
+  list-style: none;
+  padding: 0;
+}
+
+.model-info li {
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+  color: #666;
+}
+
+.model-info li:last-child {
+  border-bottom: none;
+}
+
+.back-btn {
+  padding: 12px 30px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(102,126,234,0.3);
+}

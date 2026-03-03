@@ -75,6 +75,15 @@ const api = {
       throw error;
     }
   },
+recordConsent: async (consentData) => {
+  try {
+    const response = await axios.post(`${API_BASE}/api/consent`, consentData);
+    return response.data;
+  } catch (error) {
+    console.error('API recordConsent error:', error);
+    throw error;
+  }
+},
 
   // Get analytics
   getAnalytics: async (sessionId, range = 'week') => {
@@ -87,5 +96,8 @@ const api = {
     }
   }
 };
+
+// Add this method to your api object
+
 
 export default api;
