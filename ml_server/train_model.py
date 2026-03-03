@@ -375,7 +375,7 @@ def main():
     val_dataset = PhishingDataset(X_val, y_val, tokenizer)
     test_dataset = PhishingDataset(X_test, y_test, tokenizer)
     
-    train_loader = DataLoader(train_dataset, batch_size=2, shuffle=true)
+    train_loader = DataLoader(train_dataset, batch_size=2, shuffle=True)
     val_loader = DataLoader(val_dataset, batch_size=2)
     test_loader = DataLoader(test_dataset, batch_size=2)
     
