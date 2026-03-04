@@ -70,7 +70,7 @@ export default function Consent() {
           
           {/* Study Purpose - From Proposal Section 1 */}
           <div className="consent-section">
-            <h3>📋 Study Purpose</h3>
+            <h3> Study Purpose</h3>
             <p>
               This research evaluates how users interact with phishing simulations and compares the 
               effectiveness of <strong>DistilBERT vs CNN machine learning classifiers</strong> in 
@@ -81,7 +81,7 @@ export default function Consent() {
 
           {/* What Participation Involves - From Proposal Section 5 */}
           <div className="consent-section">
-            <h3>🎮 What Participation Involves</h3>
+            <h3>What Participation Involves</h3>
             <ul>
               <li>You will complete a series of <strong>39 phishing simulation levels</strong></li>
               <li>Each level contains <strong>60+ unique phishing scenarios</strong> across 12+ attack types</li>
@@ -94,23 +94,19 @@ export default function Consent() {
 
           {/* Data Collection & Privacy - Ethics Requirement */}
           <div className="consent-section">
-            <h3>🔒 Data Collection & Privacy</h3>
+            <h3> Data Collection & Privacy</h3>
             <p><strong>NO personal identifiers are collected:</strong></p>
             <div className="data-points">
               <div className="data-point">
-                <span className="point-icon">✅</span>
                 <span className="point-label">No names or emails</span>
               </div>
               <div className="data-point">
-                <span className="point-icon">✅</span>
                 <span className="point-label">No IP addresses</span>
               </div>
               <div className="data-point">
-                <span className="point-icon">✅</span>
                 <span className="point-label">No browser fingerprints</span>
               </div>
               <div className="data-point">
-                <span className="point-icon">✅</span>
                 <span className="point-label">No tracking cookies</span>
               </div>
             </div>
@@ -134,7 +130,7 @@ export default function Consent() {
 
           {/* ML Model Explanation - From Proposal */}
           <div className="consent-section">
-            <h3>🤖 Machine Learning Models</h3>
+            <h3>Machine Learning Models</h3>
             <p>This study compares two ML architectures:</p>
             <div className="model-comparison">
               <div className="model-card">
@@ -154,7 +150,7 @@ export default function Consent() {
 
           {/* Your Rights - Ethics Requirement */}
           <div className="consent-section">
-            <h3>⚖️ Your Rights</h3>
+            <h3> Your Rights</h3>
             <ul>
               <li><strong>Voluntary participation:</strong> You are free to participate or decline</li>
               <li><strong>Withdrawal at any time:</strong> You may stop by simply closing your browser</li>
@@ -169,7 +165,7 @@ export default function Consent() {
 
           {/* Contact Information */}
           <div className="consent-section">
-            <h3>📧 Contact</h3>
+            <h3> Contact</h3>
             <p><strong>Research questions:</strong> <a href="mailto:d3604526@live.tees.ac.uk">d3604526@live.tees.ac.uk</a></p>
             <p><strong>Ethics concerns:</strong> <a href="mailto:m.diyan@tees.ac.uk">m.diyan@tees.ac.uk</a></p>
             <p><strong>Data protection officer:</strong> <a href="mailto:dpo@tees.ac.uk">dpo@tees.ac.uk</a></p>
@@ -193,7 +189,7 @@ export default function Consent() {
           {/* Error Message */}
           {error && (
             <div className="error-message">
-              <p>❌ {error}</p>
+              <p> {error}</p>
             </div>
           )}
 
