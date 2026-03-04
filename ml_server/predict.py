@@ -11,15 +11,16 @@ from contextlib import asynccontextmanager
 # Import your model class
 from train_model import HybridPhishingClassifier
 
-# Global variables for model and tokenizer
+# Global variables
 model = None
 tokenizer = None
 metrics = None
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup: Load model and tokenizer
+    """Load model and tokenizer at startup"""
     global model, tokenizer, metrics
+    
     print("📥 Loading tokenizer...")
     tokenizer = DistilBertTokenizer.from_pretrained('distilbert-base-uncased')
     
@@ -29,9 +30,10 @@ async def lifespan(app: FastAPI):
     model_path = 'models/real_phishing_model.pt'
     if os.path.exists(model_path):
         model.load_state_dict(torch.load(model_path, map_location='cpu'))
-        print("✅ Model loaded successfully")
+        print(f"✅ Model loaded successfully ({os.path.getsize(model_path)/1024/1024:.2f} MB)")
     else:
-        print(f"⚠️ Model file not found at {model_path}")
+        print(f"❌ Model file not found at {model_path}")
+        print("   Please run download_model.py first")
     
     # Load metrics
     metrics_path = 'models/model_metrics.json'
@@ -44,14 +46,11 @@ async def lifespan(app: FastAPI):
         print("⚠️ No metrics found")
     
     model.eval()
+    yield
     
-    yield  # Application runs here
-    
-    # Shutdown: Clean up
     print("👋 Shutting down...")
-    # Add any cleanup code here if needed
 
-# Create FastAPI app with lifespan
+# Create FastAPI app
 app = FastAPI(
     title="EnPhiSim ML Server",
     description="Real phishing detection with DistilBERT+CNN",
@@ -71,6 +70,7 @@ async def health():
     return {
         "status": "healthy",
         "model_loaded": model is not None,
+        "model_size": os.path.getsize('models/real_phishing_model.pt')/1024/1024 if os.path.exists('models/real_phishing_model.pt') else 0,
         "metrics_loaded": metrics is not None
     }
 
@@ -109,7 +109,7 @@ async def predict(request: PredictRequest):
     # Determine prediction label
     prediction = "phishing" if pred == 1 else "legitimate"
     
-    # Return same prediction for both models (hybrid)
+    # Return predictions (same for both models - hybrid)
     return PredictResponse(
         distilbert={
             "prediction": prediction,
@@ -117,7 +117,7 @@ async def predict(request: PredictRequest):
         },
         cnn={
             "prediction": prediction,
-            "confidence": confidence * 0.95  # Slightly lower confidence for CNN
+            "confidence": confidence * 0.95
         }
     )
 
