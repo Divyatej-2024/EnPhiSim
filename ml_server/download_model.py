@@ -7,7 +7,7 @@ def download_model():
     """Download the trained model from Google Drive"""
     
     # Your Google Drive file ID (replace with yours)
-    FILE_ID = "https://drive.google.com/file/d/1u2hRYvBuoRFeUH0yBwJwB4oBJjRkSrZE/view?usp=drive_link"  # ← REPLACE THIS
+    FILE_ID = "1u2hRYvBuoRFeUH0yBwJwB4oBJjRkSrZE"  # ← REPLACE THIS
     
     # Create models directory if it doesn't exist
     os.makedirs('models', exist_ok=True)
@@ -44,4 +44,5 @@ def download_model():
 
 if __name__ == "__main__":
     success = download_model()
+
     sys.exit(0 if success else 1)
