@@ -1,287 +1,127 @@
-/* Add to existing PhishingGame.css - Enhancements */
-
-/* Game Container with subtle background */
-.game-container {
-  position: relative;
-  z-index: 1;
-}
-
-/* Enhanced Game Header */
-.game-header {
-  position: relative;
-  overflow: hidden;
-}
-
-.game-header::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-  animation: rotate 20s linear infinite;
-}
-
-/* Level Badge with icon */
-.level-badge {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(255,255,255,0.15);
-  backdrop-filter: blur(5px);
-  border: 1px solid rgba(255,255,255,0.2);
-}
-
-.level-badge::before {
-  content: '🎯';
-  font-size: 1.2em;
-}
-
-/* Dashboard Button Enhancement */
-.dashboard-button {
-  position: relative;
-  overflow: hidden;
-}
-
-.dashboard-button::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.3);
-  transform: translate(-50%, -50%);
-  transition: width 0.6s, height 0.6s;
-}
-
-.dashboard-button:hover::before {
-  width: 300px;
-  height: 300px;
-}
-
-/* Email Card with glass morphism */
-.email-card {
-  background: rgba(255,255,255,0.95);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.2);
-  position: relative;
-  overflow: hidden;
-}
-
-.email-card::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle at 30% 30%, rgba(102,126,234,0.03), transparent 70%);
-  pointer-events: none;
-}
-
-/* Phishing Type Badge with icon */
-.phishing-type-header h2 {
-  position: relative;
-  display: inline-block;
-}
-
-.phishing-type-header h2::before {
-  content: '🎣';
-  position: absolute;
-  left: -30px;
-  opacity: 0.5;
-  font-size: 1.2em;
-}
-
-/* Difficulty Badge Enhancement */
-.difficulty-badge {
-  position: relative;
-  overflow: hidden;
-}
-
-.difficulty-badge::after {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
-  animation: shine 3s infinite;
-}
-
-@keyframes shine {
-  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-  100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-}
-
-/* Action Buttons Enhancement */
-.action-btn {
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.action-btn::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.3);
-  transform: translate(-50%, -50%);
-  transition: width 0.6s, height 0.6s;
-}
-
-.action-btn:hover::after {
-  width: 300px;
-  height: 300px;
-}
-
-/* Links Section Enhancement */
-.links-section {
-  position: relative;
-  overflow: hidden;
-}
-
-.links-section::before {
-  content: '⚠️';
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  font-size: 2em;
-  opacity: 0.1;
-}
-
-/* Feedback Overlay Enhancement */
+/* Feedback Dialog Styles */
 .feedback-overlay {
-  backdrop-filter: blur(8px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .feedback-content {
-  position: relative;
-  overflow: hidden;
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  animation: slideUp 0.3s ease;
 }
 
-.feedback-content::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle at 70% 30%, rgba(255,255,255,0.8), transparent 70%);
-  pointer-events: none;
+@keyframes slideUp {
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
-/* ML Feedback Enhancement */
-.ml-model {
-  position: relative;
-  overflow: hidden;
+.feedback-overlay.correct .feedback-content {
+  border-top: 8px solid #28a745;
 }
 
-.ml-model::before {
-  content: '🤖';
-  position: absolute;
-  right: 5px;
-  bottom: 5px;
-  font-size: 1.5em;
-  opacity: 0.1;
+.feedback-overlay.incorrect .feedback-content {
+  border-top: 8px solid #dc3545;
 }
 
-/* Progress Indicator */
-.scenario-progress {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.scenario-progress::before {
-  content: '📋';
-  font-size: 1.2em;
-}
-
-/* Score Display Enhancement */
-.score-display {
-  position: relative;
-  overflow: hidden;
-}
-
-.score-display::before {
-  content: '🏆';
-  position: absolute;
-  left: -20px;
-  top: 50%;
-  transform: translateY(-50%);
+.feedback-content h2 {
+  margin-top: 0;
   font-size: 2em;
-  opacity: 0.1;
+  margin-bottom: 20px;
 }
 
-/* Loading Screen Enhancement */
-.loading-screen {
-  position: relative;
-  overflow: hidden;
+.feedback-details {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 10px;
+  margin: 20px 0;
 }
 
-.loading-screen::before {
-  content: '';
-  position: absolute;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-  animation: pulse 3s ease-in-out infinite;
+.ml-feedback {
+  background: #e3f2fd;
+  padding: 20px;
+  border-radius: 10px;
+  margin: 20px 0;
 }
 
-@keyframes pulse {
-  0%, 100% { transform: scale(1); opacity: 0.5; }
-  50% { transform: scale(1.1); opacity: 0.8; }
+.ml-models {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
-/* Level Complete Screen Enhancement */
-.level-complete {
-  position: relative;
-  overflow: hidden;
+.ml-model {
+  flex: 1;
+  min-width: 150px;
+  padding: 10px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.level-complete::before {
-  content: '🎉';
-  position: absolute;
-  font-size: 20em;
-  opacity: 0.05;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  animation: confetti 5s linear infinite;
+.model-name {
+  display: block;
+  font-weight: bold;
+  color: #1976d2;
+  margin-bottom: 5px;
 }
 
-@keyframes confetti {
-  0% { transform: translate(-50%, -50%) rotate(0deg); }
-  100% { transform: translate(-50%, -50%) rotate(360deg); }
+.prediction {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 15px;
+  font-size: 0.9em;
+  font-weight: bold;
+  margin: 5px 0;
 }
 
-/* Hover Effects */
-.email-card:hover {
-  transform: translateY(-5px);
+.prediction.phishing {
+  background: #dc3545;
+  color: white;
 }
 
-.suspicious-link:hover {
-  background: #fee;
-  transform: translateX(5px);
+.prediction.legitimate {
+  background: #28a745;
+  color: white;
 }
 
-/* Responsive Enhancements */
-@media (max-width: 768px) {
-  .phishing-type-header h2::before {
-    display: none;
-  }
-  
-  .score-display::before {
-    font-size: 1.5em;
-    left: -15px;
-  }
+.prediction.unknown {
+  background: #6c757d;
+  color: white;
+}
+
+.confidence {
+  display: block;
+  font-size: 0.9em;
+  color: #666;
+}
+
+.explanation {
+  font-size: 1.1em;
+  line-height: 1.6;
+  color: #333;
+  margin: 20px 0;
+}
+
+.next-hint {
+  color: #666;
+  font-style: italic;
 }
