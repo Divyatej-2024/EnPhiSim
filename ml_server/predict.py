@@ -9,7 +9,7 @@ import json
 from contextlib import asynccontextmanager
 
 # Import your model class
-from train_model import HybridPhishingClassifier
+from model_class import HybridPhishingClassifier
 
 # Global variables
 model = None
@@ -134,4 +134,5 @@ async def predict_batch(requests: list[PredictRequest]):
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=8000)
