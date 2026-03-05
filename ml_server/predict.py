@@ -11,7 +11,7 @@ from contextlib import asynccontextmanager
 # Import your model class
 from model_class import HybridPhishingClassifier
 
-# Global variables - MUST be declared at module level
+# Global variables
 _model = None
 _tokenizer = None
 _metrics = None
@@ -23,9 +23,9 @@ async def lifespan(app: FastAPI):
     
     print("Loading tokenizer...")
     _tokenizer = DistilBertTokenizer.from_pretrained('distilbert-base-uncased')
-    print(" Tokenizer loaded")
+    print("Tokenizer loaded")
     
-    print(" Loading trained model...")
+    print("Loading trained model...")
     _model = HybridPhishingClassifier(num_classes=2)
     
     model_path = 'models/real_phishing_model.pt'
@@ -33,20 +33,20 @@ async def lifespan(app: FastAPI):
         _model.load_state_dict(torch.load(model_path, map_location='cpu'))
         print(f"Model loaded successfully ({os.path.getsize(model_path)/1024/1024:.2f} MB)")
         _model.eval()
-        print(" Model in eval mode")
+        print("Model in eval mode")
     else:
-        print(f" Model file not found at {model_path}")
-        print("   Please run download_model.py first")
+        print(f"Model file not found at {model_path}")
+        print("Please run download_model.py first")
     
     # Load metrics
     metrics_path = 'models/model_metrics.json'
     if os.path.exists(metrics_path):
         with open(metrics_path, 'r') as f:
             _metrics = json.load(f)
-        print(" Metrics loaded")
+        print("Metrics loaded")
     else:
         _metrics = {"accuracy": 0, "precision": 0, "recall": 0, "f1": 0}
-        print(" No metrics found")
+        print("No metrics found")
     
     yield
     
@@ -86,28 +86,30 @@ async def get_metrics():
 async def predict(request: PredictRequest):
     global _model, _tokenizer
     
-    print(" Predict function called")
-    print(f" Input text: {request.text[:50]}...")
+    print("="*50)
+    print("PREDICT FUNCTION CALLED")
+    print(f"Input text: {request.text[:100]}...")
     
     if _model is None:
-        print(" _model is None")
+        print("ERROR: _model is None")
         return PredictResponse(
             distilbert={"prediction": "error", "confidence": 0},
             cnn={"prediction": "error", "confidence": 0}
         )
     
     if _tokenizer is None:
-        print(" _tokenizer is None")
+        print("ERROR: _tokenizer is None")
         return PredictResponse(
             distilbert={"prediction": "error", "confidence": 0},
             cnn={"prediction": "error", "confidence": 0}
         )
     
     try:
-        print(" Model and tokenizer present")
+        print("Model and tokenizer present")
+        print(f"Model device: {next(_model.parameters()).device}")
         
         # Tokenize input
-        print(" Tokenizing input...")
+        print("Tokenizing input...")
         encoding = _tokenizer(
             request.text,
             truncation=True,
@@ -115,21 +117,30 @@ async def predict(request: PredictRequest):
             max_length=512,
             return_tensors='pt'
         )
-        print(f" Tokenized shape: {encoding['input_ids'].shape}")
+        print(f"Tokenized. input_ids shape: {encoding['input_ids'].shape}")
+        print(f"Tokenized. attention_mask shape: {encoding['attention_mask'].shape}")
+        
+        # Ensure tensors are on same device as model
+        device = next(_model.parameters()).device
+        input_ids = encoding['input_ids'].to(device)
+        attention_mask = encoding['attention_mask'].to(device)
+        print(f"Tensors moved to device: {device}")
         
         # Get prediction
-        print(" Running model inference...")
+        print("Running model.forward()...")
         with torch.no_grad():
-            outputs = _model(encoding['input_ids'], encoding['attention_mask'])
-            print(f" Model output shape: {outputs.shape}")
+            outputs = _model(input_ids, attention_mask)
+            print(f"Model output shape: {outputs.shape}")
+            print(f"Model output values: {outputs}")
             
             probs = F.softmax(outputs, dim=-1)
-            print(f" Probabilities calculated")
+            print(f"Probabilities shape: {probs.shape}")
+            print(f"Probabilities values: {probs}")
             
             pred = torch.argmax(probs, dim=-1).item()
             confidence = probs[0][pred].item()
             
-        print(f" Prediction: {pred} ({'phishing' if pred == 1 else 'legitimate'}) with confidence {confidence:.4f}")
+        print(f"Prediction successful: {pred} ({'phishing' if pred == 1 else 'legitimate'}) with confidence {confidence:.4f}")
         
         prediction = "phishing" if pred == 1 else "legitimate"
         
@@ -145,7 +156,7 @@ async def predict(request: PredictRequest):
         )
     
     except Exception as e:
-        print(f" ERROR in prediction: {e}")
+        print(f"EXCEPTION CAUGHT: {type(e).__name__}: {e}")
         import traceback
         traceback.print_exc()
         return PredictResponse(
