@@ -17,7 +17,33 @@
   from { opacity: 0; }
   to { opacity: 1; }
 }
+/* Force black text for all game content */
+.game-container *,
+.email-card *,
+.email-body *,
+.email-header *,
+.sender-details *,
+.sender-name,
+.sender-email,
+.email-subject,
+.email-content,
+p, h1, h2, h3, h4, span, div {
+  color: #000000 !important;
+}
 
+/* Exception for warnings and suspicious elements */
+.warning, 
+.suspicious-link,
+.phishing-warning-badge,
+[class*="warning"] {
+  color: #dc3545 !important;  /* Keep warning text red */
+}
+
+/* Keep links looking like links but black */
+a {
+  color: #0066cc !important;
+  text-decoration: underline;
+}
 .feedback-content {
   background: white;
   padding: 40px;
