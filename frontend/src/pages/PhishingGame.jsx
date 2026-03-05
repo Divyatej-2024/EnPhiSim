@@ -24,7 +24,7 @@ export default function PhishingGame() {
     return localStorage.getItem('sessionId') || generateSessionId();
   });
 
-  // 🔐 CONSENT PROTECTION
+  // CONSENT PROTECTION
   useEffect(() => {
     const consent = localStorage.getItem("consentGiven");
     if (!consent) {
@@ -81,41 +81,67 @@ export default function PhishingGame() {
     }
   };
 
-  const handleAction = async (action, metadata = {}) => {
+  // ADDED: ML Prediction function
+  const getMLPrediction = async (emailText, links) => {
+    try {
+      const response = await axios.post(`${API_BASE}/api/predict`, {
+        text: emailText,
+        links: links || []
+      });
+      return response.data;
+    } catch (error) {
+      console.error('ML prediction failed:', error);
+      // Fallback so game continues
+      return {
+        distilbert: { prediction: 'unknown', confidence: 0 },
+        cnn: { prediction: 'unknown', confidence: 0 }
+      };
+    }
+  };
+
+  //  FIXED: handleAction with proper error handling and removed undefined metadata
+  const handleAction = async (action) => {
     if (locked || !scenarios[currentScenarioIndex]) return;
     setLocked(true);
 
     const currentScenario = scenarios[currentScenarioIndex];
+    const startTime = sessionStorage.getItem('scenario_start');
+    const timeTaken = startTime ? (Date.now() - parseInt(startTime)) / 1000 : 0;
 
-    // Determine if correct (with fallback)
+    const mlResults = await getMLPrediction(
+      currentScenario.body_text || currentScenario.content,
+      currentScenario.links
+    );
+
     const isCorrect = action === currentScenario.correct_action;
 
     if (isCorrect) {
       setScore(prev => prev + 100);
     }
 
-    // Save to backend
+    // Save to backend - FIXED: removed undefined metadata
     try {
       await axios.post(`${API_BASE}/api/action`, {
         scenario_id: currentScenario.scenario_id,
         user_action: action,
-        time_taken_seconds: 0, // You can track this if needed
+        time_taken_seconds: timeTaken,
         session_id: sessionId,
         level: currentLevel,
-        metadata: metadata,
         is_correct: isCorrect
       });
-      console.log('✅ Action saved');
+      console.log('Action saved to database');
     } catch (error) {
-      console.error('Failed to save action:', error);
+      console.error(' Failed to save action:', error);
     }
 
     // Show feedback
+    console.log('Showing feedback dialog for:', action);
     setFeedback({
       show: true,
       isCorrect,
       userAction: action,
       correctAction: currentScenario.correct_action,
+      mlResults,
       explanation: getExplanation(action, isCorrect)
     });
 
@@ -126,19 +152,20 @@ export default function PhishingGame() {
 
       if (currentScenarioIndex < scenarios.length - 1) {
         setCurrentScenarioIndex(prev => prev + 1);
+        sessionStorage.setItem('scenario_start', Date.now().toString());
       } else {
         setLevelComplete(true);
       }
-    }, 2000);
+    }, 3000);
   };
 
   const getExplanation = (action, isCorrect) => {
     if (isCorrect) {
-      return "✅ Correct! " + (action === 'Report Phish' 
+      return " Correct! " + (action === 'Report Phish' 
         ? "Reporting helps protect everyone." 
         : "Good judgment!");
     } else {
-      return "❌ Incorrect. " + (action === 'Trust & Click' 
+      return "Incorrect. " + (action === 'Trust & Click' 
         ? "Never click suspicious links." 
         : "This should be reported.");
     }
@@ -161,12 +188,12 @@ export default function PhishingGame() {
   if (levelComplete) {
     return (
       <div className="level-complete">
-        <h2>🎉 Level Complete!</h2>
+        <h2> Level Complete!</h2>
         <p>You scored {score} points</p>
         <p>Completed {scenarios.length} scenarios</p>
         <div className="complete-actions">
-          <button onClick={resetLevel}>🔄 Replay Level</button>
-          <button onClick={goToDashboard}>📊 Dashboard</button>
+          <button onClick={resetLevel}> Replay Level</button>
+          <button onClick={goToDashboard}> Dashboard</button>
         </div>
       </div>
     );
@@ -201,7 +228,12 @@ export default function PhishingGame() {
           </div>
 
           <button onClick={goToDashboard} className="dashboard-button">
-            📊 Dashboard
+            Dashboard
+          </button>
+
+          {/* About button added for better navigation */}
+          <button onClick={() => navigate('/about')} className="about-button">
+            About
           </button>
 
           <select 
@@ -225,13 +257,47 @@ export default function PhishingGame() {
         locked={locked}
       />
 
-      {/* Feedback Overlay (optional - templates may have their own) */}
+      {/* ENHANCED: Feedback Overlay with ML results */}
       {feedback?.show && (
         <div className={`feedback-overlay ${feedback.isCorrect ? 'correct' : 'incorrect'}`}>
           <div className="feedback-content">
-            <h2>{feedback.isCorrect ? '✅ CORRECT!' : '❌ INCORRECT'}</h2>
-            <p>{feedback.explanation}</p>
-            <p className="next-hint">Next scenario in 2 seconds...</p>
+            <h2>{feedback.isCorrect ? 'CORRECT!' : 'INCORRECT'}</h2>
+            
+            <div className="feedback-details">
+              <p><strong>You chose:</strong> {feedback.userAction}</p>
+              <p><strong>Correct action:</strong> {feedback.correctAction}</p>
+            </div>
+
+            {feedback.mlResults && (
+              <div className="ml-feedback">
+                <h3>AI Analysis</h3>
+                <div className="ml-models">
+                  <div className="ml-model">
+                    <span className="model-name">DistilBERT:</span>
+                    <span className={`prediction ${feedback.mlResults.distilbert?.prediction}`}>
+                      {feedback.mlResults.distilbert?.prediction}
+                    </span>
+                    <span className="confidence">
+                      {feedback.mlResults.distilbert?.confidence ? 
+                        `${(feedback.mlResults.distilbert.confidence * 100).toFixed(0)}%` : ''}
+                    </span>
+                  </div>
+                  <div className="ml-model">
+                    <span className="model-name">CNN:</span>
+                    <span className={`prediction ${feedback.mlResults.cnn?.prediction}`}>
+                      {feedback.mlResults.cnn?.prediction}
+                    </span>
+                    <span className="confidence">
+                      {feedback.mlResults.cnn?.confidence ? 
+                        `${(feedback.mlResults.cnn.confidence * 100).toFixed(0)}%` : ''}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <p className="explanation">{feedback.explanation}</p>
+            <p className="next-hint">Next scenario in 3 seconds...</p>
           </div>
         </div>
       )}
