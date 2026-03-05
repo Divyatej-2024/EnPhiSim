@@ -31,7 +31,8 @@ export default function MailLevel({ level, onAction, locked }) {
 
   // Get current selected email data
   const currentEmail = selectedEmail !== null ? emails[selectedEmail] : emails[0];
- const mailStyles = `
+  
+  const mailStyles = `
     .mail-container {
       width: 100%;
       max-width: 1200px;
@@ -427,23 +428,24 @@ export default function MailLevel({ level, onAction, locked }) {
       .avatar { width: 40px; height: 40px; font-size: 16px; }
     }
   
-  .links-section {
-  margin: 20px 0;
-  padding: 15px;
-  background: #fff3cd;
-  border-radius: 8px;
-  border-left: 4px solid #ffc107;
-}
+    .links-section {
+      margin: 20px 0;
+      padding: 15px;
+      background: #fff3cd;
+      border-radius: 8px;
+      border-left: 4px solid #ffc107;
+    }
 
-.suspicious-link {
-  color: #dc3545;
-  word-break: break-all;
-  font-family: monospace;
-  padding: 5px;
-  background: white;
-  margin: 5px 0;
-  border-radius: 4px;
-}';
+    .suspicious-link {
+      color: #dc3545;
+      word-break: break-all;
+      font-family: monospace;
+      padding: 5px;
+      background: white;
+      margin: 5px 0;
+      border-radius: 4px;
+    }
+  `;
   
   return (
     <BaseLevel levelType="mail" scenario={activeLevel} onAction={onAction} locked={locked}>
