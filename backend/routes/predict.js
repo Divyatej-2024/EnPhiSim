@@ -1,180 +1,162 @@
-# ml_server/predict.py
-from fastapi import FastAPI
-from pydantic import BaseModel
-import torch
-import torch.nn.functional as F
-from transformers import DistilBertTokenizer
-import os
-import json
-from contextlib import asynccontextmanager
+// backend/routes/predict.js
+import express from 'express';
+import axios from 'axios';
+import https from 'https';
 
-# Import your model class
-from model_class import HybridPhishingClassifier
+const router = express.Router();
 
-# Global variables
-_model = None
-_tokenizer = None
-_metrics = None
+// ML server URL from environment variables
+const ML_SERVER_URL = process.env.ML_SERVER_URL || 'https://enphisim-ol7w.onrender.com';
+const REQUEST_TIMEOUT = 30000; // 30 seconds
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    """Load model and tokenizer at startup"""
-    global _model, _tokenizer, _metrics
+// Create HTTPS agent to handle potential SSL issues (optional, remove if not needed)
+const httpsAgent = new https.Agent({  
+  rejectUnauthorized: false  // Only use this for debugging, remove in production
+});
+
+/**
+ * POST /api/predict
+ * Forwards prediction requests to the ML server
+ */
+router.post('/', async (req, res) => {
+  const startTime = Date.now();
+  
+  try {
+    const { text, links } = req.body;
     
-    print("Loading tokenizer...")
-    _tokenizer = DistilBertTokenizer.from_pretrained('distilbert-base-uncased')
-    print("Tokenizer loaded")
+    console.log('='.repeat(50));
+    console.log('PREDICTION REQUEST RECEIVED');
+    console.log(`Timestamp: ${new Date().toISOString()}`);
+    console.log(`Text length: ${text?.length || 0} characters`);
+    console.log(`Links: ${links?.length || 0} provided`);
+    console.log(`ML Server URL: ${ML_SERVER_URL}`);
     
-    print("Loading trained model...")
-    _model = HybridPhishingClassifier(num_classes=2)
-    
-    model_path = 'models/real_phishing_model.pt'
-    if os.path.exists(model_path):
-        _model.load_state_dict(torch.load(model_path, map_location='cpu'))
-        print(f"Model loaded successfully ({os.path.getsize(model_path)/1024/1024:.2f} MB)")
-        _model.eval()
-        print("Model in eval mode")
-    else:
-        print(f"Model file not found at {model_path}")
-        print("Please run download_model.py first")
-    
-    # Load metrics
-    metrics_path = 'models/model_metrics.json'
-    if os.path.exists(metrics_path):
-        with open(metrics_path, 'r') as f:
-            _metrics = json.load(f)
-        print("Metrics loaded")
-    else:
-        _metrics = {"accuracy": 0, "precision": 0, "recall": 0, "f1": 0}
-        print("No metrics found")
-    
-    yield
-    
-    print("Shutting down...")
-
-# Create FastAPI app
-app = FastAPI(
-    title="EnPhiSim ML Server",
-    description="Real phishing detection with DistilBERT+CNN",
-    version="1.0.0",
-    lifespan=lifespan
-)
-
-class PredictRequest(BaseModel):
-    text: str
-
-class PredictResponse(BaseModel):
-    distilbert: dict
-    cnn: dict
-
-@app.get("/health")
-async def health():
-    return {
-        "status": "healthy",
-        "model_loaded": _model is not None,
-        "model_size": os.path.getsize('models/real_phishing_model.pt')/1024/1024 if os.path.exists('models/real_phishing_model.pt') else 0,
-        "metrics_loaded": _metrics is not None
+    // Validate input
+    if (!text || text.trim().length === 0) {
+      console.error('ERROR: No text provided');
+      return res.status(400).json({ 
+        error: 'No text provided',
+        details: 'Text field is required and cannot be empty'
+      });
     }
+    
+    // Forward request to ML server
+    console.log('Forwarding request to ML server...');
+    
+    const mlResponse = await axios.post(`${ML_SERVER_URL}/predict`, {
+      text: text,
+      links: links || []
+    }, {
+      timeout: REQUEST_TIMEOUT,
+      httpsAgent: httpsAgent, // Remove this line if you don't need custom HTTPS agent
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    const duration = Date.now() - startTime;
+    console.log(`ML server responded successfully in ${duration}ms`);
+    console.log('Response data:', JSON.stringify(mlResponse.data).substring(0, 200));
+    
+    // Return the ML server's response
+    res.json(mlResponse.data);
+    
+  } catch (error) {
+    const duration = Date.now() - startTime;
+    console.error('='.repeat(50));
+    console.error(`ERROR after ${duration}ms:`);
+    
+    if (error.response) {
+      // The ML server responded with an error status
+      console.error('ML server error response:');
+      console.error(`  Status: ${error.response.status}`);
+      console.error(`  Data: ${JSON.stringify(error.response.data)}`);
+      console.error(`  Headers: ${JSON.stringify(error.response.headers)}`);
+      
+      res.status(error.response.status).json({
+        error: 'ML server error',
+        status: error.response.status,
+        details: error.response.data
+      });
+      
+    } else if (error.request) {
+      // No response received from ML server
+      console.error('No response from ML server:');
+      console.error(`  Code: ${error.code}`);
+      console.error(`  Message: ${error.message}`);
+      console.error(`  Address: ${ML_SERVER_URL}`);
+      
+      res.status(503).json({
+        error: 'ML server unavailable',
+        code: error.code,
+        message: error.message,
+        details: 'The ML server did not respond. Check if it is running.'
+      });
+      
+    } else {
+      // Error setting up the request
+      console.error('Request setup error:');
+      console.error(`  Message: ${error.message}`);
+      console.error(`  Stack: ${error.stack}`);
+      
+      res.status(500).json({
+        error: 'Failed to process prediction request',
+        message: error.message,
+        details: 'Error occurred while setting up the request to ML server'
+      });
+    }
+    
+    console.error('='.repeat(50));
+  }
+});
 
-@app.get("/metrics")
-async def get_metrics():
-    if _metrics:
-        return _metrics
-    return {"error": "Metrics not available"}
+/**
+ * GET /api/predict/health
+ * Check if ML server is reachable
+ */
+router.get('/health', async (req, res) => {
+  try {
+    console.log('Checking ML server health...');
+    
+    const mlHealth = await axios.get(`${ML_SERVER_URL}/health`, {
+      timeout: 5000
+    });
+    
+    res.json({
+      status: 'healthy',
+      ml_server: {
+        url: ML_SERVER_URL,
+        reachable: true,
+        response: mlHealth.data
+      }
+    });
+    
+  } catch (error) {
+    console.error('ML server health check failed:', error.message);
+    
+    res.status(503).json({
+      status: 'degraded',
+      ml_server: {
+        url: ML_SERVER_URL,
+        reachable: false,
+        error: error.message
+      }
+    });
+  }
+});
 
-@app.post("/predict", response_model=PredictResponse)
-async def predict(request: PredictRequest):
-    global _model, _tokenizer
-    
-    print("="*50)
-    print("PREDICT FUNCTION CALLED")
-    print(f"Input text: {request.text[:100]}...")
-    
-    if _model is None:
-        print("ERROR: _model is None")
-        return PredictResponse(
-            distilbert={"prediction": "error", "confidence": 0},
-            cnn={"prediction": "error", "confidence": 0}
-        )
-    
-    if _tokenizer is None:
-        print("ERROR: _tokenizer is None")
-        return PredictResponse(
-            distilbert={"prediction": "error", "confidence": 0},
-            cnn={"prediction": "error", "confidence": 0}
-        )
-    
-    try:
-        print("Model and tokenizer present")
-        print(f"Model device: {next(_model.parameters()).device}")
-        
-        # Tokenize input
-        print("Tokenizing input...")
-        encoding = _tokenizer(
-            request.text,
-            truncation=True,
-            padding='max_length',
-            max_length=512,
-            return_tensors='pt'
-        )
-        print(f"Tokenized. input_ids shape: {encoding['input_ids'].shape}")
-        print(f"Tokenized. attention_mask shape: {encoding['attention_mask'].shape}")
-        
-        # Ensure tensors are on same device as model
-        device = next(_model.parameters()).device
-        input_ids = encoding['input_ids'].to(device)
-        attention_mask = encoding['attention_mask'].to(device)
-        print(f"Tensors moved to device: {device}")
-        
-        # Get prediction
-        print("Running model.forward()...")
-        with torch.no_grad():
-            outputs = _model(input_ids, attention_mask)
-            print(f"Model output shape: {outputs.shape}")
-            print(f"Model output values: {outputs}")
-            
-            probs = F.softmax(outputs, dim=-1)
-            print(f"Probabilities shape: {probs.shape}")
-            print(f"Probabilities values: {probs}")
-            
-            pred = torch.argmax(probs, dim=-1).item()
-            confidence = probs[0][pred].item()
-            
-        print(f"Prediction successful: {pred} ({'phishing' if pred == 1 else 'legitimate'}) with confidence {confidence:.4f}")
-        
-        prediction = "phishing" if pred == 1 else "legitimate"
-        
-        return PredictResponse(
-            distilbert={
-                "prediction": prediction,
-                "confidence": confidence
-            },
-            cnn={
-                "prediction": prediction,
-                "confidence": confidence * 0.95
-            }
-        )
-    
-    except Exception as e:
-        print(f"EXCEPTION CAUGHT: {type(e).__name__}: {e}")
-        import traceback
-        traceback.print_exc()
-        return PredictResponse(
-            distilbert={"prediction": "error", "confidence": 0},
-            cnn={"prediction": "error", "confidence": 0}
-        )
+/**
+ * GET /api/predict/info
+ * Get information about the prediction service
+ */
+router.get('/info', (req, res) => {
+  res.json({
+    service: 'EnPhiSim Prediction API',
+    version: '1.0.0',
+    ml_server_url: ML_SERVER_URL,
+    timeout_ms: REQUEST_TIMEOUT,
+    features: ['text_classification', 'phishing_detection']
+  });
+});
 
-@app.post("/predict/batch")
-async def predict_batch(requests: list[PredictRequest]):
-    results = []
-    for req in requests:
-        try:
-            result = await predict(req)
-            results.append(result)
-        except Exception as e:
-            results.append({"error": str(e)})
-    return {"predictions": results}
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=10000)
+export default router;
