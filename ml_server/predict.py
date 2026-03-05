@@ -1,4 +1,4 @@
-# ml_server/predict.py (with debug prints)
+# ml_server/predict.py
 from fastapi import FastAPI
 from pydantic import BaseModel
 import torch
@@ -11,27 +11,28 @@ from contextlib import asynccontextmanager
 # Import your model class
 from model_class import HybridPhishingClassifier
 
-# Global variables
-model = None
-tokenizer = None
-metrics = None
+# Global variables - MUST be declared at module level
+_model = None
+_tokenizer = None
+_metrics = None
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Load model and tokenizer at startup"""
-    global model, tokenizer, metrics
+    global _model, _tokenizer, _metrics
     
-    print(" Loading tokenizer...")
-    tokenizer = DistilBertTokenizer.from_pretrained('distilbert-base-uncased')
+    print("Loading tokenizer...")
+    _tokenizer = DistilBertTokenizer.from_pretrained('distilbert-base-uncased')
+    print(" Tokenizer loaded")
     
     print(" Loading trained model...")
-    model = HybridPhishingClassifier(num_classes=2)
+    _model = HybridPhishingClassifier(num_classes=2)
     
     model_path = 'models/real_phishing_model.pt'
     if os.path.exists(model_path):
-        model.load_state_dict(torch.load(model_path, map_location='cpu'))
-        print(f" Model loaded successfully ({os.path.getsize(model_path)/1024/1024:.2f} MB)")
-        model.eval()
+        _model.load_state_dict(torch.load(model_path, map_location='cpu'))
+        print(f"Model loaded successfully ({os.path.getsize(model_path)/1024/1024:.2f} MB)")
+        _model.eval()
         print(" Model in eval mode")
     else:
         print(f" Model file not found at {model_path}")
@@ -41,15 +42,15 @@ async def lifespan(app: FastAPI):
     metrics_path = 'models/model_metrics.json'
     if os.path.exists(metrics_path):
         with open(metrics_path, 'r') as f:
-            metrics = json.load(f)
+            _metrics = json.load(f)
         print(" Metrics loaded")
     else:
-        metrics = {"accuracy": 0, "precision": 0, "recall": 0, "f1": 0}
+        _metrics = {"accuracy": 0, "precision": 0, "recall": 0, "f1": 0}
         print(" No metrics found")
     
     yield
     
-    print(" Shutting down...")
+    print("Shutting down...")
 
 # Create FastAPI app
 app = FastAPI(
@@ -70,33 +71,33 @@ class PredictResponse(BaseModel):
 async def health():
     return {
         "status": "healthy",
-        "model_loaded": model is not None,
+        "model_loaded": _model is not None,
         "model_size": os.path.getsize('models/real_phishing_model.pt')/1024/1024 if os.path.exists('models/real_phishing_model.pt') else 0,
-        "metrics_loaded": metrics is not None
+        "metrics_loaded": _metrics is not None
     }
 
 @app.get("/metrics")
 async def get_metrics():
-    if metrics:
-        return metrics
+    if _metrics:
+        return _metrics
     return {"error": "Metrics not available"}
 
 @app.post("/predict", response_model=PredictResponse)
 async def predict(request: PredictRequest):
-    global model, tokenizer
+    global _model, _tokenizer
     
     print(" Predict function called")
     print(f" Input text: {request.text[:50]}...")
     
-    if model is None:
-        print(" Model is None")
+    if _model is None:
+        print(" _model is None")
         return PredictResponse(
             distilbert={"prediction": "error", "confidence": 0},
             cnn={"prediction": "error", "confidence": 0}
         )
     
-    if tokenizer is None:
-        print(" Tokenizer is None")
+    if _tokenizer is None:
+        print(" _tokenizer is None")
         return PredictResponse(
             distilbert={"prediction": "error", "confidence": 0},
             cnn={"prediction": "error", "confidence": 0}
@@ -107,7 +108,7 @@ async def predict(request: PredictRequest):
         
         # Tokenize input
         print(" Tokenizing input...")
-        encoding = tokenizer(
+        encoding = _tokenizer(
             request.text,
             truncation=True,
             padding='max_length',
@@ -119,11 +120,11 @@ async def predict(request: PredictRequest):
         # Get prediction
         print(" Running model inference...")
         with torch.no_grad():
-            outputs = model(encoding['input_ids'], encoding['attention_mask'])
+            outputs = _model(encoding['input_ids'], encoding['attention_mask'])
             print(f" Model output shape: {outputs.shape}")
             
             probs = F.softmax(outputs, dim=-1)
-            print(f" Probabilities: {probs}")
+            print(f" Probabilities calculated")
             
             pred = torch.argmax(probs, dim=-1).item()
             confidence = probs[0][pred].item()
