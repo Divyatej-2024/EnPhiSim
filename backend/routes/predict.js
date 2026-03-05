@@ -1,29 +1,34 @@
 import express from 'express';
+import axios from 'axios';
 
 const router = express.Router();
+
+// Your ML server URL - set this in environment variables
+const ML_SERVER_URL = process.env.ML_SERVER_URL || 'https://enphisim-ol7w.onrender.com';
 
 router.post('/', async (req, res) => {
   try {
     const { text, links } = req.body;
-    console.log('🤖 Prediction for text length:', text?.length);
+    console.log(' Forwarding prediction request to ML server...');
+    console.log(' Text length:', text?.length);
     
-    // Mock predictions - replace with real ML later
-    const mockResponse = {
-      distilbert: { 
-        prediction: Math.random() > 0.5 ? 'phishing' : 'legitimate', 
-        confidence: Math.random() 
-      },
-      cnn: { 
-        prediction: Math.random() > 0.5 ? 'phishing' : 'legitimate', 
-        confidence: Math.random() 
-      }
-    };
+    // Forward the request to your real ML server
+    const mlResponse = await axios.post(`${ML_SERVER_URL}/predict`, {
+      text: text,
+      links: links || []
+    });
     
-    res.json(mockResponse);
+    console.log(' ML server responded successfully');
+    res.json(mlResponse.data);
     
   } catch (error) {
-    console.error('❌ Prediction error:', error);
-    res.status(500).json({ error: 'Prediction failed' });
+    console.error(' Error calling ML server:', error.message);
+    
+    // If ML server fails, return error (don't fall back to random)
+    res.status(500).json({ 
+      error: 'ML server unavailable',
+      details: error.message 
+    });
   }
 });
 
