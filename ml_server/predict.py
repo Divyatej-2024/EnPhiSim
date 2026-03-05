@@ -1,4 +1,4 @@
-# ml_server/predict.py
+# ml_server/predict.py (with debug prints)
 from fastapi import FastAPI
 from pydantic import BaseModel
 import torch
@@ -21,18 +21,20 @@ async def lifespan(app: FastAPI):
     """Load model and tokenizer at startup"""
     global model, tokenizer, metrics
     
-    print("📥 Loading tokenizer...")
+    print(" Loading tokenizer...")
     tokenizer = DistilBertTokenizer.from_pretrained('distilbert-base-uncased')
     
-    print("📥 Loading trained model...")
+    print(" Loading trained model...")
     model = HybridPhishingClassifier(num_classes=2)
     
     model_path = 'models/real_phishing_model.pt'
     if os.path.exists(model_path):
         model.load_state_dict(torch.load(model_path, map_location='cpu'))
-        print(f"✅ Model loaded successfully ({os.path.getsize(model_path)/1024/1024:.2f} MB)")
+        print(f" Model loaded successfully ({os.path.getsize(model_path)/1024/1024:.2f} MB)")
+        model.eval()
+        print(" Model in eval mode")
     else:
-        print(f"❌ Model file not found at {model_path}")
+        print(f" Model file not found at {model_path}")
         print("   Please run download_model.py first")
     
     # Load metrics
@@ -40,15 +42,14 @@ async def lifespan(app: FastAPI):
     if os.path.exists(metrics_path):
         with open(metrics_path, 'r') as f:
             metrics = json.load(f)
-        print("✅ Metrics loaded")
+        print(" Metrics loaded")
     else:
         metrics = {"accuracy": 0, "precision": 0, "recall": 0, "f1": 0}
-        print("⚠️ No metrics found")
+        print(" No metrics found")
     
-    model.eval()
     yield
     
-    print("👋 Shutting down...")
+    print(" Shutting down...")
 
 # Create FastAPI app
 app = FastAPI(
@@ -84,42 +85,72 @@ async def get_metrics():
 async def predict(request: PredictRequest):
     global model, tokenizer
     
-    if model is None or tokenizer is None:
+    print(" Predict function called")
+    print(f" Input text: {request.text[:50]}...")
+    
+    if model is None:
+        print(" Model is None")
         return PredictResponse(
             distilbert={"prediction": "error", "confidence": 0},
             cnn={"prediction": "error", "confidence": 0}
         )
     
-    # Tokenize input
-    encoding = tokenizer(
-        request.text,
-        truncation=True,
-        padding='max_length',
-        max_length=512,
-        return_tensors='pt'
-    )
+    if tokenizer is None:
+        print(" Tokenizer is None")
+        return PredictResponse(
+            distilbert={"prediction": "error", "confidence": 0},
+            cnn={"prediction": "error", "confidence": 0}
+        )
     
-    # Get prediction
-    with torch.no_grad():
-        outputs = model(encoding['input_ids'], encoding['attention_mask'])
-        probs = F.softmax(outputs, dim=-1)
-        pred = torch.argmax(probs, dim=-1).item()
-        confidence = probs[0][pred].item()
+    try:
+        print(" Model and tokenizer present")
+        
+        # Tokenize input
+        print(" Tokenizing input...")
+        encoding = tokenizer(
+            request.text,
+            truncation=True,
+            padding='max_length',
+            max_length=512,
+            return_tensors='pt'
+        )
+        print(f" Tokenized shape: {encoding['input_ids'].shape}")
+        
+        # Get prediction
+        print(" Running model inference...")
+        with torch.no_grad():
+            outputs = model(encoding['input_ids'], encoding['attention_mask'])
+            print(f" Model output shape: {outputs.shape}")
+            
+            probs = F.softmax(outputs, dim=-1)
+            print(f" Probabilities: {probs}")
+            
+            pred = torch.argmax(probs, dim=-1).item()
+            confidence = probs[0][pred].item()
+            
+        print(f" Prediction: {pred} ({'phishing' if pred == 1 else 'legitimate'}) with confidence {confidence:.4f}")
+        
+        prediction = "phishing" if pred == 1 else "legitimate"
+        
+        return PredictResponse(
+            distilbert={
+                "prediction": prediction,
+                "confidence": confidence
+            },
+            cnn={
+                "prediction": prediction,
+                "confidence": confidence * 0.95
+            }
+        )
     
-    # Determine prediction label
-    prediction = "phishing" if pred == 1 else "legitimate"
-    
-    # Return predictions (same for both models - hybrid)
-    return PredictResponse(
-        distilbert={
-            "prediction": prediction,
-            "confidence": confidence
-        },
-        cnn={
-            "prediction": prediction,
-            "confidence": confidence * 0.95
-        }
-    )
+    except Exception as e:
+        print(f" ERROR in prediction: {e}")
+        import traceback
+        traceback.print_exc()
+        return PredictResponse(
+            distilbert={"prediction": "error", "confidence": 0},
+            cnn={"prediction": "error", "confidence": 0}
+        )
 
 @app.post("/predict/batch")
 async def predict_batch(requests: list[PredictRequest]):
@@ -134,5 +165,4 @@ async def predict_batch(requests: list[PredictRequest]):
 
 if __name__ == "__main__":
     import uvicorn
-
     uvicorn.run(app, host="0.0.0.0", port=8000)
