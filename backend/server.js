@@ -106,14 +106,14 @@ app.use((req, res, next) => {
 // THEN comment out or remove your existing cors() middleware
 // app.use(cors(corsOptions)); // TEMPORARILY DISABLE
 // CORS configuration
-const corsOptions = {
-  origin: process.env.FRONTEND_URL || 'https://en-phi-sim.vercel.app',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'X-CSRF-Token', 'X-API-Key'],
-  credentials: true,
-  optionsSuccessStatus: 200
-};
-app.use(cors(corsOptions));
+// const corsOptions = {
+//   origin: process.env.FRONTEND_URL || 'https://en-phi-sim.vercel.app',
+//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+//   allowedHeaders: ['Content-Type', 'X-CSRF-Token', 'X-API-Key'],
+//   credentials: true,
+//   optionsSuccessStatus: 200
+// };
+//app.use(cors(corsOptions));
 
 // Cookie parser for CSRF
 app.use(cookieParser());
