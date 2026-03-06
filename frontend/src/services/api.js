@@ -48,7 +48,50 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+// Function to fetch token (same as your getCsrfToken)
+const fetchCsrfToken = async () => {
+  // Check if we have a valid token
+  if (csrfToken && tokenExpiry && Date.now() < tokenExpiry) {
+    return csrfToken;
+  }
 
+  try {
+    const response = await axiosInstance.get('/api/csrf-token');
+    if (response.data.success) {
+      csrfToken = response.data.data.csrfToken;
+      tokenExpiry = Date.now() + (response.data.data.expiresIn * 1000);
+      console.log(' CSRF token acquired');
+      return csrfToken;
+    }
+    throw new Error('Failed to get CSRF token');
+  } catch (error) {
+    console.error(' Failed to fetch CSRF token:', error);
+    return null;
+  }
+};
+
+// Immediately fetch the token when the app starts
+const csrfTokenPromise = fetchCsrfToken();
+
+// Modify your request interceptor to wait for the token
+axiosInstance.interceptors.request.use(
+  async (config) => {
+    // Skip CSRF for GET requests and health check
+    if (config.method === 'get' || config.url.includes('/health')) {
+      return config;
+    }
+
+    // Wait for the token to be available
+    const token = await csrfTokenPromise;
+    if (token) {
+      config.headers['X-CSRF-Token'] = token;
+    } else {
+      console.error('❌ No CSRF token available for request:', config.url);
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 /**
  * Fetch CSRF token from server
  * @returns {Promise<string>} CSRF token
