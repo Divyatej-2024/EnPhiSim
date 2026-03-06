@@ -180,6 +180,7 @@ app.use('/api/consent', authLimiter);
 // CSRF protection configuration
 const csrfProtection = csrf({ 
   cookie: {
+    key:'_csrf',
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
