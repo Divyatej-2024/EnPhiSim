@@ -52,7 +52,7 @@ export default function PhishingGame() {
     const id = Array.from(array, dec => dec.toString(16)).join('');
     localStorage.setItem('sessionId', id);
     return id;
-  }
+  
 
   } catch (error) {
     console.error('Action failed:', error);
