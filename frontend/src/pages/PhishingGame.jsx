@@ -53,24 +53,7 @@ export default function PhishingGame() {
     localStorage.setItem('sessionId', id);
     return id;
   }
-const handleAction async (action) = > {
-  try{
-    // Get ML prediction
-    const mlResult = await api.getPrediction({
-      userId: sessionId,
-      levelId: currentLevel,
-      text: emailContent
-    });
-    
-    // Save action
-    await api.saveAction({
-      scenario_id: currentScenario.scenario_id,
-      user_action: action,
-      session_id: sessionId,
-      level: currentLevel,
-      is_correct: isCorrect
-    });
-    
+
   } catch (error) {
     console.error('Action failed:', error);
   }
