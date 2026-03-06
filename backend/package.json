@@ -18,6 +18,10 @@
     "dotenv": "^17.2.3",
     "helmet":"^7.0.0",
     "express": "^5.1.0",
+     "express-rate-limit": "^7.1.0",
+    "cookie-parser": "^1.4.6",
+    "csurf": "^1.11.0",
+    "@sentry/node": "^7.100.0",
     "mongoose": "^8.19.2",
     "serve": "^14.2.5"
   }
