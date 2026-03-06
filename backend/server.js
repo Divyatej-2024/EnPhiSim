@@ -181,9 +181,9 @@ app.use('/api/consent', authLimiter);
 const csrfProtection = csrf({ 
   cookie: {
     key:'_csrf',
-    httpOnly: true,
+    httpOnly: false,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
+    sameSite: 'lax',
     maxAge: 3600 // 1 hour
   }
 });
