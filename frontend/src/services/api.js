@@ -173,10 +173,14 @@ const api = {
   // Get analytics for session
   getAnalytics: async (sessionId, range = 'week') => {
     try {
-      const response = await axios.get(`/api/analytics/${sessionId}?range=${range}`, {
+      const response = await axios.get(`${API_BASE}/api/analytics/${sessionId}?range=${range}`, {
         withCredentials: false
       });
       return response.data;
+    }catch (error) {
+    console.error('API getAnalytics error:', error);
+    throw error;
+  }
   },
 
   // Get model metrics
