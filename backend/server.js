@@ -190,7 +190,7 @@ const csrfProtection = csrf({
 
 // Apply CSRF to state-changing routes (exclude GET and health)
 app.use('/api/action', csrfProtection);
-app.use('/api/consent', csrfProtection);
+//app.use('/api/consent', csrfProtection);
 app.use('/api/predict', csrfProtection);
 
 // CSRF token endpoint
