@@ -111,8 +111,7 @@ const corsOptions = {
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'X-CSRF-Token', 'X-API-Key'],
   credentials: true,
-  optionsSuccessStatus: 200,
-  maxAge: 86400 // 24 hours
+  optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
 
