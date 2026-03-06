@@ -75,7 +75,36 @@ app.use(helmet({
   referrerPolicy: { policy: "strict-origin-when-cross-origin" },
   xssFilter: true
 }));
+// Add BEFORE your existing CORS config
+app.use((req, res, next) => {
+  // Debug: See what CORS headers are being set
+  console.log('Origin:', req.headers.origin);
+  console.log('Current CORS headers:', res.get('Access-Control-Allow-Origin'));
+  next();
+});
 
+// STRONG CORS CONFIG - Override any platform defaults
+app.use((req, res, next) => {
+  const allowedOrigins = ['https://en-phi-sim.vercel.app', 'http://localhost:3000'];
+  const origin = req.headers.origin;
+  
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-CSRF-Token');
+  
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+  
+  next();
+});
+
+// THEN comment out or remove your existing cors() middleware
+// app.use(cors(corsOptions)); // TEMPORARILY DISABLE
 // CORS configuration
 const corsOptions = {
   origin: process.env.FRONTEND_URL || 'https://en-phi-sim.vercel.app',
