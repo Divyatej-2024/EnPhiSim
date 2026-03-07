@@ -1,10 +1,12 @@
 // backend/routes/action.js
 import express from 'express';
 import { MongoClient } from 'mongodb';
+import { validateActionPayload } from '../middleware/validator.js';
+import logger from '../utils/logger.js';
 
 const router = express.Router();
 
-router.post('/', async (req, res) => {
+router.post('/', validateActionPayload, async (req, res) => {
   let client;
   try {
     const { 
@@ -50,8 +52,11 @@ router.post('/', async (req, res) => {
     });
     
   } catch (error) {
-    console.error('Action save error:', error);
-    res.status(500).json({ error: error.message });
+    logger.error('Action save failed', { message: error.message });
+    res.status(500).json({
+      success: false,
+      error: 'Failed to save action',
+    });
   } finally {
     if (client) await client.close();
   }

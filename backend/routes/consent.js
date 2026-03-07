@@ -1,9 +1,11 @@
 import express from 'express';
 import { MongoClient } from 'mongodb';
+import { validateConsentPayload } from '../middleware/validator.js';
+import logger from '../utils/logger.js';
 
 const router = express.Router();
 
-router.post('/', async (req, res) => {
+router.post('/', validateConsentPayload, async (req, res) => {
   let client;
   try {
     const { agreed, sessionId } = req.body;
@@ -23,8 +25,8 @@ router.post('/', async (req, res) => {
 
     res.status(201).json({ success: true });
   } catch (error) {
-    console.error('Consent error:', error);
-    res.status(500).json({ error: 'Failed to record consent' });
+    logger.error('Consent save failed', { message: error.message });
+    res.status(500).json({ success: false, error: 'Failed to record consent' });
   } finally {
     if (client) await client.close();
   }

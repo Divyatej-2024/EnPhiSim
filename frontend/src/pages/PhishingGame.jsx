@@ -1,12 +1,9 @@
 // frontend/src/pages/PhishingGame.jsx
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import TemplateRenderer from './levels/TemplateRenderer';
 import './PhishingGame.css';
 import api from '../services/api';
-
-const API_BASE = process.env.REACT_APP_API_URL || "https://enphisim-1.onrender.com";
 
 export default function PhishingGame() {
   const navigate = useNavigate();
@@ -56,8 +53,7 @@ export default function PhishingGame() {
   const loadScenarios = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${API_BASE}/api/levels`);
-      const allScenarios = response.data;
+      const allScenarios = await api.getLevels();
 
       if (!Array.isArray(allScenarios)) {
         throw new Error("Invalid levels format");
@@ -84,11 +80,11 @@ export default function PhishingGame() {
   // ADDED: ML Prediction function
   const getMLPrediction = async (emailText, links) => {
     try {
-      const response = await axios.post(`${API_BASE}/api/predict`, {
+      const response = await api.getPrediction({
         text: emailText,
-        links: links || []
+        links: links || [],
       });
-      return response.data;
+      return response;
     } catch (error) {
       console.error('ML prediction failed:', error);
       // Fallback so game continues
@@ -121,7 +117,7 @@ export default function PhishingGame() {
 
     // Save to backend - FIXED: removed undefined metadata
     try {
-      await axios.post(`${API_BASE}/api/action`, {
+      await api.saveAction({
         scenario_id: currentScenario.scenario_id,
         user_action: action,
         time_taken_seconds: timeTaken,
@@ -129,7 +125,6 @@ export default function PhishingGame() {
         level: currentLevel,
         is_correct: isCorrect
       });
-      console.log('Action saved to database');
     } catch (error) {
       console.error(' Failed to save action:', error);
     }

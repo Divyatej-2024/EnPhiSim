@@ -1,4 +1,3 @@
-// backend/server.js
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
@@ -8,231 +7,198 @@ import cookieParser from 'cookie-parser';
 import csrf from 'csurf';
 import dotenv from 'dotenv';
 import * as Sentry from '@sentry/node';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 
-// Import logger
 import logger from './utils/logger.js';
-
-// Import routes
 import levelsRoutes from './routes/levels.js';
 import actionRoutes from './routes/action.js';
 import analyticsRoutes from './routes/analytics.js';
 import predictRoutes from './routes/predict.js';
 import consentRoutes from './routes/consent.js';
 import modelMetricsRoutes from './routes/modelMetrics.js';
+import { notFoundHandler, csrfErrorHandler, generalErrorHandler } from './middleware/errorHandler.js';
 
-// Load environment variables
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = Number(process.env.PORT || 4000);
+const NODE_ENV = process.env.NODE_ENV || 'development';
 
-// ==================== SENTRY INITIALIZATION ====================
+app.disable('x-powered-by');
+app.set('trust proxy', 1);
+
 if (process.env.SENTRY_DSN) {
   Sentry.init({
     dsn: process.env.SENTRY_DSN,
-    environment: process.env.NODE_ENV || 'development',
-    tracesSampleRate: 1.0,
+    environment: NODE_ENV,
+    tracesSampleRate: 0.2,
   });
   app.use(Sentry.Handlers.requestHandler());
   app.use(Sentry.Handlers.tracingHandler());
   logger.info('Sentry initialized');
 }
 
-// ==================== SECURITY MIDDLEWARE ====================
+const configuredOrigins = (process.env.FRONTEND_URL || '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
 
-// Helmet for security headers
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      scriptSrc: ["'self'"],
-      imgSrc: ["'self'", "data:", "https:"],
-      connectSrc: ["'self'", process.env.FRONTEND_URL || 'https://en-phi-sim.vercel.app'],
-      fontSrc: ["'self'"],
-      objectSrc: ["'none'"],
-      mediaSrc: ["'self'"],
-      frameSrc: ["'none'"],
-      upgradeInsecureRequests: [],
+const allowedOrigins = new Set([
+  'https://en-phi-sim.vercel.app',
+  'http://localhost:3000',
+  ...configuredOrigins,
+]);
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.has(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error('Origin not allowed by CORS'));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'X-CSRF-Token', 'X-Requested-With'],
+  optionsSuccessStatus: 204,
+};
+
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        scriptSrc: ["'self'"],
+        imgSrc: ["'self'", 'data:', 'https:'],
+        connectSrc: ["'self'", ...allowedOrigins],
+        fontSrc: ["'self'"],
+        objectSrc: ["'none'"],
+        mediaSrc: ["'self'"],
+        frameSrc: ["'none'"],
+      },
     },
-  },
-  crossOriginEmbedderPolicy: true,
-  crossOriginOpenerPolicy: { policy: "same-origin" },
-  crossOriginResourcePolicy: { policy: "same-origin" },
-  dnsPrefetchControl: { allow: false },
-  frameguard: { action: "deny" },
-  hsts: {
-    maxAge: 31536000,
-    includeSubDomains: true,
-    preload: true
-  },
-  ieNoOpen: true,
-  noSniff: true,
-  originAgentCluster: true,
-  permittedCrossDomainPolicies: { permittedPolicies: "none" },
-  referrerPolicy: { policy: "strict-origin-when-cross-origin" },
-  xssFilter: true
-}));
-// Add BEFORE your existing CORS config
-app.use((req, res, next) => {
-  // Debug: See what CORS headers are being set
-  console.log('Origin:', req.headers.origin);
-  console.log('Current CORS headers:', res.get('Access-Control-Allow-Origin'));
-  next();
-});
+    crossOriginEmbedderPolicy: false,
+    crossOriginOpenerPolicy: { policy: 'same-origin' },
+    crossOriginResourcePolicy: { policy: 'same-site' },
+    dnsPrefetchControl: { allow: false },
+    frameguard: { action: 'deny' },
+    hsts: {
+      maxAge: 31536000,
+      includeSubDomains: true,
+      preload: true,
+    },
+    noSniff: true,
+    originAgentCluster: true,
+    permittedCrossDomainPolicies: { permittedPolicies: 'none' },
+    referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+  })
+);
 
-// STRONG CORS CONFIG - Override any platform defaults
-app.use((req, res, next) => {
-  const allowedOrigins = ['https://en-phi-sim.vercel.app', 'http://localhost:3000'];
-  const origin = req.headers.origin;
-  
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-  }
-  
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-CSRF-Token');
-  
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-  
-  next();
-});
+app.use(cors(corsOptions));
 
-// THEN comment out or remove your existing cors() middleware
-// app.use(cors(corsOptions)); // TEMPORARILY DISABLE
-// CORS configuration
-// const corsOptions = {
-//   origin: process.env.FRONTEND_URL || 'https://en-phi-sim.vercel.app',
-//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-//   allowedHeaders: ['Content-Type', 'X-CSRF-Token', 'X-API-Key'],
-//   credentials: true,
-//   optionsSuccessStatus: 200
-// };
-//app.use(cors(corsOptions));
-
-// Cookie parser for CSRF
 app.use(cookieParser());
-
-// Body parsing with size limit
 app.use(express.json({ limit: '100kb' }));
 app.use(express.urlencoded({ extended: true, limit: '100kb' }));
 
-// ==================== RATE LIMITING ====================
+function requestKey(req) {
+  return (
+    req.body?.session_id ||
+    req.body?.sessionId ||
+    req.params?.sessionId ||
+    req.ip
+  );
+}
 
-// General API rate limit
 const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests
-  message: { 
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+  keyGenerator: requestKey,
+  message: {
     success: false,
     error: {
       code: 'RATE_LIMIT_EXCEEDED',
-      message: 'Too many requests, please try again later.'
-    }
+      message: 'Too many requests, please try again later.',
+    },
   },
-  standardHeaders: true,
-  legacyHeaders: false,
-  keyGenerator: (req) => {
-    // Use session ID if available, otherwise IP
-    return req.body?.sessionId || req.ip;
-  }
 });
 
-// Stricter limit for prediction endpoint
 const predictLimiter = rateLimit({
-  windowMs: 60 * 1000, // 1 minute
-  max: 10, // Limit each session to 10 predictions per minute
-  message: { 
+  windowMs: 60 * 1000,
+  max: 10,
+  keyGenerator: requestKey,
+  message: {
     success: false,
     error: {
       code: 'PREDICT_RATE_LIMIT_EXCEEDED',
-      message: 'Prediction rate limit exceeded. Please slow down.'
-    }
+      message: 'Prediction rate limit exceeded. Please slow down.',
+    },
   },
-  keyGenerator: (req) => req.body?.sessionId || req.ip
 });
 
-// Auth endpoints limit
 const authLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000, // 1 hour
-  max: 5, // Limit each IP to 5 consent attempts per hour
-  message: { 
+  windowMs: 60 * 60 * 1000,
+  max: 8,
+  keyGenerator: requestKey,
+  message: {
     success: false,
     error: {
       code: 'AUTH_RATE_LIMIT_EXCEEDED',
-      message: 'Too many attempts, please try again later.'
-    }
-  }
+      message: 'Too many attempts, please try again later.',
+    },
+  },
 });
 
-// Apply rate limiting
-app.use('/api/', apiLimiter);
+app.use('/api', apiLimiter);
 app.use('/api/predict', predictLimiter);
 app.use('/api/consent', authLimiter);
 
-// ==================== CSRF PROTECTION ====================
-
-// CSRF protection configuration
-const csrfProtection = csrf({ 
+const csrfProtection = csrf({
   cookie: {
-    key:'_csrf',
-    httpOnly: false,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    maxAge: 3600 // 1 hour
-  }
+    key: '_csrf',
+    httpOnly: true,
+    secure: NODE_ENV === 'production',
+    sameSite: NODE_ENV === 'production' ? 'none' : 'lax',
+    maxAge: 3600,
+  },
+  ignoreMethods: ['GET', 'HEAD', 'OPTIONS'],
 });
 
-// Apply CSRF to state-changing routes (exclude GET and health)
 app.use('/api/action', csrfProtection);
-//app.use('/api/consent', csrfProtection);
+app.use('/api/consent', csrfProtection);
 app.use('/api/predict', csrfProtection);
 
-// CSRF token endpoint
 app.get('/api/csrf-token', csrfProtection, (req, res) => {
-  res.json({ 
+  res.json({
     success: true,
     data: {
       csrfToken: req.csrfToken(),
-      expiresIn: 3600
+      expiresIn: 3600,
     },
-    message: 'Include this token in X-CSRF-Token header for POST requests'
   });
 });
 
-// ==================== REQUEST LOGGING ====================
-
-app.use((req, res, next) => {
-  logger.info({
+app.use((req, _res, next) => {
+  logger.info('Incoming request', {
     method: req.method,
-    url: req.url,
+    url: req.originalUrl,
     ip: req.ip,
-    sessionId: req.body?.sessionId || 'none',
-    userAgent: req.get('User-Agent')
   });
   next();
 });
 
-// ==================== ROUTES ====================
-
-// Health check (no auth needed)
-app.get('/health', (req, res) => {
-  res.json({ 
+app.get('/health', (_req, res) => {
+  res.json({
     success: true,
     data: {
       status: 'ok',
       timestamp: new Date().toISOString(),
-      service: 'EnPhiSim Backend'
-    }
+      service: 'EnPhiSim Backend',
+      env: NODE_ENV,
+    },
   });
 });
 
-// API routes
 app.use('/api/levels', levelsRoutes);
 app.use('/api/action', actionRoutes);
 app.use('/api/model-metrics', modelMetricsRoutes);
@@ -240,105 +206,47 @@ app.use('/api/consent', consentRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/predict', predictRoutes);
 
-// ==================== 404 HANDLER ====================
+app.use(notFoundHandler);
+app.use(csrfErrorHandler);
 
-app.use((req, res) => {
-  logger.warn('404 Not Found', { url: req.url, method: req.method });
-  res.status(404).json({ 
-    success: false,
-    error: {
-      code: 'NOT_FOUND',
-      message: 'Endpoint not found'
-    }
-  });
-});
-
-// ==================== ERROR HANDLING ====================
-
-// CSRF error handler
-app.use((err, req, res, next) => {
-  if (err.code === 'EBADCSRFTOKEN') {
-    logger.error('CSRF token validation failed', { 
-      ip: req.ip,
-      url: req.url 
-    });
-    return res.status(403).json({ 
-      success: false,
-      error: {
-        code: 'INVALID_CSRF_TOKEN',
-        message: 'Invalid CSRF token'
-      }
-    });
-  }
-  next(err);
-});
-
-// Sentry error handler (if configured)
 if (process.env.SENTRY_DSN) {
   app.use(Sentry.Handlers.errorHandler());
 }
 
-// General error handler
-app.use((err, req, res, next) => {
-  logger.error('Unhandled error:', { 
-    message: err.message,
-    stack: err.stack,
-    url: req.url,
-    method: req.method,
-    ip: req.ip
-  });
-  
-  res.status(500).json({ 
-    success: false,
-    error: {
-      code: 'INTERNAL_SERVER_ERROR',
-      message: process.env.NODE_ENV === 'production' 
-        ? 'An internal server error occurred' 
-        : err.message
-    }
-  });
-});
+app.use(generalErrorHandler);
 
-// ==================== DATABASE CONNECTION ====================
+if (!process.env.MONGODB_URI) {
+  logger.error('MONGODB_URI is not set. Refusing to start.');
+  process.exit(1);
+}
 
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  maxPoolSize: 10,
-  serverSelectionTimeoutMS: 5000,
-  socketTimeoutMS: 45000,
-})
-  .then(() => logger.info('✅ MongoDB connected successfully'))
-  .catch(err => {
-    logger.error('❌ MongoDB connection error:', err);
-    process.exit(1); // Exit if database connection fails
+mongoose
+  .connect(process.env.MONGODB_URI, {
+    maxPoolSize: 10,
+    serverSelectionTimeoutMS: 5000,
+    socketTimeoutMS: 45000,
+  })
+  .then(() => logger.info('MongoDB connected successfully'))
+  .catch((err) => {
+    logger.error('MongoDB connection error', { message: err.message });
+    process.exit(1);
   });
-
-// ==================== START SERVER ====================
 
 const server = app.listen(PORT, () => {
-  logger.info(`✅ Server running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
+  logger.info(`Server running on port ${PORT}`, { env: NODE_ENV });
 });
 
-// Graceful shutdown
-process.on('SIGTERM', () => {
-  logger.info('SIGTERM received, shutting down gracefully');
+function gracefulShutdown(signal) {
+  logger.info(`${signal} received, shutting down gracefully`);
   server.close(() => {
-    mongoose.connection.close(false, () => {
+    mongoose.connection.close(false).then(() => {
       logger.info('Server shut down complete');
       process.exit(0);
     });
   });
-});
+}
 
-process.on('SIGINT', () => {
-  logger.info('SIGINT received, shutting down gracefully');
-  server.close(() => {
-    mongoose.connection.close(false, () => {
-      logger.info('Server shut down complete');
-      process.exit(0);
-    });
-  });
-});
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 
 export default app;
