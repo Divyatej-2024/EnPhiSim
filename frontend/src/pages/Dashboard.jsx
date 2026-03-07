@@ -1,40 +1,80 @@
-// frontend/src/pages/Dashboard.jsx
 import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom'; // Add this import
+import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import './Dashboard1.css';
 
 export default function Dashboard() {
-  const navigate = useNavigate(); // Add navigation hook
-  
+  const navigate = useNavigate();
+
   const [analytics, setAnalytics] = useState(null);
+  const [modelMetrics, setModelMetrics] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [timeRange, setTimeRange] = useState('week');
   const [sessionId] = useState(() => localStorage.getItem('sessionId') || 'anonymous');
 
- const fetchAnalytics = useCallback(async () => {
+  const fetchDashboardData = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
-      const data = await api.getAnalytics(sessionId, timeRange);
-      setAnalytics(data);
+
+      const [analyticsResult, metricsResult] = await Promise.allSettled([
+        api.getAnalytics(sessionId, timeRange),
+        api.getModelMetrics(),
+      ]);
+
+      if (analyticsResult.status === 'fulfilled') {
+        setAnalytics(analyticsResult.value);
+      } else {
+        throw analyticsResult.reason;
+      }
+
+      if (metricsResult.status === 'fulfilled') {
+        setModelMetrics(metricsResult.value);
+      } else {
+        setModelMetrics(null);
+      }
     } catch (err) {
       console.error('Dashboard error:', err);
       setError('Failed to load analytics. Please try again.');
     } finally {
       setLoading(false);
     }
- },[sessionId, timeRange]);
+  }, [sessionId, timeRange]);
 
- 
   useEffect(() => {
-    fetchAnalytics();
-  }, [fetchAnalytics]);
-  
-  // Handler for levels button
+    fetchDashboardData();
+  }, [fetchDashboardData]);
+
   const goToLevels = () => {
-    navigate('/game'); // or '/levels' depending on your route
+    navigate('/game');
+  };
+
+  const toTitleCase = (value) =>
+    String(value)
+      .replace(/_/g, ' ')
+      .replace(/\b\w/g, (c) => c.toUpperCase());
+
+  const formatMetricValue = (key, value) => {
+    if (typeof value === 'number') {
+      const lowerKey = key.toLowerCase();
+      const looksLikePercentMetric =
+        ['accuracy', 'precision', 'recall', 'f1', 'rate', 'auc'].some((k) => lowerKey.includes(k));
+
+      if (looksLikePercentMetric && value <= 1) {
+        return `${(value * 100).toFixed(2)}%`;
+      }
+      if (Number.isInteger(value)) {
+        return value.toLocaleString();
+      }
+      return value.toFixed(4);
+    }
+
+    if (typeof value === 'boolean') {
+      return value ? 'True' : 'False';
+    }
+
+    return String(value);
   };
 
   if (loading) {
@@ -44,15 +84,15 @@ export default function Dashboard() {
   if (error) {
     return (
       <div className="error-screen">
-        <h2>❌ Error</h2>
+        <h2>Error</h2>
         <p>{error}</p>
-        <button onClick={fetchAnalytics}>Retry</button>
+        <button onClick={fetchDashboardData}>Retry</button>
         <button onClick={goToLevels} style={{ marginLeft: '10px' }}>Back to Levels</button>
       </div>
     );
   }
 
-  if (!analytics || analytics.total_actions === 0) {
+  if (!analytics) {
     return (
       <div className="empty-dashboard">
         <h2>No Data Yet</h2>
@@ -67,17 +107,33 @@ export default function Dashboard() {
     );
   }
 
+  const userMetrics = [
+    ['total_actions', analytics.total_actions ?? 0],
+    ['correct_actions', analytics.correct_actions ?? 0],
+    ['incorrect_actions', Math.max((analytics.total_actions ?? 0) - (analytics.correct_actions ?? 0), 0)],
+    ['accuracy_percent', Number(analytics.accuracy_percent ?? 0)],
+  ];
+
+  const modelScalarMetrics = Object.entries(modelMetrics || {}).filter(
+    ([, value]) => value !== null && ['string', 'number', 'boolean'].includes(typeof value)
+  );
+
+  const modelComplexMetrics = Object.entries(modelMetrics || {}).filter(
+    ([, value]) => value && typeof value === 'object'
+  );
+
   return (
     <div className="dashboard-container">
-      {/* Header with title and levels button */}
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center',
-        marginBottom: '20px'
-      }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '20px'
+        }}
+      >
         <h1 style={{ margin: 0 }}>Your Progress</h1>
-        <button 
+        <button
           onClick={goToLevels}
           style={{
             padding: '10px 20px',
@@ -102,14 +158,13 @@ export default function Dashboard() {
             e.target.style.boxShadow = '0 5px 15px rgba(102,126,234,0.3)';
           }}
         >
-          <span>🎮</span> Back to Levels
+          <span>Back to Levels</span>
         </button>
       </div>
 
-      {/* Time range selector */}
       <div style={{ marginBottom: '20px' }}>
-        <select 
-          value={timeRange} 
+        <select
+          value={timeRange}
           onChange={(e) => setTimeRange(e.target.value)}
           style={{
             padding: '8px 15px',
@@ -126,32 +181,56 @@ export default function Dashboard() {
         </select>
       </div>
 
-      {/* Stats Grid */}
+      <h2 className="section-title">Dashboard Metrics</h2>
       <div className="stats-grid">
-        <div className="stat-card">
-          <h3>Total Scenarios</h3>
-          <p>{analytics.total_actions}</p>
-        </div>
-        <div className="stat-card">
-          <h3>Correct</h3>
-          <p>{analytics.correct_actions}</p>
-        </div>
-        <div className="stat-card">
-          <h3>Accuracy</h3>
-          <p>{analytics.accuracy_percent}%</p>
-        </div>
+        {userMetrics.map(([key, value]) => (
+          <div key={key} className="stat-card">
+            <h3>{toTitleCase(key)}</h3>
+            <p>{formatMetricValue(key, value)}</p>
+          </div>
+        ))}
       </div>
-      
-      {/* Recent Activity */}
+
+      <h2 className="section-title">Model Metrics</h2>
+      {modelMetrics ? (
+        <>
+          <div className="stats-grid">
+            {modelScalarMetrics.map(([key, value]) => (
+              <div key={key} className="stat-card">
+                <h3>{toTitleCase(key)}</h3>
+                <p>{formatMetricValue(key, value)}</p>
+              </div>
+            ))}
+          </div>
+
+          {modelComplexMetrics.length > 0 && (
+            <div className="actions-list">
+              <h3>Detailed Model Data</h3>
+              {modelComplexMetrics.map(([key, value]) => (
+                <div key={key} className="action-item">
+                  <span>{toTitleCase(key)}</span>
+                  <span className="metric-json">{JSON.stringify(value)}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
+      ) : (
+        <p className="muted-note">Model metrics are currently unavailable.</p>
+      )}
+
       <div className="actions-list">
         <h3>Recent Activity</h3>
-        {analytics.recent_actions.map((action, i) => (
+        {(analytics.recent_actions || []).map((action, i) => (
           <div key={i} className={`action-item ${action.is_correct ? 'correct' : 'incorrect'}`}>
             <span>{action.taxonomy || 'Unknown Type'}</span>
             <span>You: {action.user_action}</span>
-            <span>{action.is_correct ? '✅' : '❌'}</span>
+            <span>{action.is_correct ? 'Correct' : 'Incorrect'}</span>
           </div>
         ))}
+        {(analytics.recent_actions || []).length === 0 && (
+          <div className="muted-note">No recent activity for this time range.</div>
+        )}
       </div>
     </div>
   );

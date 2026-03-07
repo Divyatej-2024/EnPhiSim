@@ -105,6 +105,12 @@
   border-radius: 2px;
 }
 
+.section-title {
+  color: #333;
+  margin: 10px 0 16px 0;
+  font-size: 1.2rem;
+}
+
 /* ===== STATS GRID ===== */
 .stats-grid {
   display: grid;
@@ -202,6 +208,19 @@
 .action-item span:last-child {
   font-size: 1.2rem;
   text-align: right;
+}
+
+.metric-json {
+  grid-column: 2 / 4;
+  text-align: left;
+  word-break: break-word;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.muted-note {
+  color: #666;
+  font-size: 0.95rem;
 }
 
 /* ===== RESPONSIVE ===== */
