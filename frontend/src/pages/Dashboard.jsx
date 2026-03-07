@@ -77,6 +77,36 @@ export default function Dashboard() {
     return String(value);
   };
 
+  const flattenMetrics = (obj, prefix = '') => {
+    if (!obj || typeof obj !== 'object') {
+      return [];
+    }
+
+    return Object.entries(obj).flatMap(([key, value]) => {
+      const composedKey = prefix ? `${prefix}.${key}` : key;
+
+      if (value === null) {
+        return [];
+      }
+
+      if (Array.isArray(value)) {
+        return value.flatMap((item, index) => {
+          const arrayKey = `${composedKey}[${index}]`;
+          if (item !== null && typeof item === 'object') {
+            return flattenMetrics(item, arrayKey);
+          }
+          return [[arrayKey, item]];
+        });
+      }
+
+      if (typeof value === 'object') {
+        return flattenMetrics(value, composedKey);
+      }
+
+      return [[composedKey, value]];
+    });
+  };
+
   if (loading) {
     return <div className="loading-screen">Loading your dashboard...</div>;
   }
@@ -114,13 +144,7 @@ export default function Dashboard() {
     ['accuracy_percent', Number(analytics.accuracy_percent ?? 0)],
   ];
 
-  const modelScalarMetrics = Object.entries(modelMetrics || {}).filter(
-    ([, value]) => value !== null && ['string', 'number', 'boolean'].includes(typeof value)
-  );
-
-  const modelComplexMetrics = Object.entries(modelMetrics || {}).filter(
-    ([, value]) => value && typeof value === 'object'
-  );
+  const modelMetricEntries = flattenMetrics(modelMetrics);
 
   return (
     <div className="dashboard-container">
@@ -193,28 +217,14 @@ export default function Dashboard() {
 
       <h2 className="section-title">Model Metrics</h2>
       {modelMetrics ? (
-        <>
-          <div className="stats-grid">
-            {modelScalarMetrics.map(([key, value]) => (
-              <div key={key} className="stat-card">
-                <h3>{toTitleCase(key)}</h3>
-                <p>{formatMetricValue(key, value)}</p>
-              </div>
-            ))}
-          </div>
-
-          {modelComplexMetrics.length > 0 && (
-            <div className="actions-list">
-              <h3>Detailed Model Data</h3>
-              {modelComplexMetrics.map(([key, value]) => (
-                <div key={key} className="action-item">
-                  <span>{toTitleCase(key)}</span>
-                  <span className="metric-json">{JSON.stringify(value)}</span>
-                </div>
-              ))}
+        <div className="stats-grid">
+          {modelMetricEntries.map(([key, value]) => (
+            <div key={key} className="stat-card">
+              <h3>{toTitleCase(key)}</h3>
+              <p>{formatMetricValue(key, value)}</p>
             </div>
-          )}
-        </>
+          ))}
+        </div>
       ) : (
         <p className="muted-note">Model metrics are currently unavailable.</p>
       )}
