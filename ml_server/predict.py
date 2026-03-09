@@ -114,7 +114,7 @@ async def predict(request: PredictRequest):
             request.text,
             truncation=True,
             padding='max_length',
-            max_length=512,
+            max_length=256,
             return_tensors='pt'
         )
         print(f"Tokenized. input_ids shape: {encoding['input_ids'].shape}")
