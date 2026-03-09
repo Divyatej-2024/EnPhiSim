@@ -1,3 +1,4 @@
+// frontend/src/pages/levels/templates/MessageLevel.js
 import React, { useState } from "react";
 import BaseLevel from "./BaseLevel";
 
@@ -11,14 +12,14 @@ export default function MessageLevel({ level: scenario }) {
           Array.isArray(level.messages) && level.messages.length > 0
             ? level.messages
             : [
-                {
-                  sender: "contact",
-                  sender_name: level.contact_name || "Unknown contact",
-                  text: level.level_text || "Please check this link immediately.",
-                  timestamp: "10:30 AM",
-                  has_link: true,
-                },
-              ];
+              {
+                sender: "contact",
+                sender_name: level.contact_name || "Unknown contact",
+                text: level.level_text || "Please check this link immediately.",
+                timestamp: "10:30 AM",
+                has_link: true,
+              },
+            ];
 
         return (
           <div style={{ width: "100%", maxWidth: 900, margin: "0 auto", background: "#fff", borderRadius: 12, overflow: "hidden" }}>

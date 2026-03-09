@@ -1,3 +1,4 @@
+// frontend/src/pages/levels/templates/index.js
 import MailLevel from "./MailLevel";
 import BrowserLevel from "./BrowserLevel";
 import MessageLevel from "./MessageLevel";

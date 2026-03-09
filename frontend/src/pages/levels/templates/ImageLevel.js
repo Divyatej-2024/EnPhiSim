@@ -1,3 +1,4 @@
+// frontend/src/pages/levels/templates/ImageLevel.js
 import React from "react";
 import BaseLevel from "./BaseLevel";
 

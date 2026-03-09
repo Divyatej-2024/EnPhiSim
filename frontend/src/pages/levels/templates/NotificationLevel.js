@@ -1,3 +1,4 @@
+// frontend/src/pages/levels/templates/NotificationLevel.js
 import React, { useState } from "react";
 import BaseLevel from "./BaseLevel";
 
@@ -11,15 +12,15 @@ export default function NotificationLevel({ level: scenario }) {
           Array.isArray(level.notifications) && level.notifications.length > 0
             ? level.notifications
             : [
-                {
-                  id: level.id || "n1",
-                  title: level.subj || "Security Notice",
-                  message: level.level_text || "A new notification requires your attention.",
-                  sender: level.phish_email || "Unknown sender",
-                  suspicious: true,
-                  time: "Just now",
-                },
-              ];
+              {
+                id: level.id || "n1",
+                title: level.subj || "Security Notice",
+                message: level.level_text || "A new notification requires your attention.",
+                sender: level.phish_email || "Unknown sender",
+                suspicious: true,
+                time: "Just now",
+              },
+            ];
 
         const current = selected != null ? notifications[selected] : null;
 

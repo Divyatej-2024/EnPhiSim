@@ -1,0 +1,163 @@
+/* frontend/src/pages/levels/templates/BrowserLevel.css */
+.browser-container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.browser-header {
+    padding: 12px;
+    border-bottom: 1px solid #e5e7eb;
+    background: #f8fafc;
+}
+
+.browser-title {
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.browser-url-bar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.browser-url-input {
+    flex: 1 1 260px;
+    min-width: 0;
+    padding: 10px 16px;
+    border-radius: 20px;
+    border: 1px solid #cbd5e1;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.browser-url-input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.ssl-indicator {
+    align-self: center;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.ssl-indicator.secure {
+    color: #166534;
+}
+
+.ssl-indicator.insecure {
+    color: #991b1b;
+}
+
+.browser-content {
+    padding: 16px;
+    min-height: 340px;
+}
+
+.warning-banner {
+    padding: 12px;
+    margin-bottom: 12px;
+    border: 1px solid #f59e0b;
+    background: #fffbeb;
+    border-radius: 8px;
+    color: #92400e;
+}
+
+.warning-banner strong {
+    color: #b45309;
+}
+
+.browser-footer {
+    border-top: 1px solid #e5e7eb;
+    padding: 12px;
+    font-size: 12px;
+    color: #475569;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    background: #f8fafc;
+}
+
+.browser-actions {
+    display: flex;
+    gap: 10px;
+    padding: 16px;
+    border-top: 1px solid #e5e7eb;
+    flex-wrap: wrap;
+    background: #f8fafc;
+}
+
+.browser-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-height: 44px;
+    min-width: 44px;
+}
+
+.browser-btn.close {
+    background: #ef4444;
+    color: white;
+}
+
+.browser-btn.close:hover:not(:disabled) {
+    background: #dc2626;
+    transform: translateY(-2px);
+}
+
+.browser-btn.ignore {
+    background: #f59e0b;
+    color: white;
+}
+
+.browser-btn.ignore:hover:not(:disabled) {
+    background: #d97706;
+    transform: translateY(-2px);
+}
+
+.browser-btn.report {
+    background: #10b981;
+    color: white;
+}
+
+.browser-btn.report:hover:not(:disabled) {
+    background: #059669;
+    transform: translateY(-2px);
+}
+
+.browser-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .browser-actions {
+        flex-direction: column;
+    }
+
+    .browser-btn {
+        width: 100%;
+    }
+
+    .browser-url-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .browser-url-input {
+        width: 100%;
+    }
+}
