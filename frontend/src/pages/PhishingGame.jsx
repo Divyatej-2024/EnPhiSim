@@ -1,26 +1,45 @@
 // frontend/src/pages/PhishingGame.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TemplateRenderer from './levels/TemplateRenderer';
 import './PhishingGame.css';
 import api from '../services/api';
+import { useProgress } from '../context/ProgressContext';
 
 export default function PhishingGame() {
   const navigate = useNavigate();
+  const { recordAction, completeLevel, setSessionTimeTaken } = useProgress();
+  const gameStartTime = useRef(Date.now());
 
   const [levels, setLevels] = useState({});
-  const [currentLevel, setCurrentLevel] = useState('l1');
+  const [sortedLevelKeys, setSortedLevelKeys] = useState([]);
+  const [currentLevelIndex, setCurrentLevelIndex] = useState(0);
   const [currentScenarioIndex, setCurrentScenarioIndex] = useState(0);
   const [scenarios, setScenarios] = useState([]);
   const [score, setScore] = useState(0);
+  const [totalCorrect, setTotalCorrect] = useState(0);
+  const [totalActions, setTotalActions] = useState(0);
   const [feedback, setFeedback] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [levelComplete, setLevelComplete] = useState(false);
   const [locked, setLocked] = useState(false);
+  const [showLevelTransition, setShowLevelTransition] = useState(false);
+  const [gameComplete, setGameComplete] = useState(false);
 
   const [sessionId] = useState(() => {
     return localStorage.getItem('sessionId') || generateSessionId();
   });
+
+  // Current level key (e.g. 'l1', 'l2', 'l3')
+  const currentLevelKey = sortedLevelKeys[currentLevelIndex] || '';
+  const isLastLevel = currentLevelIndex >= sortedLevelKeys.length - 1;
+  const totalScenarios = Object.values(levels).reduce((sum, arr) => sum + arr.length, 0);
+
+  // Count how many scenarios have been completed across all levels
+  const completedScenarios = Object.values(levels).reduce((sum, arr, idx) => {
+    if (idx < currentLevelIndex) return sum + arr.length;
+    if (idx === currentLevelIndex) return sum + currentScenarioIndex;
+    return sum;
+  }, 0);
 
   // CONSENT PROTECTION
   useEffect(() => {
@@ -35,13 +54,14 @@ export default function PhishingGame() {
     loadScenarios();
   }, [sessionId]);
 
+  // When level changes, load its scenarios
   useEffect(() => {
-    if (levels[currentLevel]) {
-      setScenarios(levels[currentLevel]);
+    if (sortedLevelKeys.length > 0 && levels[currentLevelKey]) {
+      setScenarios(levels[currentLevelKey]);
       setCurrentScenarioIndex(0);
-      setLevelComplete(false);
+      sessionStorage.setItem('scenario_start', Date.now().toString());
     }
-  }, [currentLevel, levels]);
+  }, [currentLevelIndex, sortedLevelKeys, levels, currentLevelKey]);
 
   function generateSessionId() {
     const array = new Uint32Array(4);
@@ -67,8 +87,11 @@ export default function PhishingGame() {
         return acc;
       }, {});
 
+      const keys = Object.keys(grouped).sort();
       setLevels(grouped);
-      setScenarios(grouped['l1'] || []);
+      setSortedLevelKeys(keys);
+      setScenarios(grouped[keys[0]] || []);
+      sessionStorage.setItem('scenario_start', Date.now().toString());
     } catch (error) {
       console.error('Failed to load scenarios:', error);
       setLevels({});
@@ -77,7 +100,7 @@ export default function PhishingGame() {
     }
   };
 
-  // ML Prediction function
+  // ML Prediction
   const getMLPrediction = async (emailText, links) => {
     try {
       const response = await api.getPrediction({
@@ -86,7 +109,6 @@ export default function PhishingGame() {
       });
       return response;
     } catch (error) {
-      // Fallback so game continues
       return {
         distilbert: { prediction: 'unknown', confidence: 0 },
         cnn: { prediction: 'unknown', confidence: 0 }
@@ -94,7 +116,7 @@ export default function PhishingGame() {
     }
   };
 
-  // handleAction with proper error handling
+  // Handle user action
   const handleAction = async (action) => {
     if (locked || !scenarios[currentScenarioIndex]) return;
     setLocked(true);
@@ -112,7 +134,18 @@ export default function PhishingGame() {
 
     if (isCorrect) {
       setScore(prev => prev + 100);
+      setTotalCorrect(prev => prev + 1);
     }
+    setTotalActions(prev => prev + 1);
+
+    // Record in ProgressContext (used by Thank You page)
+    recordAction(currentLevelKey, {
+      scenario_id: currentScenario.scenario_id,
+      action,
+      isCorrect,
+      level: currentLevelKey,
+      timeTaken,
+    });
 
     // Save to backend
     try {
@@ -121,7 +154,7 @@ export default function PhishingGame() {
         user_action: action,
         time_taken_seconds: timeTaken,
         session_id: sessionId,
-        level: currentLevel,
+        level: currentLevelKey,
         is_correct: isCorrect
       });
     } catch (error) {
@@ -138,16 +171,39 @@ export default function PhishingGame() {
       explanation: getExplanation(action, isCorrect)
     });
 
-    // Auto-advance or complete level
+    // Auto-advance
     setTimeout(() => {
       setFeedback(null);
       setLocked(false);
 
       if (currentScenarioIndex < scenarios.length - 1) {
+        // Next scenario in same level
         setCurrentScenarioIndex(prev => prev + 1);
         sessionStorage.setItem('scenario_start', Date.now().toString());
       } else {
-        setLevelComplete(true);
+        // Level complete — mark it
+        completeLevel(currentLevelKey);
+
+        if (!isLastLevel) {
+          // Show level transition, then move to next level
+          setShowLevelTransition(true);
+          setTimeout(() => {
+            setShowLevelTransition(false);
+            setCurrentLevelIndex(prev => prev + 1);
+          }, 2500);
+        } else {
+          // ALL levels done — go to Thank You
+          const totalTime = Math.round((Date.now() - gameStartTime.current) / 1000);
+          const minutes = Math.floor(totalTime / 60);
+          const seconds = totalTime % 60;
+          setSessionTimeTaken(`${minutes}m ${seconds}s`);
+          setGameComplete(true);
+
+          // Brief delay then navigate
+          setTimeout(() => {
+            navigate('/thankyou');
+          }, 3000);
+        }
       }
     }, 3000);
   };
@@ -164,32 +220,10 @@ export default function PhishingGame() {
     }
   };
 
-  const goToDashboard = () => {
-    navigate('/dashboard');
-  };
-
-  const resetLevel = () => {
-    setCurrentScenarioIndex(0);
-    setScore(0);
-    setLevelComplete(false);
-  };
+  // ── RENDER STATES ──
 
   if (loading) {
     return <div className="loading-screen">Loading Training Scenarios...</div>;
-  }
-
-  if (levelComplete) {
-    return (
-      <div className="level-complete">
-        <h2>Level Complete!</h2>
-        <p>You scored {score} points</p>
-        <p>Completed {scenarios.length} scenarios</p>
-        <div className="complete-actions">
-          <button onClick={resetLevel}>Replay Level</button>
-          <button onClick={goToDashboard}>Dashboard</button>
-        </div>
-      </div>
-    );
   }
 
   if (!scenarios.length) {
@@ -201,6 +235,42 @@ export default function PhishingGame() {
     );
   }
 
+  // Game complete — waiting to navigate
+  if (gameComplete) {
+    return (
+      <div className="game-complete-overlay">
+        <div className="game-complete-content">
+          <div className="complete-icon">🏆</div>
+          <h2>Simulation Complete!</h2>
+          <p>You scored <strong>{score}</strong> points across <strong>{sortedLevelKeys.length}</strong> levels</p>
+          <p className="accuracy-stat">
+            Accuracy: {totalActions > 0 ? ((totalCorrect / totalActions) * 100).toFixed(1) : 0}%
+          </p>
+          <p className="redirect-hint">Redirecting to results...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Level transition overlay
+  if (showLevelTransition) {
+    const nextKey = sortedLevelKeys[currentLevelIndex + 1] || '';
+    return (
+      <div className="level-transition-overlay">
+        <div className="transition-content">
+          <div className="transition-check">✅</div>
+          <h2>Level {currentLevelKey.toUpperCase()} Complete!</h2>
+          <p>Score so far: {score} points</p>
+          <div className="transition-next">
+            <span>Next up:</span>
+            <strong>Level {nextKey.toUpperCase()}</strong>
+          </div>
+          <div className="transition-loader"></div>
+        </div>
+      </div>
+    );
+  }
+
   const currentScenario = scenarios[currentScenarioIndex];
 
   return (
@@ -208,37 +278,38 @@ export default function PhishingGame() {
       {/* Game Header */}
       <div className="game-header">
         <div className="level-info">
-          <span className="level-badge">Level {currentLevel.toUpperCase()}</span>
+          <span className="level-badge">Level {currentLevelKey.toUpperCase()}</span>
           <span className="scenario-progress">
             {currentScenarioIndex + 1}/{scenarios.length}
           </span>
         </div>
 
         <div className="header-controls">
+          {/* Overall progress bar */}
+          <div className="overall-progress">
+            <div className="progress-text">
+              {completedScenarios + currentScenarioIndex}/{totalScenarios} total
+            </div>
+            <div className="progress-track">
+              <div
+                className="progress-fill"
+                style={{
+                  width: totalScenarios > 0
+                    ? `${((completedScenarios + currentScenarioIndex) / totalScenarios) * 100}%`
+                    : '0%'
+                }}
+              ></div>
+            </div>
+          </div>
+
           <div className="score-display">
             <span className="score-label">Score</span>
             <span className="score-value">{score}</span>
           </div>
 
-          <button onClick={goToDashboard} className="dashboard-button">
+          <button onClick={() => navigate('/dashboard')} className="dashboard-button">
             Dashboard
           </button>
-
-          <button onClick={() => navigate('/about')} className="about-button">
-            About
-          </button>
-
-          <select
-            onChange={(e) => setCurrentLevel(e.target.value)}
-            value={currentLevel}
-            className="level-select-header"
-          >
-            {Object.keys(levels).sort().map(level => (
-              <option key={level} value={level}>
-                Level {level.toUpperCase()} ({levels[level].length})
-              </option>
-            ))}
-          </select>
         </div>
       </div>
 
