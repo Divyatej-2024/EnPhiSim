@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { safeFetchJSON } from "../utils/helper";
 import { normalizeLevelData } from "../utils/LevelHelper";
 import TemplateRenderer from "./levels/TemplateRenderer";
-import { BACKEND_URL_CANDIDATES } from "../api";
+import { BACKEND_URL_CANDIDATES } from "../services/api";
 import { useProgress } from "../context/ProgressContext";
 
 export default function LevelPage() {

@@ -10,12 +10,11 @@ import Home from "./pages/Home";
 import Consent from './pages/Consent';
 import PhishingGame from './pages/PhishingGame';
 import Thankyou from "./pages/Thankyou";
+import ModelMetrics from "./pages/ModelMetrics";
 import './App.css';
 import BackgroundWrapper from "./components/BackgroundWrapper";
 
 export default function App() {
-  const hasConsented = localStorage.getItem('consentGiven') === 'true';
-  
   React.useEffect(() => {
     if (!localStorage.getItem('sessionId')) {
       const sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
@@ -34,14 +33,9 @@ export default function App() {
               <Route path="/disclaimer" element={<Disclaimer />} />
               <Route path="/about" element={<About />} />
               <Route path="/levels/:category/:level_no" element={<LevelPage />} />
-              <Route 
-                path="/game" 
-                element={hasConsented ? <PhishingGame /> : <Navigate to="/" replace />} 
-              />
-              <Route 
-                path="/dashboard" 
-                element={hasConsented ? <Dashboard /> : <Navigate to="/" replace />} 
-              />
+              <Route path="/game" element={<ConsentGuard><PhishingGame /></ConsentGuard>} />
+              <Route path="/dashboard" element={<ConsentGuard><Dashboard /></ConsentGuard>} />
+              <Route path="/model-metrics" element={<ModelMetrics />} />
               <Route path="/thankyou" element={<Thankyou />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
@@ -50,4 +44,13 @@ export default function App() {
       </BackgroundWrapper>
     </BrowserRouter>
   );
+}
+
+// Consent guard that re-checks localStorage on every render
+function ConsentGuard({ children }) {
+  const hasConsented = localStorage.getItem('consentGiven') === 'true';
+  if (!hasConsented) {
+    return <Navigate to="/" replace />;
+  }
+  return children;
 }

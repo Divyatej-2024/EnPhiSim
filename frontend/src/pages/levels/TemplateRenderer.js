@@ -61,14 +61,7 @@ export default function TemplateRenderer({ scenario, onAction, locked }) {
     );
   }
 
-  // Log the scenario for debugging
-  console.log('🎯 Rendering scenario:', {
-    id: scenario.scenario_id,
-    title: scenario.title,
-    template: scenario.template,
-    template_type: scenario.template_type,
-    taxonomy: scenario.taxonomy
-  });
+
 
   // Determine template type - check multiple possible fields
   const templateType = 
@@ -77,7 +70,7 @@ export default function TemplateRenderer({ scenario, onAction, locked }) {
     scenario.type || 
     'default';
   
-  console.log('📋 Using template type:', templateType);
+
 
   // Get the appropriate template component
   const TemplateComponent = templateMap[templateType] || templateMap['default'];

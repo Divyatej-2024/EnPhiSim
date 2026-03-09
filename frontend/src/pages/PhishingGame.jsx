@@ -49,7 +49,8 @@ export default function PhishingGame() {
     const id = Array.from(array, dec => dec.toString(16)).join('');
     localStorage.setItem('sessionId', id);
     return id;
-  } 
+  }
+
   const loadScenarios = async () => {
     try {
       setLoading(true);
@@ -68,7 +69,6 @@ export default function PhishingGame() {
 
       setLevels(grouped);
       setScenarios(grouped['l1'] || []);
-
     } catch (error) {
       console.error('Failed to load scenarios:', error);
       setLevels({});
@@ -77,7 +77,7 @@ export default function PhishingGame() {
     }
   };
 
-  // ADDED: ML Prediction function
+  // ML Prediction function
   const getMLPrediction = async (emailText, links) => {
     try {
       const response = await api.getPrediction({
@@ -86,7 +86,6 @@ export default function PhishingGame() {
       });
       return response;
     } catch (error) {
-      console.error('ML prediction failed:', error);
       // Fallback so game continues
       return {
         distilbert: { prediction: 'unknown', confidence: 0 },
@@ -95,7 +94,7 @@ export default function PhishingGame() {
     }
   };
 
-  //  FIXED: handleAction with proper error handling and removed undefined metadata
+  // handleAction with proper error handling
   const handleAction = async (action) => {
     if (locked || !scenarios[currentScenarioIndex]) return;
     setLocked(true);
@@ -115,7 +114,7 @@ export default function PhishingGame() {
       setScore(prev => prev + 100);
     }
 
-    // Save to backend - FIXED: removed undefined metadata
+    // Save to backend
     try {
       await api.saveAction({
         scenario_id: currentScenario.scenario_id,
@@ -126,11 +125,10 @@ export default function PhishingGame() {
         is_correct: isCorrect
       });
     } catch (error) {
-      console.error(' Failed to save action:', error);
+      console.error('Failed to save action:', error);
     }
 
     // Show feedback
-    console.log('Showing feedback dialog for:', action);
     setFeedback({
       show: true,
       isCorrect,
@@ -156,12 +154,12 @@ export default function PhishingGame() {
 
   const getExplanation = (action, isCorrect) => {
     if (isCorrect) {
-      return " Correct! " + (action === 'Report Phish' 
-        ? "Reporting helps protect everyone." 
+      return "Correct! " + (action === 'Report Phish'
+        ? "Reporting helps protect everyone."
         : "Good judgment!");
     } else {
-      return "Incorrect. " + (action === 'Trust & Click' 
-        ? "Never click suspicious links." 
+      return "Incorrect. " + (action === 'Trust & Click'
+        ? "Never click suspicious links."
         : "This should be reported.");
     }
   };
@@ -183,12 +181,12 @@ export default function PhishingGame() {
   if (levelComplete) {
     return (
       <div className="level-complete">
-        <h2> Level Complete!</h2>
+        <h2>Level Complete!</h2>
         <p>You scored {score} points</p>
         <p>Completed {scenarios.length} scenarios</p>
         <div className="complete-actions">
-          <button onClick={resetLevel}> Replay Level</button>
-          <button onClick={goToDashboard}> Dashboard</button>
+          <button onClick={resetLevel}>Replay Level</button>
+          <button onClick={goToDashboard}>Dashboard</button>
         </div>
       </div>
     );
@@ -226,13 +224,12 @@ export default function PhishingGame() {
             Dashboard
           </button>
 
-          {/* About button added for better navigation */}
           <button onClick={() => navigate('/about')} className="about-button">
             About
           </button>
 
-          <select 
-            onChange={(e) => setCurrentLevel(e.target.value)} 
+          <select
+            onChange={(e) => setCurrentLevel(e.target.value)}
             value={currentLevel}
             className="level-select-header"
           >
@@ -246,18 +243,18 @@ export default function PhishingGame() {
       </div>
 
       {/* Template-based Level Renderer */}
-      <TemplateRenderer 
+      <TemplateRenderer
         scenario={currentScenario}
         onAction={handleAction}
         locked={locked}
       />
 
-      {/* ENHANCED: Feedback Overlay with ML results */}
+      {/* Feedback Overlay with ML results */}
       {feedback?.show && (
         <div className={`feedback-overlay ${feedback.isCorrect ? 'correct' : 'incorrect'}`}>
           <div className="feedback-content">
             <h2>{feedback.isCorrect ? 'CORRECT!' : 'INCORRECT'}</h2>
-            
+
             <div className="feedback-details">
               <p><strong>You chose:</strong> {feedback.userAction}</p>
               <p><strong>Correct action:</strong> {feedback.correctAction}</p>
@@ -273,7 +270,7 @@ export default function PhishingGame() {
                       {feedback.mlResults.distilbert?.prediction}
                     </span>
                     <span className="confidence">
-                      {feedback.mlResults.distilbert?.confidence ? 
+                      {feedback.mlResults.distilbert?.confidence ?
                         `${(feedback.mlResults.distilbert.confidence * 100).toFixed(0)}%` : ''}
                     </span>
                   </div>
@@ -283,7 +280,7 @@ export default function PhishingGame() {
                       {feedback.mlResults.cnn?.prediction}
                     </span>
                     <span className="confidence">
-                      {feedback.mlResults.cnn?.confidence ? 
+                      {feedback.mlResults.cnn?.confidence ?
                         `${(feedback.mlResults.cnn.confidence * 100).toFixed(0)}%` : ''}
                     </span>
                   </div>

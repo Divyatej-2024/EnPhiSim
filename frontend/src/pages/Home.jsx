@@ -28,117 +28,86 @@ function Home() {
   };
 
   return (
-    <div
-      style={{
-        textAlign: "center",
-        marginTop: "8rem",
-        minHeight: "100vh",
-        color: "white",
-        fontFamily: "'Poppins', sans-serif",
-      }}
-    >
-      <img
-        src={`${process.env.PUBLIC_URL}/Enphisim.png`}
-        alt="EnPhiSim Logo"
-        width="160"
-        style={{ marginBottom: "1.5rem" }}
-      />
+    <div className="home-page">
+      <div className="home-hero">
+        <div className="hero-badge">🛡️ Cybersecurity Training Platform</div>
+        
+        <img
+          src={`${process.env.PUBLIC_URL}/Enphisim.png`}
+          alt="EnPhiSim Logo"
+          className="hero-logo"
+        />
 
-      <h1 style={{ fontSize: "2.5rem", fontWeight: "700", marginBottom: "0.5rem" }}>
-        Welcome to <span style={{ color: "#38bdf8" }}>EnPhiSim</span>
-      </h1>
+        <h1 className="hero-title">
+          Welcome to <span className="text-gradient">EnPhiSim</span>
+        </h1>
 
-      <p style={{ fontSize: "1.1rem", marginBottom: "2rem", color: "#cbd5e1" }}>
-        Your phishing simulation and awareness platform.
-      </p>
+        <p className="hero-subtitle">
+          Enhanced Phishing Simulation — Train your eye to detect cyber threats 
+          through interactive, AI-powered scenarios.
+        </p>
 
-      <button
-        onClick={handleStart}
-        style={{
-          background: "#38bdf8",
-          color: "#0f172a",
-          padding: "0.75rem 1.5rem",
-          borderRadius: "9999px",
-          border: "none",
-          fontWeight: "600",
-          cursor: "pointer",
-        }}
-      >
-        Let's Begin
-      </button>
+        <div className="hero-features">
+          <div className="feature-tag">
+            <span className="feature-icon">🎯</span>
+            <span>39 Levels</span>
+          </div>
+          <div className="feature-tag">
+            <span className="feature-icon">🤖</span>
+            <span>AI Analysis</span>
+          </div>
+          <div className="feature-tag">
+            <span className="feature-icon">📊</span>
+            <span>Live Dashboard</span>
+          </div>
+        </div>
+
+        <button onClick={handleStart} className="hero-cta">
+          Let's Begin →
+        </button>
+      </div>
 
       {/* CONSENT MODAL */}
       {showConsent && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            backgroundColor: "rgba(0,0,0,0.8)",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: "2rem",
-            zIndex: 9999,
-          }}
-        >
-          <div
-            style={{
-              background: "#1e293b",
-              padding: "2rem",
-              borderRadius: "12px",
-              maxWidth: "600px",
-              color: "white",
-              textAlign: "left",
-            }}
-          >
-            <h2 style={{ marginBottom: "1rem", color: "#38bdf8" }}>
-              Informed Consent – Research Study
+        <div className="consent-overlay">
+          <div className="consent-modal">
+            <h2 className="modal-title">
+              Informed Consent — Research Study
             </h2>
 
-            <p style={{ marginBottom: "1rem", fontSize: "0.95rem" }}>
+            <p className="modal-text">
               This platform simulates phishing attack scenarios to evaluate user
               decision-making behaviour and compare machine learning classifiers
               including DistilBERT and CNN.
             </p>
 
-            <p style={{ marginBottom: "1rem", fontSize: "0.95rem" }}>
+            <p className="modal-text">
               The system records anonymous interaction data such as responses,
               timestamps, and behavioural classifications. No personal
               identifiers are collected.
             </p>
 
-            <p style={{ marginBottom: "1rem", fontSize: "0.95rem" }}>
+            <p className="modal-text">
               Participation is voluntary. You may withdraw at any time by
               clearing your browser storage.
             </p>
 
-            <div style={{ marginBottom: "1rem" }}>
+            <label className="modal-checkbox">
               <input
                 type="checkbox"
-                id="consent"
                 checked={checked}
                 onChange={(e) => setChecked(e.target.checked)}
               />
-              <label htmlFor="consent" style={{ marginLeft: "0.5rem" }}>
+              <span>
                 I have read and understood the above information and consent to
                 anonymous data processing.
-              </label>
-            </div>
+              </span>
+            </label>
 
             <button
               disabled={!checked}
               onClick={handleConsent}
-              style={{
-                background: checked ? "#38bdf8" : "#64748b",
-                color: "#0f172a",
-                padding: "0.6rem 1.2rem",
-                borderRadius: "8px",
-                border: "none",
-                cursor: checked ? "pointer" : "not-allowed",
-              }}
+              className={`modal-submit ${checked ? 'active' : ''}`}
             >
               Start Simulation
             </button>

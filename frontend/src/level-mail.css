@@ -1,503 +1,244 @@
-/* Overall wrapper — dark cyber mail interface */
-.level-mail-wrapper {
-  /*min-height: 100vh;*/
-  font-family: "Segoe UI", Roboto, Arial, sans-serif;
-  background: radial-gradient(circle at top left, #0f172a 0%, #1e293b 60%, #0a0f1a 100%);
-  color: #e6eef8;
+/* level-mail.css — Mail level specific styles */
+/* These styles are imported by MailLevel template */
+
+.mail-level-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.email-preview {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.email-toolbar {
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 40px 20px;
-}
-
-/* ================================
-   EMAIL SIMULATION BASE STYLING
-================================== */
-
-.email-box {
-  width: 90%;
-  max-width: 650px;
-  margin: 40px auto;
-  background: #ffffff;
-  border-radius: 10px;
-  border: 1px solid #e4e4e4;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  padding: 25px 30px;
-  font-family: "Arial", sans-serif;
-  animation: fadeIn 0.4s ease;
-}
-
-/* Smooth fade */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Subject + Sender Header */
-.email-header {
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 15px;
-  margin-bottom: 20px;
-  color: #333;
-  font-size: 16px;
-}
-
-.sender {
-  font-weight: bold;
-  position: relative;
-  cursor: pointer;
-  display: inline-block;
-}
-
-/* Tooltip */
-.sender .tooltip {
-  visibility: hidden;
-  opacity: 0;
-  transition: 0.25s ease;
-  position: absolute;
-  top: 22px;
-  left: 0;
-  background: #000;
-  color: #fff;
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-size: 14px;
-  white-space: nowrap;
-  z-index: 50;
-  border: 1px solid #333;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-}
-
-.sender:hover .tooltip {
-  visibility: visible;
-  opacity: 1;
-}
-
-/* Email Body */
-.email-content {
-  font-size: 15px;
-  line-height: 1.7;
-  color: #222;
-}
-
-.email-content a.fake-link {
-  color: #0074d4;
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-.email-content a.fake-link:hover {
-  color: #004d8c;
-}
-
-/* ================================
-   OPTION BUTTONS
-================================== */
-
-.options {
-  margin-top: 30px;
-  display: flex;
-  flex-direction: column;
+  align-items: center;
+  padding: 12px 18px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #eee;
   gap: 12px;
 }
 
-.option-btn {
-  padding: 14px 12px;
-  border-radius: 8px;
-  font-size: 16px;
-  border: none;
-  background: #f3f3f3;
-  cursor: pointer;
-  transition: 0.2s;
-  border: 1px solid #ccc;
-}
-
-.option-btn:hover {
-  background: #e6e6e6;
-  transform: translateY(-2px);
-}
-
-/* Correct / Wrong Highlights */
-.option-btn.correct {
-  background: #d0f3d0;
-  border-color: #42a742;
-}
-.email-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.email-panel {
-  background: white;
-  border-radius: 10px;
-  padding: 20px;
-  border: 1px solid #e1e4e8;
-  box-shadow: 0 0 20px rgba(0,0,0,0.05);
-}
-
-.email-header-actions {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-/* Sender Hover */
-.sender-hover {
-  position: relative;
-  font-weight: bold;
-  cursor: pointer;
-  color: #444;
-}
-
-.hover-tooltip {
-  position: absolute;
-  background: #222;
-  color: #fff;
-  padding: 8px 12px;
-  font-size: 13px;
-  border-radius: 5px;
-  white-space: nowrap;
-  top: 120%;
-  left: 0;
-  display: none;
-  z-index: 100;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
-}
-
-.sender-hover:hover .hover-tooltip {
-  display: block;
-  opacity: 1;
-}
-
-/* Email Subject */
-.email-subject {
-  font-size: 1.2rem;
-  margin: 10px 0;
-  color: #222;
-  font-weight: bold;
-}
-
-/* Email Content */
-.email-content {
-  background: #f9fafb;
-  padding: 15px;
+.email-toolbar-btn {
+  padding: 6px 14px;
+  border: 1px solid #ddd;
   border-radius: 6px;
-  border: 1px solid #eee;
-  margin-top: 10px;
+  background: white;
+  color: #555;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-/* Footer (bottom button) */
-.email-footer {
-  margin-top: 20px;
-  text-align: right;
+.email-toolbar-btn:hover {
+  background: #eee;
 }
 
-.option-btn.wrong {
-  background: #ffd3d3;
-  border-color: #b90000;
-}
-
-/* Mobile-friendly */
-@media (max-width: 480px) {
-  .email-box {
-    padding: 20px;
-  }
-
-  .option-btn {
-    font-size: 15px;
-  }
-}
-
-/* Content container */
-.mail-briefing {
-  background: rgba(17, 24, 39, 0.9);
-  box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
-  padding: 24px;
-  border-radius: 14px;
-  max-width: 850px;
-  width: 100%;
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-/* Header — avatar + sender info */
-.mail-briefing-header {
+.email-sender {
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-bottom: 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 10px;
+  padding: 18px 22px;
+  border-bottom: 1px solid #f0f0f0;
 }
 
-/* Avatar */
-.brief-avatar {
-  width: 52px;
-  height: 52px;
-  border-radius: 10px;
-  object-fit: cover;
-  background: linear-gradient(135deg, #00c6ff, #0072ff);
-  border: 2px solid #1e40af;
-}
-
-/* Sender name */
-.brief-from {
+.sender-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
   font-weight: 700;
   font-size: 1.1rem;
-  color: #f9fafb;
+  flex-shrink: 0;
 }
 
-/* Subject line */
-.brief-sub {
-  font-size: 0.9rem;
-  color: #a1a1aa;
+.sender-details {
+  flex: 1;
 }
 
-/* Body */
-.brief-body {
-  background: linear-gradient(180deg, #111827 0%, #0f172a 100%);
-  padding: 18px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #dbeafe;
-  line-height: 1.7;
-  letter-spacing: 0.2px;
-  font-size: 1rem;
-}
-
-/* Links — simulate phishing urgency */
-.phish-link {
-  color: #3b82f6;
-  text-decoration: underline;
+.sender-name {
   font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+  margin-bottom: 2px;
+}
+
+.sender-email-addr {
+  color: #888;
+  font-size: 0.82rem;
+}
+
+.email-date {
+  color: #999;
+  font-size: 0.8rem;
+}
+
+.email-subject-line {
+  padding: 16px 22px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #222;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.email-body-content {
+  padding: 22px;
+  color: #333;
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.email-body-content p {
+  margin: 0 0 14px;
+  color: #333;
+}
+
+.email-body-content a {
+  color: #0066cc;
+  text-decoration: underline;
+}
+
+.email-cta-btn {
+  display: inline-block;
+  padding: 10px 24px;
+  background: #0078d7;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  margin: 12px 0;
   cursor: pointer;
-  transition: color 0.2s ease-in-out;
-}
-.phish-link:hover {
-  color: #60a5fa;
-}
-
-/* Muted hint / footer text */
-.hint-muted {
-  color: #9ca3af;
+  border: none;
   font-size: 0.9rem;
-  margin-top: 12px;
-  font-style: italic;
 }
 
-/* Options section (button group) */
-.lt-options {
-  display: flex;
-  gap: 12px;
-  margin-top: 22px;
-  justify-content: flex-end;
+.email-cta-btn:hover {
+  background: #005bb5;
 }
 
-/* Responsive adjustments */
-@media (max-width: 720px) {
-  .level-mail-wrapper {
-    padding: 20px 10px;
-  }
-  .mail-briefing {
-    padding: 16px;
-  }
-  .brief-avatar {
-    width: 44px;
-    height: 44px;
-  }
-  .brief-body {
-    font-size: 0.95rem;
-  }
+.email-footer {
+  padding: 16px 22px;
+  border-top: 1px solid #f0f0f0;
+  font-size: 0.8rem;
+  color: #999;
+  text-align: center;
 }
 
-/* Buttons and option styles that LevelTemplate might use —
-   these selectors are intentionally generic; align them with your LevelTemplate classes */
-.lt-options {
-  display:flex;
-  gap:10px;
-  margin-top:16px;
+.email-footer a {
+  color: #0066cc;
+  text-decoration: none;
 }
 
-.lt-btn {
-  padding:10px 14px;
-  border-radius:8px;
-  font-weight:700;
-  cursor:pointer;
-  border:none;
+.email-footer a:hover {
+  text-decoration: underline;
 }
 
-/* map style names to colors; LevelTemplate should apply .primary/.neutral/.positive */
-.lt-btn.primary { background:#ef4444; color:white; }   /* verify - red to show urgency */
-.lt-btn.neutral { background:#6b7280; color:white; }   /* ignore - grey */
-.lt-btn.positive { background:#16a34a; color:white; }  /* report - green */
-
-/* responsive */
-@media (max-width: 720px) {
-  .mail-briefing { padding:12px; }
-  .brief-avatar { width:40px; height:40px; }
-}
-
-.ipad-level-wrapper {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: radial-gradient(circle at center, #1e293b, #0f172a);
-  padding: 16px;
-}
-
-.ipad-level-container {
-  width: 100%;
-  max-width: 760px; /* iPad portrait width */
-  background: #ffffff;
-  border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+/* Action buttons below email */
+.email-actions {
   padding: 20px;
   display: flex;
-  flex-direction: column;
-}
-
-.ipad-level-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.ipad-avatar {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  border: 2px solid #ddd;
-}
-
-.ipad-level-title {
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: #111827;
-}
-
-.ipad-level-sub {
-  font-size: 0.9rem;
-  color: #6b7280;
-}
-
-.ipad-timer {
-  font-size: 0.8rem;
-  color: #666;
-  text-align: right;
-}
-
-.ipad-level-body {
-  margin-top: 16px;
-  color: #222;
-  line-height: 1.6;
-}
-
-.ipad-followup {
-  background: #fff7ed;
-  color: #92400e;
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 8px;
-}
-
-.ipad-escalation {
-  background: #fee2e2;
-  color: #991b1b;
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 8px;
-}
-
-.ipad-actions {
-  display: flex;
+  gap: 12px;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 16px;
+  background: #fafafa;
+  border-top: 1px solid #eee;
 }
 
-.ipad-hints {
-  border-top: 1px solid #e5e7eb;
-  padding-top: 10px;
-  margin-top: 20px;
-  color: #666;
+.email-action-btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: white;
+  color: #333;
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.hint-title {
+.email-action-btn:hover {
+  background: #f0f0f0;
+  border-color: #bbb;
+}
+
+.email-action-btn.trust {
+  background: #e8f5e9;
+  border-color: #a5d6a7;
+  color: #2e7d32;
+}
+
+.email-action-btn.trust:hover {
+  background: #c8e6c9;
+}
+
+.email-action-btn.report {
+  background: #fce4ec;
+  border-color: #ef9a9a;
+  color: #c62828;
+}
+
+.email-action-btn.report:hover {
+  background: #ffcdd2;
+}
+
+.email-action-btn.ignore {
+  background: #f5f5f5;
+  border-color: #bbb;
+  color: #555;
+}
+
+.email-action-btn.ignore:hover {
+  background: #e0e0e0;
+}
+
+/* Phish hint */
+.phish-hint {
+  font-size: 0.85rem;
+  color: #ef4444;
+  margin-top: 4px;
+  font-style: italic;
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out;
+}
+
+.sender-name:hover + .phish-hint,
+.phish-hint:hover {
+  opacity: 1;
+}
+
+/* Info badges */
+.meta-level {
+  background: #6366f1;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 5px;
   font-weight: 700;
-  margin-bottom: 4px;
+  font-size: 0.78rem;
+  margin-right: 8px;
 }
 
-.hidden-hint {
-  font-size: 12px;
-  color: #9ca3af;
+.meta-topic {
+  color: #6366f1;
+  font-weight: bold;
+  font-size: 0.85rem;
 }
 
-.hint-footer {
-  font-size: 12px;
-  color: #9ca3af;
-  margin-top: 6px;
-}
-
-.ipad-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 14px;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.ipad-footer-text {
-  font-size: 12px;
-  color: #999;
-}
-
-.ipad-footer-buttons {
-  display: flex;
-  gap: 8px;
-}
-
-/* Dialog */
-.ipad-dialog-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.ipad-dialog {
-  background: #fff;
-  padding: 18px;
-  border-radius: 10px;
-  width: 90%;
-  max-width: 400px;
-}
-
-.ipad-dialog-buttons {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-/* iPad responsive tweaks */
-@media (max-width: 820px) {
-  .ipad-level-container {
-    padding: 16px;
+/* Responsive */
+@media (max-width: 768px) {
+  .email-actions {
+    flex-direction: column;
   }
 
-  .ipad-level-title {
-    font-size: 1.2rem;
-  }
-
-  .ipad-actions button {
-    flex: 1 1 45%;
+  .email-sender {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
   }
 }

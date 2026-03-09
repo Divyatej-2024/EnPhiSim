@@ -99,14 +99,6 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
 
   const currentLevel = scenario || null;
 
-  // Log the scenario data for debugging
-  console.log('📦 BaseLevel received:', {
-    id: currentLevel?.scenario_id,
-    title: currentLevel?.title,
-    type: currentLevel?.taxonomy,
-    template: levelType
-  });
-
   const handleUserAction = useCallback(
     async (action, metadata = {}) => {
       if (locked || !currentLevel) return;
@@ -120,14 +112,7 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
         // Create rich ML text from your data
         const mlText = createMlInputText(currentLevel, action);
         
-        console.log('🎯 Action taken:', {
-          scenario_id: currentLevel.scenario_id,
-          level_no: currentLevel.level_no,
-          action,
-          isCorrect,
-          correct_action: currentLevel.correct_action,
-          taxonomy: currentLevel.taxonomy
-        });
+
 
         // Call parent onAction with ALL data
         if (onAction) {

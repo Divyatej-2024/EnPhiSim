@@ -10,7 +10,7 @@ import torch
 from transformers import DistilBertTokenizerFast, DistilBertModel
 
 # ---- CONFIG ----
-MODEL_DIR = os.getenv("MODEL_DIR", "./models")   # folder containing cnn_model.h5 & meta.json
+MODEL_DIR = os.getenv("MODEL_DIR", "./models")
 MODEL_CANDIDATES = [
     os.path.join(MODEL_DIR, "cnn_model.h5"),
     os.path.join(MODEL_DIR, "cnn_options_model.h5"),
@@ -18,15 +18,18 @@ MODEL_CANDIDATES = [
 META_PATH = os.path.join(MODEL_DIR, "meta.json")
 MAX_TEXT_CHARS = int(os.getenv("MAX_TEXT_CHARS", "4000"))
 
+# ---- Allowed origins (restrict for production) ----
+ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "https://en-phi-sim.vercel.app,http://localhost:3000").split(",")
+
 # ---- FASTAPI APP ----
-app = FastAPI(title="EnPhiSim ML Server - DistilBERT + CNN")
+app = FastAPI(title="EnPhiSim ML Server")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # restrict in production to your frontend domain
+    allow_origins=[o.strip() for o in ALLOWED_ORIGINS],
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Content-Type", "X-CSRF-Token"],
 )
 
 # ---- LOAD MODELS ----
@@ -56,7 +59,7 @@ except Exception as e:
 
 # ---- Pydantic request model ----
 class PredictRequest(BaseModel):
-    userId: str | None = "user_001"  # single-user mode default
+    userId: str | None = None
     levelId: str | int | None = None
     text: str
 
@@ -95,7 +98,8 @@ def predict(req: PredictRequest):
         preds = cnn_model.predict(emb, verbose=0)  # shape (1, n_classes)
         probs = preds[0].tolist()
     except Exception as exc:
-        raise HTTPException(status_code=500, detail=f"inference_failed: {exc}")
+        print(f"Inference error: {exc}")
+        raise HTTPException(status_code=500, detail="Prediction failed. Please try again.")
 
     # prepare response
     width = min(len(LABELS), len(probs))
@@ -127,7 +131,8 @@ def predict_batch(req: BatchPredictRequest):
         emb = get_embeddings(texts)
         preds = cnn_model.predict(emb, verbose=0)
     except Exception as exc:
-        raise HTTPException(status_code=500, detail=f"batch_inference_failed: {exc}")
+        print(f"Batch inference error: {exc}")
+        raise HTTPException(status_code=500, detail="Batch prediction failed. Please try again.")
     results = []
     for i, p in enumerate(preds):
         width = min(len(LABELS), len(p))
@@ -143,7 +148,7 @@ def predict_batch(req: BatchPredictRequest):
             "probabilities": { LABELS[j]: float(p[j]) for j in range(width) },
             "confidence": confidence
         })
-    return {"results": results, "model_accuracy": MODEL_ACCURACY, "model_path": CNN_MODEL_PATH}
+    return {"results": results, "model_accuracy": MODEL_ACCURACY}
 
 # ---- Health ---
 @app.get("/health")
@@ -153,5 +158,4 @@ def health():
         "model_loaded": True,
         "labels": LABELS,
         "model_accuracy": MODEL_ACCURACY,
-        "model_path": CNN_MODEL_PATH,
     }

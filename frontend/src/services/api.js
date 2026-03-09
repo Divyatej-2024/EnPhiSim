@@ -2,6 +2,16 @@ import axios from 'axios';
 
 const API_BASE = process.env.REACT_APP_API_URL || 'https://enphisim-1.onrender.com';
 
+const PROD_BACKEND_FALLBACKS = [
+  'https://enphisim-backend.onrender.com',
+  'https://enphisim-1.onrender.com',
+];
+
+export const BACKEND_URL_CANDIDATES = [
+  API_BASE,
+  ...PROD_BACKEND_FALLBACKS,
+].filter((url, index, arr) => Boolean(url) && arr.indexOf(url) === index);
+
 const MUTATING_METHODS = new Set(['post', 'put', 'patch', 'delete']);
 
 let csrfToken = null;

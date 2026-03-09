@@ -1,50 +1,76 @@
 /* frontend/src/components/BackgroundWrapper.css */
-body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  background-color: #073A78;
-}
 .bg-wrapper {
   position: relative;
   min-height: 100vh;
   overflow: hidden;
+  /* Deep navy-teal matching the logo background */
+  background: linear-gradient(160deg, #0a1628 0%, #0d2137 30%, #0f3049 60%, #0a1e30 100%);
 }
 
-.faded-logo {
+/* Animated ambient glow orbs — matching logo colors (teal + violet) */
+.bg-wrapper::before {
+  content: '';
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('../Enphisim.png');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-attachment: fixed;
-  background-size: 400px auto;
-  opacity: 0.6;
-  z-index: -1;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background:
+    /* Teal glow — matches logo background */
+    radial-gradient(ellipse at 15% 75%, rgba(20, 120, 160, 0.12) 0%, transparent 55%),
+    /* Cyan accent — matches the bright EnPhiSim text */
+    radial-gradient(ellipse at 85% 25%, rgba(0, 229, 255, 0.06) 0%, transparent 45%),
+    /* Violet accent — matches the circuit/chip in the logo */
+    radial-gradient(ellipse at 50% 50%, rgba(99, 102, 241, 0.05) 0%, transparent 50%),
+    /* Subtle warm glow for depth */
+    radial-gradient(ellipse at 70% 80%, rgba(20, 100, 140, 0.08) 0%, transparent 50%);
+  animation: bgDrift 30s ease-in-out infinite alternate;
+  z-index: 0;
   pointer-events: none;
 }
 
-/* Responsive adjustment for mobile */
-@media (max-width: 768px) {
-  .faded-logo {
-    background-size: 200px auto;
-    opacity: 0.04;
-  }
+/* Logo watermark — centered, subtle, elegant */
+.faded-logo {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 360px;
+  height: 360px;
+  background-image: url('../Enphisim.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0.04;
+  z-index: 0;
+  pointer-events: none;
+  animation: logoPulse 20s ease-in-out infinite;
+  filter: drop-shadow(0 0 60px rgba(0, 229, 255, 0.08));
 }
 
-/* Optional animation for subtle movement */
-@keyframes slowFloat {
+@keyframes bgDrift {
+  0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+  50% { transform: translate(-3%, 3%) rotate(1.5deg) scale(1.02); }
+  100% { transform: translate(-5%, 5%) rotate(3deg) scale(1); }
+}
+
+@keyframes logoPulse {
   0%, 100% {
-    transform: scale(1);
+    opacity: 0.04;
+    transform: translate(-50%, -50%) scale(1);
+    filter: drop-shadow(0 0 60px rgba(0, 229, 255, 0.08));
   }
   50% {
-    transform: scale(1.02);
+    opacity: 0.06;
+    transform: translate(-50%, -50%) scale(1.03);
+    filter: drop-shadow(0 0 80px rgba(0, 229, 255, 0.12));
   }
 }
 
-.faded-logo {
-  animation: slowFloat 20s ease-in-out infinite;
+@media (max-width: 768px) {
+  .faded-logo {
+    width: 220px;
+    height: 220px;
+    opacity: 0.03;
+  }
 }
