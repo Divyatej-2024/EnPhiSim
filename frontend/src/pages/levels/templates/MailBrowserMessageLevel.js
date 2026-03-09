@@ -1,6 +1,7 @@
 // frontend/src/pages/levels/templates/MailBrowserMessageLevel.js
 import React, { useState } from "react";
 import BaseLevel from "./BaseLevel";
+import "./MailBrowserMessageLevel.css"; // ✅ ADD THIS
 
 export default function MailBrowserMessageLevel({ level: scenario }) {
   const [platform, setPlatform] = useState("email");
@@ -8,7 +9,7 @@ export default function MailBrowserMessageLevel({ level: scenario }) {
   const renderPanel = (level) => {
     if (platform === "email") {
       return (
-        <div style={{ overflowWrap: "anywhere" }}>
+        <div className="multichannel-main">
           <h4>Email Channel</h4>
           <p><strong>From:</strong> {level.phish_email || "Unknown"}</p>
           <p><strong>Subject:</strong> {level.subj || "Security Alert"}</p>
@@ -18,7 +19,7 @@ export default function MailBrowserMessageLevel({ level: scenario }) {
     }
     if (platform === "browser") {
       return (
-        <div style={{ overflowWrap: "anywhere" }}>
+        <div className="multichannel-main">
           <h4>Browser Channel</h4>
           <p><strong>URL:</strong> {level.suspicious_url || level.url || "Unknown URL"}</p>
           <p>Page behavior indicates credential harvesting risk.</p>
@@ -26,7 +27,7 @@ export default function MailBrowserMessageLevel({ level: scenario }) {
       );
     }
     return (
-      <div style={{ overflowWrap: "anywhere" }}>
+      <div className="multichannel-main">
         <h4>Message Channel</h4>
         <p><strong>Sender:</strong> {level.suspicious_phone || level.contact_name || "Unknown contact"}</p>
         <p>{level.message_text || "Follow-up message reinforces urgency and requests immediate verification."}</p>
@@ -37,19 +38,34 @@ export default function MailBrowserMessageLevel({ level: scenario }) {
   return (
     <BaseLevel levelType="mail+browser+message" scenario={scenario}>
       {({ level, onAction, locked }) => (
-        <div style={{ width: "100%", maxWidth: 1300, margin: "0 auto", background: "#fff", borderRadius: 12, overflow: "hidden" }}>
-          <div style={{ padding: 14, background: "#b91c1c", color: "#fff" }}>
+        <div className="multichannel-container">
+          <div className="multichannel-header">
             <strong>Multi-Channel Threat Simulation</strong>
           </div>
 
-          <div style={{ display: "flex", gap: 8, padding: 12, borderBottom: "1px solid #e5e7eb", flexWrap: "wrap" }}>
-            <button onClick={() => setPlatform("email")}>Email</button>
-            <button onClick={() => setPlatform("browser")}>Browser</button>
-            <button onClick={() => setPlatform("message")}>Message</button>
+          <div className="multichannel-tabs">
+            <button
+              className={`multichannel-tab ${platform === "email" ? "active" : ""}`}
+              onClick={() => setPlatform("email")}
+            >
+              Email
+            </button>
+            <button
+              className={`multichannel-tab ${platform === "browser" ? "active" : ""}`}
+              onClick={() => setPlatform("browser")}
+            >
+              Browser
+            </button>
+            <button
+              className={`multichannel-tab ${platform === "message" ? "active" : ""}`}
+              onClick={() => setPlatform("message")}
+            >
+              Message
+            </button>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", minHeight: 420 }}>
-            <aside style={{ padding: 14, background: "#f8fafc", borderRight: "1px solid #e5e7eb" }}>
+          <div className="multichannel-grid">
+            <aside className="multichannel-sidebar">
               <h4>Timeline</h4>
               <ol>
                 <li>Email received</li>
@@ -58,26 +74,35 @@ export default function MailBrowserMessageLevel({ level: scenario }) {
               </ol>
             </aside>
 
-            <main style={{ padding: 14, minWidth: 0 }}>{renderPanel(level)}</main>
+            <main>{renderPanel(level)}</main>
 
-            <aside style={{ padding: 14, background: "#f8fafc", borderLeft: "1px solid #e5e7eb" }}>
+            <aside className="multichannel-sidebar right">
               <h4>Risk Summary</h4>
               <p><strong>Confidence:</strong> {level.confidence || "high"}</p>
               <p><strong>Assessment:</strong> Coordinated phishing pattern detected across channels.</p>
             </aside>
           </div>
 
-          <div style={{ padding: 16, borderTop: "1px solid #e5e7eb", display: "flex", gap: 10, flexWrap: "wrap" }}>
+          <div className="multichannel-actions">
             <button
+              className="multichannel-btn block"
               disabled={locked}
               onClick={() => onAction("block_all", { email: level.phish_email, url: level.suspicious_url, phone: level.suspicious_phone })}
             >
               Block All Channels
             </button>
-            <button disabled={locked} onClick={() => onAction("report_authorities", { threat_data: level })}>
+            <button
+              className="multichannel-btn report"
+              disabled={locked}
+              onClick={() => onAction("report_authorities", { threat_data: level })}
+            >
               Report Incident
             </button>
-            <button disabled={locked} onClick={() => onAction("mark_safe", { threat_data: level })}>
+            <button
+              className="multichannel-btn safe"
+              disabled={locked}
+              onClick={() => onAction("mark_safe", { threat_data: level })}
+            >
               Mark as False Positive
             </button>
           </div>

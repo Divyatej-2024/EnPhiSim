@@ -1,6 +1,7 @@
 // frontend/src/pages/levels/templates/NotificationLevel.js
 import React, { useState } from "react";
 import BaseLevel from "./BaseLevel";
+import "./NotificationLevel.css"; // ✅ ADD THIS
 
 export default function NotificationLevel({ level: scenario }) {
   const [selected, setSelected] = useState(null);
@@ -25,48 +26,56 @@ export default function NotificationLevel({ level: scenario }) {
         const current = selected != null ? notifications[selected] : null;
 
         return (
-          <div style={{ width: "100%", maxWidth: 850, margin: "0 auto", background: "#fff", borderRadius: 12, overflow: "hidden" }}>
-            <div style={{ padding: 14, background: "#1d4ed8", color: "#fff" }}>
+          <div className="notification-container">
+            <div className="notification-header">
               <strong>Notification Center</strong>
             </div>
 
-            <div style={{ maxHeight: 320, overflowY: "auto", borderBottom: "1px solid #e5e7eb" }}>
+            <div className="notification-list">
               {notifications.map((n, idx) => (
                 <div
                   key={n.id || idx}
+                  className={`notification-item ${selected === idx ? "selected" : ""}`}
                   onClick={() => setSelected(selected === idx ? null : idx)}
-                  style={{
-                    padding: 12,
-                    cursor: "pointer",
-                    background: selected === idx ? "#eff6ff" : "#fff",
-                    borderBottom: "1px solid #f1f5f9",
-                  }}
                 >
-                  <div style={{ fontWeight: 600, overflowWrap: "anywhere" }}>{n.title}</div>
-                  <div style={{ fontSize: 14, color: "#475569", overflowWrap: "anywhere" }}>{n.message}</div>
-                  <div style={{ fontSize: 12, color: "#64748b" }}>{n.time || "Now"}</div>
+                  <div className="notification-title">{n.title}</div>
+                  <div className="notification-message">{n.message}</div>
+                  <div className="notification-time">{n.time || "Now"}</div>
                 </div>
               ))}
             </div>
 
             {current && (
-              <div style={{ padding: 14, background: "#f8fafc" }}>
-                <div><strong>From:</strong> {current.sender || "System"}</div>
-                <div style={{ marginTop: 8, whiteSpace: "pre-wrap", overflowWrap: "anywhere" }}>
-                  {current.full_message || current.message}
-                </div>
+              <div className="notification-detail">
+                <p><strong>From:</strong> {current.sender || "System"}</p>
+                <p>{current.full_message || current.message}</p>
+                
                 {current.suspicious && (
-                  <div style={{ marginTop: 10, color: "#b91c1c" }}>This notification looks suspicious.</div>
+                  <div className="notification-suspicious">
+                    This notification looks suspicious.
+                  </div>
                 )}
 
-                <div style={{ marginTop: 12, display: "flex", gap: 10, flexWrap: "wrap" }}>
-                  <button disabled={locked} onClick={() => onAction("block", { notification_id: current.id })}>
+                <div className="notification-actions">
+                  <button
+                    className="notification-btn block"
+                    disabled={locked}
+                    onClick={() => onAction("block", { notification_id: current.id })}
+                  >
                     Block Sender
                   </button>
-                  <button disabled={locked} onClick={() => onAction("ignore", { notification_id: current.id })}>
+                  <button
+                    className="notification-btn ignore"
+                    disabled={locked}
+                    onClick={() => onAction("ignore", { notification_id: current.id })}
+                  >
                     Ignore
                   </button>
-                  <button disabled={locked} onClick={() => onAction("safe", { notification_id: current.id })}>
+                  <button
+                    className="notification-btn safe"
+                    disabled={locked}
+                    onClick={() => onAction("safe", { notification_id: current.id })}
+                  >
                     Mark Safe
                   </button>
                 </div>

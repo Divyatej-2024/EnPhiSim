@@ -1,6 +1,7 @@
 // frontend/src/pages/levels/templates/MessageLevel.js
 import React, { useState } from "react";
 import BaseLevel from "./BaseLevel";
+import "./MessageLevel.css"; // ✅ ADD THIS
 
 export default function MessageLevel({ level: scenario }) {
   const [draft, setDraft] = useState("");
@@ -22,59 +23,74 @@ export default function MessageLevel({ level: scenario }) {
             ];
 
         return (
-          <div style={{ width: "100%", maxWidth: 900, margin: "0 auto", background: "#fff", borderRadius: 12, overflow: "hidden" }}>
-            <div style={{ padding: 14, background: "#0f766e", color: "#fff" }}>
+          <div className="message-container">
+            <div className="message-header">
               <strong>{level.contact_name || "Contact"}</strong>
-              <div style={{ fontSize: 12, opacity: 0.9 }}>{level.status || "Online"}</div>
+              <div className="message-status">{level.status || "Online"}</div>
             </div>
 
             {level.show_warning && (
-              <div style={{ padding: 12, borderBottom: "1px solid #fbbf24", background: "#fffbeb" }}>
+              <div className="message-warning">
                 <strong>Warning:</strong> This conversation contains suspicious content.
               </div>
             )}
 
-            <div style={{ padding: 16, minHeight: 320, background: "#f1f5f9" }}>
+            <div className="message-area">
               {messages.map((msg, idx) => (
-                <div key={idx} style={{ marginBottom: 12, textAlign: msg.sender === "user" ? "right" : "left" }}>
-                  <div
-                    style={{
-                      display: "inline-block",
-                      padding: "10px 12px",
-                      borderRadius: 10,
-                      maxWidth: "min(80%, 520px)",
-                      background: msg.sender === "user" ? "#dcfce7" : "#fff",
-                    }}
-                  >
-                    {msg.sender !== "user" && <div style={{ fontSize: 12, fontWeight: 600 }}>{msg.sender_name || level.contact_name}</div>}
-                    <div style={{ overflowWrap: "anywhere" }}>{msg.text}</div>
-                    {msg.has_link && <div style={{ marginTop: 4, fontSize: 12, color: "#b91c1c" }}>Contains external link</div>}
+                <div
+                  key={idx}
+                  className={`message-bubble ${msg.sender === "user" ? "outgoing" : "incoming"}`}
+                >
+                  <div className={`message-content ${msg.sender === "user" ? "outgoing" : "incoming"}`}>
+                    {msg.sender !== "user" && (
+                      <div className="message-sender">{msg.sender_name || level.contact_name}</div>
+                    )}
+                    <div className="message-text">{msg.text}</div>
+                    {msg.has_link && (
+                      <div className="message-link-warning">⚠️ Contains external link</div>
+                    )}
                   </div>
                 </div>
               ))}
             </div>
 
-            <div style={{ padding: 12, borderTop: "1px solid #e5e7eb", display: "flex", gap: 8, flexWrap: "wrap" }}>
+            <div className="message-input-area">
               <input
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
                 placeholder="Type a response..."
                 disabled={locked}
-                style={{ flex: "1 1 240px", minWidth: 0, padding: 10, borderRadius: 20, border: "1px solid #cbd5e1" }}
+                className="message-input"
               />
-              <button disabled={!draft.trim() || locked} onClick={() => setDraft("")}>
+              <button
+                className="message-send-btn"
+                disabled={!draft.trim() || locked}
+                onClick={() => setDraft("")}
+              >
                 Send
               </button>
             </div>
 
-            <div style={{ padding: 16, borderTop: "1px solid #e5e7eb", display: "flex", gap: 10, flexWrap: "wrap" }}>
-              <button disabled={locked} onClick={() => onAction("block", { contact: level.contact_name, reason: "phishing" })}>
+            <div className="message-actions">
+              <button
+                className="message-action-btn block"
+                disabled={locked}
+                onClick={() => onAction("block", { contact: level.contact_name, reason: "phishing" })}
+              >
                 Block Contact
               </button>
-              <button disabled={locked} onClick={() => onAction("report", { contact: level.contact_name, messages })}>
+              <button
+                className="message-action-btn report"
+                disabled={locked}
+                onClick={() => onAction("report", { contact: level.contact_name, messages })}
+              >
                 Report Conversation
               </button>
-              <button disabled={locked} onClick={() => onAction("safe", { contact: level.contact_name })}>
+              <button
+                className="message-action-btn safe"
+                disabled={locked}
+                onClick={() => onAction("safe", { contact: level.contact_name })}
+              >
                 Mark Safe
               </button>
             </div>

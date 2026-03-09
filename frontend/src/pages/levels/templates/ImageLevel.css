@@ -1,0 +1,147 @@
+/* frontend/src/pages/levels/templates/ImageLevel.css */
+
+.image-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.image-header {
+  padding: 14px;
+  background: #111827;
+  color: #fff;
+  font-weight: 600;
+}
+
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.image-panel {
+  padding: 16px;
+}
+
+.image-preview {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.analysis-panel {
+  padding: 16px;
+  background: #f8fafc;
+  border-left: 1px solid #e5e7eb;
+  overflow-wrap: anywhere;
+}
+
+.analysis-item {
+  margin-bottom: 10px;
+}
+
+.analysis-label {
+  font-weight: 600;
+}
+
+.analysis-value {
+  font-weight: normal;
+}
+
+.indicators-section {
+  margin-top: 12px;
+}
+
+.indicators-section strong {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.indicators-section ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.indicators-section li {
+  margin-bottom: 4px;
+  color: #4b5563;
+}
+
+.image-actions {
+  display: flex;
+  gap: 10px;
+  padding: 16px;
+  border-top: 1px solid #e5e7eb;
+  flex-wrap: wrap;
+  background: #f8fafc;
+}
+
+.image-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-height: 44px;
+  min-width: 44px;
+  flex: 1;
+}
+
+.image-btn.report {
+  background: #ef4444;
+  color: white;
+}
+
+.image-btn.report:hover:not(:disabled) {
+  background: #dc2626;
+  transform: translateY(-2px);
+}
+
+.image-btn.ignore {
+  background: #6b7280;
+  color: white;
+}
+
+.image-btn.ignore:hover:not(:disabled) {
+  background: #4b5563;
+  transform: translateY(-2px);
+}
+
+.image-btn.safe {
+  background: #10b981;
+  color: white;
+}
+
+.image-btn.safe:hover:not(:disabled) {
+  background: #059669;
+  transform: translateY(-2px);
+}
+
+.image-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .image-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .analysis-panel {
+    border-left: none;
+    border-top: 1px solid #e5e7eb;
+  }
+  
+  .image-actions {
+    flex-direction: column;
+  }
+  
+  .image-btn {
+    width: 100%;
+  }
+}
