@@ -20,7 +20,7 @@ export default function ModelMetrics() {
     try {
       setLoading(true);
       try {
-        const response = await axios.get("https://enphisim-ml.onrender.com/metrics");
+        const response = await axios.get("https://enphisim-ol7w.onrender.com/metrics");
         setMetrics(response.data);
       } catch {
         const response = await axios.get(`${API_BASE}/api/model-metrics`);
