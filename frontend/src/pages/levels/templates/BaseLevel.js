@@ -127,8 +127,8 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
 
         // Create feedback message using your data
         const feedbackMessage = isCorrect
-          ? currentLevel.success_message || `✅ Correct! ${currentLevel.correct_action} was the right choice.`
-          : currentLevel.failure_message || `❌ Incorrect. The correct action was: ${currentLevel.correct_action}`;
+          ? currentLevel.success_message || `Correct. ${currentLevel.correct_action} was the right choice.`
+          : currentLevel.failure_message || `Incorrect. The correct action was: ${currentLevel.correct_action}`;
 
         const feedbackDetails = currentLevel.hint || 
                                currentLevel.explanation || 
@@ -137,7 +137,7 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
 
         setDialog({
           show: true,
-          title: isCorrect ? "✅ Correct!" : "❌ Incorrect",
+          title: isCorrect ? "Correct" : "Incorrect",
           message: feedbackMessage,
           details: feedbackDetails,
           isCorrect,
@@ -157,7 +157,7 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
         }, 2000);
 
       } catch (err) {
-        console.error("❌ Action error:", err);
+        console.error("Action error:", err);
         setDialog({
           show: true,
           title: "Error",
@@ -216,6 +216,11 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
       {dialog.show && (
         <div className="dialog-overlay" onClick={closeDialog}>
           <div className={`dialog-box ${dialog.isCorrect ? "correct" : "incorrect"}`}>
+            <div className={`dialog-status-animation ${dialog.isCorrect ? "correct" : "incorrect"}`} aria-hidden="true">
+              <span className="dialog-status-ring" />
+              <span className="dialog-status-core" />
+              <span className="dialog-status-wave" />
+            </div>
             <h3>{dialog.title}</h3>
             <p>{dialog.message}</p>
             {dialog.details && (
@@ -226,7 +231,7 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
             {dialog.mlPrediction && (
               <div className="dialog-details">
                 <small>
-                  🤖 ML Detection: {dialog.mlPrediction}
+                  ML Detection: {dialog.mlPrediction}
                   {typeof dialog.mlConfidence === "number"
                     ? ` (${Math.round(dialog.mlConfidence * 100)}% confidence)`
                     : ""}
@@ -234,7 +239,7 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
               </div>
             )}
             <button className="dialog-button" onClick={closeDialog} autoFocus>
-              {dialog.isCorrect ? "Continue →" : "Try Again"}
+              {dialog.isCorrect ? "Continue" : "Try Again"}
             </button>
           </div>
         </div>

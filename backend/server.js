@@ -10,6 +10,7 @@ import * as Sentry from '@sentry/node';
 
 import logger from './utils/logger.js';
 import levelsRoutes from './routes/levels.js';
+import scenariosRoutes from './routes/scenarios.js';
 import actionRoutes from './routes/action.js';
 import analyticsRoutes from './routes/analytics.js';
 import predictRoutes from './routes/predict.js';
@@ -200,6 +201,7 @@ app.get('/health', (_req, res) => {
 });
 
 app.use('/api/levels', levelsRoutes);
+app.use('/api/scenarios', scenariosRoutes);
 app.use('/api/action', actionRoutes);
 app.use('/api/model-metrics', modelMetricsRoutes);
 app.use('/api/consent', consentRoutes);

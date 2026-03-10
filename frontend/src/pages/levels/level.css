@@ -57,6 +57,45 @@
   font-size: 1.5rem;
 }
 
+.dialog-status-animation {
+  position: relative;
+  width: 82px;
+  height: 82px;
+  margin: 0 auto 18px;
+}
+
+.dialog-status-ring,
+.dialog-status-core,
+.dialog-status-wave {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+
+.dialog-status-ring {
+  border: 4px solid currentColor;
+  opacity: 0.3;
+}
+
+.dialog-status-core {
+  inset: 20px;
+  background: currentColor;
+  transform: scale(0.9);
+}
+
+.dialog-status-wave {
+  border: 2px solid currentColor;
+  animation: dialogPulse 1.6s ease-out infinite;
+}
+
+.dialog-status-animation.correct {
+  color: #28a745;
+}
+
+.dialog-status-animation.incorrect {
+  color: #dc3545;
+}
+
 .dialog-details {
   margin: 15px 0;
   padding: 10px;
@@ -91,6 +130,21 @@
 @keyframes slideUp {
   from { transform: translateY(50px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes dialogPulse {
+  0% {
+    transform: scale(0.72);
+    opacity: 0.7;
+  }
+  70% {
+    transform: scale(1.15);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.15);
+    opacity: 0;
+  }
 }
 
 /* Responsive */

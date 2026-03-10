@@ -233,7 +233,7 @@ export default function Dashboard() {
         <h3>Recent Activity</h3>
         {(analytics.recent_actions || []).map((action, i) => (
           <div key={i} className={`action-item ${action.is_correct ? 'correct' : 'incorrect'}`}>
-            <span>{action.taxonomy || 'Unknown Type'}</span>
+            <span>{action.title || 'Unknown Type'}</span>
             <span>You: {action.user_action}</span>
             <span>{action.is_correct ? 'Correct' : 'Incorrect'}</span>
           </div>
