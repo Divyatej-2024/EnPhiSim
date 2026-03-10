@@ -240,7 +240,10 @@ export default function PhishingGame() {
     return (
       <div className="game-complete-overlay">
         <div className="game-complete-content">
-          <div className="complete-icon">🏆</div>
+          <div className="complete-icon" aria-hidden="true">
+            <span className="complete-icon-core" />
+            <span className="complete-icon-wave" />
+          </div>
           <h2>Simulation Complete!</h2>
           <p>You scored <strong>{score}</strong> points across <strong>{sortedLevelKeys.length}</strong> levels</p>
           <p className="accuracy-stat">
@@ -258,7 +261,10 @@ export default function PhishingGame() {
     return (
       <div className="level-transition-overlay">
         <div className="transition-content">
-          <div className="transition-check">✅</div>
+          <div className="transition-check" aria-hidden="true">
+            <span className="transition-check-core" />
+            <span className="transition-check-ring" />
+          </div>
           <h2>Level {currentLevelKey.toUpperCase()} Complete!</h2>
           <p>Score so far: {score} points</p>
           <div className="transition-next">

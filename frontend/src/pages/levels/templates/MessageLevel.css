@@ -231,3 +231,27 @@
     max-width: 90%;
   }
 }
+
+.message-link-warning {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.message-link-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ef4444;
+  box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.35);
+  animation: messageWarningPulse 1.4s ease-out infinite;
+}
+
+@keyframes messageWarningPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.35);
+  }
+  100% {
+    box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+  }
+}

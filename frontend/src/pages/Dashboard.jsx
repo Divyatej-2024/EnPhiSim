@@ -50,6 +50,10 @@ export default function Dashboard() {
     navigate('/game');
   };
 
+  const endGame = () => {
+    navigate('/thankyou');
+  };
+
   const toTitleCase = (value) =>
     String(value)
       .replace(/_/g, ' ')
@@ -157,33 +161,15 @@ export default function Dashboard() {
         }}
       >
         <h1 style={{ margin: 0 }}>Your Progress</h1>
-        <button
-          onClick={goToLevels}
-          style={{
-            padding: '10px 20px',
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            color: 'white',
-            border: 'none',
-            borderRadius: '50px',
-            fontSize: '1rem',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            boxShadow: '0 5px 15px rgba(102,126,234,0.3)',
-            transition: 'all 0.3s ease'
-          }}
-          onMouseOver={(e) => {
-            e.target.style.transform = 'translateY(-2px)';
-            e.target.style.boxShadow = '0 10px 20px rgba(102,126,234,0.4)';
-          }}
-          onMouseOut={(e) => {
-            e.target.style.transform = 'translateY(0)';
-            e.target.style.boxShadow = '0 5px 15px rgba(102,126,234,0.3)';
-          }}
-        >
-          <span>Back to Levels</span>
-        </button>
+        <div className="dashboard-top-actions">
+          <button className="dashboard-action-button secondary" onClick={goToLevels}>
+            <span>Back to Levels</span>
+          </button>
+          <button className="dashboard-action-button primary" onClick={endGame}>
+            <span className="dashboard-action-pulse" aria-hidden="true" />
+            <span>End Game</span>
+          </button>
+        </div>
       </div>
 
       <div style={{ marginBottom: '20px' }}>

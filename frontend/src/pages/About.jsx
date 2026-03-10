@@ -7,14 +7,19 @@ export default function About() {
   return (
     <div className="about-page">
       <div className="about-container">
-        <div className="about-icon">🌐</div>
+        <div className="about-icon" aria-hidden="true">
+          <span className="orbital-node center" />
+          <span className="orbital-node one" />
+          <span className="orbital-node two" />
+          <span className="orbital-ring" />
+        </div>
         <h1 className="about-title">About EnPhiSim</h1>
 
         <div className="about-content">
           <div className="about-section">
             <p>
-              <strong>EnPhiSim (Enhanced Phishing Simulation)</strong> is an interactive 
-              walkthrough cybersecurity learning platform designed to raise awareness and 
+              <strong>EnPhiSim (Enhanced Phishing Simulation)</strong> is an interactive
+              walkthrough cybersecurity learning platform designed to raise awareness and
               train users to identify and respond to phishing attacks in real time.
             </p>
           </div>
@@ -24,14 +29,14 @@ export default function About() {
               In today's digital world, phishing remains one of the most common and
               effective cyberattack methods. EnPhiSim bridges the gap between theory and
               practice by simulating real-world phishing scenarios where users learn by
-              doing. Each level represents a unique phishing vector — from deceptive emails
-              to malicious web pages — helping users build critical thinking and detection
+              doing. Each level represents a unique phishing vector - from deceptive emails
+              to malicious web pages - helping users build critical thinking and detection
               skills essential for modern cybersecurity defense.
             </p>
           </div>
 
           <div className="about-section highlight">
-            <h3>🤖 Machine Learning Integration</h3>
+            <h3>Machine Learning Integration</h3>
             <p>
               The platform integrates <strong>machine learning models</strong> for
               phishing detection, demonstrating how intelligent systems can analyze message
@@ -51,7 +56,8 @@ export default function About() {
 
         <div className="about-actions">
           <button onClick={() => navigate("/game")} className="btn btn-primary">
-            Start Training →
+            <span>Start Training</span>
+            <span className="cta-motion" aria-hidden="true" />
           </button>
           <button onClick={() => navigate("/dashboard")} className="btn btn-secondary">
             View Dashboard

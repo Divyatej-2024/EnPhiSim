@@ -1,7 +1,6 @@
-// frontend/src/pages/levels/templates/MessageLevel.js
 import React, { useState } from "react";
 import BaseLevel from "./BaseLevel";
-import "./MessageLevel.css"; // ✅ ADD THIS
+import "./MessageLevel.css";
 
 export default function MessageLevel({ level: scenario }) {
   const [draft, setDraft] = useState("");
@@ -13,14 +12,14 @@ export default function MessageLevel({ level: scenario }) {
           Array.isArray(level.messages) && level.messages.length > 0
             ? level.messages
             : [
-              {
-                sender: "contact",
-                sender_name: level.contact_name || "Unknown contact",
-                text: level.level_text || "Please check this link immediately.",
-                timestamp: "10:30 AM",
-                has_link: true,
-              },
-            ];
+                {
+                  sender: "contact",
+                  sender_name: level.contact_name || "Unknown contact",
+                  text: level.level_text || "Please check this link immediately.",
+                  timestamp: "10:30 AM",
+                  has_link: true,
+                },
+              ];
 
         return (
           <div className="message-container">
@@ -47,7 +46,10 @@ export default function MessageLevel({ level: scenario }) {
                     )}
                     <div className="message-text">{msg.text}</div>
                     {msg.has_link && (
-                      <div className="message-link-warning">⚠️ Contains external link</div>
+                      <div className="message-link-warning">
+                        <span className="message-link-indicator" aria-hidden="true" />
+                        <span>Contains external link</span>
+                      </div>
                     )}
                   </div>
                 </div>

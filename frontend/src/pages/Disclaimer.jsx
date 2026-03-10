@@ -1,4 +1,3 @@
-// src/pages/Disclaimer.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -21,15 +20,18 @@ export default function Disclaimer() {
   return (
     <div className="disclaimer-page">
       <div className="disclaimer-container">
-        <div className="disclaimer-icon">🛡️</div>
-        <h1 className="disclaimer-title">EnPhiSim — Disclaimer</h1>
-        
+        <div className="disclaimer-icon" aria-hidden="true">
+          <span className="shield-core" />
+          <span className="shield-wave" />
+        </div>
+        <h1 className="disclaimer-title">EnPhiSim - Disclaimer</h1>
+
         <div className="disclaimer-content">
           <div className="disclaimer-section">
             <h3>Training-Only Simulation</h3>
             <p>
-              Welcome to EnPhiSim — a training-only simulation environment. Every scenario, 
-              challenge, and simulated attack exists solely to train, demonstrate, and analyze 
+              Welcome to EnPhiSim - a training-only simulation environment. Every scenario,
+              challenge, and simulated attack exists solely to train, demonstrate, and analyze
               cybersecurity threats in a safe, controlled setting.
             </p>
           </div>
@@ -37,9 +39,9 @@ export default function Disclaimer() {
           <div className="disclaimer-section">
             <h3>No Real Data</h3>
             <p>
-              No real users, real content, or real credentials are used. All names, accounts, 
-              pages, and data presented inside EnPhiSim are synthetic or fictional and are 
-              generated for training purposes only. <strong>Do not enter any real personal 
+              No real users, real content, or real credentials are used. All names, accounts,
+              pages, and data presented inside EnPhiSim are synthetic or fictional and are
+              generated for training purposes only. <strong>Do not enter any real personal
               information or credentials anywhere in the simulator.</strong>
             </p>
           </div>
@@ -47,7 +49,7 @@ export default function Disclaimer() {
           <div className="disclaimer-section">
             <h3>Original Branding</h3>
             <p>
-              The logo and emblem used throughout EnPhiSim are original creations owned by 
+              The logo and emblem used throughout EnPhiSim are original creations owned by
               the project. They must not be reused, modified, or redistributed without permission.
             </p>
           </div>
@@ -55,8 +57,8 @@ export default function Disclaimer() {
           <div className="disclaimer-section">
             <h3>Educational Purpose</h3>
             <p>
-              This platform mimics attacker behavior (e.g., deceptive emails, fake login pages, 
-              social-engineering scenarios) strictly for educational, training, and assessment 
+              This platform mimics attacker behavior (e.g., deceptive emails, fake login pages,
+              social-engineering scenarios) strictly for educational, training, and assessment
               purposes. It is not intended for malicious use.
             </p>
           </div>
@@ -73,34 +75,32 @@ export default function Disclaimer() {
           <div className="disclaimer-section">
             <h3>Use & Responsibility</h3>
             <p>
-              By using EnPhiSim you confirm that you understand its training-only nature and 
+              By using EnPhiSim you confirm that you understand its training-only nature and
               agree to use the tool responsibly and ethically for learning, testing, and research.
             </p>
           </div>
         </div>
 
         <label className="disclaimer-checkbox">
-          <input 
-            type="checkbox" 
-            checked={agreed} 
-            onChange={() => setAgreed(a => !a)} 
+          <input
+            type="checkbox"
+            checked={agreed}
+            onChange={() => setAgreed((value) => !value)}
           />
           <span>I agree to participate in this simulation (educational use only).</span>
         </label>
 
         <div className="disclaimer-actions">
-          <button 
-            onClick={handleProceed} 
-            className={`btn-proceed ${agreed ? 'active' : ''}`}
+          <button
+            onClick={handleProceed}
+            className={`btn-proceed ${agreed ? "active" : ""}`}
             disabled={!agreed}
           >
-            Proceed →
+            <span>Proceed</span>
+            <span className="cta-motion" aria-hidden="true" />
           </button>
-          <button 
-            onClick={handleClearData} 
-            className="btn-clear-data"
-          >
-            Clear Data
+          <button onClick={handleClearData} className="btn-clear-data">
+            Clear Local Data
           </button>
         </div>
       </div>

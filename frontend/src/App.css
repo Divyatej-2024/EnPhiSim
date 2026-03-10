@@ -521,3 +521,39 @@ select {
     flex-direction: column;
   }
 }
+
+.disclaimer-icon {
+  width: 88px;
+  height: 88px;
+  margin: 0 auto 8px;
+  position: relative;
+  font-size: 0;
+}
+
+.shield-core,
+.shield-wave {
+  position: absolute;
+  inset: 0;
+}
+
+.shield-core {
+  background: linear-gradient(180deg, #38bdf8, #6366f1);
+  clip-path: polygon(50% 0%, 90% 16%, 90% 52%, 50% 100%, 10% 52%, 10% 16%);
+}
+
+.shield-wave {
+  border: 2px solid rgba(56, 189, 248, 0.45);
+  clip-path: polygon(50% 0%, 90% 16%, 90% 52%, 50% 100%, 10% 52%, 10% 16%);
+  animation: disclaimerPulse 1.8s ease-out infinite;
+}
+
+@keyframes disclaimerPulse {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.75;
+  }
+  100% {
+    transform: scale(1.08);
+    opacity: 0;
+  }
+}

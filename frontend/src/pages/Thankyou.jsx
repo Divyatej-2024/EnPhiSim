@@ -9,24 +9,27 @@ export default function ThankYouPage() {
   const timeTaken = progress?.timeTaken || "N/A";
   const actions = Array.isArray(progress?.actions) ? progress.actions : [];
   const totalActions = actions.length;
-  const safe = actions.filter(a => (a?.isCorrect ?? a?.correct) === true).length;
-  const risky = actions.filter(a => (a?.isCorrect ?? a?.correct) === false).length;
+  const safe = actions.filter((a) => (a?.isCorrect ?? a?.correct) === true).length;
+  const risky = actions.filter((a) => (a?.isCorrect ?? a?.correct) === false).length;
   const accuracy = totalActions > 0 ? ((safe / totalActions) * 100).toFixed(1) : "0";
   const completedLevels = Object.keys(progress?.completedLevels || {}).length;
 
-  // Group actions by level for per-level breakdown
-  const levelStats = actions.reduce((acc, a) => {
-    const lvl = a?.level || 'unknown';
-    if (!acc[lvl]) acc[lvl] = { total: 0, correct: 0 };
-    acc[lvl].total += 1;
-    if (a?.isCorrect) acc[lvl].correct += 1;
+  const levelStats = actions.reduce((acc, action) => {
+    const level = action?.level || "unknown";
+    if (!acc[level]) acc[level] = { total: 0, correct: 0 };
+    acc[level].total += 1;
+    if (action?.isCorrect) acc[level].correct += 1;
     return acc;
   }, {});
 
   return (
     <div className="thankyou-page">
       <div className="thankyou-card-wrap">
-        <div className="thankyou-icon">🎉</div>
+        <div className="thankyou-icon" aria-hidden="true">
+          <span className="thankyou-icon-core" />
+          <span className="thankyou-icon-ring" />
+          <span className="thankyou-icon-ring delayed" />
+        </div>
         <h1 className="thankyou-heading">Thank You!</h1>
         <p className="thankyou-subtitle">You've completed the EnPhiSim simulation</p>
 
@@ -57,8 +60,8 @@ export default function ThankYouPage() {
               <div className="bar-track">
                 <div
                   className="bar-fill safe"
-                  style={{ width: totalActions > 0 ? `${(safe / totalActions) * 100}%` : '0%' }}
-                ></div>
+                  style={{ width: totalActions > 0 ? `${(safe / totalActions) * 100}%` : "0%" }}
+                />
               </div>
               <span className="bar-value">{safe}</span>
             </div>
@@ -67,31 +70,32 @@ export default function ThankYouPage() {
               <div className="bar-track">
                 <div
                   className="bar-fill risky"
-                  style={{ width: totalActions > 0 ? `${(risky / totalActions) * 100}%` : '0%' }}
-                ></div>
+                  style={{ width: totalActions > 0 ? `${(risky / totalActions) * 100}%` : "0%" }}
+                />
               </div>
               <span className="bar-value">{risky}</span>
             </div>
           </div>
 
-          {/* Per-level breakdown */}
           {Object.keys(levelStats).length > 0 && (
             <div className="level-breakdown">
               <h4 className="breakdown-title">Level-by-Level Results</h4>
-              {Object.entries(levelStats).sort().map(([lvl, stats]) => (
-                <div key={lvl} className="breakdown-row">
-                  <span className="breakdown-level">Level {lvl.toUpperCase()}</span>
-                  <div className="bar-track">
-                    <div
-                      className="bar-fill safe"
-                      style={{ width: stats.total > 0 ? `${(stats.correct / stats.total) * 100}%` : '0%' }}
-                    ></div>
+              {Object.entries(levelStats)
+                .sort()
+                .map(([level, stats]) => (
+                  <div key={level} className="breakdown-row">
+                    <span className="breakdown-level">Level {level.toUpperCase()}</span>
+                    <div className="bar-track">
+                      <div
+                        className="bar-fill safe"
+                        style={{ width: stats.total > 0 ? `${(stats.correct / stats.total) * 100}%` : "0%" }}
+                      />
+                    </div>
+                    <span className="breakdown-score">
+                      {stats.correct}/{stats.total}
+                    </span>
                   </div>
-                  <span className="breakdown-score">
-                    {stats.correct}/{stats.total}
-                  </span>
-                </div>
-              ))}
+                ))}
             </div>
           )}
 
@@ -102,23 +106,14 @@ export default function ThankYouPage() {
         </div>
 
         <div className="thankyou-actions">
-          <button
-            className="btn btn-primary"
-            onClick={() => navigate('/dashboard')}
-          >
-            📊 View Dashboard
+          <button className="btn btn-primary" onClick={() => navigate("/dashboard")}>
+            View Dashboard
           </button>
-          <button
-            className="btn btn-secondary"
-            onClick={() => navigate('/model-metrics')}
-          >
-            🤖 ML Model Performance
+          <button className="btn btn-secondary" onClick={() => navigate("/model-metrics")}>
+            ML Model Performance
           </button>
-          <button
-            className="btn btn-outline"
-            onClick={() => (window.location.href = "/")}
-          >
-            ← Return Home
+          <button className="btn btn-outline" onClick={() => (window.location.href = "/")}>
+            Return Home
           </button>
         </div>
       </div>

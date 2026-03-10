@@ -30,8 +30,11 @@ function Home() {
   return (
     <div className="home-page">
       <div className="home-hero">
-        <div className="hero-badge">🛡️ Cybersecurity Training Platform</div>
-        
+        <div className="hero-badge">
+          <span className="hero-badge-pulse" aria-hidden="true" />
+          <span>Cybersecurity Training Platform</span>
+        </div>
+
         <img
           src={`${process.env.PUBLIC_URL}/Enphisim.png`}
           alt="EnPhiSim Logo"
@@ -43,37 +46,35 @@ function Home() {
         </h1>
 
         <p className="hero-subtitle">
-          Enhanced Phishing Simulation — Train your eye to detect cyber threats 
+          Enhanced Phishing Simulation - Train your eye to detect cyber threats
           through interactive, AI-powered scenarios.
         </p>
 
         <div className="hero-features">
           <div className="feature-tag">
-            <span className="feature-icon">🎯</span>
+            <span className="feature-icon orbit" aria-hidden="true" />
             <span>39 Levels</span>
           </div>
           <div className="feature-tag">
-            <span className="feature-icon">🤖</span>
+            <span className="feature-icon wave" aria-hidden="true" />
             <span>AI Analysis</span>
           </div>
           <div className="feature-tag">
-            <span className="feature-icon">📊</span>
+            <span className="feature-icon bars" aria-hidden="true" />
             <span>Live Dashboard</span>
           </div>
         </div>
 
         <button onClick={handleStart} className="hero-cta">
-          Let's Begin →
+          <span>Let's Begin</span>
+          <span className="cta-motion" aria-hidden="true" />
         </button>
       </div>
 
-      {/* CONSENT MODAL */}
       {showConsent && (
         <div className="consent-overlay">
           <div className="consent-modal">
-            <h2 className="modal-title">
-              Informed Consent — Research Study
-            </h2>
+            <h2 className="modal-title">Informed Consent - Research Study</h2>
 
             <p className="modal-text">
               This platform simulates phishing attack scenarios to evaluate user
@@ -107,7 +108,7 @@ function Home() {
             <button
               disabled={!checked}
               onClick={handleConsent}
-              className={`modal-submit ${checked ? 'active' : ''}`}
+              className={`modal-submit ${checked ? "active" : ""}`}
             >
               Start Simulation
             </button>
