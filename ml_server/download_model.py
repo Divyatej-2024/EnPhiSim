@@ -1,48 +1,18 @@
-# ml_server/download_model.py
+import requests
 import os
-import gdown
-import sys
 
-def download_model():
-    """Download the trained model from Google Drive"""
-    
-    # Your Google Drive file ID (replace with yours)
-    FILE_ID = "1u2hRYvBuoRFeUH0yBwJwB4oBJjRkSrZE"  # ← REPLACE THIS
-    
-    # Create models directory if it doesn't exist
+def download_with_requests():
+    url = "https://drive.google.com/uc?export=download&id=1u2hRYvBuoRFeUH0yBwJwB4oBJjRkSrZE"
     os.makedirs('models', exist_ok=True)
     
-    # Check if model already exists
-    if os.path.exists('models/real_phishing_model.pt'):
-        file_size = os.path.getsize('models/real_phishing_model.pt') / (1024*1024)
-        print(f"✅ Model already exists: {file_size:.2f} MB")
-        return True
+    print("Downloading model...")
+    response = requests.get(url, stream=True)
     
-    print(f"📥 Downloading model from Google Drive...")
-    print(f"File ID: {FILE_ID}")
-    print("This may take a few minutes (263 MB)...")
+    with open('models/real_phishing_model.pt', 'wb') as f:
+        for chunk in response.iter_content(chunk_size=8192):
+            f.write(chunk)
     
-    try:
-        # Use gdown to download (handles large files better than wget/curl) [citation:4]
-        url = f"https://drive.google.com/uc?id={FILE_ID}"
-        output = 'models/real_phishing_model.pt'
-        
-        gdown.download(url, output, quiet=False)
-        
-        # Verify download
-        if os.path.exists(output):
-            file_size = os.path.getsize(output) / (1024*1024)
-            print(f"✅ Download complete! Size: {file_size:.2f} MB")
-            return True
-        else:
-            print("❌ Download failed - file not found")
-            return False
-            
-    except Exception as e:
-        print(f"❌ Download error: {e}")
-        return False
+    print("Download complete!")
 
 if __name__ == "__main__":
-    success = download_model()
-
-    sys.exit(0 if success else 1)
+    download_with_requests()
