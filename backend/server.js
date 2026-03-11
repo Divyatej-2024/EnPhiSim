@@ -23,7 +23,19 @@ dotenv.config();
 const app = express();
 const PORT = Number(process.env.PORT || 4000);
 const NODE_ENV = process.env.NODE_ENV || 'development';
-
+// Add this at the VERY TOP of server.js, before any other code
+console.log('=== ENVIRONMENT VARIABLES DEBUG ===');
+console.log('MONGODB_URI exists:', !!process.env.MONGODB_URI);
+if (process.env.MONGODB_URI) {
+    // Mask password for safety
+    const masked = process.env.MONGODB_URI.replace(/:[^@]+@/, ':****@');
+    console.log('MONGODB_URI value:', masked);
+    console.log('MONGODB_URI length:', process.env.MONGODB_URI.length);
+    console.log('MONGODB_URI starts with:', process.env.MONGODB_URI.substring(0, 20));
+} else {
+    console.log('MONGODB_URI is UNDEFINED!');
+}
+console.log('===================================');
 app.disable('x-powered-by');
 app.set('trust proxy', 1);
 
