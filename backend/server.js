@@ -161,7 +161,24 @@ const authLimiter = rateLimit({
     },
   },
 });
-
+// Add to server.js - right before your routes
+app.get('/debug/check-data', async (req, res) => {
+  try {
+    const db = mongoose.connection.db;
+    const collections = await db.listCollections().toArray();
+    const levelData = await db.collection('levelDataset').find().limit(1).toArray();
+    
+    res.json({
+      database: mongoose.connection.name,
+      collections: collections.map(c => c.name),
+      hasLevelDataset: collections.some(c => c.name === 'levelDataset'),
+      sampleData: levelData.length > 0 ? 'Data exists!' : 'No data found',
+      count: await db.collection('levelDataset').countDocuments()
+    });
+  } catch (err) {
+    res.json({ error: err.message });
+  }
+});
 app.use('/api', apiLimiter);
 app.use('/api/predict', predictLimiter);
 app.use('/api/consent', authLimiter);
