@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TemplateRenderer from './levels/TemplateRenderer';
-import LevelComplete from './levels/LevelComplete';
 import './PhishingGame.css';
 import api from '../services/api';
 import { useProgress } from '../context/ProgressContext';
@@ -29,9 +28,6 @@ export default function PhishingGame() {
   const [feedback, setFeedback] = useState(null);
   const [loading, setLoading] = useState(true);
   const [locked, setLocked] = useState(false);
-  const [showLevelTransition, setShowLevelTransition] = useState(false);
-  const [gameComplete, setGameComplete] = useState(false);
-  const [showLevelComplete, setShowLevelComplete] = useState(false);
   const [levelStats, setLevelStats] = useState({
     correct: 0,
     total: 0,
@@ -387,39 +383,8 @@ export default function PhishingGame() {
         }));
         
         completeLevel(currentLevelKey);
-        setShowLevelComplete(true);
       }
     }, 3000);
-  };
-
-  const handleLevelCompleteClose = (action) => {
-    setShowLevelComplete(false);
-    
-    if (action === 'next' && !isLastLevel) {
-      setShowLevelTransition(true);
-      setTimeout(() => {
-        setShowLevelTransition(false);
-        setCurrentLevelIndex(prev => prev + 1);
-      }, 2500);
-    } else if (action === 'retry') {
-      setCurrentScenarioIndex(0);
-      setLevelStats({ correct: 0, total: 0, timeSpent: 0 });
-      localStorage.removeItem(`level_${currentLevelKey}_progress`);
-      sessionStorage.setItem('scenario_start', Date.now().toString());
-    } else if (action === 'dashboard') {
-      navigate('/dashboard');
-    } else if (action === 'complete') {
-      // Game complete
-      const totalTime = Math.round((Date.now() - gameStartTime.current) / 1000);
-      const minutes = Math.floor(totalTime / 60);
-      const seconds = totalTime % 60;
-      setSessionTimeTaken(`${minutes}m ${seconds}s`);
-      setGameComplete(true);
-
-      setTimeout(() => {
-        navigate('/thankyou');
-      }, 3000);
-    }
   };
 
   const getExplanation = (action, isCorrect, scenario) => {
@@ -526,27 +491,6 @@ export default function PhishingGame() {
     );
   }
 
-  if (showLevelComplete) {
-    const accuracy = levelStats.total > 0 
-      ? ((levelStats.correct / levelStats.total) * 100).toFixed(1) 
-      : 0;
-    
-    return (
-      <LevelComplete
-        levelKey={currentLevelKey}
-        levelConfig={getLevelConfig(currentLevelKey)}
-        stats={{
-          correct: levelStats.correct,
-          total: levelStats.total,
-          accuracy,
-          timeSpent: Math.round(levelStats.timeSpent),
-          score: levelScores[currentLevelKey]?.score || 0
-        }}
-        isLastLevel={isLastLevel}
-        onClose={handleLevelCompleteClose}
-      />
-    );
-  }
 
   const currentScenario = scenarios[currentScenarioIndex];
   const levelConfig = getLevelConfig(currentLevelKey);
