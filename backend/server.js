@@ -60,7 +60,33 @@ const allowedOrigins = new Set([
   'http://localhost:3000',
   ...configuredOrigins,
 ]);
-
+// Add this right before your routes
+app.get('/debug/check', async (req, res) => {
+  try {
+    const db = mongoose.connection.db;
+    const collections = await db.listCollections().toArray();
+    const levelCount = await Level.countDocuments();
+    const sample = await Level.findOne();
+    
+    res.json({
+      connected: mongoose.connection.readyState === 1,
+      database: mongoose.connection.name,
+      collections: collections.map(c => c.name),
+      levelModelExists: !!mongoose.models.Level,
+      levelModelName: Level?.modelName,
+      levelCollection: Level?.collection?.name,
+      levelCount,
+      hasSample: !!sample,
+      sampleLevel: sample ? {
+        id: sample._id,
+        level_no: sample.level_no,
+        title: sample.title
+      } : null
+    });
+  } catch (err) {
+    res.json({ error: err.message });
+  }
+});
 const corsOptions = {
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.has(origin)) {
