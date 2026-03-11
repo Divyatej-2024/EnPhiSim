@@ -87,6 +87,30 @@ app.get('/debug/check', async (req, res) => {
     res.json({ error: err.message });
   }
 });
+
+// Add this after mongoose.connect
+app.get('/debug/all-models', async (req, res) => {
+  try {
+    const models = {};
+    Object.keys(mongoose.models).forEach(name => {
+      models[name] = {
+        collection: mongoose.models[name].collection.name
+      };
+    });
+    
+    res.json({
+      connected: mongoose.connection.readyState === 1,
+      database: mongoose.connection.name,
+      registeredModels: Object.keys(mongoose.models),
+      modelDetails: models,
+      levelModelExists: !!mongoose.models.Level,
+      levelCollection: mongoose.models.Level?.collection.name
+    });
+  } catch (err) {
+    res.json({ error: err.message });
+  }
+});
+
 const corsOptions = {
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.has(origin)) {
