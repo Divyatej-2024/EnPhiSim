@@ -77,8 +77,5 @@ router.get('/:level', async (req, res) => {
   }
 });
 
-const levelSchema = new mongoose.Schema({
-  // your schema fields
-}, { collection: 'levelDataset' });  // ← ADD THIS LINE
 
 export default router;
