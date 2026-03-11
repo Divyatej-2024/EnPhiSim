@@ -42,8 +42,8 @@ const templateMap = {
   'mail+browser': MailBrowserLevel,
   'email+web': MailBrowserLevel,
   
-  'mail + browser + message': MailBrowserMessageLevel,  // ✅ Check this line
-  'mail+browser+message': MailBrowserMessageLevel,       // ✅ And this one
+  'mail + browser + message': MailBrowserMessageLevel,  // OK
+  'mail+browser+message': MailBrowserMessageLevel,       // OK
   'multi': MailBrowserMessageLevel,
   
   // Default fallback
@@ -69,18 +69,18 @@ export default function TemplateRenderer({ scenario, onAction, locked }) {
     scenario.template_type || 
     scenario.type || 
     'default';
-  
+  const normalizedTemplateType = String(templateType).toLowerCase().trim();
 
 
   // Get the appropriate template component
-  const TemplateComponent = templateMap[templateType] || templateMap['default'];
+  const TemplateComponent = templateMap[normalizedTemplateType] || templateMap['default'];
   
   if (!TemplateComponent) {
-    console.error(`No template found for type: ${templateType}`);
+    console.error(`No template found for type: ${normalizedTemplateType}`);
     return (
       <div className="error-container">
         <h3>Template Not Found</h3>
-        <p>Type: {templateType}</p>
+        <p>Type: {normalizedTemplateType}</p>
       </div>
     );
   }

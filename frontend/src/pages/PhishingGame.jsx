@@ -10,6 +10,7 @@ export default function PhishingGame() {
   const navigate = useNavigate();
   const { recordAction, completeLevel, setSessionTimeTaken } = useProgress();
   const gameStartTime = useRef(Date.now());
+  const timeoutsRef = useRef([]);
 
   const [levels, setLevels] = useState({});
   const [sortedLevelKeys, setSortedLevelKeys] = useState([]);
@@ -32,14 +33,19 @@ export default function PhishingGame() {
   // Current level key (e.g. 'l1', 'l2', 'l3')
   const currentLevelKey = sortedLevelKeys[currentLevelIndex] || '';
   const isLastLevel = currentLevelIndex >= sortedLevelKeys.length - 1;
-  const totalScenarios = Object.values(levels).reduce((sum, arr) => sum + arr.length, 0);
+  const totalScenarios = sortedLevelKeys.reduce(
+    (sum, key) => sum + (levels[key]?.length || 0),
+    0
+  );
 
   // Count how many scenarios have been completed across all levels
-  const completedScenarios = Object.values(levels).reduce((sum, arr, idx) => {
-    if (idx < currentLevelIndex) return sum + arr.length;
+  const completedScenarios = sortedLevelKeys.reduce((sum, key, idx) => {
+    const levelCount = levels[key]?.length || 0;
+    if (idx < currentLevelIndex) return sum + levelCount;
     if (idx === currentLevelIndex) return sum + currentScenarioIndex;
     return sum;
   }, 0);
+  const overallScenarioIndex = Math.min(completedScenarios + 1, totalScenarios);
 
   // CONSENT PROTECTION
   useEffect(() => {
@@ -53,6 +59,13 @@ export default function PhishingGame() {
     localStorage.setItem('sessionId', sessionId);
     loadScenarios();
   }, [sessionId]);
+
+  useEffect(() => {
+    return () => {
+      timeoutsRef.current.forEach(clearTimeout);
+      timeoutsRef.current = [];
+    };
+  }, []);
 
   // When level changes, load its scenarios
   useEffect(() => {
@@ -87,7 +100,12 @@ export default function PhishingGame() {
         return acc;
       }, {});
 
-      const keys = Object.keys(grouped).sort();
+      const keys = Object.keys(grouped).sort((a, b) => {
+        const aNum = Number(a.replace(/^\D+/, ''));
+        const bNum = Number(b.replace(/^\D+/, ''));
+        if (!Number.isNaN(aNum) && !Number.isNaN(bNum)) return aNum - bNum;
+        return a.localeCompare(b);
+      });
       setLevels(grouped);
       setSortedLevelKeys(keys);
       setScenarios(grouped[keys[0]] || []);
@@ -172,7 +190,7 @@ export default function PhishingGame() {
     });
 
     // Auto-advance
-    setTimeout(() => {
+    const feedbackTimeout = setTimeout(() => {
       setFeedback(null);
       setLocked(false);
 
@@ -181,18 +199,19 @@ export default function PhishingGame() {
         setCurrentScenarioIndex(prev => prev + 1);
         sessionStorage.setItem('scenario_start', Date.now().toString());
       } else {
-        // Level complete — mark it
+        // Level complete -- mark it
         completeLevel(currentLevelKey);
 
         if (!isLastLevel) {
           // Show level transition, then move to next level
           setShowLevelTransition(true);
-          setTimeout(() => {
+          const transitionTimeout = setTimeout(() => {
             setShowLevelTransition(false);
             setCurrentLevelIndex(prev => prev + 1);
           }, 2500);
+          timeoutsRef.current.push(transitionTimeout);
         } else {
-          // ALL levels done — go to Thank You
+          // ALL levels done -- go to Thank You
           const totalTime = Math.round((Date.now() - gameStartTime.current) / 1000);
           const minutes = Math.floor(totalTime / 60);
           const seconds = totalTime % 60;
@@ -200,12 +219,14 @@ export default function PhishingGame() {
           setGameComplete(true);
 
           // Brief delay then navigate
-          setTimeout(() => {
+          const navigateTimeout = setTimeout(() => {
             navigate('/thankyou');
           }, 3000);
+          timeoutsRef.current.push(navigateTimeout);
         }
       }
     }, 3000);
+    timeoutsRef.current.push(feedbackTimeout);
   };
 
   const getExplanation = (action, isCorrect) => {
@@ -220,7 +241,7 @@ export default function PhishingGame() {
     }
   };
 
-  // ── RENDER STATES ──
+  // -- RENDER STATES --
 
   if (loading) {
     return <div className="loading-screen">Loading Training Scenarios...</div>;
@@ -235,7 +256,7 @@ export default function PhishingGame() {
     );
   }
 
-  // Game complete — waiting to navigate
+  // Game complete -- waiting to navigate
   if (gameComplete) {
     return (
       <div className="game-complete-overlay">
@@ -294,14 +315,14 @@ export default function PhishingGame() {
           {/* Overall progress bar */}
           <div className="overall-progress">
             <div className="progress-text">
-              {completedScenarios + currentScenarioIndex}/{totalScenarios} total
+              {totalScenarios > 0 ? `${overallScenarioIndex}/${totalScenarios} total` : '0/0 total'}
             </div>
             <div className="progress-track">
               <div
                 className="progress-fill"
                 style={{
                   width: totalScenarios > 0
-                    ? `${((completedScenarios + currentScenarioIndex) / totalScenarios) * 100}%`
+                    ? `${(overallScenarioIndex / totalScenarios) * 100}%`
                     : '0%'
                 }}
               ></div>
