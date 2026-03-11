@@ -22,5 +22,5 @@ const LevelSchema = new mongoose.Schema(
   { collection: "levelDataset" }
 );
 
-const Level = mongoose.model("LevelDataset", LevelSchema);
+const Level = mongoose.model("Level", LevelSchema);
 export default Level;
