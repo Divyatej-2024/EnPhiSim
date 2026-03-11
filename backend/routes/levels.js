@@ -32,7 +32,7 @@ const matchesRequestedLevel = (item, levelCandidates) => {
 
 router.get('/', async (_req, res) => {
   try {
-    const levels = await Level.find({}).lean();
+    const levels = await LevelDataset.find({}).lean();
     res.json(levels);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -76,5 +76,9 @@ router.get('/:level', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+const levelSchema = new mongoose.Schema({
+  // your schema fields
+}, { collection: 'levelDataset' });  // ← ADD THIS LINE
 
 export default router;

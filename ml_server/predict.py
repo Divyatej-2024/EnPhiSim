@@ -30,7 +30,7 @@ async def lifespan(app: FastAPI):
     
     model_path = 'models/real_phishing_model.pt'
     if os.path.exists(model_path):
-        _model.load_state_dict(torch.load(model_path, map_location='cpu'))
+        _model.load_state_dict(torch.load(model_path, map_location='cpu', weights_only=False))
         print(f"Model loaded successfully ({os.path.getsize(model_path)/1024/1024:.2f} MB)")
         _model.eval()
         print("Model in eval mode")
