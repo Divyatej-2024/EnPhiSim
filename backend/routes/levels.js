@@ -32,7 +32,7 @@ const matchesRequestedLevel = (item, levelCandidates) => {
 
 router.get('/', async (_req, res) => {
   try {
-    const levels = await LevelDataset.find({}).lean();
+    const levels = await Level.find({}).lean();
     res.json(levels);
   } catch (err) {
     res.status(500).json({ error: err.message });
