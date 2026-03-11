@@ -28,6 +28,8 @@ export default function PhishingGame() {
   const [feedback, setFeedback] = useState(null);
   const [loading, setLoading] = useState(true);
   const [locked, setLocked] = useState(false);
+  const [showLevelTransition, setShowLevelTransition] = useState(false);
+  const [gameComplete, setGameComplete] = useState(false);
   const [levelStats, setLevelStats] = useState({
     correct: 0,
     total: 0,
@@ -383,6 +385,25 @@ export default function PhishingGame() {
         }));
         
         completeLevel(currentLevelKey);
+
+        if (!isLastLevel) {
+          setShowLevelTransition(true);
+          setTimeout(() => {
+            setShowLevelTransition(false);
+            setCurrentLevelIndex(prev => prev + 1);
+          }, 2500);
+        } else {
+          // Game complete
+          const totalTime = Math.round((Date.now() - gameStartTime.current) / 1000);
+          const minutes = Math.floor(totalTime / 60);
+          const seconds = totalTime % 60;
+          setSessionTimeTaken(`${minutes}m ${seconds}s`);
+          setGameComplete(true);
+
+          setTimeout(() => {
+            navigate('/thankyou');
+          }, 3000);
+        }
       }
     }, 3000);
   };
@@ -490,7 +511,6 @@ export default function PhishingGame() {
       </div>
     );
   }
-
 
   const currentScenario = scenarios[currentScenarioIndex];
   const levelConfig = getLevelConfig(currentLevelKey);
