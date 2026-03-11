@@ -4,9 +4,15 @@ import Level from '../models/Level.js';
 const router = express.Router();
 
 const escapeRegex = (value) => String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-
 const normalizeLevelCandidates = (rawLevelNo) => {
   const value = String(rawLevelNo || '').trim();
+  
+  // Handle "ll" special case (typo in data)
+  if (value === 'l1' || value === '1') {
+    const candidates = new Set(['l1', '1', 'll']);  // Also accept "ll"
+    return candidates;
+  }
+  
   const normalized = value.replace(/^l/i, '');
   const candidates = new Set();
 
