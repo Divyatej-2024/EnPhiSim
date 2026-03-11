@@ -37,7 +37,7 @@ export default function PhishingGame() {
     return localStorage.getItem('sessionId') || generateSessionId();
   });
 
-  // Current level key (e.g. 'l1', 'l2', 'l3')
+  // Current level key
   const currentLevelKey = sortedLevelKeys[currentLevelIndex] || '';
   const isLastLevel = currentLevelIndex >= sortedLevelKeys.length - 1;
   const totalScenarios = Object.values(levels).reduce((sum, arr) => sum + arr.length, 0);
@@ -141,14 +141,9 @@ export default function PhishingGame() {
   const loadLevelConfiguration = async (levelKey) => {
     try {
       setLevelLoading(true);
-      
-      // You can fetch level config from API or define it here
       const config = await getLevelConfig(levelKey);
       setLevelConfig(config);
-      
-      // Apply level-specific settings
       applyLevelSettings(config);
-      
     } catch (error) {
       console.error(`Failed to load config for level ${levelKey}:`, error);
     } finally {
@@ -156,14 +151,12 @@ export default function PhishingGame() {
     }
   };
 
-  // Get level configuration (can be from API or local)
+  // Get level configuration
   const getLevelConfig = async (levelKey) => {
-    // Try to fetch from API first
     try {
       const response = await api.getLevelConfig(levelKey);
       if (response) return response;
     } catch {
-      // Fallback to local config
       return getDefaultLevelConfig(levelKey);
     }
   };
@@ -176,12 +169,13 @@ export default function PhishingGame() {
       // Easy levels (l1-l5)
       l1: {
         template: 'mail',
-        timeLimit: 60, // seconds per scenario
+        timeLimit: 60,
         showHints: true,
         feedbackDelay: 2000,
         mlEnabled: false,
         difficulty: 'easy',
-        theme: 'basic'
+        theme: 'basic',
+        description: 'Basic email phishing detection'
       },
       l2: {
         template: 'mail',
@@ -190,7 +184,8 @@ export default function PhishingGame() {
         feedbackDelay: 2000,
         mlEnabled: false,
         difficulty: 'easy',
-        theme: 'basic'
+        theme: 'basic',
+        description: 'Financial fraud awareness'
       },
       l3: {
         template: 'mail',
@@ -199,7 +194,8 @@ export default function PhishingGame() {
         feedbackDelay: 2000,
         mlEnabled: true,
         difficulty: 'easy',
-        theme: 'basic'
+        theme: 'basic',
+        description: 'Social engineering basics'
       },
       l4: {
         template: 'mail',
@@ -208,7 +204,8 @@ export default function PhishingGame() {
         feedbackDelay: 2000,
         mlEnabled: true,
         difficulty: 'easy',
-        theme: 'basic'
+        theme: 'basic',
+        description: 'Prize and lottery scams'
       },
       l5: {
         template: 'mail',
@@ -217,7 +214,8 @@ export default function PhishingGame() {
         feedbackDelay: 2000,
         mlEnabled: true,
         difficulty: 'easy',
-        theme: 'basic'
+        theme: 'basic',
+        description: 'Attachment-based attacks'
       },
       
       // Advanced Easy (l6-l10)
@@ -228,7 +226,8 @@ export default function PhishingGame() {
         feedbackDelay: 2500,
         mlEnabled: true,
         difficulty: 'advanced_easy',
-        theme: 'professional'
+        theme: 'professional',
+        description: 'Spoofed display names'
       },
       l7: {
         template: 'mail',
@@ -238,7 +237,8 @@ export default function PhishingGame() {
         mlEnabled: true,
         difficulty: 'advanced_easy',
         theme: 'professional',
-        features: ['typosquatting']
+        features: ['typosquatting'],
+        description: 'Typosquatted domains'
       },
       l8: {
         template: 'browser',
@@ -248,7 +248,8 @@ export default function PhishingGame() {
         mlEnabled: true,
         difficulty: 'advanced_easy',
         theme: 'browser',
-        features: ['url_shortener']
+        features: ['url_shortener'],
+        description: 'URL shortener redirects'
       },
       l9: {
         template: 'mail',
@@ -258,7 +259,8 @@ export default function PhishingGame() {
         mlEnabled: true,
         difficulty: 'advanced_easy',
         theme: 'professional',
-        features: ['survey']
+        features: ['survey'],
+        description: 'Malicious surveys'
       },
       l10: {
         template: 'message',
@@ -268,7 +270,8 @@ export default function PhishingGame() {
         mlEnabled: true,
         difficulty: 'advanced_easy',
         theme: 'mobile',
-        features: ['smishing']
+        features: ['smishing'],
+        description: 'SMS phishing'
       },
       
       // Medium levels (l11-l20)
@@ -280,7 +283,8 @@ export default function PhishingGame() {
         mlEnabled: true,
         difficulty: 'medium',
         theme: 'corporate',
-        features: ['spear_phishing']
+        features: ['spear_phishing'],
+        description: 'Targeted spear phishing'
       },
       l12: {
         template: 'mail',
@@ -290,7 +294,8 @@ export default function PhishingGame() {
         mlEnabled: true,
         difficulty: 'medium',
         theme: 'corporate',
-        features: ['whaling']
+        features: ['whaling'],
+        description: 'Executive targeting'
       },
       l13: {
         template: 'mail',
@@ -300,7 +305,8 @@ export default function PhishingGame() {
         mlEnabled: true,
         difficulty: 'medium',
         theme: 'professional',
-        features: ['vishing']
+        features: ['vishing'],
+        description: 'Voice phishing'
       },
       l14: {
         template: 'mail',
@@ -310,7 +316,8 @@ export default function PhishingGame() {
         mlEnabled: true,
         difficulty: 'medium',
         theme: 'professional',
-        features: ['qr_phishing']
+        features: ['qr_phishing'],
+        description: 'QR code phishing'
       },
       l15: {
         template: 'browser',
@@ -320,7 +327,8 @@ export default function PhishingGame() {
         mlEnabled: true,
         difficulty: 'medium',
         theme: 'browser',
-        features: ['pharming']
+        features: ['pharming'],
+        description: 'DNS poisoning'
       },
       l16: {
         template: 'mail',
@@ -330,7 +338,8 @@ export default function PhishingGame() {
         mlEnabled: true,
         difficulty: 'medium',
         theme: 'professional',
-        features: ['clone_phishing']
+        features: ['clone_phishing'],
+        description: 'Clone phishing'
       },
       l17: {
         template: 'browser',
@@ -340,7 +349,8 @@ export default function PhishingGame() {
         mlEnabled: true,
         difficulty: 'medium',
         theme: 'browser',
-        features: ['mitm']
+        features: ['mitm'],
+        description: 'Man-in-the-middle'
       },
       l18: {
         template: 'mail',
@@ -350,7 +360,8 @@ export default function PhishingGame() {
         mlEnabled: true,
         difficulty: 'medium',
         theme: 'professional',
-        features: ['watering_hole']
+        features: ['watering_hole'],
+        description: 'Watering hole attacks'
       },
       l19: {
         template: 'mail',
@@ -360,7 +371,8 @@ export default function PhishingGame() {
         mlEnabled: true,
         difficulty: 'medium',
         theme: 'professional',
-        features: ['credential_stuffing']
+        features: ['credential_stuffing'],
+        description: 'Credential stuffing'
       },
       l20: {
         template: 'browser',
@@ -370,7 +382,8 @@ export default function PhishingGame() {
         mlEnabled: true,
         difficulty: 'medium',
         theme: 'browser',
-        features: ['session_hijacking']
+        features: ['session_hijacking'],
+        description: 'Session hijacking'
       },
       
       // Hard levels (l21-l35)
@@ -382,7 +395,8 @@ export default function PhishingGame() {
         mlEnabled: true,
         difficulty: 'hard',
         theme: 'advanced',
-        features: ['evil_twin']
+        features: ['evil_twin'],
+        description: 'Evil twin WiFi'
       },
       l22: {
         template: 'mail',
@@ -392,7 +406,8 @@ export default function PhishingGame() {
         mlEnabled: true,
         difficulty: 'hard',
         theme: 'advanced',
-        features: ['tech_support']
+        features: ['tech_support'],
+        description: 'Tech support scams'
       },
       l23: {
         template: 'mail',
@@ -402,7 +417,8 @@ export default function PhishingGame() {
         mlEnabled: true,
         difficulty: 'hard',
         theme: 'advanced',
-        features: ['social_engineering']
+        features: ['social_engineering'],
+        description: 'Romance and trust scams'
       },
       l24: {
         template: 'mail',
@@ -412,7 +428,8 @@ export default function PhishingGame() {
         mlEnabled: true,
         difficulty: 'hard',
         theme: 'advanced',
-        features: ['charity_scam']
+        features: ['charity_scam'],
+        description: 'Fake charity appeals'
       },
       l25: {
         template: 'mail',
@@ -422,7 +439,8 @@ export default function PhishingGame() {
         mlEnabled: true,
         difficulty: 'hard',
         theme: 'advanced',
-        features: ['job_scam']
+        features: ['job_scam'],
+        description: 'Fake job offers'
       },
       l26: {
         template: 'mail',
@@ -432,7 +450,8 @@ export default function PhishingGame() {
         mlEnabled: true,
         difficulty: 'hard',
         theme: 'advanced',
-        features: ['account_verification']
+        features: ['account_verification'],
+        description: 'Account verification traps'
       },
       l27: {
         template: 'mail',
@@ -442,7 +461,8 @@ export default function PhishingGame() {
         mlEnabled: true,
         difficulty: 'hard',
         theme: 'advanced',
-        features: ['shipping_fraud']
+        features: ['shipping_fraud'],
+        description: 'Package delivery scams'
       },
       l28: {
         template: 'browser',
@@ -452,7 +472,8 @@ export default function PhishingGame() {
         mlEnabled: true,
         difficulty: 'hard',
         theme: 'advanced',
-        features: ['scareware']
+        features: ['scareware'],
+        description: 'Fake antivirus alerts'
       },
       l29: {
         template: 'mail',
@@ -462,7 +483,8 @@ export default function PhishingGame() {
         mlEnabled: true,
         difficulty: 'hard',
         theme: 'advanced',
-        features: ['inheritance_scam']
+        features: ['inheritance_scam'],
+        description: 'Inheritance fraud'
       },
       l30: {
         template: 'mail',
@@ -472,7 +494,8 @@ export default function PhishingGame() {
         mlEnabled: true,
         difficulty: 'hard',
         theme: 'advanced',
-        features: ['crypto_fraud']
+        features: ['crypto_fraud'],
+        description: 'Cryptocurrency scams'
       },
       l31: {
         template: 'mail',
@@ -482,7 +505,8 @@ export default function PhishingGame() {
         mlEnabled: true,
         difficulty: 'hard',
         theme: 'advanced',
-        features: ['government_fraud']
+        features: ['government_fraud'],
+        description: 'Government impersonation'
       },
       l32: {
         template: 'mail',
@@ -492,32 +516,35 @@ export default function PhishingGame() {
         mlEnabled: true,
         difficulty: 'hard',
         theme: 'advanced',
-        features: ['emergency_fraud']
+        features: ['emergency_fraud'],
+        description: 'Family emergency scams'
       },
       
       // Expert level (l39)
       l39: {
         template: 'multiphase',
-        timeLimit: 30, // longer for multi-stage attack
+        timeLimit: 30,
         showHints: false,
         feedbackDelay: 5000,
         mlEnabled: true,
         difficulty: 'expert',
         theme: 'advanced',
         features: ['spear_phishing', 'typosquatting', 'url_shortener', 'malware', 'clone_phishing'],
-        multiStage: true
+        multiStage: true,
+        description: 'Multi-stage advanced persistent threat'
       },
       
       // Bonus levels (b1-b6)
       b1: {
         template: 'analysis',
-        timeLimit: 300, // 5 minutes for analysis
+        timeLimit: 300,
         showHints: true,
         feedbackDelay: 2000,
         mlEnabled: false,
         difficulty: 'bonus_analysis',
         theme: 'educational',
-        isBonus: true
+        isBonus: true,
+        description: 'Anglerfish Principle - Understanding lures'
       },
       b2: {
         template: 'analysis',
@@ -527,7 +554,8 @@ export default function PhishingGame() {
         mlEnabled: false,
         difficulty: 'bonus_analysis',
         theme: 'educational',
-        isBonus: true
+        isBonus: true,
+        description: 'Porcupine Defense - Ransomware'
       },
       b3: {
         template: 'analysis',
@@ -537,7 +565,8 @@ export default function PhishingGame() {
         mlEnabled: false,
         difficulty: 'bonus_analysis',
         theme: 'educational',
-        isBonus: true
+        isBonus: true,
+        description: 'Army Ant Strategy - DDoS'
       },
       b4: {
         template: 'analysis',
@@ -547,7 +576,8 @@ export default function PhishingGame() {
         mlEnabled: false,
         difficulty: 'bonus_analysis',
         theme: 'educational',
-        isBonus: true
+        isBonus: true,
+        description: 'Mockingbird Effect - Social Engineering'
       },
       b5: {
         template: 'analysis',
@@ -557,7 +587,8 @@ export default function PhishingGame() {
         mlEnabled: false,
         difficulty: 'bonus_analysis',
         theme: 'educational',
-        isBonus: true
+        isBonus: true,
+        description: "Cuckoo's Egg - Trojan Horses"
       },
       b6: {
         template: 'analysis',
@@ -567,7 +598,8 @@ export default function PhishingGame() {
         mlEnabled: false,
         difficulty: 'bonus_analysis',
         theme: 'educational',
-        isBonus: true
+        isBonus: true,
+        description: 'Zombie Ant Phenomenon - Botnets'
       }
     };
 
@@ -578,25 +610,21 @@ export default function PhishingGame() {
       feedbackDelay: 3000,
       mlEnabled: true,
       difficulty: 'medium',
-      theme: 'default'
+      theme: 'default',
+      description: 'Standard phishing scenario'
     };
   };
 
   // Apply level settings
   const applyLevelSettings = (config) => {
-    // Set time limit if exists
     if (config.timeLimit) {
-      // You can implement a timer here
       console.log(`Time limit for this level: ${config.timeLimit}s`);
     }
-
-    // Apply theme
     document.body.className = `theme-${config.theme || 'default'}`;
   };
 
   // ML Prediction
   const getMLPrediction = async (emailText, links) => {
-    // Only run ML if enabled for this level
     if (levelConfig && !levelConfig.mlEnabled) {
       return null;
     }
@@ -631,7 +659,7 @@ export default function PhishingGame() {
         isCorrect: false,
         userAction: action,
         correctAction: currentScenario.correct_action,
-        explanation: "Time's up! Too slow to respond.",
+        explanation: "⏰ Time's up! Too slow to respond.",
         timeout: true
       });
       setTimeout(() => handleTimeout(), 3000);
@@ -645,17 +673,16 @@ export default function PhishingGame() {
 
     const isCorrect = action === currentScenario.correct_action;
 
-    // Calculate points (bonus levels give extra points)
+    // Calculate points
     let pointsEarned = isCorrect ? 100 : 0;
     if (isCorrect && levelConfig?.isBonus) {
-      pointsEarned = 500; // Bonus points for analysis levels
+      pointsEarned = 500;
     }
 
     if (isCorrect) {
       setScore(prev => prev + pointsEarned);
       setTotalCorrect(prev => prev + 1);
       
-      // Update level score
       setLevelScores(prev => ({
         ...prev,
         [currentLevelKey]: {
@@ -704,18 +731,16 @@ export default function PhishingGame() {
       points: pointsEarned
     });
 
-    // Auto-advance based on level config
+    // Auto-advance
     const delay = levelConfig?.feedbackDelay || 3000;
     setTimeout(() => {
       setFeedback(null);
       setLocked(false);
 
       if (currentScenarioIndex < scenarios.length - 1) {
-        // Next scenario in same level
         setCurrentScenarioIndex(prev => prev + 1);
         sessionStorage.setItem('scenario_start', Date.now().toString());
       } else {
-        // Level complete
         const completedCount = (levelScores[currentLevelKey]?.completed || 0) + 1;
         setLevelScores(prev => ({
           ...prev,
@@ -728,14 +753,12 @@ export default function PhishingGame() {
         completeLevel(currentLevelKey);
 
         if (!isLastLevel) {
-          // Show level transition
           setShowLevelTransition(true);
           setTimeout(() => {
             setShowLevelTransition(false);
             setCurrentLevelIndex(prev => prev + 1);
           }, 2500);
         } else {
-          // Game complete
           const totalTime = Math.round((Date.now() - gameStartTime.current) / 1000);
           const minutes = Math.floor(totalTime / 60);
           const seconds = totalTime % 60;
@@ -762,42 +785,62 @@ export default function PhishingGame() {
 
   const getExplanation = (action, isCorrect, scenario) => {
     if (isCorrect) {
-      if (action === 'Report Phish') {
-        return "✅ Correct! Reporting suspicious emails helps protect your organization from cyber threats.";
-      } else if (action === 'Ignore') {
-        return "✅ Correct! When in doubt, it's safer to ignore suspicious messages.";
-      } else if (action === 'Verify with Sender') {
-        return "✅ Correct! Always verify sensitive requests through a different communication channel.";
-      } else if (action === 'Use VPN') {
-        return "✅ Correct! Using a VPN on public WiFi protects your data from interception.";
-      } else {
-        return "✅ Correct! You made the right security decision.";
-      }
+      const explanations = {
+        'Report Phish': "✅ Correct! Reporting suspicious emails helps protect your organization from cyber threats.",
+        'Report & Isolate': "✅ Correct! Multi-stage attacks require immediate isolation and reporting to security teams.",
+        'Ignore': "✅ Correct! When in doubt, it's safer to ignore suspicious messages.",
+        'Verify with Sender': "✅ Correct! Always verify sensitive requests through a different communication channel.",
+        'Call Family Directly': "✅ Correct! Verify emergencies by calling the person directly on their known number.",
+        'Call Official Number': "✅ Correct! Always use official phone numbers from trusted sources.",
+        'Use VPN': "✅ Correct! Using a VPN on public WiFi protects your data from interception.",
+        'Research Charity': "✅ Correct! Research charities before donating to ensure they're legitimate.",
+        'Check Official Site': "✅ Correct! Verify account issues by going directly to the official website.",
+        'Inspect QR URL': "✅ Correct! Always inspect QR code URLs before scanning.",
+        'Investigate': "✅ Correct! Take time to investigate suspicious messages before acting.",
+        'Compare with Original': "✅ Correct! Compare suspicious messages with legitimate ones from the same sender.",
+        'Complete Analysis': "✅ Excellent! Understanding these concepts helps build stronger security awareness."
+      };
+      return explanations[action] || "✅ Correct! You made the right security decision.";
     } else {
-      if (action === 'Trust & Click') {
-        return "❌ Incorrect. Clicking suspicious links can lead to malware infection or credential theft.";
-      } else if (action === 'Call Provided Number') {
-        return "❌ Incorrect. Always use official phone numbers from trusted sources, not the one in the message.";
-      } else if (action === 'Scan QR Code') {
-        return "❌ Incorrect. QR codes can lead to malicious websites. Always verify the URL first.";
-      } else if (action === 'Process Transfer') {
-        return "❌ Incorrect. Never process financial transactions based on email requests alone. Verify through official channels.";
-      } else {
-        return `❌ Incorrect. The correct action was: ${scenario.correct_action}`;
-      }
+      const explanations = {
+        'Trust & Click': "❌ Incorrect. Clicking suspicious links can lead to malware infection or credential theft.",
+        'Call Provided Number': "❌ Incorrect. Always use official phone numbers, not the one in the message.",
+        'Scan QR Code': "❌ Incorrect. QR codes can lead to malicious websites. Always verify the URL first.",
+        'Process Transfer': "❌ Incorrect. Never process financial transactions based on email requests alone.",
+        'Send Money': "❌ Incorrect. Never send money based on email requests. Verify through official channels.",
+        'Provide Information': "❌ Incorrect. Never provide personal information in response to unsolicited requests.",
+        'Connect & Login': "❌ Incorrect. Avoid logging into accounts on public WiFi without VPN.",
+        'Connect': "❌ Incorrect. Be cautious with unknown WiFi networks - they could be evil twins.",
+        'Claim Prize': "❌ Incorrect. If it sounds too good to be true, it probably is.",
+        'Donate Now': "❌ Incorrect. Research charities before donating to avoid scams.",
+        'Apply Now': "❌ Incorrect. Research companies before applying - this could be a job scam.",
+        'Invest Now': "❌ Incorrect. Cryptocurrency investment guarantees are almost always scams.",
+        'Download Antivirus': "❌ Incorrect. Fake antivirus alerts are scareware trying to install malware.",
+        'Ignore Lesson': "❌ These bonus lessons contain valuable security insights. Don't skip them!"
+      };
+      return explanations[action] || `❌ Incorrect. The correct action was: ${scenario.correct_action}`;
     }
   };
 
   // Render loading states
   if (loading) {
-    return <div className="loading-screen">Loading Training Scenarios...</div>;
+    return (
+      <div className="loading-screen">
+        <div className="loading-spinner"></div>
+        <h2>Loading Training Scenarios...</h2>
+        <p>Preparing your cybersecurity training</p>
+      </div>
+    );
   }
 
   if (!scenarios.length) {
     return (
       <div className="error-screen">
-        <h2>No Scenarios Available</h2>
-        <button onClick={() => navigate('/')}>Back to Dashboard</button>
+        <h2>⚠️ No Scenarios Available</h2>
+        <p>Please check back later or contact your administrator.</p>
+        <button onClick={() => navigate('/')} className="btn-primary">
+          Back to Dashboard
+        </button>
       </div>
     );
   }
@@ -807,10 +850,7 @@ export default function PhishingGame() {
     return (
       <div className="game-complete-overlay">
         <div className="game-complete-content">
-          <div className="complete-icon" aria-hidden="true">
-            <span className="complete-icon-core" />
-            <span className="complete-icon-wave" />
-          </div>
+          <div className="complete-icon">🏆</div>
           <h2>🎉 Simulation Complete! 🎉</h2>
           <p>You scored <strong>{score}</strong> points across <strong>{sortedLevelKeys.length}</strong> levels</p>
           <p className="accuracy-stat">
@@ -839,10 +879,7 @@ export default function PhishingGame() {
     return (
       <div className="level-transition-overlay">
         <div className="transition-content">
-          <div className="transition-check" aria-hidden="true">
-            <span className="transition-check-core" />
-            <span className="transition-check-ring" />
-          </div>
+          <div className="transition-check">✓</div>
           <h2>Level {currentLevelKey.toUpperCase()} Complete!</h2>
           <p>Score this level: {levelScores[currentLevelKey]?.score || 0} points</p>
           <p>Accuracy: {
@@ -853,12 +890,18 @@ export default function PhishingGame() {
           <div className="transition-next">
             <span>Next up:</span>
             <strong>Level {nextKey.toUpperCase()}</strong>
-            <span className="next-difficulty">({nextConfig?.difficulty || 'medium'})</span>
+            <span className="next-difficulty">({nextConfig?.difficulty?.replace('_', ' ') || 'medium'})</span>
           </div>
+          
+          {nextConfig?.description && (
+            <div className="next-description">
+              <small>{nextConfig.description}</small>
+            </div>
+          )}
           
           {nextConfig?.features && (
             <div className="next-features">
-              <small>Features: {nextConfig.features.join(', ')}</small>
+              <small>Features: {nextConfig.features.join(' • ')}</small>
             </div>
           )}
           
@@ -912,21 +955,26 @@ export default function PhishingGame() {
           </div>
 
           {levelConfig?.timeLimit && (
-            <div className="timer-display">
-              <Timer 
-                initialTime={levelConfig.timeLimit} 
-                key={currentScenarioIndex} 
-              />
-            </div>
+            <Timer 
+              initialTime={levelConfig.timeLimit} 
+              key={currentScenarioIndex} 
+            />
           )}
 
           <button onClick={() => navigate('/dashboard')} className="dashboard-button">
-            Dashboard
+            📊 Dashboard
           </button>
         </div>
       </div>
 
-      {/* Template-based Level Renderer with Level Config */}
+      {/* Level description */}
+      {levelConfig?.description && (
+        <div className="level-description">
+          📌 {levelConfig.description}
+        </div>
+      )}
+
+      {/* Template-based Level Renderer */}
       {levelLoading ? (
         <div className="level-loading">Loading level configuration...</div>
       ) : (
@@ -1021,7 +1069,7 @@ const Timer = ({ initialTime }) => {
   );
 };
 
-// Helper function for learning tips
+// Learning tips helper
 const getLearningTip = (taxonomy) => {
   const tips = {
     'Credential Phishing': 'Always check the sender\'s email address carefully. Legitimate companies use their official domain.',
@@ -1043,7 +1091,8 @@ const getLearningTip = (taxonomy) => {
     'Ransomware': 'Regular backups are your best defense against ransomware.',
     'DDoS Attacks': 'Organizations should have DDoS mitigation strategies in place.',
     'Trojan Horse': 'Never download attachments or software from untrusted sources.',
-    'Botnets': 'Keep all devices updated to prevent them from becoming part of a botnet.'
+    'Botnets': 'Keep all devices updated to prevent them from becoming part of a botnet.',
+    'Advanced Persistent Phishing': 'Multi-stage attacks require vigilance. Report suspicious patterns immediately.'
   };
 
   return tips[taxonomy] || 'Stay vigilant and think before you click.';
