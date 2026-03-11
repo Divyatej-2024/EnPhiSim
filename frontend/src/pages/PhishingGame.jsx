@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TemplateRenderer from './levels/TemplateRenderer';
-import LevelLoader from './levels/LevelLoader';
 import './PhishingGame.css';
 import api from '../services/api';
 import { useProgress } from '../context/ProgressContext';
