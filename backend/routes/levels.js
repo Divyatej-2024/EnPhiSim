@@ -35,6 +35,7 @@ router.get('/', async (_req, res) => {
     const levels = await Level.find({}).lean();
     res.json(levels);
   } catch (err) {
+    console.error('Error fetching levels:',err);
     res.status(500).json({ error: err.message });
   }
 });
