@@ -135,99 +135,106 @@ export default function PhishingGame() {
   };
 
   // Handle user action
-  const handleAction = async (action) => {
-    if (locked || !scenarios[currentScenarioIndex]) return;
-    setLocked(true);
+const handleAction = async (action) => {
+  if (locked || !scenarios[currentScenarioIndex]) return;
+  setLocked(true);
 
-    const currentScenario = scenarios[currentScenarioIndex];
-    const startTime = sessionStorage.getItem('scenario_start');
-    const timeTaken = startTime ? (Date.now() - parseInt(startTime)) / 1000 : 0;
+  const currentScenario = scenarios[currentScenarioIndex];
+  const startTime = sessionStorage.getItem('scenario_start');
+  const timeTaken = startTime ? (Date.now() - parseInt(startTime)) / 1000 : 0;
 
-    const mlResults = await getMLPrediction(
-      currentScenario.body_text || currentScenario.content,
-      currentScenario.links
-    );
+  const mlResults = await getMLPrediction(
+    currentScenario.body_text || currentScenario.content,
+    currentScenario.links
+  );
 
-    const isCorrect = action === currentScenario.correct_action;
+  const isCorrect = action === currentScenario.correct_action;
 
-    if (isCorrect) {
-      setScore(prev => prev + 100);
-      setTotalCorrect(prev => prev + 1);
-    }
-    setTotalActions(prev => prev + 1);
+  if (isCorrect) {
+    setScore(prev => prev + 100);
+    setTotalCorrect(prev => prev + 1);
+  }
+  setTotalActions(prev => prev + 1);
 
-    // Record in ProgressContext (used by Thank You page)
-    recordAction(currentLevelKey, {
+  // Record in ProgressContext (used by Thank You page)
+  recordAction(currentLevelKey, {
+    scenario_id: currentScenario.scenario_id,
+    action,
+    isCorrect,
+    level: currentLevelKey,
+    timeTaken,
+  });
+
+  // Save to backend
+  try {
+    await api.saveAction({
       scenario_id: currentScenario.scenario_id,
-      action,
-      isCorrect,
+      user_action: action,
+      time_taken_seconds: timeTaken,
+      session_id: sessionId,
       level: currentLevelKey,
-      timeTaken,
+      is_correct: isCorrect
     });
+  } catch (error) {
+    console.error('Failed to save action:', error);
+  }
 
-    // Save to backend
-    try {
-      await api.saveAction({
-        scenario_id: currentScenario.scenario_id,
-        user_action: action,
-        time_taken_seconds: timeTaken,
-        session_id: sessionId,
-        level: currentLevelKey,
-        is_correct: isCorrect
-      });
-    } catch (error) {
-      console.error('Failed to save action:', error);
-    }
+  // Show feedback
+  setFeedback({
+    show: true,
+    isCorrect,
+    userAction: action,
+    correctAction: currentScenario.correct_action,
+    mlResults,
+    explanation: getExplanation(action, isCorrect)
+  });
 
-    // Show feedback
-    setFeedback({
-      show: true,
-      isCorrect,
-      userAction: action,
-      correctAction: currentScenario.correct_action,
-      mlResults,
-      explanation: getExplanation(action, isCorrect)
-    });
+  // Store current values for the timeout
+  const currentIdx = currentScenarioIndex;
+  const totalScenariosInLevel = scenarios.length;
+  const isLastLevelNow = isLastLevel;
+  const currentLevel = currentLevelKey;
+  const totalTime = Date.now() - gameStartTime.current;
 
-    // Auto-advance
-    const feedbackTimeout = setTimeout(() => {
-      setFeedback(null);
-      setLocked(false);
+  // Auto-advance
+  const feedbackTimeout = setTimeout(() => {
+    setFeedback(null);
+    setLocked(false);
 
-      if (currentScenarioIndex < scenarios.length - 1) {
-        // Next scenario in same level
-        setCurrentScenarioIndex(prev => prev + 1);
-        sessionStorage.setItem('scenario_start', Date.now().toString());
+    if (currentIdx < totalScenariosInLevel - 1) {
+      // Next scenario in same level
+      setCurrentScenarioIndex(prev => prev + 1);
+      sessionStorage.setItem('scenario_start', Date.now().toString());
+    } else {
+      // Level complete -- mark it
+      completeLevel(currentLevel);
+
+      if (!isLastLevelNow) {
+        // Show level transition, then move to next level
+        setShowLevelTransition(true);
+        const transitionTimeout = setTimeout(() => {
+          setShowLevelTransition(false);
+          setCurrentLevelIndex(prev => prev + 1);
+        }, 2500);
+        timeoutsRef.current.push(transitionTimeout);
       } else {
-        // Level complete -- mark it
-        completeLevel(currentLevelKey);
+        // ALL levels done -- go to Thank You
+        const minutes = Math.floor(totalTime / 1000 / 60);
+        const seconds = Math.floor((totalTime / 1000) % 60);
+        setSessionTimeTaken(`${minutes}m ${seconds}s`);
+        setGameComplete(true);
 
-        if (!isLastLevel) {
-          // Show level transition, then move to next level
-          setShowLevelTransition(true);
-          const transitionTimeout = setTimeout(() => {
-            setShowLevelTransition(false);
-            setCurrentLevelIndex(prev => prev + 1);
-          }, 2500);
-          timeoutsRef.current.push(transitionTimeout);
-        } else {
-          // ALL levels done -- go to Thank You
-          const totalTime = Math.round((Date.now() - gameStartTime.current) / 1000);
-          const minutes = Math.floor(totalTime / 60);
-          const seconds = totalTime % 60;
-          setSessionTimeTaken(`${minutes}m ${seconds}s`);
-          setGameComplete(true);
-
-          // Brief delay then navigate
-          const navigateTimeout = setTimeout(() => {
-            navigate('/thankyou');
-          }, 3000);
-          timeoutsRef.current.push(navigateTimeout);
-        }
+        // Brief delay then navigate
+        const navigateTimeout = setTimeout(() => {
+          navigate('/thankyou');
+        }, 3000);
+        timeoutsRef.current.push(navigateTimeout);
       }
-    }, 3000);
-    timeoutsRef.current.push(feedbackTimeout);
-  };
+    }
+  }, 3000);
+  
+  timeoutsRef.current.push(feedbackTimeout);
+};
 
   const getExplanation = (action, isCorrect) => {
     if (isCorrect) {
