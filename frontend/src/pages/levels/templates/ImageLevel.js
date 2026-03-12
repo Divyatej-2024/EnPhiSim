@@ -69,6 +69,3 @@ export default function ImageLevel({ level: scenario }) {
       )}
     </BaseLevel>
   );
-}
-
-export default ImageLevel;

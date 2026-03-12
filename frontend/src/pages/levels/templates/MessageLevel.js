@@ -102,5 +102,3 @@ export default function MessageLevel({ level: scenario }) {
     </BaseLevel>
   );
 }
-
-export default MessageLevel;
