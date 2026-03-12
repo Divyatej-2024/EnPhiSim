@@ -1,6 +1,8 @@
 import axios from 'axios';
 
 const API_BASE = process.env.REACT_APP_API_URL || 'https://enphisim-1.onrender.com';
+const BACKEND_API_KEY = process.env.REACT_APP_BACKEND_API_KEY;
+const ML_API_KEY = process.env.REACT_APP_ML_API_KEY;
 
 const PROD_BACKEND_FALLBACKS = [
   'https://enphisim-backend.onrender.com',
@@ -24,6 +26,8 @@ const axiosInstance = axios.create({
   timeout: 30000,
   headers: {
     'X-Requested-With': 'XMLHttpRequest',
+    'x-api-key': BACKEND_API_KEY,      // For backend authentication
+    'X-API-Key': ML_API_KEY,           // For ML server authentication (passed through)
   },
 });
 
