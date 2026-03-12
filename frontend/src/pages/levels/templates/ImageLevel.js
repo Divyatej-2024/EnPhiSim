@@ -68,4 +68,5 @@ export default function ImageLevel({ level: scenario }) {
         </div>
       )}
     </BaseLevel>
-  );
+  )
+}

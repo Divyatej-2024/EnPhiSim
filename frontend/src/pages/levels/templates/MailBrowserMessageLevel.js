@@ -111,5 +111,3 @@ export default function MailBrowserMessageLevel({ level: scenario }) {
     </BaseLevel>
   );
 }
-
-export default MailBrowsermessageLevel;
