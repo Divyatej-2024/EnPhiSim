@@ -10,7 +10,7 @@ import json
 from contextlib import asynccontextmanager
 import codecs
 # Add with other imports
-from .auth import verify_api_key
+from auth import verify_api_key
 from fastapi.middleware.cors import CORSMiddleware
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
@@ -207,3 +207,4 @@ async def predict_batch(requests: list[PredictRequest]):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
