@@ -5,7 +5,7 @@ import './PhishingGame.css';
 import api from '../services/api';
 import { useProgress } from '../context/ProgressContext';
 
-// Store timeouts outside component to prevent cleanup on re-render
+// Store timeouts OUTSIDE component to prevent cleanup on re-render
 const activeTimeouts = new Set();
 
 export default function PhishingGame() {
@@ -13,7 +13,7 @@ export default function PhishingGame() {
   const { recordAction, completeLevel, setSessionTimeTaken } = useProgress();
   const gameStartTime = useRef(Date.now());
   
-  // Use a ref that persists across renders but doesn't trigger cleanup
+  // Reference to the external Set - this persists across renders
   const timeoutsRef = useRef(activeTimeouts);
 
   const [levels, setLevels] = useState({});
@@ -130,6 +130,7 @@ export default function PhishingGame() {
     }
   };
 
+  // Clear all timeouts (call manually when needed)
   const clearAllTimeouts = () => {
     timeoutsRef.current.forEach(clearTimeout);
     timeoutsRef.current.clear();
@@ -137,14 +138,9 @@ export default function PhishingGame() {
 
   // Handle user action
   const handleAction = async (action) => {
-    console.log('🎮 HANDLE ACTION STARTED');
+    if (locked || !scenarios[currentScenarioIndex]) return;
     
-    if (locked || !scenarios[currentScenarioIndex]) {
-      console.log('🚫 Blocked - locked or no scenario');
-      return;
-    }
-    
-    // Clear any pending timeouts before starting new one
+    // Clear any pending timeouts
     clearAllTimeouts();
     setLocked(true);
 
@@ -152,20 +148,12 @@ export default function PhishingGame() {
     const startTime = sessionStorage.getItem('scenario_start');
     const timeTaken = startTime ? (Date.now() - parseInt(startTime)) / 1000 : 0;
 
-    console.log('📊 Current state:', {
-      index: currentScenarioIndex,
-      totalInLevel: scenarios.length,
-      isLastLevel,
-      level: currentLevelKey
-    });
-
     const mlResults = await getMLPrediction(
       currentScenario.body_text || currentScenario.content,
       currentScenario.links
     );
 
     const isCorrect = action === currentScenario.correct_action;
-    console.log('✅ isCorrect:', isCorrect);
 
     if (isCorrect) {
       setScore(prev => prev + 100);
@@ -211,42 +199,31 @@ export default function PhishingGame() {
     const currentLevel = currentLevelKey;
     const totalTime = Date.now() - gameStartTime.current;
 
-    console.log('⏱️ Setting timeout for 3 seconds');
-
     // Auto-advance timeout
     const feedbackTimeout = setTimeout(() => {
-      console.log('⏱️⏱️ TIMEOUT EXECUTED at', new Date().toLocaleTimeString());
-      console.log('Values:', { currentIdx, totalInLevel, isLastLevelNow });
-      
       setFeedback(null);
       setLocked(false);
 
       if (currentIdx < totalInLevel - 1) {
-        console.log('➡️ Moving to next scenario');
         setCurrentScenarioIndex(prev => prev + 1);
         sessionStorage.setItem('scenario_start', Date.now().toString());
       } else {
-        console.log('🏁 Completing level');
         completeLevel(currentLevel);
 
         if (!isLastLevelNow) {
-          console.log('➡️ Moving to next level');
           setShowLevelTransition(true);
           const transitionTimeout = setTimeout(() => {
-            console.log('   Transition complete - loading next level');
             setShowLevelTransition(false);
             setCurrentLevelIndex(prev => prev + 1);
           }, 2500);
           timeoutsRef.current.add(transitionTimeout);
         } else {
-          console.log('🏁 Game complete - navigating to thank you');
           const minutes = Math.floor(totalTime / 1000 / 60);
           const seconds = Math.floor((totalTime / 1000) % 60);
           setSessionTimeTaken(`${minutes}m ${seconds}s`);
           setGameComplete(true);
 
           const navigateTimeout = setTimeout(() => {
-            console.log('   Navigating to /thankyou');
             navigate('/thankyou');
           }, 3000);
           timeoutsRef.current.add(navigateTimeout);
@@ -255,7 +232,6 @@ export default function PhishingGame() {
     }, 3000);
     
     timeoutsRef.current.add(feedbackTimeout);
-    console.log('⏱️ Timeout added. Total timeouts:', timeoutsRef.current.size);
   };
 
   const getExplanation = (action, isCorrect) => {
