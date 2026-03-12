@@ -86,3 +86,5 @@ export default function BrowserLevel({ level: scenario }) {
     </BaseLevel>
   );
 }
+
+export default BrowserLevel;

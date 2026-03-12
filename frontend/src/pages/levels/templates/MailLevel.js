@@ -4,7 +4,7 @@ import BaseLevel from "./BaseLevel";
 // import { useProgress } from "../../../context/ProgressContext"; // Uncomment if needed
 import "./MailLevel.css"; // ✅ Move CSS to separate file
 
-export default function MailLevel({ level, onAction, locked }) {
+export default function MailLevel({ level: scenario }) {
   // useProgress(); // Uncomment if needed
   
   const [selectedEmail, setSelectedEmail] = useState(null);

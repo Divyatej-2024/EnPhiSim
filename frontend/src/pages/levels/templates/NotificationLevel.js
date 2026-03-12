@@ -87,3 +87,5 @@ export default function NotificationLevel({ level: scenario }) {
     </BaseLevel>
   );
 }
+
+export default NotificationLevel;
