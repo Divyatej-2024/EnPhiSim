@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./ModelMetrics.css";
+import api from '../services/api';
 
 const API_BASE = process.env.REACT_APP_API_URL || "https://enphisim-1.onrender.com";
 
@@ -19,14 +20,10 @@ export default function ModelMetrics() {
   const fetchMetrics = async () => {
     try {
       setLoading(true);
-      try {
-        const response = await axios.get("https://enphisim-ol7w.onrender.com/metrics");
-        setMetrics(response.data);
-      } catch {
-        const response = await axios.get(`${API_BASE}/api/model-metrics`);
-        setMetrics(response.data);
+    const response = await api.getModelMetrics();
+      setMetrics(response.data);
       }
-    } catch (_err) {
+    catch (_err) {
       setError("Could not load model metrics");
     } finally {
       setLoading(false);
