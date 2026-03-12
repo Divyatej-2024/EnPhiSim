@@ -1,5 +1,6 @@
+
 // frontend/src/pages/levels/templates/BaseLevel.js
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import "../level.css";
 
@@ -96,13 +97,8 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
     mlPrediction: null,
     mlConfidence: null,
   });
-  const [isReady, setIsReady] = useState(false);
 
   const currentLevel = scenario || null;
-
-  useEffect(() => {
-    setIsReady(true);
-  }, []);
 
   const handleUserAction = useCallback(
     async (action, metadata = {}) => {
@@ -116,6 +112,8 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
         
         // Create rich ML text from your data
         const mlText = createMlInputText(currentLevel, action);
+        
+
 
         // Call parent onAction with ALL data
         if (onAction) {
@@ -144,7 +142,7 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
           message: feedbackMessage,
           details: feedbackDetails,
           isCorrect,
-          mlPrediction: null,
+          mlPrediction: null, // Will be filled by parent when ML is ready
           mlConfidence: null,
         });
 
@@ -153,7 +151,10 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
           setDialog(prev => ({ ...prev, show: false }));
           setLocked(false);
           
-          // Navigation handled by parent
+          // Navigate if correct (optional - adjust based on your flow)
+          if (isCorrect && onAction) {
+            // Navigation handled by parent
+          }
         }, 2000);
 
       } catch (err) {
@@ -173,9 +174,6 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
     [locked, currentLevel, onAction]
   );
 
-  console.log('🔧 BaseLevel render - handleUserAction type:', typeof handleUserAction);
-  console.log('🔧 BaseLevel render - handleUserAction is function?', typeof handleUserAction === 'function');
-
   const closeDialog = () => setDialog((prev) => ({ ...prev, show: false }));
 
   if (!currentLevel) {
@@ -192,13 +190,6 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
     if (!children) return <div>No template provided</div>;
 
     if (typeof children === "function") {
-      if (!isReady) {
-        return <div className="loading-level">Loading level...</div>;
-      }
-      
-      console.log('🔧 Rendering children with onAction type:', typeof handleUserAction);
-      console.log('🔧 handleUserAction is function?', typeof handleUserAction === 'function');
-      
       return children({
         level: currentLevel,
         onAction: handleUserAction,

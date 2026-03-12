@@ -1,3 +1,4 @@
+
 // frontend/src/pages/levels/templates/NotificationLevel.js
 import React, { useState } from "react";
 import BaseLevel from "./BaseLevel";
@@ -86,4 +87,4 @@ export default function NotificationLevel({ level: scenario }) {
       }}
     </BaseLevel>
   );
-}
+} 

@@ -1,3 +1,4 @@
+
 // frontend/src/pages/levels/templates/ImageLevel.js
 import React from "react";
 import BaseLevel from "./BaseLevel";
@@ -68,5 +69,5 @@ export default function ImageLevel({ level: scenario }) {
         </div>
       )}
     </BaseLevel>
-  )
+  );
 }

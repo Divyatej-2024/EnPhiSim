@@ -1,3 +1,4 @@
+
 // frontend/src/pages/levels/templates/MailBrowserLevel.js
 import React, { useState } from "react";
 import BaseLevel from "./BaseLevel";
