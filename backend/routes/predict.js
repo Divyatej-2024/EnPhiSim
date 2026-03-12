@@ -14,7 +14,7 @@ const mlClient = axios.create({
   timeout: REQUEST_TIMEOUT,
   headers: {
     'Content-Type': 'application/json',
-    'X-API-KEY': ML_API_KEY,
+    'X-API-Key': ML_API_KEY,
   },
 });
 
