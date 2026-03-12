@@ -138,7 +138,12 @@ export default function PhishingGame() {
 
   // Handle user action
   const handleAction = async (action) => {
-    if (locked || !scenarios[currentScenarioIndex]) return;
+  console.log('🎯 HANDLE ACTION TRIGGERED at', new Date().toLocaleTimeString());
+  console.log('   Action:', action);
+  console.log('   Locked:', locked);
+  console.log('   Has scenario:', !!scenarios[currentScenarioIndex]);
+  
+  if (locked || !scenarios[currentScenarioIndex]) return;
     
     // Clear any pending timeouts
     clearAllTimeouts();
