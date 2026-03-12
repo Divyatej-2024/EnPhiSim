@@ -37,7 +37,12 @@ function inferCorrectness(level, action, metadata) {
 
     return key;
   };
+// Add with other state declarations
+const [isReady, setIsReady] = useState(false);
 
+useEffect(() => {
+  setIsReady(true);
+}, []);
   const actionKey = canonicalAction(action);
   const actionTokens = new Set(normalizeTokens(action));
   const candidates = [
@@ -191,6 +196,9 @@ console.log('🔧 BaseLevel render - handleUserAction is function?', typeof hand
     if (!children) return <div>No template provided</div>;
 
     if (typeof children === "function") {
+  if (!isReady) {
+    return <div>Loading level...</div>;
+  }
       // Add this right before the return statement (around line 160)
 console.log('🔧 BaseLevel render - handleUserAction type:', typeof handleUserAction);
 console.log('🔧 BaseLevel render - handleUserAction is function?', typeof handleUserAction === 'function');
