@@ -13,7 +13,7 @@ export default function MailLevel({ level: scenario }) {
   const [filter, setFilter] = useState("inbox");
 
   // Use the level data passed from TemplateRenderer
-  const activeLevel = level || {};
+  const activeLevel = scenario || {};
   
   // Create emails array from level data or use fallback
   const emails = Array.isArray(activeLevel.emails) && activeLevel.emails.length > 0
