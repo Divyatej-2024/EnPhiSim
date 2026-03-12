@@ -172,7 +172,9 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
     },
     [locked, currentLevel, onAction]
   );
-
+// Add this right before the return statement (around line 160)
+console.log('🔧 BaseLevel render - handleUserAction type:', typeof handleUserAction);
+console.log('🔧 BaseLevel render - handleUserAction is function?', typeof handleUserAction === 'function');
   const closeDialog = () => setDialog((prev) => ({ ...prev, show: false }));
 
   if (!currentLevel) {
@@ -189,6 +191,9 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
     if (!children) return <div>No template provided</div>;
 
     if (typeof children === "function") {
+      // Add this right before the return statement (around line 160)
+console.log('🔧 BaseLevel render - handleUserAction type:', typeof handleUserAction);
+console.log('🔧 BaseLevel render - handleUserAction is function?', typeof handleUserAction === 'function');
       return children({
         level: currentLevel,
         onAction: handleUserAction,
