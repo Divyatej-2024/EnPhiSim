@@ -1,6 +1,6 @@
 import express from 'express';
 import axios from 'axios';
-import { validatePredictPayload } from '../middleware/validator.js';
+//import { validatePredictPayload } from '../middleware/validator.js';
 import logger from '../utils/logger.js';
 
 const router = express.Router();
@@ -18,16 +18,36 @@ const mlClient = axios.create({
   },
 });
 
-router.post('/', validatePredictPayload, async (req, res) => {
+router.post('/', async (req, res) => {
+  console.log('='.repeat(50));
+  console.log('PREDICT ROUTE HIT at', new Date().toISOString());
+  console.log('Request body:', JSON.stringify(req.body, null, 2));
+  console.log('Headers:', req.headers['x-api-key'] ? 'API key present' : 'No API key');
+  
   const startTime = Date.now();
 
   try {
     const { text, links } = req.body;
+console.log('Extracted text length:', text?.length);
+    console.log('Links present:', !!links);
 
+    if (!text) {
+      console.log('No text in request body');
+      return res.status(400).json({
+        success: false,
+        error: 'Missing text field'
+      });
+    }
+
+    console.log('Sending to ML server at:', ML_SERVER_URL);
+    
     const mlResponse = await mlClient.post('/predict', {
       text,
       links: Array.isArray(links) ? links : [],
     });
+  console.log('✅ ML server responded with status:', mlResponse.status);
+    console.log('✅ ML response data:', JSON.stringify(mlResponse.data, null, 2));
+
 
     logger.info('Prediction request completed', {
       durationMs: Date.now() - startTime,
@@ -37,6 +57,13 @@ router.post('/', validatePredictPayload, async (req, res) => {
     res.json(mlResponse.data);
   } catch (error) {
     const duration = Date.now() - startTime;
+ console.error('❌ ERROR CAUGHT:', {
+      message: error.message,
+      code: error.code,
+      status: error.response?.status,
+      data: error.response?.data,
+      headers: error.response?.headers
+    });
 
     if (error.response) {
       logger.warn('ML server returned error response', {
@@ -71,6 +98,9 @@ router.post('/', validatePredictPayload, async (req, res) => {
       success: false,
       error: 'Failed to process prediction request',
     });
+  } finally {
+    console.log('Request processing completed in');
+    console.log('='.repeat(50));
   }
 });
 
