@@ -1,0 +1,1715 @@
+import React, { useMemo, useState } from "react";
+import BaseLevel from "./BaseLevel";
+import "./BrowserLevel.css"; // ✅ ADD THIS
+
+export default function BrowserLevel({ level: scenario }) {
+  const [url, setUrl] = useState("");
+
+  const initialUrl = useMemo(
+    () => scenario?.url || scenario?.suspicious_url || "http://example.com",
+    [scenario]
+  );
+
+  const currentUrl = url || initialUrl;
+  const host = currentUrl.replace(/^https?:\/\//, "").split("/")[0] || "unknown";
+
+  return (
+    <BaseLevel levelType="browser" scenario={scenario}>
+      {({ level, onAction, locked }) => (
+        <div className="browser-container">
+          <div className="browser-header">
+            <div className="browser-title">{level.page_title || "Browser Simulation"}</div>
+            <div className="browser-url-bar">
+              <input
+                value={currentUrl}
+                onChange={(e) => setUrl(e.target.value)}
+                className="browser-url-input"
+              />
+              <span className={`ssl-indicator ${currentUrl.startsWith("https") ? "secure" : "insecure"}`}>
+                {currentUrl.startsWith("https") ? "HTTPS" : "UNSECURED"}
+              </span>
+            </div>
+          </div>
+
+          <div className="browser-content">
+            {level.show_warning && (
+              <div className="warning-banner">
+                <strong>Security warning:</strong> This site may be impersonating a legitimate service.
+              </div>
+            )}
+
+            <h3>{level.page_title || "Website Content"}</h3>
+            <p>{level.content || level.level_text || "No content available."}</p>
+
+            {Array.isArray(level.suspicious_elements) && level.suspicious_elements.length > 0 && (
+              <div>
+                <strong>Suspicious indicators</strong>
+                <ul>
+                  {level.suspicious_elements.map((item, idx) => (
+                    <li key={idx}>{String(item)}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+
+          <div className="browser-footer">
+            <span>Host: {host}</span>
+            <span>Session: {new Date().toLocaleTimeString()}</span>
+          </div>
+
+          <div className="browser-actions">
+            <button
+              className="browser-btn close"
+              disabled={locked}
+              onClick={() => onAction("close", { url: currentUrl, reason: "suspicious" })}
+            >
+              Close Tab
+            </button>
+            <button
+              className="browser-btn ignore"
+              disabled={locked}
+              onClick={() => onAction("ignore", { url: currentUrl })}
+            >
+              Ignore Warning
+            </button>
+            <button
+              className="browser-btn report"
+              disabled={locked}
+              onClick={() => onAction("report", { url: currentUrl, type: "phishing" })}
+            >
+              Report Site
+            </button>
+          </div>
+        </div>
+      )}
+    </BaseLevel>
+  );
+}
+
+// frontend/src/pages/levels/templates/BaseLevel.js
+import React, { useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import "../level.css";
+
+function toKey(value) {
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, "_");
+}
+
+function inferCorrectness(level, action, metadata) {
+  // Direct comparison with your data structure
+  if (level?.correct_action) {
+    return action === level.correct_action;
+  }
+  
+  if (typeof metadata?.correct === "boolean") return metadata.correct;
+
+  const normalizeTokens = (value) =>
+    toKey(value)
+      .split("_")
+      .filter(Boolean);
+
+  const canonicalAction = (value) => {
+    const key = toKey(value);
+
+    if (/(report|flag|phish)/.test(key)) return "report";
+    if (/(mark_safe|safe|legitimate|false_positive)/.test(key)) return "safe";
+    if (/(delete|trash|remove)/.test(key)) return "delete";
+    if (/(ignore|dismiss)/.test(key)) return "ignore";
+    if (/(close|exit)/.test(key)) return "close";
+    if (/(block|ban)/.test(key)) return "block";
+    if (/(investigate|review|analyze)/.test(key)) return "investigate";
+    if (/(escalate|authorit)/.test(key)) return "report";
+
+    return key;
+  };
+
+  const actionKey = canonicalAction(action);
+  const actionTokens = new Set(normalizeTokens(action));
+  const candidates = [
+    level?.correct_action,
+    level?.correct_option,
+    level?.answer,
+  ]
+    .filter(Boolean)
+    .map((item) => ({
+      raw: item,
+      key: toKey(item),
+      canonical: canonicalAction(item),
+      tokens: new Set(normalizeTokens(item)),
+    }));
+
+  return candidates.some((candidate) => {
+    if (candidate.key === actionKey || candidate.canonical === actionKey) return true;
+    if (candidate.key.includes(actionKey) || actionKey.includes(candidate.key)) return true;
+
+    let overlap = 0;
+    for (const token of actionTokens) {
+      if (candidate.tokens.has(token)) overlap += 1;
+    }
+    return overlap > 0;
+  });
+}
+
+function createMlInputText(level, action) {
+  // Enhanced to use ALL your rich data fields
+  const parts = [
+    `TITLE: ${level?.title || ''}`,
+    `CONTENT: ${level?.content || level?.level_text || ''}`,
+    `BODY: ${level?.body_text || ''}`,
+    `FROM: ${level?.from_address || ''}`,
+    `REPLY-TO: ${level?.reply_to || ''}`,
+    `TO: ${level?.to_address || ''}`,
+    `PHISH TYPE: ${level?.taxonomy || ''}`,
+    `CATEGORY: ${level?.category || ''}`,
+    `LINKS: ${level?.links?.join(', ') || 'none'}`,
+    `ATTACHMENT: ${level?.has_attachment ? 'yes' : 'no'}`,
+    `USER ACTION: ${action}`,
+  ].filter(Boolean);
+
+  return parts.join("\n");
+}
+
+export default function BaseLevel({ children, levelType, scenario, onAction, customStyles }) {
+  const navigate = useNavigate();
+  const [locked, setLocked] = useState(false);
+  const [dialog, setDialog] = useState({
+    show: false,
+    title: "",
+    message: "",
+    details: null,
+    isCorrect: false,
+    mlPrediction: null,
+    mlConfidence: null,
+  });
+
+  const currentLevel = scenario || null;
+
+  const handleUserAction = useCallback(
+    async (action, metadata = {}) => {
+      if (locked || !currentLevel) return;
+      setLocked(true);
+
+      try {
+        // Determine correctness using your data
+        const isCorrect = inferCorrectness(currentLevel, action, metadata);
+        const levelId = currentLevel.level_no || currentLevel.Level_no || currentLevel.id;
+        
+        // Create rich ML text from your data
+        const mlText = createMlInputText(currentLevel, action);
+        
+
+
+        // Call parent onAction with ALL data
+        if (onAction) {
+          await onAction(action, {
+            levelId,
+            isCorrect,
+            metadata,
+            scenario: currentLevel,
+            mlText
+          });
+        }
+
+        // Create feedback message using your data
+        const feedbackMessage = isCorrect
+          ? currentLevel.success_message || `Correct. ${currentLevel.correct_action} was the right choice.`
+          : currentLevel.failure_message || `Incorrect. The correct action was: ${currentLevel.correct_action}`;
+
+        const feedbackDetails = currentLevel.hint || 
+                               currentLevel.explanation || 
+                               `This is a ${currentLevel.taxonomy || 'phishing'} attack. ` +
+                               `Look for: spoofed sender (${currentLevel.reply_to !== currentLevel.crct_mail ? 'reply-to mismatch' : ''})`;
+
+        setDialog({
+          show: true,
+          title: isCorrect ? "Correct" : "Incorrect",
+          message: feedbackMessage,
+          details: feedbackDetails,
+          isCorrect,
+          mlPrediction: null, // Will be filled by parent when ML is ready
+          mlConfidence: null,
+        });
+
+        // Auto-close dialog and unlock
+        setTimeout(() => {
+          setDialog(prev => ({ ...prev, show: false }));
+          setLocked(false);
+          
+          // Navigate if correct (optional - adjust based on your flow)
+          if (isCorrect && onAction) {
+            // Navigation handled by parent
+          }
+        }, 2000);
+
+      } catch (err) {
+        console.error("Action error:", err);
+        setDialog({
+          show: true,
+          title: "Error",
+          message: "Something went wrong. Please try again.",
+          details: null,
+          isCorrect: false,
+          mlPrediction: null,
+          mlConfidence: null,
+        });
+        setLocked(false);
+      }
+    },
+    [locked, currentLevel, onAction]
+  );
+
+  const closeDialog = () => setDialog((prev) => ({ ...prev, show: false }));
+
+  if (!currentLevel) {
+    return (
+      <div className="error-container">
+        <h3>No Level Available</h3>
+        <p>Unable to render this level right now.</p>
+        <button onClick={() => navigate("/dashboard")}>Return to Dashboard</button>
+      </div>
+    );
+  }
+
+  const renderChildren = () => {
+    if (!children) return <div>No template provided</div>;
+
+    if (typeof children === "function") {
+      return children({
+        level: currentLevel,
+        onAction: handleUserAction,
+        locked,
+        currentLevel,
+      });
+    }
+
+    if (React.isValidElement(children)) {
+      return React.cloneElement(children, {
+        level: currentLevel,
+        onAction: handleUserAction,
+        locked,
+        currentLevel,
+      });
+    }
+
+    return <div>Invalid template format</div>;
+  };
+
+  return (
+    <div className={`level-container ${levelType}-level`} style={customStyles}>
+      <div className="level-content">{renderChildren()}</div>
+
+      {dialog.show && (
+        <div className="dialog-overlay" onClick={closeDialog}>
+          <div className={`dialog-box ${dialog.isCorrect ? "correct" : "incorrect"}`}>
+            <div className={`dialog-status-animation ${dialog.isCorrect ? "correct" : "incorrect"}`} aria-hidden="true">
+              <span className="dialog-status-ring" />
+              <span className="dialog-status-core" />
+              <span className="dialog-status-wave" />
+            </div>
+            <h3>{dialog.title}</h3>
+            <p>{dialog.message}</p>
+            {dialog.details && (
+              <div className="dialog-details">
+                <small>{dialog.details}</small>
+              </div>
+            )}
+            {dialog.mlPrediction && (
+              <div className="dialog-details">
+                <small>
+                  ML Detection: {dialog.mlPrediction}
+                  {typeof dialog.mlConfidence === "number"
+                    ? ` (${Math.round(dialog.mlConfidence * 100)}% confidence)`
+                    : ""}
+                </small>
+              </div>
+            )}
+            <button className="dialog-button" onClick={closeDialog} autoFocus>
+              {dialog.isCorrect ? "Continue" : "Try Again"}
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// frontend/src/pages/levels/templates/ImageLevel.js
+import React from "react";
+import BaseLevel from "./BaseLevel";
+import "./ImageLevel.css"; // ✅ ADD THIS
+
+export default function ImageLevel({ level: scenario }) {
+  return (
+    <BaseLevel levelType="image" scenario={scenario}>
+      {({ level, onAction, locked }) => (
+        <div className="image-container">
+          <div className="image-header">
+            <strong>{level.page_title || "Image Analysis"}</strong>
+          </div>
+
+          <div className="image-grid">
+            <div className="image-panel">
+              <img
+                src={level.image_url || "https://via.placeholder.com/800x450?text=Simulation+Image"}
+                alt="Scenario"
+                className="image-preview"
+              />
+            </div>
+
+            <div className="analysis-panel">
+              <div className="analysis-item">
+                <strong>Risk Score:</strong> {level.risk_score || 0}%
+              </div>
+              <div className="analysis-item">
+                <strong>Risk Level:</strong> {level.risk_level || "unknown"}
+              </div>
+
+              <div className="indicators-section">
+                <strong>Detected Indicators</strong>
+                <ul>
+                  {(level.suspicious_elements || []).map((item, idx) => (
+                    <li key={idx}>
+                      {typeof item === "string" ? item : `${item.type || "Indicator"}: ${item.description || ""}`}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div className="image-actions">
+            <button
+              className="image-btn report"
+              disabled={locked}
+              onClick={() => onAction("report", { image_id: level.id })}
+            >
+              Report Image
+            </button>
+            <button
+              className="image-btn ignore"
+              disabled={locked}
+              onClick={() => onAction("ignore", { image_id: level.id })}
+            >
+              Ignore
+            </button>
+            <button
+              className="image-btn safe"
+              disabled={locked}
+              onClick={() => onAction("safe", { image_id: level.id })}
+            >
+              Mark Safe
+            </button>
+          </div>
+        </div>
+      )}
+    </BaseLevel>
+  );
+}
+
+// frontend/src/pages/levels/templates/MailBrowserLevel.js
+import React, { useState } from "react";
+import BaseLevel from "./BaseLevel";
+import "./MailBrowserLevel.css"; // ✅ ADD THIS
+
+export default function MailBrowserLevel({ level: scenario }) {
+  const [view, setView] = useState("split");
+
+  return (
+    <BaseLevel levelType="mail+browser" scenario={scenario}>
+      {({ level, onAction, locked }) => (
+        <div className="mailbrowser-container">
+          <div className="mailbrowser-header">
+            <strong>Cross-Channel Investigation</strong>
+            <div className="mailbrowser-tabs">
+              <button
+                className={`mailbrowser-tab ${view === "split" ? "active" : ""}`}
+                onClick={() => setView("split")}
+              >
+                Split
+              </button>
+              <button
+                className={`mailbrowser-tab ${view === "summary" ? "active" : ""}`}
+                onClick={() => setView("summary")}
+              >
+                Summary
+              </button>
+            </div>
+          </div>
+
+          {view === "split" ? (
+            <div className="mailbrowser-split">
+              <div className="mailbrowser-panel">
+                <h4>Email Evidence</h4>
+                <p><strong>From:</strong> {level.phish_email || "Unknown"}</p>
+                <p><strong>Subject:</strong> {level.subj || level.email_subject || "Security message"}</p>
+                <p>{level.email_preview || level.level_text || "No message content provided."}</p>
+              </div>
+              <div className="mailbrowser-panel">
+                <h4>Web Evidence</h4>
+                <p><strong>URL:</strong> {level.suspicious_url || level.url || "Unknown URL"}</p>
+                <p>{level.browser_note || "Review domain mismatch and credential collection patterns."}</p>
+              </div>
+            </div>
+          ) : (
+            <div className="mailbrowser-summary">
+              <h4>Correlation Summary</h4>
+              <p>
+                The email sender, link target, and destination page indicators should be reviewed together before any response.
+              </p>
+            </div>
+          )}
+
+          <div className="mailbrowser-actions">
+            <button
+              className="mailbrowser-btn report"
+              disabled={locked}
+              onClick={() => onAction("report_campaign", { email: level.phish_email, url: level.suspicious_url })}
+            >
+              Report Campaign
+            </button>
+            <button
+              className="mailbrowser-btn investigate"
+              disabled={locked}
+              onClick={() => onAction("investigate", { email: level.phish_email, url: level.suspicious_url })}
+            >
+              Investigate
+            </button>
+            <button
+              className="mailbrowser-btn safe"
+              disabled={locked}
+              onClick={() => onAction("safe", { email: level.phish_email, url: level.suspicious_url })}
+            >
+              Mark Safe
+            </button>
+          </div>
+        </div>
+      )}
+    </BaseLevel>
+  );
+}
+
+// frontend/src/pages/levels/templates/MailBrowserMessageLevel.js
+import React, { useState } from "react";
+import BaseLevel from "./BaseLevel";
+import "./MailBrowserMessageLevel.css"; // ✅ ADD THIS
+
+export default function MailBrowserMessageLevel({ level: scenario }) {
+  const [platform, setPlatform] = useState("email");
+
+  const renderPanel = (level) => {
+    if (platform === "email") {
+      return (
+        <div className="multichannel-main">
+          <h4>Email Channel</h4>
+          <p><strong>From:</strong> {level.phish_email || "Unknown"}</p>
+          <p><strong>Subject:</strong> {level.subj || "Security Alert"}</p>
+          <p>{level.level_text || "Suspicious message requesting urgent action."}</p>
+        </div>
+      );
+    }
+    if (platform === "browser") {
+      return (
+        <div className="multichannel-main">
+          <h4>Browser Channel</h4>
+          <p><strong>URL:</strong> {level.suspicious_url || level.url || "Unknown URL"}</p>
+          <p>Page behavior indicates credential harvesting risk.</p>
+        </div>
+      );
+    }
+    return (
+      <div className="multichannel-main">
+        <h4>Message Channel</h4>
+        <p><strong>Sender:</strong> {level.suspicious_phone || level.contact_name || "Unknown contact"}</p>
+        <p>{level.message_text || "Follow-up message reinforces urgency and requests immediate verification."}</p>
+      </div>
+    );
+  };
+
+  return (
+    <BaseLevel levelType="mail+browser+message" scenario={scenario}>
+      {({ level, onAction, locked }) => (
+        <div className="multichannel-container">
+          <div className="multichannel-header">
+            <strong>Multi-Channel Threat Simulation</strong>
+          </div>
+
+          <div className="multichannel-tabs">
+            <button
+              className={`multichannel-tab ${platform === "email" ? "active" : ""}`}
+              onClick={() => setPlatform("email")}
+            >
+              Email
+            </button>
+            <button
+              className={`multichannel-tab ${platform === "browser" ? "active" : ""}`}
+              onClick={() => setPlatform("browser")}
+            >
+              Browser
+            </button>
+            <button
+              className={`multichannel-tab ${platform === "message" ? "active" : ""}`}
+              onClick={() => setPlatform("message")}
+            >
+              Message
+            </button>
+          </div>
+
+          <div className="multichannel-grid">
+            <aside className="multichannel-sidebar">
+              <h4>Timeline</h4>
+              <ol>
+                <li>Email received</li>
+                <li>Link opened in browser</li>
+                <li>Follow-up message sent</li>
+              </ol>
+            </aside>
+
+            <main>{renderPanel(level)}</main>
+
+            <aside className="multichannel-sidebar right">
+              <h4>Risk Summary</h4>
+              <p><strong>Confidence:</strong> {level.confidence || "high"}</p>
+              <p><strong>Assessment:</strong> Coordinated phishing pattern detected across channels.</p>
+            </aside>
+          </div>
+
+          <div className="multichannel-actions">
+            <button
+              className="multichannel-btn block"
+              disabled={locked}
+              onClick={() => onAction("block_all", { email: level.phish_email, url: level.suspicious_url, phone: level.suspicious_phone })}
+            >
+              Block All Channels
+            </button>
+            <button
+              className="multichannel-btn report"
+              disabled={locked}
+              onClick={() => onAction("report_authorities", { threat_data: level })}
+            >
+              Report Incident
+            </button>
+            <button
+              className="multichannel-btn safe"
+              disabled={locked}
+              onClick={() => onAction("mark_safe", { threat_data: level })}
+            >
+              Mark as False Positive
+            </button>
+          </div>
+        </div>
+      )}
+    </BaseLevel>
+  );
+}
+
+// frontend/src/pages/levels/templates/MailLevel.js
+import React, { useState } from "react";
+import BaseLevel from "./BaseLevel";
+// import { useProgress } from "../../../context/ProgressContext"; // Uncomment if needed
+import "./MailLevel.css"; // ✅ Move CSS to separate file
+
+export default function MailLevel({ level, onAction, locked }) {
+  // useProgress(); // Uncomment if needed
+  
+  const [selectedEmail, setSelectedEmail] = useState(null);
+  const [showDetails, setShowDetails] = useState({});
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filter, setFilter] = useState("inbox");
+
+  // Use the level data passed from TemplateRenderer
+  const activeLevel = level || {};
+  
+  // Create emails array from level data or use fallback
+  const emails = Array.isArray(activeLevel.emails) && activeLevel.emails.length > 0
+    ? activeLevel.emails
+    : [
+        {
+          unread: true,
+          sender: activeLevel.from_address || activeLevel.phish_email || "unknown@example.com",
+          subject: activeLevel.subject || activeLevel.subj || "Security Notification",
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          body: activeLevel.body_html || activeLevel.body_text || activeLevel.content || "No content",
+          has_links: activeLevel.links?.length > 0,
+          has_attachments: activeLevel.has_attachment
+        }
+      ];
+
+  // Get current selected email data
+  const currentEmail = selectedEmail !== null ? emails[selectedEmail] : emails[0];
+  
+  return (
+    <BaseLevel levelType="mail" scenario={activeLevel} onAction={onAction} locked={locked}>
+      {({ level: scenario, onAction: handleAction, locked: isLocked }) => (
+        <div className="mail-container">
+          {/* Header with live indicator and search */}
+          <div className="mail-header">
+            <div className="live-indicator">
+              <span className="live-dot"></span>
+              <span>Live Email Simulation | {new Date().toLocaleTimeString()}</span>
+            </div>
+            <input 
+              type="text" 
+              className="mail-search"
+              placeholder="Search emails..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+
+          {/* Main layout with sidebar and email content */}
+          <div className="mail-layout">
+            {/* Sidebar with folders */}
+            <div className="mail-sidebar">
+              <button className="compose-btn" disabled={isLocked}>+ Compose</button>
+              <ul className="folder-list">
+                {['inbox', 'starred', 'sent', 'drafts', 'spam'].map(folder => (
+                  <li 
+                    key={folder}
+                    className={`folder-item ${filter === folder ? 'active' : ''}`} 
+                    onClick={() => setFilter(folder)}
+                  >
+                     {folder.charAt(0).toUpperCase() + folder.slice(1)}
+                    {folder === 'inbox' && <span className="folder-count">{emails.length}</span>}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Email list and preview */}
+            <div className="mail-content">
+              {/* Email list */}
+              <div className="email-list">
+                {emails.map((email, idx) => (
+                  <div
+                    key={idx}
+                    className={`email-item ${selectedEmail === idx ? 'selected' : ''} ${email.unread ? 'unread' : ''}`}
+                    onClick={() => setSelectedEmail(idx)}
+                  >
+                    <span>{email.unread ? "📧" : "📨"}</span>
+                    <span className="email-sender">{email.sender}</span>
+                    <span className="email-subject">{email.subject}</span>
+                    <span className="email-date">{email.time}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Email preview panel */}
+              <div className="email-preview">
+                {/* Warning badge for suspicious emails */}
+                {activeLevel.show_warning && (
+                  <div className="phishing-warning-badge">
+                    <span><strong>Security Alert:</strong> This email contains suspicious elements</span>
+                  </div>
+                )}
+
+                {/* Email header with sender info */}
+                <div className="email-header">
+                  <div className="avatar">
+                    {currentEmail?.sender?.[0]?.toUpperCase() || '?'}
+                  </div>
+                  <div className="sender-details">
+                    <div className="sender-name">
+                      {currentEmail?.sender?.split('<')[0]?.trim() || 'Unknown Sender'}
+                    </div>
+                    <div 
+                      className="sender-email"
+                      onClick={() => setShowDetails(prev => ({ 
+                        ...prev, 
+                        [scenario?.id || 'main']: !prev[scenario?.id || 'main'] 
+                      }))}
+                    >
+                      {activeLevel.phish_email || currentEmail?.sender}
+                      {showDetails[scenario?.id || 'main'] && (
+                        <span className="email-tooltip">
+                          Real sender: {activeLevel.crct_email || activeLevel.from_address || 'Unknown'}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Email body */}
+                <div className="email-body">
+                  <h3>{activeLevel.title || currentEmail?.subject}</h3>
+                  {activeLevel.body_html ? (
+                    <div dangerouslySetInnerHTML={{ __html: activeLevel.body_html }} />
+                  ) : (
+                    <p>{activeLevel.body_text || activeLevel.content || currentEmail?.body}</p>
+                  )}
+                </div>
+
+                {/* Links section */}
+                {activeLevel.links && activeLevel.links.length > 0 && (
+                  <div className="links-section">
+                    <p><strong> Links in this email:</strong></p>
+                    <ul>
+                      {activeLevel.links.map((link, i) => (
+                        <li key={i} className="suspicious-link">{link}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Attachments section */}
+                {activeLevel.has_attachment && (
+                  <div className="attachment-area">
+                    {activeLevel.attachments?.map((att, i) => (
+                      <div key={i} className="attachment">
+                         {att.name || 'file.pdf'} ({att.size || 'Unknown'})
+                      </div>
+                    )) || (
+                      <>
+                        <div className="attachment">📎 invoice.pdf (2.4 MB)</div>
+                        <div className="attachment">📎 document.docx (1.1 MB)</div>
+                      </>
+                    )}
+                  </div>
+                )}
+
+                {/* Action buttons */}
+                <div className="action-buttons">
+                  <button
+                    className="mail-action-btn phish"
+                    disabled={isLocked}
+                    onClick={() => handleAction(
+                      activeLevel.wrong_action || 'Trust & Click', 
+                      { 
+                        email: activeLevel.phish_email,
+                        type: 'phishing',
+                        scenario_id: activeLevel.scenario_id
+                      }
+                    )}
+                  >
+                     {activeLevel.wrong_action || 'Trust & Click'}
+                  </button>
+                  <button
+                    className="mail-action-btn delete"
+                    disabled={isLocked}
+                    onClick={() => handleAction(
+                      activeLevel.neutral_action || 'Ignore',
+                      { 
+                        email: activeLevel.phish_email,
+                        scenario_id: activeLevel.scenario_id
+                      }
+                    )}
+                  >
+                     {activeLevel.neutral_action || 'Ignore'}
+                  </button>
+                  <button
+                    className="mail-action-btn safe"
+                    disabled={isLocked}
+                    onClick={() => handleAction(
+                      activeLevel.correct_action || 'Report Phish',
+                      { 
+                        email: activeLevel.phish_email,
+                        scenario_id: activeLevel.scenario_id
+                      }
+                    )}
+                  >
+                     {activeLevel.correct_action || 'Report Phish'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </BaseLevel>
+  );
+}
+
+import React, { useState } from "react";
+import BaseLevel from "./BaseLevel";
+import "./MessageLevel.css";
+
+export default function MessageLevel({ level: scenario }) {
+  const [draft, setDraft] = useState("");
+
+  return (
+    <BaseLevel levelType="message" scenario={scenario}>
+      {({ level, onAction, locked }) => {
+        const messages =
+          Array.isArray(level.messages) && level.messages.length > 0
+            ? level.messages
+            : [
+                {
+                  sender: "contact",
+                  sender_name: level.contact_name || "Unknown contact",
+                  text: level.level_text || "Please check this link immediately.",
+                  timestamp: "10:30 AM",
+                  has_link: true,
+                },
+              ];
+
+        return (
+          <div className="message-container">
+            <div className="message-header">
+              <strong>{level.contact_name || "Contact"}</strong>
+              <div className="message-status">{level.status || "Online"}</div>
+            </div>
+
+            {level.show_warning && (
+              <div className="message-warning">
+                <strong>Warning:</strong> This conversation contains suspicious content.
+              </div>
+            )}
+
+            <div className="message-area">
+              {messages.map((msg, idx) => (
+                <div
+                  key={idx}
+                  className={`message-bubble ${msg.sender === "user" ? "outgoing" : "incoming"}`}
+                >
+                  <div className={`message-content ${msg.sender === "user" ? "outgoing" : "incoming"}`}>
+                    {msg.sender !== "user" && (
+                      <div className="message-sender">{msg.sender_name || level.contact_name}</div>
+                    )}
+                    <div className="message-text">{msg.text}</div>
+                    {msg.has_link && (
+                      <div className="message-link-warning">
+                        <span className="message-link-indicator" aria-hidden="true" />
+                        <span>Contains external link</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="message-input-area">
+              <input
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
+                placeholder="Type a response..."
+                disabled={locked}
+                className="message-input"
+              />
+              <button
+                className="message-send-btn"
+                disabled={!draft.trim() || locked}
+                onClick={() => setDraft("")}
+              >
+                Send
+              </button>
+            </div>
+
+            <div className="message-actions">
+              <button
+                className="message-action-btn block"
+                disabled={locked}
+                onClick={() => onAction("block", { contact: level.contact_name, reason: "phishing" })}
+              >
+                Block Contact
+              </button>
+              <button
+                className="message-action-btn report"
+                disabled={locked}
+                onClick={() => onAction("report", { contact: level.contact_name, messages })}
+              >
+                Report Conversation
+              </button>
+              <button
+                className="message-action-btn safe"
+                disabled={locked}
+                onClick={() => onAction("safe", { contact: level.contact_name })}
+              >
+                Mark Safe
+              </button>
+            </div>
+          </div>
+        );
+      }}
+    </BaseLevel>
+  );
+}
+
+// frontend/src/pages/levels/templates/NotificationLevel.js
+import React, { useState } from "react";
+import BaseLevel from "./BaseLevel";
+import "./NotificationLevel.css"; // ✅ ADD THIS
+
+export default function NotificationLevel({ level: scenario }) {
+  const [selected, setSelected] = useState(null);
+
+  return (
+    <BaseLevel levelType="notification" scenario={scenario}>
+      {({ level, onAction, locked }) => {
+        const notifications =
+          Array.isArray(level.notifications) && level.notifications.length > 0
+            ? level.notifications
+            : [
+              {
+                id: level.id || "n1",
+                title: level.subj || "Security Notice",
+                message: level.level_text || "A new notification requires your attention.",
+                sender: level.phish_email || "Unknown sender",
+                suspicious: true,
+                time: "Just now",
+              },
+            ];
+
+        const current = selected != null ? notifications[selected] : null;
+
+        return (
+          <div className="notification-container">
+            <div className="notification-header">
+              <strong>Notification Center</strong>
+            </div>
+
+            <div className="notification-list">
+              {notifications.map((n, idx) => (
+                <div
+                  key={n.id || idx}
+                  className={`notification-item ${selected === idx ? "selected" : ""}`}
+                  onClick={() => setSelected(selected === idx ? null : idx)}
+                >
+                  <div className="notification-title">{n.title}</div>
+                  <div className="notification-message">{n.message}</div>
+                  <div className="notification-time">{n.time || "Now"}</div>
+                </div>
+              ))}
+            </div>
+
+            {current && (
+              <div className="notification-detail">
+                <p><strong>From:</strong> {current.sender || "System"}</p>
+                <p>{current.full_message || current.message}</p>
+                
+                {current.suspicious && (
+                  <div className="notification-suspicious">
+                    This notification looks suspicious.
+                  </div>
+                )}
+
+                <div className="notification-actions">
+                  <button
+                    className="notification-btn block"
+                    disabled={locked}
+                    onClick={() => onAction("block", { notification_id: current.id })}
+                  >
+                    Block Sender
+                  </button>
+                  <button
+                    className="notification-btn ignore"
+                    disabled={locked}
+                    onClick={() => onAction("ignore", { notification_id: current.id })}
+                  >
+                    Ignore
+                  </button>
+                  <button
+                    className="notification-btn safe"
+                    disabled={locked}
+                    onClick={() => onAction("safe", { notification_id: current.id })}
+                  >
+                    Mark Safe
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      }}
+    </BaseLevel>
+  );
+} 
+                            <small>
+                  ML Detection: {dialog.mlPrediction}
+                  {typeof dialog.mlConfidence === "number"
+                    ? ` (${Math.round(dialog.mlConfidence * 100)}% confidence)`
+                    : ""}
+                </small>
+              </div>
+            )}
+            <button className="dialog-button" onClick={closeDialog} autoFocus>
+              {dialog.isCorrect ? "Continue" : "Try Again"}
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// frontend/src/pages/levels/templates/ImageLevel.js
+import React from "react";
+import BaseLevel from "./BaseLevel";
+import "./ImageLevel.css"; // ✅ ADD THIS
+
+export default function ImageLevel({ level: scenario }) {
+  return (
+    <BaseLevel levelType="image" scenario={scenario}>
+      {({ level, onAction, locked }) => (
+        <div className="image-container">
+          <div className="image-header">
+            <strong>{level.page_title || "Image Analysis"}</strong>
+          </div>
+
+          <div className="image-grid">
+            <div className="image-panel">
+              <img
+                src={level.image_url || "https://via.placeholder.com/800x450?text=Simulation+Image"}
+                alt="Scenario"
+                className="image-preview"
+              />
+            </div>
+
+            <div className="analysis-panel">
+              <div className="analysis-item">
+                <strong>Risk Score:</strong> {level.risk_score || 0}%
+              </div>
+              <div className="analysis-item">
+                <strong>Risk Level:</strong> {level.risk_level || "unknown"}
+              </div>
+
+              <div className="indicators-section">
+                <strong>Detected Indicators</strong>
+                <ul>
+                  {(level.suspicious_elements || []).map((item, idx) => (
+                    <li key={idx}>
+                      {typeof item === "string" ? item : `${item.type || "Indicator"}: ${item.description || ""}`}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div className="image-actions">
+            <button
+              className="image-btn report"
+              disabled={locked}
+              onClick={() => onAction("report", { image_id: level.id })}
+            >
+              Report Image
+            </button>
+            <button
+              className="image-btn ignore"
+              disabled={locked}
+              onClick={() => onAction("ignore", { image_id: level.id })}
+            >
+              Ignore
+            </button>
+            <button
+              className="image-btn safe"
+              disabled={locked}
+              onClick={() => onAction("safe", { image_id: level.id })}
+            >
+              Mark Safe
+            </button>
+          </div>
+        </div>
+      )}
+    </BaseLevel>
+  );
+}
+
+// frontend/src/pages/levels/templates/MailBrowserLevel.js
+import React, { useState } from "react";
+import BaseLevel from "./BaseLevel";
+import "./MailBrowserLevel.css"; // ✅ ADD THIS
+
+export default function MailBrowserLevel({ level: scenario }) {
+  const [view, setView] = useState("split");
+
+  return (
+    <BaseLevel levelType="mail+browser" scenario={scenario}>
+      {({ level, onAction, locked }) => (
+        <div className="mailbrowser-container">
+          <div className="mailbrowser-header">
+            <strong>Cross-Channel Investigation</strong>
+            <div className="mailbrowser-tabs">
+              <button
+                className={`mailbrowser-tab ${view === "split" ? "active" : ""}`}
+                onClick={() => setView("split")}
+              >
+                Split
+              </button>
+              <button
+                className={`mailbrowser-tab ${view === "summary" ? "active" : ""}`}
+                onClick={() => setView("summary")}
+              >
+                Summary
+              </button>
+            </div>
+          </div>
+
+          {view === "split" ? (
+            <div className="mailbrowser-split">
+              <div className="mailbrowser-panel">
+                <h4>Email Evidence</h4>
+                <p><strong>From:</strong> {level.phish_email || "Unknown"}</p>
+                <p><strong>Subject:</strong> {level.subj || level.email_subject || "Security message"}</p>
+                <p>{level.email_preview || level.level_text || "No message content provided."}</p>
+              </div>
+              <div className="mailbrowser-panel">
+                <h4>Web Evidence</h4>
+                <p><strong>URL:</strong> {level.suspicious_url || level.url || "Unknown URL"}</p>
+                <p>{level.browser_note || "Review domain mismatch and credential collection patterns."}</p>
+              </div>
+            </div>
+          ) : (
+            <div className="mailbrowser-summary">
+              <h4>Correlation Summary</h4>
+              <p>
+                The email sender, link target, and destination page indicators should be reviewed together before any response.
+              </p>
+            </div>
+          )}
+
+          <div className="mailbrowser-actions">
+            <button
+              className="mailbrowser-btn report"
+              disabled={locked}
+              onClick={() => onAction("report_campaign", { email: level.phish_email, url: level.suspicious_url })}
+            >
+              Report Campaign
+            </button>
+            <button
+              className="mailbrowser-btn investigate"
+              disabled={locked}
+              onClick={() => onAction("investigate", { email: level.phish_email, url: level.suspicious_url })}
+            >
+              Investigate
+            </button>
+            <button
+              className="mailbrowser-btn safe"
+              disabled={locked}
+              onClick={() => onAction("safe", { email: level.phish_email, url: level.suspicious_url })}
+            >
+              Mark Safe
+            </button>
+          </div>
+        </div>
+      )}
+    </BaseLevel>
+  );
+}
+
+// frontend/src/pages/levels/templates/MailBrowserMessageLevel.js
+import React, { useState } from "react";
+import BaseLevel from "./BaseLevel";
+import "./MailBrowserMessageLevel.css"; // ✅ ADD THIS
+
+export default function MailBrowserMessageLevel({ level: scenario }) {
+  const [platform, setPlatform] = useState("email");
+
+  const renderPanel = (level) => {
+    if (platform === "email") {
+      return (
+        <div className="multichannel-main">
+          <h4>Email Channel</h4>
+          <p><strong>From:</strong> {level.phish_email || "Unknown"}</p>
+          <p><strong>Subject:</strong> {level.subj || "Security Alert"}</p>
+          <p>{level.level_text || "Suspicious message requesting urgent action."}</p>
+        </div>
+      );
+    }
+    if (platform === "browser") {
+      return (
+        <div className="multichannel-main">
+          <h4>Browser Channel</h4>
+          <p><strong>URL:</strong> {level.suspicious_url || level.url || "Unknown URL"}</p>
+          <p>Page behavior indicates credential harvesting risk.</p>
+        </div>
+      );
+    }
+    return (
+      <div className="multichannel-main">
+        <h4>Message Channel</h4>
+        <p><strong>Sender:</strong> {level.suspicious_phone || level.contact_name || "Unknown contact"}</p>
+        <p>{level.message_text || "Follow-up message reinforces urgency and requests immediate verification."}</p>
+      </div>
+    );
+  };
+
+  return (
+    <BaseLevel levelType="mail+browser+message" scenario={scenario}>
+      {({ level, onAction, locked }) => (
+        <div className="multichannel-container">
+          <div className="multichannel-header">
+            <strong>Multi-Channel Threat Simulation</strong>
+          </div>
+
+          <div className="multichannel-tabs">
+            <button
+              className={`multichannel-tab ${platform === "email" ? "active" : ""}`}
+              onClick={() => setPlatform("email")}
+            >
+              Email
+            </button>
+            <button
+              className={`multichannel-tab ${platform === "browser" ? "active" : ""}`}
+              onClick={() => setPlatform("browser")}
+            >
+              Browser
+            </button>
+            <button
+              className={`multichannel-tab ${platform === "message" ? "active" : ""}`}
+              onClick={() => setPlatform("message")}
+            >
+              Message
+            </button>
+          </div>
+
+          <div className="multichannel-grid">
+            <aside className="multichannel-sidebar">
+              <h4>Timeline</h4>
+              <ol>
+                <li>Email received</li>
+                <li>Link opened in browser</li>
+                <li>Follow-up message sent</li>
+              </ol>
+            </aside>
+
+            <main>{renderPanel(level)}</main>
+
+            <aside className="multichannel-sidebar right">
+              <h4>Risk Summary</h4>
+              <p><strong>Confidence:</strong> {level.confidence || "high"}</p>
+              <p><strong>Assessment:</strong> Coordinated phishing pattern detected across channels.</p>
+            </aside>
+          </div>
+
+          <div className="multichannel-actions">
+            <button
+              className="multichannel-btn block"
+              disabled={locked}
+              onClick={() => onAction("block_all", { email: level.phish_email, url: level.suspicious_url, phone: level.suspicious_phone })}
+            >
+              Block All Channels
+            </button>
+            <button
+              className="multichannel-btn report"
+              disabled={locked}
+              onClick={() => onAction("report_authorities", { threat_data: level })}
+            >
+              Report Incident
+            </button>
+            <button
+              className="multichannel-btn safe"
+              disabled={locked}
+              onClick={() => onAction("mark_safe", { threat_data: level })}
+            >
+              Mark as False Positive
+            </button>
+          </div>
+        </div>
+      )}
+    </BaseLevel>
+  );
+}
+
+// frontend/src/pages/levels/templates/MailLevel.js
+import React, { useState } from "react";
+import BaseLevel from "./BaseLevel";
+// import { useProgress } from "../../../context/ProgressContext"; // Uncomment if needed
+import "./MailLevel.css"; // ✅ Move CSS to separate file
+
+export default function MailLevel({ level, onAction, locked }) {
+  // useProgress(); // Uncomment if needed
+  
+  const [selectedEmail, setSelectedEmail] = useState(null);
+  const [showDetails, setShowDetails] = useState({});
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filter, setFilter] = useState("inbox");
+
+  // Use the level data passed from TemplateRenderer
+  const activeLevel = level || {};
+  
+  // Create emails array from level data or use fallback
+  const emails = Array.isArray(activeLevel.emails) && activeLevel.emails.length > 0
+    ? activeLevel.emails
+    : [
+        {
+          unread: true,
+          sender: activeLevel.from_address || activeLevel.phish_email || "unknown@example.com",
+          subject: activeLevel.subject || activeLevel.subj || "Security Notification",
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          body: activeLevel.body_html || activeLevel.body_text || activeLevel.content || "No content",
+          has_links: activeLevel.links?.length > 0,
+          has_attachments: activeLevel.has_attachment
+        }
+      ];
+
+  // Get current selected email data
+  const currentEmail = selectedEmail !== null ? emails[selectedEmail] : emails[0];
+  
+  return (
+    <BaseLevel levelType="mail" scenario={activeLevel} onAction={onAction} locked={locked}>
+      {({ level: scenario, onAction: handleAction, locked: isLocked }) => (
+        <div className="mail-container">
+          {/* Header with live indicator and search */}
+          <div className="mail-header">
+            <div className="live-indicator">
+              <span className="live-dot"></span>
+              <span>Live Email Simulation | {new Date().toLocaleTimeString()}</span>
+            </div>
+            <input 
+              type="text" 
+              className="mail-search"
+              placeholder="Search emails..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+
+          {/* Main layout with sidebar and email content */}
+          <div className="mail-layout">
+            {/* Sidebar with folders */}
+            <div className="mail-sidebar">
+              <button className="compose-btn" disabled={isLocked}>+ Compose</button>
+              <ul className="folder-list">
+                {['inbox', 'starred', 'sent', 'drafts', 'spam'].map(folder => (
+                  <li 
+                    key={folder}
+                    className={`folder-item ${filter === folder ? 'active' : ''}`} 
+                    onClick={() => setFilter(folder)}
+                  >
+                     {folder.charAt(0).toUpperCase() + folder.slice(1)}
+                    {folder === 'inbox' && <span className="folder-count">{emails.length}</span>}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Email list and preview */}
+            <div className="mail-content">
+              {/* Email list */}
+              <div className="email-list">
+                {emails.map((email, idx) => (
+                  <div
+                    key={idx}
+                    className={`email-item ${selectedEmail === idx ? 'selected' : ''} ${email.unread ? 'unread' : ''}`}
+                    onClick={() => setSelectedEmail(idx)}
+                  >
+                    <span>{email.unread ? "📧" : "📨"}</span>
+                    <span className="email-sender">{email.sender}</span>
+                    <span className="email-subject">{email.subject}</span>
+                    <span className="email-date">{email.time}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Email preview panel */}
+              <div className="email-preview">
+                {/* Warning badge for suspicious emails */}
+                {activeLevel.show_warning && (
+                  <div className="phishing-warning-badge">
+                    <span><strong>Security Alert:</strong> This email contains suspicious elements</span>
+                  </div>
+                )}
+
+                {/* Email header with sender info */}
+                <div className="email-header">
+                  <div className="avatar">
+                    {currentEmail?.sender?.[0]?.toUpperCase() || '?'}
+                  </div>
+                  <div className="sender-details">
+                    <div className="sender-name">
+                      {currentEmail?.sender?.split('<')[0]?.trim() || 'Unknown Sender'}
+                    </div>
+                    <div 
+                      className="sender-email"
+                      onClick={() => setShowDetails(prev => ({ 
+                        ...prev, 
+                        [scenario?.id || 'main']: !prev[scenario?.id || 'main'] 
+                      }))}
+                    >
+                      {activeLevel.phish_email || currentEmail?.sender}
+                      {showDetails[scenario?.id || 'main'] && (
+                        <span className="email-tooltip">
+                          Real sender: {activeLevel.crct_email || activeLevel.from_address || 'Unknown'}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Email body */}
+                <div className="email-body">
+                  <h3>{activeLevel.title || currentEmail?.subject}</h3>
+                  {activeLevel.body_html ? (
+                    <div dangerouslySetInnerHTML={{ __html: activeLevel.body_html }} />
+                  ) : (
+                    <p>{activeLevel.body_text || activeLevel.content || currentEmail?.body}</p>
+                  )}
+                </div>
+
+                {/* Links section */}
+                {activeLevel.links && activeLevel.links.length > 0 && (
+                  <div className="links-section">
+                    <p><strong> Links in this email:</strong></p>
+                    <ul>
+                      {activeLevel.links.map((link, i) => (
+                        <li key={i} className="suspicious-link">{link}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Attachments section */}
+                {activeLevel.has_attachment && (
+                  <div className="attachment-area">
+                    {activeLevel.attachments?.map((att, i) => (
+                      <div key={i} className="attachment">
+                         {att.name || 'file.pdf'} ({att.size || 'Unknown'})
+                      </div>
+                    )) || (
+                      <>
+                        <div className="attachment">📎 invoice.pdf (2.4 MB)</div>
+                        <div className="attachment">📎 document.docx (1.1 MB)</div>
+                      </>
+                    )}
+                  </div>
+                )}
+
+                {/* Action buttons */}
+                <div className="action-buttons">
+                  <button
+                    className="mail-action-btn phish"
+                    disabled={isLocked}
+                    onClick={() => handleAction(
+                      activeLevel.wrong_action || 'Trust & Click', 
+                      { 
+                        email: activeLevel.phish_email,
+                        type: 'phishing',
+                        scenario_id: activeLevel.scenario_id
+                      }
+                    )}
+                  >
+                     {activeLevel.wrong_action || 'Trust & Click'}
+                  </button>
+                  <button
+                    className="mail-action-btn delete"
+                    disabled={isLocked}
+                    onClick={() => handleAction(
+                      activeLevel.neutral_action || 'Ignore',
+                      { 
+                        email: activeLevel.phish_email,
+                        scenario_id: activeLevel.scenario_id
+                      }
+                    )}
+                  >
+                     {activeLevel.neutral_action || 'Ignore'}
+                  </button>
+                  <button
+                    className="mail-action-btn safe"
+                    disabled={isLocked}
+                    onClick={() => handleAction(
+                      activeLevel.correct_action || 'Report Phish',
+                      { 
+                        email: activeLevel.phish_email,
+                        scenario_id: activeLevel.scenario_id
+                      }
+                    )}
+                  >
+                     {activeLevel.correct_action || 'Report Phish'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </BaseLevel>
+  );
+}
+
+import React, { useState } from "react";
+import BaseLevel from "./BaseLevel";
+import "./MessageLevel.css";
+
+export default function MessageLevel({ level: scenario }) {
+  const [draft, setDraft] = useState("");
+
+  return (
+    <BaseLevel levelType="message" scenario={scenario}>
+      {({ level, onAction, locked }) => {
+        const messages =
+          Array.isArray(level.messages) && level.messages.length > 0
+            ? level.messages
+            : [
+                {
+                  sender: "contact",
+                  sender_name: level.contact_name || "Unknown contact",
+                  text: level.level_text || "Please check this link immediately.",
+                  timestamp: "10:30 AM",
+                  has_link: true,
+                },
+              ];
+
+        return (
+          <div className="message-container">
+            <div className="message-header">
+              <strong>{level.contact_name || "Contact"}</strong>
+              <div className="message-status">{level.status || "Online"}</div>
+            </div>
+
+            {level.show_warning && (
+              <div className="message-warning">
+                <strong>Warning:</strong> This conversation contains suspicious content.
+              </div>
+            )}
+
+            <div className="message-area">
+              {messages.map((msg, idx) => (
+                <div
+                  key={idx}
+                  className={`message-bubble ${msg.sender === "user" ? "outgoing" : "incoming"}`}
+                >
+                  <div className={`message-content ${msg.sender === "user" ? "outgoing" : "incoming"}`}>
+                    {msg.sender !== "user" && (
+                      <div className="message-sender">{msg.sender_name || level.contact_name}</div>
+                    )}
+                    <div className="message-text">{msg.text}</div>
+                    {msg.has_link && (
+                      <div className="message-link-warning">
+                        <span className="message-link-indicator" aria-hidden="true" />
+                        <span>Contains external link</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="message-input-area">
+              <input
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
+                placeholder="Type a response..."
+                disabled={locked}
+                className="message-input"
+              />
+              <button
+                className="message-send-btn"
+                disabled={!draft.trim() || locked}
+                onClick={() => setDraft("")}
+              >
+                Send
+              </button>
+            </div>
+
+            <div className="message-actions">
+              <button
+                className="message-action-btn block"
+                disabled={locked}
+                onClick={() => onAction("block", { contact: level.contact_name, reason: "phishing" })}
+              >
+                Block Contact
+              </button>
+              <button
+                className="message-action-btn report"
+                disabled={locked}
+                onClick={() => onAction("report", { contact: level.contact_name, messages })}
+              >
+                Report Conversation
+              </button>
+              <button
+                className="message-action-btn safe"
+                disabled={locked}
+                onClick={() => onAction("safe", { contact: level.contact_name })}
+              >
+                Mark Safe
+              </button>
+            </div>
+          </div>
+        );
+      }}
+    </BaseLevel>
+  );
+}
+
+// frontend/src/pages/levels/templates/NotificationLevel.js
+import React, { useState } from "react";
+import BaseLevel from "./BaseLevel";
+import "./NotificationLevel.css"; // ✅ ADD THIS
+
+export default function NotificationLevel({ level: scenario }) {
+  const [selected, setSelected] = useState(null);
+
+  return (
+    <BaseLevel levelType="notification" scenario={scenario}>
+      {({ level, onAction, locked }) => {
+        const notifications =
+          Array.isArray(level.notifications) && level.notifications.length > 0
+            ? level.notifications
+            : [
+              {
+                id: level.id || "n1",
+                title: level.subj || "Security Notice",
+                message: level.level_text || "A new notification requires your attention.",
+                sender: level.phish_email || "Unknown sender",
+                suspicious: true,
+                time: "Just now",
+              },
+            ];
+
+        const current = selected != null ? notifications[selected] : null;
+
+        return (
+          <div className="notification-container">
+            <div className="notification-header">
+              <strong>Notification Center</strong>
+            </div>
+
+            <div className="notification-list">
+              {notifications.map((n, idx) => (
+                <div
+                  key={n.id || idx}
+                  className={`notification-item ${selected === idx ? "selected" : ""}`}
+                  onClick={() => setSelected(selected === idx ? null : idx)}
+                >
+                  <div className="notification-title">{n.title}</div>
+                  <div className="notification-message">{n.message}</div>
+                  <div className="notification-time">{n.time || "Now"}</div>
+                </div>
+              ))}
+            </div>
+
+            {current && (
+              <div className="notification-detail">
+                <p><strong>From:</strong> {current.sender || "System"}</p>
+                <p>{current.full_message || current.message}</p>
+                
+                {current.suspicious && (
+                  <div className="notification-suspicious">
+                    This notification looks suspicious.
+                  </div>
+                )}
+
+                <div className="notification-actions">
+                  <button
+                    className="notification-btn block"
+                    disabled={locked}
+                    onClick={() => onAction("block", { notification_id: current.id })}
+                  >
+                    Block Sender
+                  </button>
+                  <button
+                    className="notification-btn ignore"
+                    disabled={locked}
+                    onClick={() => onAction("ignore", { notification_id: current.id })}
+                  >
+                    Ignore
+                  </button>
+                  <button
+                    className="notification-btn safe"
+                    disabled={locked}
+                    onClick={() => onAction("safe", { notification_id: current.id })}
+                  >
+                    Mark Safe
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      }}
+    </BaseLevel>
+  );
+} find errors in the funcionality of the files
