@@ -306,6 +306,48 @@ export default function PhishingGame() {
           <div className="feedback-content">
             <h2>{feedback.isCorrect ? 'CORRECT!' : 'INCORRECT'}</h2>
             <p className="next-hint">Next in 3 seconds...</p>
+             <div className="feedback-buttons">
+        <button 
+          className="feedback-btn continue"
+          onClick={() => {
+            console.log('🟢 Continue button clicked - forcing next scenario');
+            // Force close feedback and move to next
+            setFeedback(null);
+            setLocked(false);
+            
+            // Force next scenario
+            if (currentScenarioIndex < scenarios.length - 1) {
+              setCurrentScenarioIndex(prev => prev + 1);
+              sessionStorage.setItem('scenario_start', Date.now().toString());
+            } else {
+              // Level complete
+              completeLevel(currentLevelKey);
+              if (!isLastLevel) {
+                setShowLevelTransition(true);
+                setTimeout(() => {
+                  setShowLevelTransition(false);
+                  setCurrentLevelIndex(prev => prev + 1);
+                }, 2500);
+              } else {
+                setGameComplete(true);
+                setTimeout(() => navigate('/thankyou'), 3000);
+              }
+            }
+          }}
+        >
+          Continue ▶
+        </button>
+        
+        <button 
+          className="feedback-btn dashboard"
+          onClick={() => {
+            console.log('🔵 Dashboard button clicked');
+            navigate('/dashboard');
+          }}
+        >
+          View Dashboard
+        </button>
+      </div>
           </div>
         </div>
       )}
