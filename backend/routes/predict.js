@@ -6,6 +6,7 @@ import logger from '../utils/logger.js';
 const router = express.Router();
 
 const ML_SERVER_URL = process.env.ML_SERVER_URL || 'https://enphisim-ol7w.onrender.com';
+const ML_API_KEY = process.env.ML_API_KEY;
 const REQUEST_TIMEOUT = 30000;
 
 const mlClient = axios.create({
@@ -13,6 +14,7 @@ const mlClient = axios.create({
   timeout: REQUEST_TIMEOUT,
   headers: {
     'Content-Type': 'application/json',
+    'X-API-KEY': ML_API_KEY,
   },
 });
 
