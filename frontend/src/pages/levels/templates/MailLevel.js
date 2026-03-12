@@ -34,7 +34,7 @@ export default function MailLevel({ level: scenario }) {
   const currentEmail = selectedEmail !== null ? emails[selectedEmail] : emails[0];
   
   return (
-    <BaseLevel levelType="mail" scenario={activeLevel} onAction={onAction} locked={locked}>
+    <BaseLevel levelType="mail" scenario={activeLevel}>
       {({ level: scenario, onAction: handleAction, locked: isLocked }) => (
         <div className="mail-container">
           {/* Header with live indicator and search */}
