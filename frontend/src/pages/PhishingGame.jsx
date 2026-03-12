@@ -5,17 +5,16 @@ import './PhishingGame.css';
 import api from '../services/api';
 import { useProgress } from '../context/ProgressContext';
 
-// Store timeouts OUTSIDE component
+// Store timeouts OUTSIDE component to prevent cleanup on re-render
 const activeTimeouts = new Set();
 
 export default function PhishingGame() {
-  console.log('🔥 PHISHING GAME LOADED at', new Date().toLocaleTimeString());
-  
   const navigate = useNavigate();
   const { recordAction, completeLevel, setSessionTimeTaken } = useProgress();
   const gameStartTime = useRef(Date.now());
+  
+  // Reference to the external Set - this persists across renders
   const timeoutsRef = useRef(activeTimeouts);
-  const actionInProgress = useRef(false);
 
   const [levels, setLevels] = useState({});
   const [sortedLevelKeys, setSortedLevelKeys] = useState([]);
@@ -35,14 +34,27 @@ export default function PhishingGame() {
     return localStorage.getItem('sessionId') || generateSessionId();
   });
 
+  // Current level key
   const currentLevelKey = sortedLevelKeys[currentLevelIndex] || '';
   const isLastLevel = currentLevelIndex >= sortedLevelKeys.length - 1;
+  const totalScenarios = sortedLevelKeys.reduce(
+    (sum, key) => sum + (levels[key]?.length || 0),
+    0
+  );
 
-  // Check consent
+  const completedScenarios = sortedLevelKeys.reduce((sum, key, idx) => {
+    const levelCount = levels[key]?.length || 0;
+    if (idx < currentLevelIndex) return sum + levelCount;
+    if (idx === currentLevelIndex) return sum + currentScenarioIndex;
+    return sum;
+  }, 0);
+  const overallScenarioIndex = Math.min(completedScenarios + 1, totalScenarios);
+
+  // CONSENT PROTECTION
   useEffect(() => {
-    const consent = localStorage.getItem('consentGiven');
+    const consent = localStorage.getItem("consentGiven");
     if (!consent) {
-      navigate('/');
+      navigate("/");
     }
   }, [navigate]);
 
@@ -51,9 +63,9 @@ export default function PhishingGame() {
     loadScenarios();
   }, [sessionId]);
 
+  // When level changes, load its scenarios
   useEffect(() => {
     if (sortedLevelKeys.length > 0 && levels[currentLevelKey]) {
-      console.log('📊 Loading level:', currentLevelKey, 'with', levels[currentLevelKey].length, 'scenarios');
       setScenarios(levels[currentLevelKey]);
       setCurrentScenarioIndex(0);
       sessionStorage.setItem('scenario_start', Date.now().toString());
@@ -71,9 +83,11 @@ export default function PhishingGame() {
   const loadScenarios = async () => {
     try {
       setLoading(true);
-      console.log('📥 Loading scenarios...');
       const allScenarios = await api.getLevels();
-      console.log('✅ Loaded', allScenarios.length, 'scenarios');
+
+      if (!Array.isArray(allScenarios)) {
+        throw new Error("Invalid levels format");
+      }
 
       const grouped = allScenarios.reduce((acc, scenario) => {
         const level = scenario.level_no || 'l1';
@@ -88,26 +102,27 @@ export default function PhishingGame() {
         if (!Number.isNaN(aNum) && !Number.isNaN(bNum)) return aNum - bNum;
         return a.localeCompare(b);
       });
-      
       setLevels(grouped);
       setSortedLevelKeys(keys);
-      console.log('📊 Levels loaded:', keys.length, 'levels');
-      
+      setScenarios(grouped[keys[0]] || []);
+      sessionStorage.setItem('scenario_start', Date.now().toString());
     } catch (error) {
-      console.error('❌ Failed to load scenarios:', error);
+      console.error('Failed to load scenarios:', error);
+      setLevels({});
     } finally {
       setLoading(false);
     }
   };
 
+  // ML Prediction
   const getMLPrediction = async (emailText, links) => {
     try {
-      return await api.getPrediction({
+      const response = await api.getPrediction({
         text: emailText,
         links: links || [],
       });
+      return response;
     } catch (error) {
-      console.log('⚠️ ML prediction failed, using fallback');
       return {
         distilbert: { prediction: 'unknown', confidence: 0 },
         cnn: { prediction: 'unknown', confidence: 0 }
@@ -115,18 +130,23 @@ export default function PhishingGame() {
     }
   };
 
+  // Clear all timeouts (call manually when needed)
+  const clearAllTimeouts = () => {
+    timeoutsRef.current.forEach(clearTimeout);
+    timeoutsRef.current.clear();
+  };
+
+  // Handle user action
   const handleAction = async (action) => {
-    if (actionInProgress.current || locked || !scenarios[currentScenarioIndex]) {
-      console.log('🚫 Action blocked:', { actionInProgress: actionInProgress.current, locked, hasScenario: !!scenarios[currentScenarioIndex] });
-      return;
-    }
+  console.log('🎯 HANDLE ACTION TRIGGERED at', new Date().toLocaleTimeString());
+  console.log('   Action:', action);
+  console.log('   Locked:', locked);
+  console.log('   Has scenario:', !!scenarios[currentScenarioIndex]);
+  
+  if (locked || !scenarios[currentScenarioIndex]) return;
     
-    actionInProgress.current = true;
-    console.log('\n🎯 ACTION TRIGGERED at', new Date().toLocaleTimeString());
-    console.log('   Action:', action);
-    console.log('   Level:', currentLevelKey);
-    console.log('   Scenario:', currentScenarioIndex + 1, 'of', scenarios.length);
-    
+    // Clear any pending timeouts
+    clearAllTimeouts();
     setLocked(true);
 
     const currentScenario = scenarios[currentScenarioIndex];
@@ -139,7 +159,6 @@ export default function PhishingGame() {
     );
 
     const isCorrect = action === currentScenario.correct_action;
-    console.log('   Correct?', isCorrect, '(Expected:', currentScenario.correct_action, ')');
 
     if (isCorrect) {
       setScore(prev => prev + 100);
@@ -165,9 +184,10 @@ export default function PhishingGame() {
         is_correct: isCorrect
       });
     } catch (error) {
-      console.error('❌ Failed to save action:', error);
+      console.error('Failed to save action:', error);
     }
 
+    // Show feedback
     setFeedback({
       show: true,
       isCorrect,
@@ -177,51 +197,41 @@ export default function PhishingGame() {
       explanation: getExplanation(action, isCorrect)
     });
 
-    // Capture current values for timeout
+    // Store current values
     const currentIdx = currentScenarioIndex;
     const totalInLevel = scenarios.length;
     const isLastLevelNow = isLastLevel;
     const currentLevel = currentLevelKey;
     const totalTime = Date.now() - gameStartTime.current;
 
-    console.log(`⏱️ Setting ${3000}ms timeout for next action`);
-    console.log(`   Will execute at:`, new Date(Date.now() + 3000).toLocaleTimeString());
-
+    // Auto-advance timeout
     const feedbackTimeout = setTimeout(() => {
-      console.log('\n⏱️⏱️ TIMEOUT EXECUTED at', new Date().toLocaleTimeString());
-      console.log('   Current index:', currentIdx, 'Total in level:', totalInLevel);
-      
       setFeedback(null);
       setLocked(false);
-      actionInProgress.current = false;
 
       if (currentIdx < totalInLevel - 1) {
-        console.log(`➡️ Moving to next scenario: ${currentIdx + 1} → ${currentIdx + 2}`);
         setCurrentScenarioIndex(prev => prev + 1);
         sessionStorage.setItem('scenario_start', Date.now().toString());
       } else {
-        console.log(`🏁 Completing level ${currentLevel}`);
         completeLevel(currentLevel);
 
         if (!isLastLevelNow) {
-          console.log(`➡️ Moving to next level: ${currentLevel} → ${sortedLevelKeys[currentLevelIndex + 1]}`);
           setShowLevelTransition(true);
-          setTimeout(() => {
-            console.log('   Transition complete, loading next level');
+          const transitionTimeout = setTimeout(() => {
             setShowLevelTransition(false);
             setCurrentLevelIndex(prev => prev + 1);
           }, 2500);
+          timeoutsRef.current.add(transitionTimeout);
         } else {
-          console.log('🎮 GAME COMPLETE!');
           const minutes = Math.floor(totalTime / 1000 / 60);
           const seconds = Math.floor((totalTime / 1000) % 60);
           setSessionTimeTaken(`${minutes}m ${seconds}s`);
           setGameComplete(true);
 
-          setTimeout(() => {
-            console.log('   Navigating to /thankyou');
+          const navigateTimeout = setTimeout(() => {
             navigate('/thankyou');
           }, 3000);
+          timeoutsRef.current.add(navigateTimeout);
         }
       }
     }, 3000);
@@ -231,13 +241,17 @@ export default function PhishingGame() {
 
   const getExplanation = (action, isCorrect) => {
     if (isCorrect) {
-      return "Correct! " + (action === 'Report Phish' ? "Reporting helps protect everyone." : "Good judgment!");
+      return "Correct! " + (action === 'Report Phish'
+        ? "Reporting helps protect everyone."
+        : "Good judgment!");
     } else {
-      return "Incorrect. " + (action === 'Trust & Click' ? "Never click suspicious links." : "This should be reported.");
+      return "Incorrect. " + (action === 'Trust & Click'
+        ? "Never click suspicious links."
+        : "This should be reported.");
     }
   };
 
-  // Render states
+  // RENDER STATES
   if (loading) {
     return <div className="loading-screen">Loading Training Scenarios...</div>;
   }
@@ -255,8 +269,15 @@ export default function PhishingGame() {
     return (
       <div className="game-complete-overlay">
         <div className="game-complete-content">
+          <div className="complete-icon" aria-hidden="true">
+            <span className="complete-icon-core" />
+            <span className="complete-icon-wave" />
+          </div>
           <h2>Simulation Complete!</h2>
-          <p>You scored <strong>{score}</strong> points</p>
+          <p>You scored <strong>{score}</strong> points across <strong>{sortedLevelKeys.length}</strong> levels</p>
+          <p className="accuracy-stat">
+            Accuracy: {totalActions > 0 ? ((totalCorrect / totalActions) * 100).toFixed(1) : 0}%
+          </p>
           <p className="redirect-hint">Redirecting to results...</p>
         </div>
       </div>
@@ -268,12 +289,17 @@ export default function PhishingGame() {
     return (
       <div className="level-transition-overlay">
         <div className="transition-content">
+          <div className="transition-check" aria-hidden="true">
+            <span className="transition-check-core" />
+            <span className="transition-check-ring" />
+          </div>
           <h2>Level {currentLevelKey.toUpperCase()} Complete!</h2>
           <p>Score so far: {score} points</p>
           <div className="transition-next">
             <span>Next up:</span>
             <strong>Level {nextKey.toUpperCase()}</strong>
           </div>
+          <div className="transition-loader"></div>
         </div>
       </div>
     );
@@ -283,6 +309,7 @@ export default function PhishingGame() {
 
   return (
     <div className="game-container">
+      {/* Game Header */}
       <div className="game-header">
         <div className="level-info">
           <span className="level-badge">Level {currentLevelKey.toUpperCase()}</span>
@@ -290,8 +317,32 @@ export default function PhishingGame() {
             {currentScenarioIndex + 1}/{scenarios.length}
           </span>
         </div>
-        <div className="score-display">
-          <span className="score-value">{score}</span>
+
+        <div className="header-controls">
+          <div className="overall-progress">
+            <div className="progress-text">
+              {totalScenarios > 0 ? `${overallScenarioIndex}/${totalScenarios} total` : '0/0 total'}
+            </div>
+            <div className="progress-track">
+              <div
+                className="progress-fill"
+                style={{
+                  width: totalScenarios > 0
+                    ? `${(overallScenarioIndex / totalScenarios) * 100}%`
+                    : '0%'
+                }}
+              ></div>
+            </div>
+          </div>
+
+          <div className="score-display">
+            <span className="score-label">Score</span>
+            <span className="score-value">{score}</span>
+          </div>
+
+          <button onClick={() => navigate('/dashboard')} className="dashboard-button">
+            Dashboard
+          </button>
         </div>
       </div>
 
@@ -305,49 +356,42 @@ export default function PhishingGame() {
         <div className={`feedback-overlay ${feedback.isCorrect ? 'correct' : 'incorrect'}`}>
           <div className="feedback-content">
             <h2>{feedback.isCorrect ? 'CORRECT!' : 'INCORRECT'}</h2>
-            <p className="next-hint">Next in 3 seconds...</p>
-             <div className="feedback-buttons">
-        <button 
-          className="feedback-btn continue"
-          onClick={() => {
-            console.log('🟢 Continue button clicked - forcing next scenario');
-            // Force close feedback and move to next
-            setFeedback(null);
-            setLocked(false);
-            
-            // Force next scenario
-            if (currentScenarioIndex < scenarios.length - 1) {
-              setCurrentScenarioIndex(prev => prev + 1);
-              sessionStorage.setItem('scenario_start', Date.now().toString());
-            } else {
-              // Level complete
-              completeLevel(currentLevelKey);
-              if (!isLastLevel) {
-                setShowLevelTransition(true);
-                setTimeout(() => {
-                  setShowLevelTransition(false);
-                  setCurrentLevelIndex(prev => prev + 1);
-                }, 2500);
-              } else {
-                setGameComplete(true);
-                setTimeout(() => navigate('/thankyou'), 3000);
-              }
-            }
-          }}
-        >
-          Continue ▶
-        </button>
-        
-        <button 
-          className="feedback-btn dashboard"
-          onClick={() => {
-            console.log('🔵 Dashboard button clicked');
-            navigate('/dashboard');
-          }}
-        >
-          View Dashboard
-        </button>
-      </div>
+
+            <div className="feedback-details">
+              <p><strong>You chose:</strong> {feedback.userAction}</p>
+              <p><strong>Correct action:</strong> {feedback.correctAction}</p>
+            </div>
+
+            {feedback.mlResults && (
+              <div className="ml-feedback">
+                <h3>AI Analysis</h3>
+                <div className="ml-models">
+                  <div className="ml-model">
+                    <span className="model-name">DistilBERT:</span>
+                    <span className={`prediction ${feedback.mlResults.distilbert?.prediction}`}>
+                      {feedback.mlResults.distilbert?.prediction}
+                    </span>
+                    <span className="confidence">
+                      {feedback.mlResults.distilbert?.confidence ?
+                        `${(feedback.mlResults.distilbert.confidence * 100).toFixed(0)}%` : ''}
+                    </span>
+                  </div>
+                  <div className="ml-model">
+                    <span className="model-name">CNN:</span>
+                    <span className={`prediction ${feedback.mlResults.cnn?.prediction}`}>
+                      {feedback.mlResults.cnn?.prediction}
+                    </span>
+                    <span className="confidence">
+                      {feedback.mlResults.cnn?.confidence ?
+                        `${(feedback.mlResults.cnn.confidence * 100).toFixed(0)}%` : ''}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <p className="explanation">{feedback.explanation}</p>
+            <p className="next-hint">Next scenario in 3 seconds...</p>
           </div>
         </div>
       )}
