@@ -76,6 +76,15 @@ export default function PhishingGame() {
     }
   }, [currentLevelIndex, sortedLevelKeys, levels, currentLevelKey]);
 
+  // Add this after your other useEffects
+useEffect(() => {
+  console.log('LEVEL GROUPING:');
+  console.log('Sorted level keys:', sortedLevelKeys);
+  console.log('Levels object:', levels);
+  console.log('Current level key:', currentLevelKey);
+  console.log('Scenarios in current level:', scenarios.length);
+  console.log('All scenarios:', scenarios.map(s => s.scenario_id));
+}, [sortedLevelKeys, levels, currentLevelKey, scenarios]);
   function generateSessionId() {
     const array = new Uint32Array(4);
     window.crypto.getRandomValues(array);
@@ -136,6 +145,11 @@ export default function PhishingGame() {
 
   // Handle user action
 const handleAction = async (action) => {
+   console.log('='.repeat(50));
+  console.log('HANDLE ACTION CALLED');
+  console.log('Action:', action);
+  console.log('Locked:', locked);
+  console.log('Has current scenario:', !!scenarios[currentScenarioIndex]);
   if (locked || !scenarios[currentScenarioIndex]) return;
   setLocked(true);
 
@@ -143,13 +157,20 @@ const handleAction = async (action) => {
   const startTime = sessionStorage.getItem('scenario_start');
   const timeTaken = startTime ? (Date.now() - parseInt(startTime)) / 1000 : 0;
 
+   console.log(' CURRENT STATE:');
+  console.log('  - currentScenarioIndex:', currentScenarioIndex);
+  console.log('  - scenarios.length:', scenarios.length);
+  console.log('  - isLastLevel:', isLastLevel);
+  console.log('  - currentLevelKey:', currentLevelKey);
+  console.log('  - totalScenarios:', totalScenarios);
   const mlResults = await getMLPrediction(
     currentScenario.body_text || currentScenario.content,
     currentScenario.links
   );
 
   const isCorrect = action === currentScenario.correct_action;
-
+ console.log('✅ isCorrect:', isCorrect);
+  
   if (isCorrect) {
     setScore(prev => prev + 100);
     setTotalCorrect(prev => prev + 1);
@@ -196,28 +217,50 @@ const handleAction = async (action) => {
   const currentLevel = currentLevelKey;
   const totalTime = Date.now() - gameStartTime.current;
 
+   console.log('⏱️ SETTING TIMEOUT WITH:');
+  console.log('  - currentIdx:', currentIdx);
+  console.log('  - totalScenariosInLevel:', totalScenariosInLevel);
+  console.log('  - isLastLevelNow:', isLastLevelNow);
+  console.log('  - Condition check:', currentIdx, '<', totalScenariosInLevel - 1, '?', currentIdx < totalScenariosInLevel - 1);
+  
   // Auto-advance
   const feedbackTimeout = setTimeout(() => {
+        console.log('⏱️ TIMEOUT EXECUTED');
+    console.log('  - Using values:');
+    console.log('    currentIdx:', currentIdx);
+    console.log('    totalScenariosInLevel:', totalScenariosInLevel);
+    console.log('    isLastLevelNow:', isLastLevelNow);
+    
     setFeedback(null);
     setLocked(false);
 
     if (currentIdx < totalScenariosInLevel - 1) {
-      // Next scenario in same level
-      setCurrentScenarioIndex(prev => prev + 1);
+      console.log('➡️ Moving to next scenario (index:', currentIdx, '→', currentIdx + 1, ')');
+      setCurrentScenarioIndex(prev => {
+        console.log('    State update: prev:', prev, 'new:', prev + 1);
+        return prev + 1;
+      });
       sessionStorage.setItem('scenario_start', Date.now().toString());
     } else {
       // Level complete -- mark it
+       console.log('🏁 Completing level:', currentLevel);
       completeLevel(currentLevel);
 
       if (!isLastLevelNow) {
+         console.log('➡️ Moving to next level (current:', currentLevelIndex, '→', currentLevelIndex + 1, ')');
         // Show level transition, then move to next level
         setShowLevelTransition(true);
         const transitionTimeout = setTimeout(() => {
+            console.log('    Transition timeout - moving to next level');
           setShowLevelTransition(false);
-          setCurrentLevelIndex(prev => prev + 1);
+          setCurrentLevelIndex(prev => {
+            console.log('    Level index update: prev:', prev, 'new:', prev + 1);
+            return prev + 1;
+          });
         }, 2500);
         timeoutsRef.current.push(transitionTimeout);
       } else {
+         console.log('🏁 GAME COMPLETE! Navigating to thank you');
         // ALL levels done -- go to Thank You
         const minutes = Math.floor(totalTime / 1000 / 60);
         const seconds = Math.floor((totalTime / 1000) % 60);
@@ -226,6 +269,7 @@ const handleAction = async (action) => {
 
         // Brief delay then navigate
         const navigateTimeout = setTimeout(() => {
+          console.log('    Navigating to /thankyou');
           navigate('/thankyou');
         }, 3000);
         timeoutsRef.current.push(navigateTimeout);
@@ -234,6 +278,8 @@ const handleAction = async (action) => {
   }, 3000);
   
   timeoutsRef.current.push(feedbackTimeout);
+  console.log('⏱️ Timeout pushed. Total timeouts:', timeoutsRef.current.length);
+  console.log('='.repeat(50));
 };
 
   const getExplanation = (action, isCorrect) => {
