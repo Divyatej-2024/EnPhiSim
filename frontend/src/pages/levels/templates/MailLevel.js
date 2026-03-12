@@ -32,6 +32,14 @@ export default function MailLevel({ level: scenario }) {
 
   // Get current selected email data
   const currentEmail = selectedEmail !== null ? emails[selectedEmail] : emails[0];
+  // 🔍 DEBUG: Log component data
+console.log(' MailLevel rendering with:', {
+  scenario_id: activeLevel.scenario_id,
+  correct_action: activeLevel.correct_action,
+  neutral_action: activeLevel.neutral_action,
+  wrong_action: activeLevel.wrong_action,
+  has_handleAction: typeof handleAction === 'function'
+});
   
   return (
     <BaseLevel levelType="mail" scenario={activeLevel}>
@@ -81,7 +89,6 @@ export default function MailLevel({ level: scenario }) {
                     className={`email-item ${selectedEmail === idx ? 'selected' : ''} ${email.unread ? 'unread' : ''}`}
                     onClick={() => setSelectedEmail(idx)}
                   >
-                    <span>{email.unread ? "📧" : "📨"}</span>
                     <span className="email-sender">{email.sender}</span>
                     <span className="email-subject">{email.subject}</span>
                     <span className="email-date">{email.time}</span>
@@ -155,8 +162,8 @@ export default function MailLevel({ level: scenario }) {
                       </div>
                     )) || (
                       <>
-                        <div className="attachment">📎 invoice.pdf (2.4 MB)</div>
-                        <div className="attachment">📎 document.docx (1.1 MB)</div>
+                        <div className="attachment"> invoice.pdf (2.4 MB)</div>
+                        <div className="attachment"> document.docx (1.1 MB)</div>
                       </>
                     )}
                   </div>
@@ -164,46 +171,58 @@ export default function MailLevel({ level: scenario }) {
 
                 {/* Action buttons */}
                 <div className="action-buttons">
-                  <button
-                    className="mail-action-btn phish"
-                    disabled={isLocked}
-                    onClick={() => handleAction(
-                      activeLevel.wrong_action || 'Trust & Click', 
-                      { 
-                        email: activeLevel.phish_email,
-                        type: 'phishing',
-                        scenario_id: activeLevel.scenario_id
-                      }
-                    )}
-                  >
-                     {activeLevel.wrong_action || 'Trust & Click'}
-                  </button>
-                  <button
-                    className="mail-action-btn delete"
-                    disabled={isLocked}
-                    onClick={() => handleAction(
-                      activeLevel.neutral_action || 'Ignore',
-                      { 
-                        email: activeLevel.phish_email,
-                        scenario_id: activeLevel.scenario_id
-                      }
-                    )}
-                  >
-                     {activeLevel.neutral_action || 'Ignore'}
-                  </button>
-                  <button
-                    className="mail-action-btn safe"
-                    disabled={isLocked}
-                    onClick={() => handleAction(
-                      activeLevel.correct_action || 'Report Phish',
-                      { 
-                        email: activeLevel.phish_email,
-                        scenario_id: activeLevel.scenario_id
-                      }
-                    )}
-                  >
-                     {activeLevel.correct_action || 'Report Phish'}
-                  </button>
+                <button
+  className="mail-action-btn phish"
+  disabled={isLocked}
+  onClick={() => {
+    
+    console.log('Phish button clicked with action:', activeLevel.wrong_action || 'Trust & Click');
+    handleAction(
+      activeLevel.wrong_action || 'Trust & Click', 
+      { 
+        email: activeLevel.phish_email,
+        type: 'phishing',
+        scenario_id: activeLevel.scenario_id
+      }
+    );
+  }}
+>
+  {activeLevel.wrong_action || 'Trust & Click'}
+</button>
+               <button
+  className="mail-action-btn delete"
+  disabled={isLocked}
+  onClick={() => {
+    // 🔍 ADD THIS LINE
+    console.log('Delete button clicked with action:', activeLevel.neutral_action || 'Ignore');
+    handleAction(
+      activeLevel.neutral_action || 'Ignore',
+      { 
+        email: activeLevel.phish_email,
+        scenario_id: activeLevel.scenario_id
+      }
+    );
+  }}
+>
+  {activeLevel.neutral_action || 'Ignore'}
+</button>
+                <button
+  className="mail-action-btn safe"
+  disabled={isLocked}
+  onClick={() => {
+    // 🔍 ADD THIS LINE
+    console.log('Safe button clicked with action:', activeLevel.correct_action || 'Report Phish');
+    handleAction(
+      activeLevel.correct_action || 'Report Phish',
+      { 
+        email: activeLevel.phish_email,
+        scenario_id: activeLevel.scenario_id
+      }
+    );
+  }}
+>
+  {activeLevel.correct_action || 'Report Phish'}
+</button>
                 </div>
               </div>
             </div>
