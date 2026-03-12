@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 import "./ModelMetrics.css";
-import api from '../services/api';
-
-const API_BASE = process.env.REACT_APP_API_URL || "https://enphisim-1.onrender.com";
 
 export default function ModelMetrics() {
   const [metrics, setMetrics] = useState(null);
@@ -20,10 +17,9 @@ export default function ModelMetrics() {
   const fetchMetrics = async () => {
     try {
       setLoading(true);
-    const response = await api.getModelMetrics();
-      setMetrics(response.data);
-      }
-    catch (_err) {
+      const response = await api.getModelMetrics();
+      setMetrics(response);
+    } catch (_err) {
       setError("Could not load model metrics");
     } finally {
       setLoading(false);
@@ -44,10 +40,13 @@ export default function ModelMetrics() {
     );
   }
 
-  const accuracy = metrics.accuracy ? (metrics.accuracy * 100).toFixed(2) : "-";
-  const precision = metrics.precision ? (metrics.precision * 100).toFixed(2) : "-";
-  const recall = metrics.recall ? (metrics.recall * 100).toFixed(2) : "-";
-  const f1 = metrics.f1 ? (metrics.f1 * 100).toFixed(2) : "-";
+  const formatPercent = (value) =>
+    Number.isFinite(value) ? (value * 100).toFixed(2) : null;
+
+  const accuracy = formatPercent(metrics.accuracy);
+  const precision = formatPercent(metrics.precision);
+  const recall = formatPercent(metrics.recall);
+  const f1 = formatPercent(metrics.f1);
 
   return (
     <div className="metrics-page">
@@ -79,9 +78,9 @@ export default function ModelMetrics() {
             <div className="metric-card accuracy">
               <div className="metric-icon accuracy" aria-hidden="true" />
               <h3>Accuracy</h3>
-              <div className="metric-value">{accuracy}%</div>
+              <div className="metric-value">{accuracy ?? "-"}%</div>
               <div className="metric-bar">
-                <div className="metric-bar-fill" style={{ width: `${accuracy}%` }} />
+                <div className="metric-bar-fill" style={{ width: `${accuracy ?? 0}%` }} />
               </div>
               <div className="metric-desc">Overall correctness of predictions</div>
             </div>
@@ -89,9 +88,9 @@ export default function ModelMetrics() {
             <div className="metric-card precision">
               <div className="metric-icon precision" aria-hidden="true" />
               <h3>Precision</h3>
-              <div className="metric-value">{precision}%</div>
+              <div className="metric-value">{precision ?? "-"}%</div>
               <div className="metric-bar">
-                <div className="metric-bar-fill" style={{ width: `${precision}%` }} />
+                <div className="metric-bar-fill" style={{ width: `${precision ?? 0}%` }} />
               </div>
               <div className="metric-desc">When flagged as phishing, how often correct?</div>
             </div>
@@ -99,9 +98,9 @@ export default function ModelMetrics() {
             <div className="metric-card recall">
               <div className="metric-icon recall" aria-hidden="true" />
               <h3>Recall</h3>
-              <div className="metric-value">{recall}%</div>
+              <div className="metric-value">{recall ?? "-"}%</div>
               <div className="metric-bar">
-                <div className="metric-bar-fill" style={{ width: `${recall}%` }} />
+                <div className="metric-bar-fill" style={{ width: `${recall ?? 0}%` }} />
               </div>
               <div className="metric-desc">How many actual threats were caught?</div>
             </div>
@@ -109,9 +108,9 @@ export default function ModelMetrics() {
             <div className="metric-card f1">
               <div className="metric-icon f1" aria-hidden="true" />
               <h3>F1-Score</h3>
-              <div className="metric-value">{f1}%</div>
+              <div className="metric-value">{f1 ?? "-"}%</div>
               <div className="metric-bar">
-                <div className="metric-bar-fill" style={{ width: `${f1}%` }} />
+                <div className="metric-bar-fill" style={{ width: `${f1 ?? 0}%` }} />
               </div>
               <div className="metric-desc">Harmonic mean of precision & recall</div>
             </div>

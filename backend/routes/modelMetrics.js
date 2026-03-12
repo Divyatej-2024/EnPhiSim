@@ -7,18 +7,22 @@ const router = express.Router();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-
 router.get('/', (req, res) => {
   try {
-    // Construct the path to your metrics file.
-    // Adjust this path if your ml_server folder is located elsewhere.
     const metricsPath = path.join(__dirname, '../../ml_server/models/model_metrics.json');
     
     if (fs.existsSync(metricsPath)) {
-      const metrics = JSON.parse(fs.readFileSync(metricsPath, 'utf8'));
+      // 🔴 FIX: Read file and strip BOM
+      let fileContent = fs.readFileSync(metricsPath, 'utf8');
+      
+      // Remove UTF-8 BOM if present (first character is U+FEFF)
+      if (fileContent.charCodeAt(0) === 0xFEFF) {
+        fileContent = fileContent.slice(1);
+      }
+      
+      const metrics = JSON.parse(fileContent);
       res.json(metrics);
     } else {
-      // Return a clear error if the file isn't found.
       res.status(404).json({ 
         error: 'Model metrics not found. Please train the model first.' 
       });
