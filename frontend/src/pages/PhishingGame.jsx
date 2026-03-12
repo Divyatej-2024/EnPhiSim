@@ -1,4 +1,3 @@
-// frontend/src/pages/PhishingGame.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TemplateRenderer from './levels/TemplateRenderer';
@@ -6,11 +5,16 @@ import './PhishingGame.css';
 import api from '../services/api';
 import { useProgress } from '../context/ProgressContext';
 
+// Store timeouts outside component to prevent cleanup on re-render
+const activeTimeouts = new Set();
+
 export default function PhishingGame() {
   const navigate = useNavigate();
   const { recordAction, completeLevel, setSessionTimeTaken } = useProgress();
   const gameStartTime = useRef(Date.now());
-  const timeoutsRef = useRef([]);
+  
+  // Use a ref that persists across renders but doesn't trigger cleanup
+  const timeoutsRef = useRef(activeTimeouts);
 
   const [levels, setLevels] = useState({});
   const [sortedLevelKeys, setSortedLevelKeys] = useState([]);
@@ -30,7 +34,7 @@ export default function PhishingGame() {
     return localStorage.getItem('sessionId') || generateSessionId();
   });
 
-  // Current level key (e.g. 'l1', 'l2', 'l3')
+  // Current level key
   const currentLevelKey = sortedLevelKeys[currentLevelIndex] || '';
   const isLastLevel = currentLevelIndex >= sortedLevelKeys.length - 1;
   const totalScenarios = sortedLevelKeys.reduce(
@@ -38,7 +42,6 @@ export default function PhishingGame() {
     0
   );
 
-  // Count how many scenarios have been completed across all levels
   const completedScenarios = sortedLevelKeys.reduce((sum, key, idx) => {
     const levelCount = levels[key]?.length || 0;
     if (idx < currentLevelIndex) return sum + levelCount;
@@ -60,13 +63,6 @@ export default function PhishingGame() {
     loadScenarios();
   }, [sessionId]);
 
-  useEffect(() => {
-    return () => {
-      timeoutsRef.current.forEach(clearTimeout);
-      timeoutsRef.current = [];
-    };
-  }, []);
-
   // When level changes, load its scenarios
   useEffect(() => {
     if (sortedLevelKeys.length > 0 && levels[currentLevelKey]) {
@@ -76,15 +72,6 @@ export default function PhishingGame() {
     }
   }, [currentLevelIndex, sortedLevelKeys, levels, currentLevelKey]);
 
-  // Add this after your other useEffects
-useEffect(() => {
-  console.log('LEVEL GROUPING:');
-  console.log('Sorted level keys:', sortedLevelKeys);
-  console.log('Levels object:', levels);
-  console.log('Current level key:', currentLevelKey);
-  console.log('Scenarios in current level:', scenarios.length);
-  console.log('All scenarios:', scenarios.map(s => s.scenario_id));
-}, [sortedLevelKeys, levels, currentLevelKey, scenarios]);
   function generateSessionId() {
     const array = new Uint32Array(4);
     window.crypto.getRandomValues(array);
@@ -143,144 +130,133 @@ useEffect(() => {
     }
   };
 
+  const clearAllTimeouts = () => {
+    timeoutsRef.current.forEach(clearTimeout);
+    timeoutsRef.current.clear();
+  };
+
   // Handle user action
-const handleAction = async (action) => {
-   console.log('='.repeat(50));
-  console.log('HANDLE ACTION CALLED');
-  console.log('Action:', action);
-  console.log('Locked:', locked);
-  console.log('Has current scenario:', !!scenarios[currentScenarioIndex]);
-  if (locked || !scenarios[currentScenarioIndex]) return;
-  setLocked(true);
-
-  const currentScenario = scenarios[currentScenarioIndex];
-  const startTime = sessionStorage.getItem('scenario_start');
-  const timeTaken = startTime ? (Date.now() - parseInt(startTime)) / 1000 : 0;
-
-   console.log(' CURRENT STATE:');
-  console.log('  - currentScenarioIndex:', currentScenarioIndex);
-  console.log('  - scenarios.length:', scenarios.length);
-  console.log('  - isLastLevel:', isLastLevel);
-  console.log('  - currentLevelKey:', currentLevelKey);
-  console.log('  - totalScenarios:', totalScenarios);
-  const mlResults = await getMLPrediction(
-    currentScenario.body_text || currentScenario.content,
-    currentScenario.links
-  );
-
-  const isCorrect = action === currentScenario.correct_action;
- console.log('✅ isCorrect:', isCorrect);
-  
-  if (isCorrect) {
-    setScore(prev => prev + 100);
-    setTotalCorrect(prev => prev + 1);
-  }
-  setTotalActions(prev => prev + 1);
-
-  // Record in ProgressContext (used by Thank You page)
-  recordAction(currentLevelKey, {
-    scenario_id: currentScenario.scenario_id,
-    action,
-    isCorrect,
-    level: currentLevelKey,
-    timeTaken,
-  });
-
-  // Save to backend
-  try {
-    await api.saveAction({
-      scenario_id: currentScenario.scenario_id,
-      user_action: action,
-      time_taken_seconds: timeTaken,
-      session_id: sessionId,
-      level: currentLevelKey,
-      is_correct: isCorrect
-    });
-  } catch (error) {
-    console.error('Failed to save action:', error);
-  }
-
-  // Show feedback
-  setFeedback({
-    show: true,
-    isCorrect,
-    userAction: action,
-    correctAction: currentScenario.correct_action,
-    mlResults,
-    explanation: getExplanation(action, isCorrect)
-  });
-
-  // Store current values for the timeout
-  const currentIdx = currentScenarioIndex;
-  const totalScenariosInLevel = scenarios.length;
-  const isLastLevelNow = isLastLevel;
-  const currentLevel = currentLevelKey;
-  const totalTime = Date.now() - gameStartTime.current;
-
-   console.log('⏱️ SETTING TIMEOUT WITH:');
-  console.log('  - currentIdx:', currentIdx);
-  console.log('  - totalScenariosInLevel:', totalScenariosInLevel);
-  console.log('  - isLastLevelNow:', isLastLevelNow);
-  console.log('  - Condition check:', currentIdx, '<', totalScenariosInLevel - 1, '?', currentIdx < totalScenariosInLevel - 1);
-  
-  // Auto-advance
-  const feedbackTimeout = setTimeout(() => {
-        console.log('⏱️ TIMEOUT EXECUTED');
-    console.log('  - Using values:');
-    console.log('    currentIdx:', currentIdx);
-    console.log('    totalScenariosInLevel:', totalScenariosInLevel);
-    console.log('    isLastLevelNow:', isLastLevelNow);
+  const handleAction = async (action) => {
+    console.log('🎮 HANDLE ACTION STARTED');
     
-    setFeedback(null);
-    setLocked(false);
-
-    if (currentIdx < totalScenariosInLevel - 1) {
-      console.log('➡️ Moving to next scenario (index:', currentIdx, '→', currentIdx + 1, ')');
-      setCurrentScenarioIndex(prev => {
-        console.log('    State update: prev:', prev, 'new:', prev + 1);
-        return prev + 1;
-      });
-      sessionStorage.setItem('scenario_start', Date.now().toString());
-    } else {
-      // Level complete -- mark it
-       console.log('🏁 Completing level:', currentLevel);
-      completeLevel(currentLevel);
-
-      if (!isLastLevelNow) {
-         console.log('➡️ Moving to next level (current:', currentLevelIndex, '→', currentLevelIndex + 1, ')');
-        // Show level transition, then move to next level
-        setShowLevelTransition(true);
-        const transitionTimeout = setTimeout(() => {
-            console.log('    Transition timeout - moving to next level');
-          setShowLevelTransition(false);
-          setCurrentLevelIndex(prev => {
-            console.log('    Level index update: prev:', prev, 'new:', prev + 1);
-            return prev + 1;
-          });
-        }, 2500);
-        timeoutsRef.current.push(transitionTimeout);
-      } else {
-         console.log('🏁 GAME COMPLETE! Navigating to thank you');
-        // ALL levels done -- go to Thank You
-        const minutes = Math.floor(totalTime / 1000 / 60);
-        const seconds = Math.floor((totalTime / 1000) % 60);
-        setSessionTimeTaken(`${minutes}m ${seconds}s`);
-        setGameComplete(true);
-
-        // Brief delay then navigate
-        const navigateTimeout = setTimeout(() => {
-          console.log('    Navigating to /thankyou');
-          navigate('/thankyou');
-        }, 3000);
-        timeoutsRef.current.push(navigateTimeout);
-      }
+    if (locked || !scenarios[currentScenarioIndex]) {
+      console.log('🚫 Blocked - locked or no scenario');
+      return;
     }
-  }, 3000);
-  
-  timeoutsRef.current.push(feedbackTimeout);
-  console.log('⏱️ Timeout pushed. Total timeouts:', timeoutsRef.current.length);
-  console.log('='.repeat(50));
-};
+    
+    // Clear any pending timeouts before starting new one
+    clearAllTimeouts();
+    setLocked(true);
+
+    const currentScenario = scenarios[currentScenarioIndex];
+    const startTime = sessionStorage.getItem('scenario_start');
+    const timeTaken = startTime ? (Date.now() - parseInt(startTime)) / 1000 : 0;
+
+    console.log('📊 Current state:', {
+      index: currentScenarioIndex,
+      totalInLevel: scenarios.length,
+      isLastLevel,
+      level: currentLevelKey
+    });
+
+    const mlResults = await getMLPrediction(
+      currentScenario.body_text || currentScenario.content,
+      currentScenario.links
+    );
+
+    const isCorrect = action === currentScenario.correct_action;
+    console.log('✅ isCorrect:', isCorrect);
+
+    if (isCorrect) {
+      setScore(prev => prev + 100);
+      setTotalCorrect(prev => prev + 1);
+    }
+    setTotalActions(prev => prev + 1);
+
+    recordAction(currentLevelKey, {
+      scenario_id: currentScenario.scenario_id,
+      action,
+      isCorrect,
+      level: currentLevelKey,
+      timeTaken,
+    });
+
+    try {
+      await api.saveAction({
+        scenario_id: currentScenario.scenario_id,
+        user_action: action,
+        time_taken_seconds: timeTaken,
+        session_id: sessionId,
+        level: currentLevelKey,
+        is_correct: isCorrect
+      });
+    } catch (error) {
+      console.error('Failed to save action:', error);
+    }
+
+    // Show feedback
+    setFeedback({
+      show: true,
+      isCorrect,
+      userAction: action,
+      correctAction: currentScenario.correct_action,
+      mlResults,
+      explanation: getExplanation(action, isCorrect)
+    });
+
+    // Store current values
+    const currentIdx = currentScenarioIndex;
+    const totalInLevel = scenarios.length;
+    const isLastLevelNow = isLastLevel;
+    const currentLevel = currentLevelKey;
+    const totalTime = Date.now() - gameStartTime.current;
+
+    console.log('⏱️ Setting timeout for 3 seconds');
+
+    // Auto-advance timeout
+    const feedbackTimeout = setTimeout(() => {
+      console.log('⏱️⏱️ TIMEOUT EXECUTED at', new Date().toLocaleTimeString());
+      console.log('Values:', { currentIdx, totalInLevel, isLastLevelNow });
+      
+      setFeedback(null);
+      setLocked(false);
+
+      if (currentIdx < totalInLevel - 1) {
+        console.log('➡️ Moving to next scenario');
+        setCurrentScenarioIndex(prev => prev + 1);
+        sessionStorage.setItem('scenario_start', Date.now().toString());
+      } else {
+        console.log('🏁 Completing level');
+        completeLevel(currentLevel);
+
+        if (!isLastLevelNow) {
+          console.log('➡️ Moving to next level');
+          setShowLevelTransition(true);
+          const transitionTimeout = setTimeout(() => {
+            console.log('   Transition complete - loading next level');
+            setShowLevelTransition(false);
+            setCurrentLevelIndex(prev => prev + 1);
+          }, 2500);
+          timeoutsRef.current.add(transitionTimeout);
+        } else {
+          console.log('🏁 Game complete - navigating to thank you');
+          const minutes = Math.floor(totalTime / 1000 / 60);
+          const seconds = Math.floor((totalTime / 1000) % 60);
+          setSessionTimeTaken(`${minutes}m ${seconds}s`);
+          setGameComplete(true);
+
+          const navigateTimeout = setTimeout(() => {
+            console.log('   Navigating to /thankyou');
+            navigate('/thankyou');
+          }, 3000);
+          timeoutsRef.current.add(navigateTimeout);
+        }
+      }
+    }, 3000);
+    
+    timeoutsRef.current.add(feedbackTimeout);
+    console.log('⏱️ Timeout added. Total timeouts:', timeoutsRef.current.size);
+  };
 
   const getExplanation = (action, isCorrect) => {
     if (isCorrect) {
@@ -294,8 +270,7 @@ const handleAction = async (action) => {
     }
   };
 
-  // -- RENDER STATES --
-
+  // RENDER STATES
   if (loading) {
     return <div className="loading-screen">Loading Training Scenarios...</div>;
   }
@@ -309,7 +284,6 @@ const handleAction = async (action) => {
     );
   }
 
-  // Game complete -- waiting to navigate
   if (gameComplete) {
     return (
       <div className="game-complete-overlay">
@@ -329,7 +303,6 @@ const handleAction = async (action) => {
     );
   }
 
-  // Level transition overlay
   if (showLevelTransition) {
     const nextKey = sortedLevelKeys[currentLevelIndex + 1] || '';
     return (
@@ -365,7 +338,6 @@ const handleAction = async (action) => {
         </div>
 
         <div className="header-controls">
-          {/* Overall progress bar */}
           <div className="overall-progress">
             <div className="progress-text">
               {totalScenarios > 0 ? `${overallScenarioIndex}/${totalScenarios} total` : '0/0 total'}
@@ -393,14 +365,12 @@ const handleAction = async (action) => {
         </div>
       </div>
 
-      {/* Template-based Level Renderer */}
       <TemplateRenderer
         scenario={currentScenario}
         onAction={handleAction}
         locked={locked}
       />
 
-      {/* Feedback Overlay with ML results */}
       {feedback?.show && (
         <div className={`feedback-overlay ${feedback.isCorrect ? 'correct' : 'incorrect'}`}>
           <div className="feedback-content">
