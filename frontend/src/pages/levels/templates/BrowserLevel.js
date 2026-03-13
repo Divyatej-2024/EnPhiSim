@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import BaseLevel from "./BaseLevel";
 import "./BrowserLevel.css"; // ✅ ADD THIS
 
-export default function BrowserLevel({ level: scenario }) {
+export default function BrowserLevel({ level: scenario, onAction }) {
   const [url, setUrl] = useState("");
 
   const initialUrl = useMemo(
@@ -14,7 +14,7 @@ export default function BrowserLevel({ level: scenario }) {
   const host = currentUrl.replace(/^https?:\/\//, "").split("/")[0] || "unknown";
 
   return (
-    <BaseLevel levelType="browser" scenario={scenario}>
+    <BaseLevel levelType="browser" scenario={scenario} onAction={onAction}>
       {({ level, onAction, locked }) => (
         <div className="browser-container">
           <div className="browser-header">

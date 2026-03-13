@@ -4,13 +4,13 @@ import React from "react";
 import BaseLevel from "./BaseLevel";
 import "./ImageLevel.css"; // ✅ ADD THIS
 
-export default function ImageLevel({ level: scenario }) {
+export default function ImageLevel({ level: scenario,onAction }) {
   return (
-    <BaseLevel levelType="image" scenario={scenario}>
+    <BaseLevel levelType="image" scenario={scenario} onAction={onAction}>
       {({ level, onAction, locked }) => (
         <div className="image-container">
           <div className="image-header">
-            <strong>{level.page_title || "Image Analysis"}</strong>
+            <strong>{level.title || "Image Analysis"}</strong>
           </div>
 
           <div className="image-grid">
