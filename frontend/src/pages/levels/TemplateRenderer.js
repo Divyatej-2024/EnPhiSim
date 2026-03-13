@@ -10,13 +10,20 @@ import ImageLevel from './templates/ImageLevel';
 import MailBrowserLevel from './templates/MailBrowserLevel';
 import MailBrowserMessageLevel from './templates/MailBrowserMessageLevel';
 
+// Add these imports
+import AnalysisLevel from './templates/AnalysisLevel';
+import MultiphaseLevel from './templates/MultiphaseLevel';
+
 // Template type mapping based on your data
 const templateMap = {
   // Email-based phishing
   'mail': MailLevel,
   'email': MailLevel,
   'phishing': MailLevel,
-  
+   'analysis': AnalysisLevel,
+  'bonus': AnalysisLevel,
+  'multiphase': MultiphaseLevel,
+  'advanced': MultiphaseLevel,
   // Browser/web-based
   'browser': BrowserLevel,
   'web': BrowserLevel,
