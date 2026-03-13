@@ -69,7 +69,10 @@ export default function TemplateRenderer({ scenario, onAction, locked }) {
     );
   }
 
-
+  const normalizedScenario = {
+    ...scenario,
+    template: scenario.template || scenario.template_type || scenario.type
+  };
 
 
   // Determine template type - check multiple possible fields
@@ -78,6 +81,7 @@ export default function TemplateRenderer({ scenario, onAction, locked }) {
     normalizedScenario.template_type || 
     normalizedScenario.type || 
     'default';
+  
   const normalizedTemplateType = String(templateType).toLowerCase().trim();
 
 
@@ -97,7 +101,7 @@ export default function TemplateRenderer({ scenario, onAction, locked }) {
   // Render the template with ALL scenario data
   return (
     <TemplateComponent 
-      Scenario={normalizedScenario}
+      scenario={normalizedScenario}
       onAction={onAction}
       locked={locked}
     />
