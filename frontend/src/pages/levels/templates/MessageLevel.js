@@ -1,62 +1,46 @@
-
 import React, { useState } from "react";
 import BaseLevel from "./BaseLevel";
 import "./MessageLevel.css";
 
-export default function MessageLevel({ level: scenario }) {
+export default function MessageLevel({ level: scenario, onAction }) {
   const [draft, setDraft] = useState("");
 
   return (
-    <BaseLevel levelType="message" scenario={scenario}>
-      {({ level, onAction, locked, now }) => {
-        const messages =
-          Array.isArray(level.messages) && level.messages.length > 0
-            ? level.messages
-            : [
-                {
-                  sender: "contact",
-                  sender_name: level.contact_name || "Unknown contact",
-                  text: level.level_text || "Please check this link immediately.",
-                  timestamp: "10:30 AM",
-                  has_link: true,
-                },
-              ];
+    <BaseLevel levelType="message" scenario={scenario} onAction={onAction}>
+      {({ level, onAction, locked }) => {
+        // Create message from your data
+        const messages = [
+          {
+            sender: "sender",
+            sender_name: level.from_address || level.phish_email || "Unknown",
+            text: level.body_text || level.content || "No message content",
+            timestamp: new Date().toLocaleTimeString(),
+            has_link: level.links && level.links.length > 0,
+          }
+        ];
 
         return (
           <div className="message-container">
             <div className="message-header">
-              <strong>{level.contact_name || "Contact"}</strong>
-              <div className="message-status">{level.status || "Online"}</div>
-            </div>
-            <div className="live-row">
-              <span className="live-dot" aria-hidden="true" />
-              <span>Live Session</span>
-              <span className="live-time">
-                {(now || new Date()).toLocaleTimeString()}
-              </span>
+              <strong>{level.from_address || level.phish_email || "Message"}</strong>
+              <div className="message-status">New Message</div>
             </div>
 
             {level.show_warning && (
               <div className="message-warning">
-                <strong>Warning:</strong> This conversation contains suspicious content.
+                <strong>Warning:</strong> This message contains suspicious content.
               </div>
             )}
 
             <div className="message-area">
               {messages.map((msg, idx) => (
-                <div
-                  key={idx}
-                  className={`message-bubble ${msg.sender === "user" ? "outgoing" : "incoming"}`}
-                >
-                  <div className={`message-content ${msg.sender === "user" ? "outgoing" : "incoming"}`}>
-                    {msg.sender !== "user" && (
-                      <div className="message-sender">{msg.sender_name || level.contact_name}</div>
-                    )}
+                <div key={idx} className="message-bubble incoming">
+                  <div className="message-content incoming">
+                    <div className="message-sender">{msg.sender_name}</div>
                     <div className="message-text">{msg.text}</div>
                     {msg.has_link && (
                       <div className="message-link-warning">
-                        <span className="message-link-indicator" aria-hidden="true" />
-                        <span>Contains external link</span>
+                        <span>⚠️ Contains suspicious link: {level.links?.[0]}</span>
                       </div>
                     )}
                   </div>
@@ -64,44 +48,61 @@ export default function MessageLevel({ level: scenario }) {
               ))}
             </div>
 
-            <div className="message-input-area">
-              <input
-                value={draft}
-                onChange={(e) => setDraft(e.target.value)}
-                placeholder="Type a response..."
-                disabled={locked}
-                className="message-input"
-              />
-              <button
-                className="message-send-btn"
-                disabled={!draft.trim() || locked}
-                onClick={() => setDraft("")}
-              >
-                Send
-              </button>
-            </div>
+            {/* Optional: Show links section */}
+            {level.links && level.links.length > 0 && (
+              <div className="message-links">
+                <strong>Links in message:</strong>
+                <ul>
+                  {level.links.map((link, idx) => (
+                    <li key={idx} className="suspicious-link">{link}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             <div className="message-actions">
+              {/* Wrong Action Button */}
               <button
                 className="message-action-btn block"
                 disabled={locked}
-                onClick={() => onAction("block", { contact: level.contact_name, reason: "phishing" })}
+                onClick={() => {
+                  console.log('❌ Wrong action clicked:', level.wrong_action);
+                  onAction(level.wrong_action, { 
+                    contact: level.from_address,
+                    reason: "phishing" 
+                  });
+                }}
               >
-                Block Contact
+                {level.wrong_action || "Schedule Delivery"}
               </button>
-              <button
-                className="message-action-btn report"
-                disabled={locked}
-                onClick={() => onAction("report", { contact: level.contact_name, messages })}
-              >
-                Report Conversation
-              </button>
+              
+              {/* Neutral Action Button */}
               <button
                 className="message-action-btn safe"
                 disabled={locked}
-                onClick={() => onAction("safe", { contact: level.contact_name })}
+                onClick={() => {
+                  console.log('⚪ Neutral action clicked:', level.neutral_action);
+                  onAction(level.neutral_action, { 
+                    contact: level.from_address 
+                  });
+                }}
               >
-                Mark Safe
+                {level.neutral_action || "Investigate"}
+              </button>
+              
+              {/* Correct Action Button */}
+              <button
+                className="message-action-btn report"
+                disabled={locked}
+                onClick={() => {
+                  console.log('✅ Correct action clicked:', level.correct_action);
+                  onAction(level.correct_action, { 
+                    contact: level.from_address,
+                    messages: messages 
+                  });
+                }}
+              >
+                {level.correct_action || "Report Phish"}
               </button>
             </div>
           </div>
