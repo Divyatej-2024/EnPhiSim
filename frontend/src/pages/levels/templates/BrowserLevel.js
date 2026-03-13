@@ -38,8 +38,8 @@ export default function BrowserLevel({ level: scenario, onAction }) {
               </div>
             )}
 
-            <h3>{level.page_title || "Website Content"}</h3>
-            <p>{level.content || level.level_text || "No content available."}</p>
+            <h3>{level.title || "Website Content"}</h3>
+            <p>{level.body_text || "No content available."}</p>
 
             {Array.isArray(level.suspicious_elements) && level.suspicious_elements.length > 0 && (
               <div>
