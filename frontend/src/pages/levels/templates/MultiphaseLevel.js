@@ -11,10 +11,7 @@ export default function MultiphaseLevel({ level: scenario, onAction, locked }) {
   const [timerActive, setTimerActive] = useState(false);
   const [showEvidence, setShowEvidence] = useState({});
 
-  if (!scenario) {
-    console.error('MultiphaseLevel: No scenario provided');
-    return <div className="error-message">Error: No level data available</div>;
-  }
+
 
   // Timer effect - MUST be at top level, not conditional
   useEffect(() => {
@@ -30,7 +27,10 @@ export default function MultiphaseLevel({ level: scenario, onAction, locked }) {
     }
     return () => clearTimeout(timer);
   }, [timerActive, timeRemaining]);
-
+  if (!scenario) {
+    console.error('MultiphaseLevel: No scenario provided');
+    return <div className="error-message">Error: No level data available</div>;
+  }
   const startTimer = () => {
     setTimerActive(true);
     setThreatLevel(30);
