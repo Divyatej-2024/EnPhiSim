@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import BaseLevel from "./BaseLevel";
 import { useProgress } from "../../../context/ProgressContext";
-import ".Template.css";
+import "./Template.css";
 
 export default function MailLevel({ scenario, onAction: gameOnAction, locked: gameLocked }) {
   useProgress();
