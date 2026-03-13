@@ -196,8 +196,8 @@ useEffect(() => {
     timeoutsRef.current.clear();
   };
 
-  // Handle user action
- const handleAction = async (action) => {
+ // Handle user action
+ const handleAction = async (action, meta = {}) => {
   console.log('🎯🎯🎯 PHISHING GAME HANDLEACTION STARTED at', new Date().toLocaleTimeString());
   console.log('   Action:', action);
   console.log('   Current level key:', currentLevelKey);
@@ -223,7 +223,13 @@ useEffect(() => {
       currentScenario.links
     );
 
-    const isCorrect = action === currentScenario.correct_action;
+    const explicitCorrect =
+      typeof meta?.isCorrect === 'boolean'
+        ? meta.isCorrect
+        : typeof meta?.correct === 'boolean'
+          ? meta.correct
+          : undefined;
+    const isCorrect = explicitCorrect ?? action === currentScenario.correct_action;
 
     if (isCorrect) {
       setScore(prev => prev + 100);

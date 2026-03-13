@@ -434,7 +434,8 @@ case 'wrong':
             
             gameOnAction(actionValue, {
               scenario_id: activeLevel.scenario_id,
-              email: activeLevel.phish_email
+              email: activeLevel.phish_email,
+              correct: actionType === 'correct'
             });
           };
 
