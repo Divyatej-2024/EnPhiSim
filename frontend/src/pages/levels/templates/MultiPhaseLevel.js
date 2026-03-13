@@ -193,4 +193,259 @@ export default function MultiphaseLevel({ level: scenario, onAction, locked }) {
                     disabled={isLocked}
                     onClick={() => handlePhaseAction(level.neutral_action, { 
                       analyzed: true,
-                     
+                      phase: 1 
+                    })}
+                  >
+                    🔍 {level.neutral_action || "Inspect Email"}
+                  </button>
+                  <button
+                    className="phase-btn correct"
+                    disabled={isLocked}
+                    onClick={() => handlePhaseAction(level.correct_action, { 
+                      reported: true,
+                      phase: 1 
+                    })}
+                  >
+                    🚨 {level.correct_action || "Report Phish"}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Phase 2: Fake Login Page */}
+            {phase === 2 && (
+              <div className="phase-card credential-phase">
+                <div className="browser-window">
+                  <div className="browser-bar">
+                    <span className="browser-dot red"></span>
+                    <span className="browser-dot yellow"></span>
+                    <span className="browser-dot green"></span>
+                    <span className="browser-url">{level.display_url || level.links?.[0]}</span>
+                  </div>
+                  <div className="login-page">
+                    <h3>Secure Login Required</h3>
+                    <div className="login-form">
+                      <input type="text" placeholder="Username" className="login-input" disabled />
+                      <input type="password" placeholder="Password" className="login-input" disabled />
+                      <button className="login-btn" disabled>Sign In</button>
+                    </div>
+                    <div className="ssl-warning">⚠️ Connection is not secure</div>
+                  </div>
+                </div>
+
+                <div className="evidence-box">
+                  <h4 onClick={() => toggleEvidence('login')} className="evidence-toggle">
+                    {showEvidence.login ? '▼' : '▶'} URL Analysis
+                  </h4>
+                  {showEvidence.login && (
+                    <ul className="evidence-list">
+                      <li>⚠️ Typosquatted domain: {level.display_url}</li>
+                      <li>⚠️ No HTTPS encryption</li>
+                      <li>⚠️ Fake security seal</li>
+                    </ul>
+                  )}
+                </div>
+
+                <div className="phase-actions">
+                  <button
+                    className="phase-btn wrong"
+                    disabled={isLocked}
+                    onClick={() => handlePhaseAction("Enter Credentials", { 
+                      entered: true,
+                      phase: 2 
+                    })}
+                  >
+                    ⚠️ Enter Login
+                  </button>
+                  <button
+                    className="phase-btn neutral"
+                    disabled={isLocked}
+                    onClick={() => handlePhaseAction("Check URL", { 
+                      checked: true,
+                      phase: 2 
+                    })}
+                  >
+                    🔍 Inspect URL
+                  </button>
+                  <button
+                    className="phase-btn correct"
+                    disabled={isLocked}
+                    onClick={() => handlePhaseAction("Close Tab", { 
+                      closed: true,
+                      phase: 2 
+                    })}
+                  >
+                    🚨 Close Tab
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Phase 3: Malware Download */}
+            {phase === 3 && (
+              <div className="phase-card malware-phase">
+                <div className="download-warning">
+                  <div className="warning-icon">⚠️</div>
+                  <h3>File Download Detected</h3>
+                  <p>The website is trying to download a file</p>
+                </div>
+
+                <div className="file-info">
+                  <div className="file-icon">📄</div>
+                  <div className="file-details">
+                    <div className="file-name">{level.attachments?.[0]?.name || "document.pdf"}</div>
+                    <div className="file-size">{level.attachments?.[0]?.size || "2.4MB"}</div>
+                    <div className="file-type">{level.attachments?.[0]?.type || "application/pdf"}</div>
+                  </div>
+                </div>
+
+                <div className="evidence-box">
+                  <h4 onClick={() => toggleEvidence('malware')} className="evidence-toggle">
+                    {showEvidence.malware ? '▼' : '▶'} Malware Analysis
+                  </h4>
+                  {showEvidence.malware && (
+                    <ul className="evidence-list">
+                      <li>⚠️ Unsolicited download</li>
+                      <li>⚠️ File contains macros</li>
+                      <li>⚠️ Digitally unsigned</li>
+                    </ul>
+                  )}
+                </div>
+
+                <div className="phase-actions">
+                  <button
+                    className="phase-btn wrong"
+                    disabled={isLocked}
+                    onClick={() => handlePhaseAction("Download File", { 
+                      downloaded: true,
+                      phase: 3 
+                    })}
+                  >
+                    ⚠️ Download
+                  </button>
+                  <button
+                    className="phase-btn neutral"
+                    disabled={isLocked}
+                    onClick={() => handlePhaseAction("Scan File", { 
+                      scanned: true,
+                      phase: 3 
+                    })}
+                  >
+                    🔍 Scan with AV
+                  </button>
+                  <button
+                    className="phase-btn correct"
+                    disabled={isLocked}
+                    onClick={() => handlePhaseAction("Block Download", { 
+                      blocked: true,
+                      phase: 3 
+                    })}
+                  >
+                    🚨 Block Download
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Phase 4: Data Exfiltration */}
+            {phase === 4 && (
+              <div className="phase-card exfiltration-phase">
+                <div className="network-alert">
+                  <div className="alert-glow"></div>
+                  <h3>🚨 Unusual Outbound Traffic Detected</h3>
+                  <p>Suspicious connection to external IP</p>
+                </div>
+
+                <div className="network-stats">
+                  <div className="stat-item">
+                    <span className="stat-label">Destination:</span>
+                    <span className="stat-value">185.142.53.78</span>
+                  </div>
+                  <div className="stat-item">
+                    <span className="stat-label">Port:</span>
+                    <span className="stat-value">4443</span>
+                  </div>
+                  <div className="stat-item">
+                    <span className="stat-label">Data Transfer:</span>
+                    <span className="stat-value">2.4 MB/s</span>
+                  </div>
+                  <div className="stat-item">
+                    <span className="stat-label">Protocol:</span>
+                    <span className="stat-value">HTTPS (suspicious)</span>
+                  </div>
+                </div>
+
+                <div className="evidence-box urgent">
+                  <h4 onClick={() => toggleEvidence('network')} className="evidence-toggle">
+                    {showEvidence.network ? '▼' : '▶'} Immediate Threats
+                  </h4>
+                  {showEvidence.network && (
+                    <ul className="evidence-list">
+                      <li>🔴 Data exfiltration in progress</li>
+                      <li>🔴 Credentials already compromised</li>
+                      <li>🔴 Backdoor connection established</li>
+                    </ul>
+                  )}
+                </div>
+
+                <div className="phase-actions final">
+                  <button
+                    className="phase-btn wrong"
+                    disabled={isLocked}
+                    onClick={() => handlePhaseAction("Ignore Alert", { 
+                      ignored: true,
+                      phase: 4 
+                    })}
+                  >
+                    ⚠️ Ignore
+                  </button>
+                  <button
+                    className="phase-btn neutral"
+                    disabled={isLocked}
+                    onClick={() => handlePhaseAction("Monitor Traffic", { 
+                      monitored: true,
+                      phase: 4 
+                    })}
+                  >
+                    🔍 Monitor
+                  </button>
+                  <button
+                    className="phase-btn correct"
+                    disabled={isLocked}
+                    onClick={() => handlePhaseAction("Isolate System", { 
+                      isolated: true,
+                      phase: 4 
+                    })}
+                  >
+                    🚨 Isolate Immediately
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Progress Summary */}
+          <div className="progress-summary">
+            <h4>Attack Progress</h4>
+            <div className="summary-stats">
+              <div className="summary-item">
+                <span className="summary-label">Phases Complete:</span>
+                <span className="summary-value">{phase - 1}/4</span>
+              </div>
+              <div className="summary-item">
+                <span className="summary-label">Threat Level:</span>
+                <span className="summary-value">{threatLevel}%</span>
+              </div>
+              <div className="summary-item">
+                <span className="summary-label">Correct Choices:</span>
+                <span className="summary-value">
+                  {Object.values(responses).filter(r => r.action === level.correct_action).length}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </BaseLevel>
+  );
+}
