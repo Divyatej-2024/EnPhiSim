@@ -93,36 +93,38 @@ useEffect(() => {
     return id;
   }
 
-  const loadScenarios = async () => {
-    try {
-      setLoading(true);
-      const allScenarios = await api.getLevels();
+const loadScenarios = async () => {
+  try {
+    setLoading(true);
+    const allScenarios = await api.getLevels();
 
-      if (!Array.isArray(allScenarios)) {
-        throw new Error("Invalid levels format");
-      }
+    if (!Array.isArray(allScenarios)) {
+      throw new Error("Invalid levels format");
+    }
 
-      const grouped = allScenarios.reduce((acc, scenario) => {
-        const level = scenario.level_no || 'l1';
-        if (!acc[level]) acc[level] = [];
-        acc[level].push(scenario);
-        return acc;
-      }, {});
+    const grouped = allScenarios.reduce((acc, scenario) => {
+      // ✅ FIX: Check both possible field names
+      const level = scenario.level || scenario.level_no || 'l1';
+      if (!acc[level]) acc[level] = [];
+      acc[level].push(scenario);
+      return acc;
+    }, {});
 
-      const keys = Object.keys(grouped).sort((a, b) => {
-        const aNum = Number(a.replace(/^\D+/, ''));
-        const bNum = Number(b.replace(/^\D+/, ''));
-        if (!Number.isNaN(aNum) && !Number.isNaN(bNum)) return aNum - bNum;
-        return a.localeCompare(b);
-      });
-      setLevels(grouped);
-      setSortedLevelKeys(keys);
-      setScenarios(grouped[keys[0]] || []);
- 
-  const savedProgress = localStorage.getItem(`gameProgress_${sessionId}`);
+    const keys = Object.keys(grouped).sort((a, b) => {
+      const aNum = Number(a.replace(/^\D+/, ''));
+      const bNum = Number(b.replace(/^\D+/, ''));
+      if (!Number.isNaN(aNum) && !Number.isNaN(bNum)) return aNum - bNum;
+      return a.localeCompare(b);
+    });
+    
+    setLevels(grouped);
+    setSortedLevelKeys(keys);
+    
+    // ✅ FIX: Load progress BEFORE setting current scenario
+    const savedProgress = localStorage.getItem(`gameProgress_${sessionId}`);
     console.log('📂 Checking for saved progress:', savedProgress);
     
-    if (savedProgress) {
+    if (savedProgress && keys.length > 0) {
       try {
         const { levelIndex, scenarioIndex } = JSON.parse(savedProgress);
         console.log('📂 Found saved progress:', { levelIndex, scenarioIndex, keys });
@@ -152,15 +154,16 @@ useEffect(() => {
       setCurrentScenarioIndex(0);
       setScenarios(grouped[keys[0]] || []);
     }
-      sessionStorage.setItem('scenario_start', Date.now().toString());
-    } catch (error) {
-      console.error('Failed to load scenarios:', error);
-      setLevels({});
-    } finally {
-      setLoading(false);
-    }
-  };
-
+    
+    sessionStorage.setItem('scenario_start', Date.now().toString());
+  } catch (error) {
+    console.error('Failed to load scenarios:', error);
+    setLevels({});
+  } finally {
+    setLoading(false);
+  }
+};
+  
   // ML Prediction
   const getMLPrediction = async (emailText, links) => {
     try {
