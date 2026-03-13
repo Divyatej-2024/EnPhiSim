@@ -1,4 +1,3 @@
-// frontend/src/pages/levels/templates/AnalysisLevel.jsx
 import React, { useState } from "react";
 import BaseLevel from "./BaseLevel";
 import "./AnalysisLevel.css";
@@ -7,43 +6,28 @@ export default function AnalysisLevel({ level: scenario, onAction, locked }) {
   const [answers, setAnswers] = useState({});
   const [completed, setCompleted] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [showHint, setShowHint] = useState(false);
 
   if (!scenario) {
     console.error('AnalysisLevel: No scenario provided');
-    return <div className="error-message">Error: No level data available</div>;
+    return <div>Error: No level data</div>;
   }
 
-  // Nature analogy questions based on the bonus level
+  // Sample questions for bonus levels
   const questions = [
     {
       id: 1,
       text: "What animal behavior does this phishing attack mimic?",
-      options: ["Anglerfish", "Porcupine", "Mockingbird", "Cuckoo", "Army Ants", "Zombie Ant Fungus"],
-      correct: scenario.taxonomy === "Phishing" ? "Anglerfish" :
-               scenario.taxonomy === "Ransomware" ? "Porcupine" :
-               scenario.taxonomy === "DDoS Attacks" ? "Army Ants" :
-               scenario.taxonomy === "Social Engineering" ? "Mockingbird" :
-               scenario.taxonomy === "Trojan Horse" ? "Cuckoo" :
-               scenario.taxonomy === "Botnets" ? "Zombie Ant Fungus" : "Anglerfish"
+      options: ["Anglerfish", "Porcupine", "Mockingbird", "Cuckoo"]
     },
     {
       id: 2,
-      text: "What type of lure or deception is being used in this attack?",
-      options: ["Financial bait", "Security scare", "Emotional manipulation", "Trust exploitation", "Urgency tactics", "Authority impersonation"],
-      correct: "Emotional manipulation"
+      text: "What type of lure is being used in this attack?",
+      options: ["Financial", "Security", "Emotional", "Package Delivery"]
     },
     {
       id: 3,
-      text: "What is the most effective defense against this type of attack?",
-      options: ["User awareness training", "Technical controls", "Multi-factor authentication", "Regular backups", "Network monitoring", "Email filtering"],
-      correct: "User awareness training"
-    },
-    {
-      id: 4,
-      text: "How does this attack technique relate to its animal counterpart?",
-      options: ["Uses attractive bait", "Hides in plain sight", "Overwhelms with numbers", "Mimics trusted sources", "Lies dormant then activates", "Controls from within"],
-      correct: "Uses attractive bait"
+      text: "What is the best defense against this type of attack?",
+      options: ["Verify with sender", "Click the link", "Download attachment", "Forward to friends"]
     }
   ];
 
@@ -54,13 +38,12 @@ export default function AnalysisLevel({ level: scenario, onAction, locked }) {
       onAction={onAction} 
       locked={locked}
     >
-      {({ level, onAction: handleAction, locked: isLocked, now }) => {
-        // ✅ ALL logic MUST be INSIDE this function
+      {({ level, onAction: handleAction, locked: isLocked }) => {
+        // ✅ All component logic MUST be INSIDE this function
         
         const handleAnswer = (answer) => {
           const newAnswers = { ...answers, [currentQuestion]: answer };
           setAnswers(newAnswers);
-          setShowHint(false);
           
           if (currentQuestion < questions.length - 1) {
             setCurrentQuestion(currentQuestion + 1);
@@ -70,56 +53,23 @@ export default function AnalysisLevel({ level: scenario, onAction, locked }) {
         };
 
         const handleSubmit = () => {
-          // Calculate score
-          const correctCount = Object.keys(answers).filter(qIndex => 
-            answers[qIndex] === questions[qIndex].correct
-          ).length;
-          
-          const score = Math.round((correctCount / questions.length) * 100);
-          
+          // Submit analysis results
           handleAction(level.correct_action || "Complete Analysis", { 
             answers,
-            score,
-            completed: true,
-            totalQuestions: questions.length,
-            correctAnswers: correctCount
+            completed: true 
           });
-        };
-
-        const resetAnalysis = () => {
-          setAnswers({});
-          setCompleted(false);
-          setCurrentQuestion(0);
-          setShowHint(false);
         };
 
         return (
           <div className="analysis-container">
-            {/* Header with Nature Theme */}
             <div className="analysis-header">
-              <div className="nature-icon">
-                {level.taxonomy === "Phishing" && "🐟"}
-                {level.taxonomy === "Ransomware" && "🦔"}
-                {level.taxonomy === "DDoS Attacks" && "🐜"}
-                {level.taxonomy === "Social Engineering" && "🐦"}
-                {level.taxonomy === "Trojan Horse" && "🥚"}
-                {level.taxonomy === "Botnets" && "🍄"}
-              </div>
-              <h2>{level.title || "Nature's Cybersecurity Lesson"}</h2>
+              <h2>{level.title || "Bonus Analysis"}</h2>
               <p className="analysis-description">{level.content}</p>
-              <div className="live-row">
-                <span className="live-dot" aria-hidden="true" />
-                <span>Live</span>
-                <span className="live-time">
-                  {(now || new Date()).toLocaleTimeString()}
-                </span>
-              </div>
-              <div className="bonus-badge">🌟 BONUS ANALYSIS LEVEL</div>
+              <div className="bonus-badge">🌟 BONUS LEVEL</div>
             </div>
 
-            {/* Main Content Area */}
             <div className="analysis-content">
-              {/* Educational Content from Database */}
+              {/* Educational content from body_html */}
               {level.body_html && (
                 <div 
                   className="analysis-html"
@@ -127,148 +77,60 @@ export default function AnalysisLevel({ level: scenario, onAction, locked }) {
                 />
               )}
 
-              {/* Interactive Analysis Section */}
               {!completed ? (
                 <div className="analysis-questions">
-                  <div className="question-header">
-                    <h3>Question {currentQuestion + 1} of {questions.length}</h3>
-                    <button 
-                      className="hint-btn"
-                      onClick={() => setShowHint(!showHint)}
-                      disabled={isLocked}
-                    >
-                      {showHint ? "Hide Hint" : "Show Hint"}
-                    </button>
-                  </div>
-
-                  <div className="question-card">
-                    <p className="question-text">{questions[currentQuestion].text}</p>
-                    
-                    {showHint && (
-                      <div className="hint-box">
-                        <strong>💡 Hint:</strong> Think about how nature's predators use deception...
-                      </div>
-                    )}
-
-                    <div className="options-grid">
-                      {questions[currentQuestion].options.map((option, idx) => (
-                        <button
-                          key={idx}
-                          className={`analysis-option ${
-                            answers[currentQuestion] === option ? 'selected' : ''
-                          }`}
-                          onClick={() => handleAnswer(option)}
-                          disabled={isLocked}
-                        >
-                          {option}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Progress Dots */}
-                  <div className="question-progress">
-                    {questions.map((_, idx) => (
-                      <div
+                  <h3>Question {currentQuestion + 1} of {questions.length}</h3>
+                  <p className="question-text">{questions[currentQuestion].text}</p>
+                  
+                  <div className="options-grid">
+                    {questions[currentQuestion].options.map((option, idx) => (
+                      <button
                         key={idx}
-                        className={`progress-dot ${
-                          idx === currentQuestion ? 'active' : ''
-                        } ${answers[idx] ? 'completed' : ''}`}
-                      />
+                        className="analysis-option"
+                        onClick={() => handleAnswer(option)}
+                        disabled={isLocked}
+                      >
+                        {option}
+                      </button>
                     ))}
                   </div>
                 </div>
               ) : (
                 <div className="analysis-complete">
-                  <div className="success-animation">
-                    <div className="checkmark">✓</div>
-                  </div>
-                  <h3>Analysis Complete!</h3>
-                  <p>You've successfully completed the bonus analysis level.</p>
+                  <h3>✓ Analysis Complete!</h3>
+                  <p>You've completed the bonus analysis.</p>
                   
-                  {/* Score Summary */}
-                  <div className="score-summary">
-                    <div className="score-circle">
-                      <span className="score-number">
-                        {Object.keys(answers).filter(qIndex => 
-                          answers[qIndex] === questions[qIndex].correct
-                        ).length}
-                      </span>
-                      <span className="score-total">/{questions.length}</span>
-                    </div>
-                    <p className="score-text">Correct Answers</p>
-                  </div>
-
-                  {/* Download Worksheet */}
                   {level.attachments && level.attachments.length > 0 && (
                     <div className="worksheet-download">
-                      <p>📥 Download your analysis worksheet:</p>
+                      <p>Download your worksheet:</p>
                       {level.attachments.map((att, idx) => (
-                        <div key={idx} className="attachment-item">
-                          <span className="attachment-icon">📄</span>
-                          <span className="attachment-name">{att.name}</span>
-                          <span className="attachment-size">({att.size})</span>
-                          <button className="download-btn">Download</button>
+                        <div key={idx} className="attachment">
+                          📄 {att.name} ({att.size})
                         </div>
                       ))}
                     </div>
                   )}
-
-                  {/* Nature Facts */}
-                  <div className="nature-fact">
-                    <h4>🌿 Nature Fact</h4>
-                    <p>
-                      {level.taxonomy === "Phishing" && "The anglerfish's lure is actually a modified dorsal spine that glows due to symbiotic bacteria."}
-                      {level.taxonomy === "Ransomware" && "Porcupine quills have microscopic barbs that make them impossible to remove without medical attention."}
-                      {level.taxonomy === "DDoS Attacks" && "Army ants can consume up to 100,000 prey animals in a single day through sheer numbers."}
-                      {level.taxonomy === "Social Engineering" && "Mockingbirds can learn up to 200 different songs throughout their lifetime."}
-                      {level.taxonomy === "Trojan Horse" && "Cuckoo chicks push the host's eggs out of the nest within hours of hatching."}
-                      {level.taxonomy === "Botnets" && "The cordyceps fungus can control an ant's brain, forcing it to climb to the perfect height for spore dispersal."}
-                    </p>
-                  </div>
                 </div>
               )}
             </div>
 
-            {/* Action Buttons */}
             <div className="analysis-actions">
               {!completed ? (
-                <>
-                  <button
-                    className="analysis-btn skip"
-                    disabled={isLocked}
-                    onClick={() => handleAction(level.neutral_action || "Skip", { 
-                      skipped: true,
-                      currentQuestion 
-                    })}
-                  >
-                    ⏭️ Skip Analysis
-                  </button>
-                  <button
-                    className="analysis-btn reset"
-                    disabled={isLocked || currentQuestion === 0}
-                    onClick={resetAnalysis}
-                  >
-                    🔄 Restart
-                  </button>
-                </>
+                <button
+                  className="analysis-btn skip"
+                  disabled={isLocked}
+                  onClick={() => handleAction(level.neutral_action || "Skip", { skipped: true })}
+                >
+                  {level.neutral_action || "Skip Analysis"}
+                </button>
               ) : (
-                <>
-                  <button
-                    className="analysis-btn review"
-                    disabled={isLocked}
-                    onClick={resetAnalysis}
-                  >
-                    🔍 Review Again
-                  </button>
-                  <button
-                    className="analysis-btn complete"
-                    disabled={isLocked}
-                    onClick={handleSubmit}
-                  >
-                    ✅ {level.correct_action || "Complete Bonus Level"}
-                  </button>
-                </>
+                <button
+                  className="analysis-btn complete"
+                  disabled={isLocked}
+                  onClick={handleSubmit}
+                >
+                  {level.correct_action || "Complete Bonus Level"}
+                </button>
               )}
             </div>
           </div>
