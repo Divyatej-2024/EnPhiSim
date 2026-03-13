@@ -63,6 +63,19 @@ export default function PhishingGame() {
     loadScenarios();
   }, [sessionId]);
 
+  // Save progress whenever level or scenario changes
+useEffect(() => {
+  if (sessionId && sortedLevelKeys.length > 0 && !loading) {
+    const progress = {
+      levelIndex: currentLevelIndex,
+      scenarioIndex: currentScenarioIndex,
+      timestamp: Date.now()
+    };
+    localStorage.setItem(`gameProgress_${sessionId}`, JSON.stringify(progress));
+    console.log('💾 Progress saved:', progress);
+  }
+}, [currentLevelIndex, currentScenarioIndex, sessionId, sortedLevelKeys.length, loading]);
+
   // When level changes, load its scenarios
   useEffect(() => {
     if (sortedLevelKeys.length > 0 && levels[currentLevelKey]) {
@@ -105,6 +118,40 @@ export default function PhishingGame() {
       setLevels(grouped);
       setSortedLevelKeys(keys);
       setScenarios(grouped[keys[0]] || []);
+ 
+  const savedProgress = localStorage.getItem(`gameProgress_${sessionId}`);
+    console.log('📂 Checking for saved progress:', savedProgress);
+    
+    if (savedProgress) {
+      try {
+        const { levelIndex, scenarioIndex } = JSON.parse(savedProgress);
+        console.log('📂 Found saved progress:', { levelIndex, scenarioIndex, keys });
+        
+        // Validate indices
+        if (levelIndex !== undefined && levelIndex >= 0 && levelIndex < keys.length) {
+          console.log(`➡️ Loading level ${keys[levelIndex]} (index ${levelIndex})`);
+          setCurrentLevelIndex(levelIndex);
+          setCurrentScenarioIndex(scenarioIndex || 0);
+          setScenarios(grouped[keys[levelIndex]] || []);
+        } else {
+          console.log('⚠️ Invalid saved progress, starting at level 1');
+          setCurrentLevelIndex(0);
+          setCurrentScenarioIndex(0);
+          setScenarios(grouped[keys[0]] || []);
+        }
+      } catch (e) {
+        console.error('❌ Failed to parse saved progress:', e);
+        setCurrentLevelIndex(0);
+        setCurrentScenarioIndex(0);
+        setScenarios(grouped[keys[0]] || []);
+      }
+    } else {
+      // No saved progress, start at beginning
+      console.log('🆕 No saved progress found, starting at level 1');
+      setCurrentLevelIndex(0);
+      setCurrentScenarioIndex(0);
+      setScenarios(grouped[keys[0]] || []);
+    }
       sessionStorage.setItem('scenario_start', Date.now().toString());
     } catch (error) {
       console.error('Failed to load scenarios:', error);
