@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import BaseLevel from "./BaseLevel";
 import "./BrowserLevel.css"; // ✅ ADD THIS
 
-export default function BrowserLevel({ level: scenario }) {
+export default function BrowserLevel({ level: scenario, onAction }) {
   const [url, setUrl] = useState("");
 
   const initialUrl = useMemo(
@@ -14,8 +14,8 @@ export default function BrowserLevel({ level: scenario }) {
   const host = currentUrl.replace(/^https?:\/\//, "").split("/")[0] || "unknown";
 
   return (
-    <BaseLevel levelType="browser" scenario={scenario}>
-      {({ level, onAction, locked }) => (
+    <BaseLevel levelType="browser" scenario={scenario} onAction={onAction}>
+      {({ level, onAction: handleUserAction, locked }) => (
         <div className="browser-container">
           <div className="browser-header">
             <div className="browser-title">{level.page_title || "Browser Simulation"}</div>
@@ -62,21 +62,21 @@ export default function BrowserLevel({ level: scenario }) {
             <button
               className="browser-btn close"
               disabled={locked}
-              onClick={() => onAction("close", { url: currentUrl, reason: "suspicious" })}
+              onClick={() => handleUserAction("close", { url: currentUrl, reason: "suspicious" })}
             >
               Close Tab
             </button>
             <button
               className="browser-btn ignore"
               disabled={locked}
-              onClick={() => onAction("ignore", { url: currentUrl })}
+              onClick={() => handleUserAction("ignore", { url: currentUrl })}
             >
               Ignore Warning
             </button>
             <button
               className="browser-btn report"
               disabled={locked}
-              onClick={() => onAction("report", { url: currentUrl, type: "phishing" })}
+              onClick={() => handleUserAction("report", { url: currentUrl, type: "phishing" })}
             >
               Report Site
             </button>
