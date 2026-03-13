@@ -103,13 +103,17 @@ const api = {
     return response.data;
   },
 
+  // ✅ This getPrediction is properly inside the api object
   getPrediction: async ({ userId, levelId, text, links = [] }) => {
+    console.log('🔮 Getting ML prediction for text:', text?.substring(0, 50) || 'empty');
+    
     const response = await axiosInstance.post('/api/predict', {
       user_id: userId,
       level_id: levelId,
       text,
       links,
     });
+    
     return response.data;
   },
 
