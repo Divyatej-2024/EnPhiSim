@@ -125,3 +125,350 @@
 .analysis-html {
   font-size: 1.1rem;
   line-height: 1.8;
+  color: #2d3748;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: #f7fafc;
+  border-radius: 10px;
+  border-left: 5px solid #667eea;
+}
+
+.analysis-html img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  margin: 20px 0;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.analysis-html h1, .analysis-html h2, .analysis-html h3 {
+  color: #2d3748;
+  margin: 20px 0 10px;
+}
+
+.analysis-html ul, .analysis-html ol {
+  padding-left: 20px;
+  margin: 10px 0;
+}
+
+.analysis-html li {
+  margin: 5px 0;
+}
+
+.analysis-questions {
+  text-align: center;
+}
+
+.analysis-questions h3 {
+  font-size: 1.5rem;
+  color: #2d3748;
+  margin-bottom: 10px;
+}
+
+.question-text {
+  font-size: 1.3rem;
+  color: #4a5568;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: #ebf4ff;
+  border-radius: 10px;
+  border-left: 5px solid #4299e1;
+  text-align: left;
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+  margin: 30px 0;
+}
+
+.analysis-option {
+  padding: 20px 25px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.analysis-option::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.analysis-option:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+}
+
+.analysis-option:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.analysis-option:active {
+  transform: translateY(0);
+}
+
+.analysis-option:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.analysis-complete {
+  text-align: center;
+  padding: 40px;
+  animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.analysis-complete h3 {
+  font-size: 2rem;
+  color: #48bb78;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.analysis-complete h3::before {
+  content: '✓';
+  font-size: 2.5rem;
+  animation: checkmark 0.5s ease-out;
+}
+
+@keyframes checkmark {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.analysis-complete p {
+  font-size: 1.2rem;
+  color: #4a5568;
+  margin-bottom: 30px;
+}
+
+.worksheet-download {
+  background: #f0fff4;
+  border: 2px dashed #48bb78;
+  border-radius: 15px;
+  padding: 25px;
+  margin-top: 30px;
+}
+
+.worksheet-download p {
+  font-size: 1.1rem;
+  color: #2f855a;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.attachment {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 25px;
+  background: white;
+  border-radius: 10px;
+  margin: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.attachment:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(72, 187, 120, 0.2);
+  background: #f7fafc;
+}
+
+.analysis-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.analysis-btn {
+  padding: 15px 40px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.analysis-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.analysis-btn:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.analysis-btn.skip {
+  background: #cbd5e0;
+  color: #4a5568;
+}
+
+.analysis-btn.skip:hover {
+  background: #a0aec0;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.analysis-btn.complete {
+  background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+  color: white;
+  box-shadow: 0 4px 6px rgba(72, 187, 120, 0.3);
+}
+
+.analysis-btn.complete:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 14px rgba(72, 187, 120, 0.4);
+}
+
+/* Progress indicator */
+.question-progress {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.progress-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #cbd5e0;
+  transition: all 0.3s ease;
+}
+
+.progress-dot.active {
+  background: #667eea;
+  transform: scale(1.2);
+  box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+}
+
+.progress-dot.completed {
+  background: #48bb78;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .analysis-container {
+    padding: 20px 15px;
+  }
+
+  .analysis-header h2 {
+    font-size: 1.8rem;
+  }
+
+  .analysis-description {
+    font-size: 1rem;
+  }
+
+  .analysis-content {
+    padding: 20px;
+  }
+
+  .options-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .analysis-option {
+    padding: 15px 20px;
+    font-size: 1rem;
+  }
+
+  .analysis-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .analysis-btn {
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 1rem;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .analysis-content {
+    background: #1a202c;
+  }
+
+  .analysis-html {
+    background: #2d3748;
+    color: #e2e8f0;
+  }
+
+  .analysis-html h1,
+  .analysis-html h2,
+  .analysis-html h3 {
+    color: #e2e8f0;
+  }
+
+  .question-text {
+    background: #2d3748;
+    color: #e2e8f0;
+  }
+
+  .analysis-complete p {
+    color: #e2e8f0;
+  }
+
+  .worksheet-download {
+    background: #2d3748;
+  }
+}
