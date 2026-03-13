@@ -6,7 +6,7 @@ export default function BrowserLevel({ level: scenario, onAction }) {
   const [url, setUrl] = useState("");
 
   const initialUrl = useMemo(
-    () => scenario?.url || scenario?.suspicious_url || "http://example.com",
+    () => scenario?.url || scenario?.display_url || "http://example.com",
     [scenario]
   );
 
@@ -18,7 +18,7 @@ export default function BrowserLevel({ level: scenario, onAction }) {
       {({ level, onAction: handleUserAction, locked }) => (
         <div className="browser-container">
           <div className="browser-header">
-            <div className="browser-title">{level.page_title || "Browser Simulation"}</div>
+            <div className="browser-title">{level.title || "Browser Simulation"}</div>
             <div className="browser-url-bar">
               <input
                 value={currentUrl}
