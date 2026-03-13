@@ -33,7 +33,7 @@ export default function BrowserLevel({ level: scenario }) {
         return (
           <div className="browser-container">
             <div className="browser-header">
-              <div className="browser-title">{level.page_title || "Browser Simulation"}</div>
+              <div className="browser-title">{level.title || "Browser Simulation"}</div>
               <div className="browser-url-bar">
                 <input
                   value={currentUrl}
@@ -53,8 +53,26 @@ export default function BrowserLevel({ level: scenario }) {
                 </div>
               )}
 
-              <h3>{level.page_title || "Website Content"}</h3>
-              <p>{level.content || level.level_text || "No content available."}</p>
+              <h3>{level.title || "Website Content"}</h3>
+             {level.body_html && (
+                <div className="browser-html-content">
+                  <div 
+                    dangerouslySetInnerHTML={{ __html: level.body_html }}
+                  />
+                </div>
+              )}
+              
+              {/* ✅ TEXT CONTENT - Fallback for plain text */}
+              {!level.body_html && level.body_text && (
+                <div className="browser-text-content">
+                  <p>{level.body_text}</p>
+                </div>
+              )}
+              
+              {/* ✅ FALLBACK CONTENT - If neither exists */}
+              {!level.body_html && !level.body_text && (
+                <p>{level.content || level.level_text || "No content available."}</p>
+              )}
 
               {Array.isArray(level.suspicious_elements) && level.suspicious_elements.length > 0 && (
                 <div>
@@ -78,33 +96,32 @@ export default function BrowserLevel({ level: scenario }) {
     className="browser-btn close"
     disabled={locked}
     onClick={() => {
-      console.log('🔘 Close clicked, URL:', currentUrl);
-      onAction("close", { url: currentUrl, reason: "suspicious" });
+      console.log('wrong action clicked', level.wrong_action);
+      onAction(level.wrong_action, { url: currentUrl});
     }}
   >
-    Close Tab
+    {level.wrong_action || "Access the site"}
   </button>
   
   <button
     className="browser-btn ignore"
     disabled={locked}
     onClick={() => {
-      console.log('🔘 Investigate clicked, URL:', currentUrl);
-      onAction("investigate", { url: currentUrl });
+      console.log('Neutral action clicked',level.neutral_action);
+      onAction(level.neutral_action, { url: currentUrl });
     }}
   >
-    Investigate  {/* Changed from "Ignore Warning" */}
-  </button>
+    {level.neutral_action || "Ignore the Document"}  </button>
   
   <button
     className="browser-btn report"
     disabled={locked}
     onClick={() => {
-      console.log('🔘 Report Phish clicked, URL:', currentUrl);
-      onAction("report", { url: currentUrl, type: "phishing" });
+      console.log('Report Phish clicked', level.correct_action);
+      onAction(level.correct_action, { url: currentUrl, type: "phishing" });
     }}
   >
-    Report Phish  {/* Changed from "Report Site" */}
+    {level.correct_action || "Report Phish"}
   </button>
 </div>
           </div>
@@ -116,13 +133,18 @@ export default function BrowserLevel({ level: scenario }) {
 
 // ✅ Add PropTypes for better error catching
 BrowserLevel.propTypes = {
-  level: PropTypes.shape({
-    page_title: PropTypes.string,
+ level: PropTypes.shape({
+    title: PropTypes.string,
     content: PropTypes.string,
+    body_html: PropTypes.string,
+    body_text: PropTypes.string,
+    level_text: PropTypes.string,
     show_warning: PropTypes.bool,
     suspicious_elements: PropTypes.array,
     url: PropTypes.string,
     suspicious_url: PropTypes.string,
-    level_text: PropTypes.string
+    wrong_action: PropTypes.string,
+    neutral_action: PropTypes.string,
+    correct_action: PropTypes.string
   })
 };
