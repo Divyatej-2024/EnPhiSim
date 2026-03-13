@@ -18,7 +18,7 @@ export default function BrowserLevel({ level: scenario }) {
       {({ level, onAction, locked }) => (
         <div className="browser-container">
           <div className="browser-header">
-            <div className="browser-title">{level.page_title || "Browser Simulation"}</div>
+            <div className="browser-title">{level.title || "Browser Simulation"}</div>
             <div className="browser-url-bar">
               <input
                 value={currentUrl}
@@ -38,7 +38,7 @@ export default function BrowserLevel({ level: scenario }) {
               </div>
             )}
 
-            <h3>{level.page_title || "Website Content"}</h3>
+            <h3>{level.title || "Website Content"}</h3>
             <p>{level.content || level.level_text || "No content available."}</p>
 
             {Array.isArray(level.suspicious_elements) && level.suspicious_elements.length > 0 && (
