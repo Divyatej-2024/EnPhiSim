@@ -195,7 +195,6 @@ const wrongAction = activeLevel.wrong_action || 'Trust & Click';
     }
 
     .email-sender {
-      color: #202124;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
