@@ -1,6 +1,8 @@
+// frontend/src/pages/ThankYouPage.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useProgress } from "../context/ProgressContext";
+import "./ThankYouPage.css";
 
 export default function ThankYouPage() {
   const { progress } = useProgress();
@@ -22,20 +24,32 @@ export default function ThankYouPage() {
     return acc;
   }, {});
 
+  const formatTime = (time) => {
+    if (time === "N/A") return time;
+    if (typeof time === 'string') return time;
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${minutes}m ${seconds}s`;
+  };
+
   return (
     <div className="thankyou-page">
       <div className="thankyou-card-wrap">
+        {/* Animated Success Icon */}
         <div className="thankyou-icon" aria-hidden="true">
           <span className="thankyou-icon-core" />
           <span className="thankyou-icon-ring" />
           <span className="thankyou-icon-ring delayed" />
         </div>
+
+        {/* Main Heading */}
         <h1 className="thankyou-heading">Thank You!</h1>
         <p className="thankyou-subtitle">You've completed the EnPhiSim simulation</p>
 
+        {/* Stats Grid */}
         <div className="thankyou-stats">
           <div className="thankyou-stat">
-            <span className="stat-number">{timeTaken}</span>
+            <span className="stat-number">{formatTime(timeTaken)}</span>
             <span className="stat-label">Time Taken</span>
           </div>
           <div className="thankyou-stat">
@@ -52,36 +66,48 @@ export default function ThankYouPage() {
           </div>
         </div>
 
+        {/* Performance Overview */}
         <div className="performance-box">
           <h3 className="performance-title">Performance Overview</h3>
+          
+          {/* Performance Bars */}
           <div className="performance-bars">
             <div className="bar-item">
-              <span className="bar-label">Safe Decisions</span>
+              <div className="bar-label">
+                <span>Safe Decisions</span>
+                <span>{safe} / {totalActions}</span>
+              </div>
               <div className="bar-track">
                 <div
                   className="bar-fill safe"
                   style={{ width: totalActions > 0 ? `${(safe / totalActions) * 100}%` : "0%" }}
                 />
               </div>
-              <span className="bar-value">{safe}</span>
             </div>
             <div className="bar-item">
-              <span className="bar-label">Risky Decisions</span>
+              <div className="bar-label">
+                <span>Risky Decisions</span>
+                <span>{risky} / {totalActions}</span>
+              </div>
               <div className="bar-track">
                 <div
                   className="bar-fill risky"
                   style={{ width: totalActions > 0 ? `${(risky / totalActions) * 100}%` : "0%" }}
                 />
               </div>
-              <span className="bar-value">{risky}</span>
             </div>
           </div>
 
+          {/* Level Breakdown */}
           {Object.keys(levelStats).length > 0 && (
             <div className="level-breakdown">
               <h4 className="breakdown-title">Level-by-Level Results</h4>
               {Object.entries(levelStats)
-                .sort()
+                .sort(([a], [b]) => {
+                  const aNum = parseInt(a.replace(/[^\d]/g, '')) || 0;
+                  const bNum = parseInt(b.replace(/[^\d]/g, '')) || 0;
+                  return aNum - bNum;
+                })
                 .map(([level, stats]) => (
                   <div key={level} className="breakdown-row">
                     <span className="breakdown-level">Level {level.toUpperCase()}</span>
@@ -99,12 +125,17 @@ export default function ThankYouPage() {
             </div>
           )}
 
+          {/* Privacy Note */}
           <div className="performance-note">
-            Your anonymous session ID has been recorded for research purposes.
-            No personal data was collected during this simulation.
+            <strong>🔒 Your privacy matters</strong>
+            <p>
+              Your anonymous session ID has been recorded for research purposes.
+              No personal data was collected during this simulation.
+            </p>
           </div>
         </div>
 
+        {/* Action Buttons */}
         <div className="thankyou-actions">
           <button className="btn btn-primary" onClick={() => navigate("/dashboard")}>
             View Dashboard
@@ -112,7 +143,7 @@ export default function ThankYouPage() {
           <button className="btn btn-secondary" onClick={() => navigate("/model-metrics")}>
             ML Model Performance
           </button>
-          <button className="btn btn-outline" onClick={() => (window.location.href = "/")}>
+          <button className="btn btn-outline" onClick={() => navigate("/")}>
             Return Home
           </button>
         </div>
