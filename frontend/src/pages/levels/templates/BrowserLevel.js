@@ -118,6 +118,7 @@ export default function BrowserLevel({ level: scenario }) {
     disabled={locked}
     onClick={() => {
       console.log('Report Phish clicked', level.correct_action);
+      console.log('onAction type:', typeof onAction);
       onAction(level.correct_action, { url: currentUrl, type: "phishing" });
     }}
   >
