@@ -1,2508 +1,1614 @@
-[
-  {
-    "scenario_id": "sc00055",
-    "level_no": "l26",
-    "title": "Account Verification Required",
-    "content": "\ud83d\udd11 Verify your account to avoid suspension",
-    "category": "medium",
-    "template": "mail",
-    "taxonomy": "Credential Phishing",
-    "correct_action": "Report Phish",
-    "neutral_action": "Check Official Site",
-    "wrong_action": "Verify Now",
-    "difficulty": 0.51,
-    "from_address": "\"Account Services\" <verify@en-phi-sim.vercel.app>",
-    "reply_to": "confirm@billing-center.org",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@corporation.net",
-    "phish_email": "support@message-center.info",
-    "body_html": "<p><strong>Account Verification Required:</strong> Our records indicate your account information needs updating. <a href='http://billing-center.org/verify'>Verify now</a> to maintain access.</p>",
-    "body_text": "Account Verification Required: Our records indicate your account information needs updating. Verify now to maintain access: http://billing-center.org/verify",
-    "links": [
-      "http://billing-center.org/verify"
-    ],
-    "has_attachment": false,
-    "attachments": [],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00028",
-    "level_no": "l10",
-    "title": "SMS (Smishing) generic link",
-    "content": "\ud83d\udcf1 UPS: Your package is waiting",
-    "category": "advanced_easy",
-    "template": "message",
-    "taxonomy": "Messaging Attacks",
-    "correct_action": "Report Phish",
-    "neutral_action": "Investigate",
-    "wrong_action": "Trust & Proceed",
-    "difficulty": 0.35,
-    "from_address": "\"UPS\" <+1-866-555-0156>",
-    "reply_to": "+1-866-555-0156",
-    "to_address": "+1-617-555-0132",
-    "crct_mail": "support@organization.org",
-    "phish_email": "support@login-service.co",
-    "body_html": null,
-    "body_text": "UPS: Your package is waiting. Track here: http://buff.ly/35fm17",
-    "links": [
-      "http://buff.ly/35fm17"
-    ],
-    "has_attachment": false,
-    "attachments": [],
-    "redirect_url": "http://identity-verify.co/confirm",
-    "display_url": "http://buff.ly/35fm17",
-    "shortener_service": "buff.ly",
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00043",
-    "level_no": "l17",
-    "title": "Man-in-the-Middle Attack",
-    "content": "\ud83d\udd78\ufe0f Connect to Cafe WiFi",
-    "category": "medium",
-    "template": "browser",
-    "taxonomy": "MITM Attack",
-    "correct_action": "Report Phish",
-    "neutral_action": "Use VPN",
-    "wrong_action": "Connect & Login",
-    "difficulty": 0.42,
-    "from_address": null,
-    "reply_to": null,
-    "to_address": null,
-    "crct_mail": "support@firm.com",
-    "phish_email": "support@billing-center.org",
-    "body_html": null,
-    "body_text": "Connect to Cafe WiFi to access the internet. Portal: http://secure-verify.net/coffee-shop",
-    "links": [
-      "http://secure-verify.net/coffee-shop"
-    ],
-    "has_attachment": false,
-    "attachments": [],
-    "redirect_url": "http://portal-coffee-shop.com/login",
-    "display_url": "http://secure-verify.net/coffee-shop",
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00057",
-    "level_no": "l28",
-    "title": "Fake Antivirus Alert",
-    "content": "\ud83d\udee1\ufe0f 5 viruses detected - Immediate action required",
-    "category": "medium",
-    "template": "browser",
-    "taxonomy": "Scareware",
-    "correct_action": "Report Phish",
-    "neutral_action": "Run Legitimate Scan",
-    "wrong_action": "Download Antivirus",
-    "difficulty": 0.53,
-    "from_address": null,
-    "reply_to": null,
-    "to_address": null,
-    "crct_mail": "support@workplace.co",
-    "phish_email": "support@secure-verify.net",
-    "body_html": "<div style='font-family: Arial; background: red; color: white; padding: 20px;'><h1>\u26a0\ufe0f CRITICAL ALERT \u26a0\ufe0f</h1><p>5 viruses detected! Your personal data is at risk.</p><a href='http://login-service.co/scan' style='background: white; color: red; padding: 10px;'>Run Scan Now</a></div>",
-    "body_text": "CRITICAL ALERT: 5 viruses detected! Your personal data is at risk. Run Scan Now: http://login-service.co/scan",
-    "links": [
-      "http://login-service.co/scan"
-    ],
-    "has_attachment": false,
-    "attachments": [],
-    "redirect_url": "http://antivirus-download.com/setup.exe",
-    "display_url": "http://login-service.co/scan",
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00059",
-    "level_no": "l30",
-    "title": "Cryptocurrency Investment Scam",
-    "content": "\u20bf Double your Bitcoin in 24 hours - Guaranteed!",
-    "category": "hard",
-    "template": "mail",
-    "taxonomy": "Crypto Fraud",
-    "correct_action": "Report Phish",
-    "neutral_action": "Research",
-    "wrong_action": "Invest Now",
-    "difficulty": 0.55,
-    "from_address": "\"Crypto Wealth\" <trading@en-phi-sim.vercel.app>",
-    "reply_to": "invest@identity-confirm.co",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@office.net",
-    "phish_email": "support@auth-verify.com",
-    "body_html": "<p><strong>Limited Time Opportunity!</strong> Our AI trading bot has achieved 100% returns for early investors. <a href='http://identity-confirm.co/invest'>Start investing</a> with as little as $100.</p>",
-    "body_text": "Limited Time Opportunity! Our AI trading bot has achieved 100% returns for early investors. Start investing with as little as $100: http://identity-confirm.co/invest",
-    "links": [
-      "http://identity-confirm.co/invest"
-    ],
-    "has_attachment": false,
-    "attachments": [],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00044",
-    "level_no": "l17",
-    "title": "Man-in-the-Middle Attack",
-    "content": "\ud83d\udd78\ufe0f Connect to Grand Hotel",
-    "category": "medium",
-    "template": "browser",
-    "taxonomy": "MITM Attack",
-    "correct_action": "Report Phish",
-    "neutral_action": "Use VPN",
-    "wrong_action": "Connect & Login",
-    "difficulty": 0.42,
-    "from_address": null,
-    "reply_to": null,
-    "to_address": null,
-    "crct_mail": "support@firm.com",
-    "phish_email": "support@secure-verify.net",
-    "body_html": null,
-    "body_text": "Connect to Grand Hotel to access the internet. Portal: http://message-center.info/hotel-guest",
-    "links": [
-      "http://message-center.info/hotel-guest"
-    ],
-    "has_attachment": false,
-    "attachments": [],
-    "redirect_url": "http://portal-hotel-guest.com/login",
-    "display_url": "http://message-center.info/hotel-guest",
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00047",
-    "level_no": "l19",
-    "title": "Credential Stuffing Alert",
-    "content": "\u26a0\ufe0f Multiple failed login attempts - Netflix",
-    "category": "medium",
-    "template": "mail",
-    "taxonomy": "Credential Stuffing",
-    "correct_action": "Report Phish",
-    "neutral_action": "Check Account",
-    "wrong_action": "Click to Secure",
-    "difficulty": 0.44,
-    "from_address": "\"Netflix Security\" <security@en-phi-sim.vercel.app>",
-    "reply_to": "alerts@shipping-notice.net",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@company.com",
-    "phish_email": "support@identity-confirm.co",
-    "body_html": "<p><strong>Security Alert:</strong> 15 failed login attempts detected on your Netflix account. <a href='http://shipping-notice.net/netflix-secure'>Review activity</a> and secure your account.</p>",
-    "body_text": "Security Alert: 15 failed login attempts detected on your Netflix account. Review activity and secure your account: http://shipping-notice.net/netflix-secure",
-    "links": [
-      "http://shipping-notice.net/netflix-secure"
-    ],
-    "has_attachment": false,
-    "attachments": [],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00026",
-    "level_no": "l9",
-    "title": "Malicious survey request",
-    "content": "\ud83d\udcdd IT Service Feedback Survey - Please complete",
-    "category": "advanced_easy",
-    "template": "mail",
-    "taxonomy": "Social Engineering",
-    "correct_action": "Report Phish",
-    "neutral_action": "Investigate",
-    "wrong_action": "Trust & Proceed",
-    "difficulty": 0.35,
-    "from_address": "\"HR\" <it-feedback@en-phi-sim.vercel.app>",
-    "reply_to": "survey@shipping-notice.net",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@firm.com",
-    "phish_email": "support@security-check.net",
-    "body_html": "<p><strong>We value your feedback.</strong> Please take 5 minutes to complete our it service feedback survey. <a href='http://shipping-notice.net/it-feedback'>Start survey</a> (login with your credentials).</p>",
-    "body_text": "We value your feedback. Please take 5 minutes to complete our it service feedback survey. Start survey (login with your credentials): http://shipping-notice.net/it-feedback",
-    "links": [
-      "http://shipping-notice.net/it-feedback"
-    ],
-    "has_attachment": true,
-    "attachments": [],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00014",
-    "level_no": "l5",
-    "title": "Simple attachment Lure",
-    "content": "\ud83d\udcce New voicemail received",
-    "category": "easy",
-    "template": "mail",
-    "taxonomy": "Messaging Attacks",
-    "correct_action": "Report Phish",
-    "neutral_action": "Ignore",
-    "wrong_action": "Trust & Click",
-    "difficulty": 0.3,
-    "from_address": "\"Documents\" <voicemail@en-phi-sim.vercel.app>",
-    "reply_to": "documents@login-service.co",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@corporation.net",
-    "phish_email": "support@billing-center.org",
-    "body_html": "<p><strong>New voicemail received.</strong> Please review the attached voicemail.wav. <a href='http://login-service.co/voicemail'>Download via portal</a> if attachment doesn't open.</p>",
-    "body_text": "New voicemail received. Please review the attached voicemail.wav. Download via portal if attachment doesn't open: http://login-service.co/voicemail",
-    "links": [
-      "http://login-service.co/voicemail"
-    ],
-    "has_attachment": true,
-    "attachments": [
-      {
-        "name": "voicemail.wav",
-        "type": "audio/x-wav",
-        "size": "876KB"
-      }
-    ],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "bonus00066",
-    "level_no": "b5",
-    "title": "Bonus: Cuckoo's Egg: Trojan Horse Detection",
-    "content": "\ud83e\udd8a Cuckoo Analogy: Understanding Trojan Horse",
-    "category": "bonus_analysis",
-    "template": "analysis",
-    "taxonomy": "Trojan Horse",
-    "correct_action": "Complete Analysis",
-    "neutral_action": "Skip",
-    "wrong_action": "Ignore Lesson",
-    "difficulty": 0.6,
-    "from_address": "\"Cybersecurity Training\" <training@en-phi-sim.vercel.app>",
-    "reply_to": "analytics@profile-update.co",
-    "to_address": "analyst@company.com",
-    "crct_mail": "support@firm.com",
-    "phish_email": "support@payment-portal.info",
-    "body_html": "\n                <div class='bonus-analysis' style='font-family: Arial; padding: 20px; border: 2px solid #4CAF50; border-radius: 10px;'>\n                    <h2 style='color: #4CAF50;'>\ud83e\udd8a Bonus Level: The Cuckoo Principle</h2>\n                    <div style='background: #f0f8ff; padding: 15px; border-radius: 8px; margin: 15px 0;'>\n                        <h3>\ud83c\udf3f Nature's Lesson:</h3>\n                        <p><em>Cuckoos lay eggs in other birds' nests, appearing harmless until the egg hatches and destroys the nest - exactly like Trojan horses.</em></p>\n                    </div>\n                    <div style='background: #fff3e0; padding: 15px; border-radius: 8px; margin: 15px 0;'>\n                        <h3>\ud83d\udee1\ufe0f Cybersecurity Connection:</h3>\n                        <p><strong>Just as birds learn to spot foreign eggs, systems need application whitelisting and verification.</strong></p>\n                    </div>\n                    <div style='background: #e8f5e8; padding: 15px; border-radius: 8px;'>\n                        <h3>\ud83d\udcca Analysis Task:</h3>\n                        <p>Review the following Trojan Horse scenario and identify how it mimics the Cuckoo's behavior:</p>\n                        <ul>\n                            <li><strong>Attack Type:</strong> Trojan Horse</li>\n                            <li><strong>Animal Parallel:</strong> Cuckoo</li>\n                            <li><strong>Indicators to analyze:</strong> Deception pattern, trust exploitation, impact mechanism</li>\n                        </ul>\n                        <p><a href='http://profile-update.co/bonus/b5' style='background: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Begin Analysis</a></p>\n                    </div>\n                </div>\n                ",
-    "body_text": "Bonus Level: The Cuckoo Principle - Cuckoos lay eggs in other birds' nests, appearing harmless until the egg hatches and destroys the nest - exactly like Trojan horses. Complete your analysis at: http://profile-update.co/bonus/b5",
-    "links": [
-      "http://profile-update.co/bonus/b5"
-    ],
-    "has_attachment": true,
-    "attachments": [
-      {
-        "name": "trojan_horse_analysis_worksheet.pdf",
-        "type": "application/pdf",
-        "size": "487KB"
-      }
-    ],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00030",
-    "level_no": "l10",
-    "title": "SMS (Smishing) generic link",
-    "content": "\ud83d\udcf1 Amazon: Account suspended",
-    "category": "advanced_easy",
-    "template": "message",
-    "taxonomy": "Messaging Attacks",
-    "correct_action": "Report Phish",
-    "neutral_action": "Investigate",
-    "wrong_action": "Trust & Proceed",
-    "difficulty": 0.35,
-    "from_address": "\"Amazon\" <+1-855-555-0189>",
-    "reply_to": "+1-800-555-0199",
-    "to_address": "+1-312-555-0145",
-    "crct_mail": "support@organization.org",
-    "phish_email": "support@auth-verify.com",
-    "body_html": null,
-    "body_text": "Amazon: Account suspended. Track here: http://bit.ly/5bx6y6",
-    "links": [
-      "http://bit.ly/5bx6y6"
-    ],
-    "has_attachment": false,
-    "attachments": [],
-    "redirect_url": "http://identity-verify.co/confirm",
-    "display_url": "http://bit.ly/5bx6y6",
-    "shortener_service": "bit.ly",
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00036",
-    "level_no": "l13",
-    "title": "Vishing - Voice Phishing",
-    "content": "\ud83d\udcde Urgent: Bank Security - fraudulent transaction",
-    "category": "medium",
-    "template": "mail",
-    "taxonomy": "Voice Phishing",
-    "correct_action": "Report Phish",
-    "neutral_action": "Call Official Number",
-    "wrong_action": "Call Back Number",
-    "difficulty": 0.38,
-    "from_address": "\"Bank Security\" <calls@en-phi-sim.vercel.app>",
-    "reply_to": "callback@message-center.info",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@firm.com",
-    "phish_email": "support@billing-center.org",
-    "body_html": "<p><strong>Urgent notification regarding your account:</strong> A fraudulent transaction has been reported. <a href='http://message-center.info/fraud-alert'>Call us immediately</a> at the verified number below.</p>",
-    "body_text": "Urgent notification regarding your account: A fraudulent transaction has been reported. Call us immediately at the verified number below: http://message-center.info/fraud-alert",
-    "links": [
-      "http://message-center.info/fraud-alert"
-    ],
-    "has_attachment": false,
-    "attachments": [],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00020",
-    "level_no": "l7",
-    "title": "TypoSquatted Domain Phish",
-    "content": "\ud83d\udd10 Amazon: Package delayed",
-    "category": "advanced_easy",
-    "template": "mail",
-    "taxonomy": "Credential Phishing",
-    "correct_action": "Report Phish",
-    "neutral_action": "Investigate",
-    "wrong_action": "Trust & Proceed",
-    "difficulty": 0.35,
-    "from_address": "\"Amazon Security\" <security@amaz0n.com>",
-    "reply_to": "support@secure-verify.net",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@enterprise.com",
-    "phish_email": "support@document-share.net",
-    "body_html": "<p><strong>Security notification:</strong> Your Amazon account has been package delayed. <a href='http://amaz0n.com/verify'>Verify now</a> to restore access.</p>",
-    "body_text": "Security notification: Your Amazon account has been package delayed. Verify now to restore access: http://amaz0n.com/verify",
-    "links": [
-      "http://amaz0n.com/verify"
-    ],
-    "has_attachment": true,
-    "attachments": [],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00010",
-    "level_no": "l4",
-    "title": "Lottery / Prize Scam",
-    "content": "\ud83c\udf81 Congratulations! You've won a $500 Gift Card",
-    "category": "easy",
-    "template": "mail",
-    "taxonomy": "Financial Fraud",
-    "correct_action": "Report Phish",
-    "neutral_action": "Ignore",
-    "wrong_action": "Trust & Click",
-    "difficulty": 0.28,
-    "from_address": "\"AWS Giveaways\" <giveaways@en-phi-sim.vercel.app>",
-    "reply_to": "claim@payment-portal.info",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@firm.com",
-    "phish_email": "support@message-center.info",
-    "body_html": "<p><strong>You're a winner!</strong> Your email was randomly selected for our $500 Gift Card giveaway. <a href='http://payment-portal.info/claim'>Claim your prize now</a> (limited time offer).</p>",
-    "body_text": "You're a winner! Your email was randomly selected for our $500 Gift Card giveaway. Claim your prize now (limited time offer): http://payment-portal.info/claim",
-    "links": [
-      "http://payment-portal.info/claim"
-    ],
-    "has_attachment": false,
-    "attachments": [],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "bonus00065",
-    "level_no": "b4",
-    "title": "Bonus: The Mockingbird Effect: Social Engineering Tactics",
-    "content": "\ud83e\udd8a Mockingbird Analogy: Understanding Social Engineering",
-    "category": "bonus_analysis",
-    "template": "analysis",
-    "taxonomy": "Social Engineering",
-    "correct_action": "Complete Analysis",
-    "neutral_action": "Skip",
-    "wrong_action": "Ignore Lesson",
-    "difficulty": 0.6,
-    "from_address": "\"Cybersecurity Training\" <training@en-phi-sim.vercel.app>",
-    "reply_to": "analytics@delivery-status.info",
-    "to_address": "analyst@company.com",
-    "crct_mail": "support@workplace.co",
-    "phish_email": "support@document-share.net",
-    "body_html": "\n                <div class='bonus-analysis' style='font-family: Arial; padding: 20px; border: 2px solid #4CAF50; border-radius: 10px;'>\n                    <h2 style='color: #4CAF50;'>\ud83e\udd8a Bonus Level: The Mockingbird Principle</h2>\n                    <div style='background: #f0f8ff; padding: 15px; border-radius: 8px; margin: 15px 0;'>\n                        <h3>\ud83c\udf3f Nature's Lesson:</h3>\n                        <p><em>Mockingbirds mimic the calls of other birds to deceive and manipulate - the perfect analogy for social engineering attacks that impersonate trusted entities.</em></p>\n                    </div>\n                    <div style='background: #fff3e0; padding: 15px; border-radius: 8px; margin: 15px 0;'>\n                        <h3>\ud83d\udee1\ufe0f Cybersecurity Connection:</h3>\n                        <p><strong>Just as birds learn to distinguish real calls from mimics, users need training to verify identities.</strong></p>\n                    </div>\n                    <div style='background: #e8f5e8; padding: 15px; border-radius: 8px;'>\n                        <h3>\ud83d\udcca Analysis Task:</h3>\n                        <p>Review the following Social Engineering scenario and identify how it mimics the Mockingbird's behavior:</p>\n                        <ul>\n                            <li><strong>Attack Type:</strong> Social Engineering</li>\n                            <li><strong>Animal Parallel:</strong> Mockingbird</li>\n                            <li><strong>Indicators to analyze:</strong> Deception pattern, trust exploitation, impact mechanism</li>\n                        </ul>\n                        <p><a href='http://delivery-status.info/bonus/b4' style='background: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Begin Analysis</a></p>\n                    </div>\n                </div>\n                ",
-    "body_text": "Bonus Level: The Mockingbird Principle - Mockingbirds mimic the calls of other birds to deceive and manipulate - the perfect analogy for social engineering attacks that impersonate trusted entities. Complete your analysis at: http://delivery-status.info/bonus/b4",
-    "links": [
-      "http://delivery-status.info/bonus/b4"
-    ],
-    "has_attachment": true,
-    "attachments": [
-      {
-        "name": "social_engineering_analysis_worksheet.pdf",
-        "type": "application/pdf",
-        "size": "523KB"
-      }
-    ],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00061",
-    "level_no": "l32",
-    "title": "Emergency Scam",
-    "content": "\ud83c\udd98 Urgent help needed - family emergency",
-    "category": "hard",
-    "template": "mail",
-    "taxonomy": "Emergency Fraud",
-    "correct_action": "Report Phish",
-    "neutral_action": "Call Family Directly",
-    "wrong_action": "Send Money",
-    "difficulty": 0.57,
-    "from_address": "\"Family Member\" <emergency@en-phi-sim.vercel.app>",
-    "reply_to": "help@verification-system.co",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@organization.org",
-    "phish_email": "support@account-update.info",
-    "body_html": "<p><strong>URGENT - Please respond</strong> I'm traveling and had my wallet stolen. Need $950 for hotel and flight home. <a href='http://verification-system.co/help'>Can you help?</a> Will pay you back next week.</p>",
-    "body_text": "URGENT - Please respond I'm traveling and had my wallet stolen. Need $950 for hotel and flight home. Can you help? Will pay you back next week: http://verification-system.co/help",
-    "links": [
-      "http://verification-system.co/help"
-    ],
-    "has_attachment": false,
-    "attachments": [],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00016",
-    "level_no": "l6",
-    "title": "Basic Spoofed display-name senders",
-    "content": "\u26a0\ufe0f Important: Password expires",
-    "category": "easy",
-    "template": "mail",
-    "taxonomy": "Credential Phishing",
-    "correct_action": "Report Phish",
-    "neutral_action": "Ignore",
-    "wrong_action": "Trust & Click",
-    "difficulty": 0.32,
-    "from_address": "\"Microsoft 365 Support\" <service@microsoft-verify.ru>",
-    "reply_to": "support@account-update.info",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@corporate.org",
-    "phish_email": "support@secure-verify.net",
-    "body_html": "<p><strong>Action required:</strong> Password expires. <a href='http://account-update.info/document'>Access document</a> using your credentials.</p>",
-    "body_text": "Action required: Password expires. Access document using your credentials: http://account-update.info/document",
-    "links": [
-      "http://account-update.info/document"
-    ],
-    "has_attachment": true,
-    "attachments": [
-      {
-        "name": "document_7331.pdf",
-        "type": "application/pdf",
-        "size": "234KB"
-      }
-    ],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00022",
-    "level_no": "l8",
-    "title": "URL Shortener Redirected Phish",
-    "content": "\ud83d\udea8 URGENT: Document shared with you",
-    "category": "advanced_easy",
-    "template": "browser",
-    "taxonomy": "Credential Phishing",
-    "correct_action": "Report Phish",
-    "neutral_action": "Investigate",
-    "wrong_action": "Trust & Proceed",
-    "difficulty": 0.35,
-    "from_address": null,
-    "reply_to": null,
-    "to_address": null,
-    "crct_mail": "support@organization.org",
-    "phish_email": "support@verification-system.co",
-    "body_html": null,
-    "body_text": "You are being redirected to: http://goo.gl/em74kdmx",
-    "links": [
-      "http://goo.gl/em74kdmx"
-    ],
-    "has_attachment": false,
-    "attachments": [],
-    "redirect_url": "http://account-verify.net/login",
-    "display_url": "http://goo.gl/em74kdmx",
-    "shortener_service": "goo.gl",
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "bonus00063",
-    "level_no": "b2",
-    "title": "Bonus: The Porcupine Defense: Ransomware Protection Strategies",
-    "content": "\ud83e\udd8a Porcupine Analogy: Understanding Ransomware",
-    "category": "bonus_analysis",
-    "template": "analysis",
-    "taxonomy": "Ransomware",
-    "correct_action": "Complete Analysis",
-    "neutral_action": "Skip",
-    "wrong_action": "Ignore Lesson",
-    "difficulty": 0.6,
-    "from_address": "\"Cybersecurity Training\" <training@en-phi-sim.vercel.app>",
-    "reply_to": "analytics@credential-check.net",
-    "to_address": "analyst@company.com",
-    "crct_mail": "support@corporate.org",
-    "phish_email": "support@credential-check.net",
-    "body_html": "\n                <div class='bonus-analysis' style='font-family: Arial; padding: 20px; border: 2px solid #4CAF50; border-radius: 10px;'>\n                    <h2 style='color: #4CAF50;'>\ud83e\udd8a Bonus Level: The Porcupine Principle</h2>\n                    <div style='background: #f0f8ff; padding: 15px; border-radius: 8px; margin: 15px 0;'>\n                        <h3>\ud83c\udf3f Nature's Lesson:</h3>\n                        <p><em>Porcupines don't attack first - they defend when threatened, then release quills that cause ongoing pain, similar to how ransomware activates and continues to cause damage.</em></p>\n                    </div>\n                    <div style='background: #fff3e0; padding: 15px; border-radius: 8px; margin: 15px 0;'>\n                        <h3>\ud83d\udee1\ufe0f Cybersecurity Connection:</h3>\n                        <p><strong>Like animals that avoid porcupines by keeping distance, systems need isolation and backups to avoid ransomware.</strong></p>\n                    </div>\n                    <div style='background: #e8f5e8; padding: 15px; border-radius: 8px;'>\n                        <h3>\ud83d\udcca Analysis Task:</h3>\n                        <p>Review the following Ransomware scenario and identify how it mimics the Porcupine's behavior:</p>\n                        <ul>\n                            <li><strong>Attack Type:</strong> Ransomware</li>\n                            <li><strong>Animal Parallel:</strong> Porcupine</li>\n                            <li><strong>Indicators to analyze:</strong> Deception pattern, trust exploitation, impact mechanism</li>\n                        </ul>\n                        <p><a href='http://credential-check.net/bonus/b2' style='background: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Begin Analysis</a></p>\n                    </div>\n                </div>\n                ",
-    "body_text": "Bonus Level: The Porcupine Principle - Porcupines don't attack first - they defend when threatened, then release quills that cause ongoing pain, similar to how ransomware activates and continues to cause damage. Complete your analysis at: http://credential-check.net/bonus/b2",
-    "links": [
-      "http://credential-check.net/bonus/b2"
-    ],
-    "has_attachment": true,
-    "attachments": [
-      {
-        "name": "ransomware_analysis_worksheet.pdf",
-        "type": "application/pdf",
-        "size": "579KB"
-      }
-    ],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00013",
-    "level_no": "l5",
-    "title": "Simple attachment Lure",
-    "content": "\ud83d\udcce Shipping label ready",
-    "category": "easy",
-    "template": "mail",
-    "taxonomy": "Messaging Attacks",
-    "correct_action": "Report Phish",
-    "neutral_action": "Ignore",
-    "wrong_action": "Trust & Click",
-    "difficulty": 0.3,
-    "from_address": "\"Documents\" <shipping-label@en-phi-sim.vercel.app>",
-    "reply_to": "documents@document-share.net",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@firm.com",
-    "phish_email": "support@delivery-status.info",
-    "body_html": "<p><strong>Shipping label ready.</strong> Please review the attached shipping_label.doc. <a href='http://document-share.net/shipping-label'>Download via portal</a> if attachment doesn't open.</p>",
-    "body_text": "Shipping label ready. Please review the attached shipping_label.doc. Download via portal if attachment doesn't open: http://document-share.net/shipping-label",
-    "links": [
-      "http://document-share.net/shipping-label"
-    ],
-    "has_attachment": true,
-    "attachments": [
-      {
-        "name": "shipping_label.doc",
-        "type": "application/msword",
-        "size": "156KB"
-      }
-    ],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00035",
-    "level_no": "l13",
-    "title": "Vishing - Voice Phishing",
-    "content": "\ud83d\udcde Urgent: IRS - tax fraud investigation",
-    "category": "medium",
-    "template": "mail",
-    "taxonomy": "Voice Phishing",
-    "correct_action": "Report Phish",
-    "neutral_action": "Call Official Number",
-    "wrong_action": "Call Back Number",
-    "difficulty": 0.38,
-    "from_address": "\"IRS\" <calls@en-phi-sim.vercel.app>",
-    "reply_to": "callback@account-update.info",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@company.com",
-    "phish_email": "support@auth-verify.com",
-    "body_html": "<p><strong>Urgent notification regarding your account:</strong> A tax fraud investigation has been reported. <a href='http://account-update.info/tax-fraud'>Call us immediately</a> at the verified number below.</p>",
-    "body_text": "Urgent notification regarding your account: A tax fraud investigation has been reported. Call us immediately at the verified number below: http://account-update.info/tax-fraud",
-    "links": [
-      "http://account-update.info/tax-fraud"
-    ],
-    "has_attachment": false,
-    "attachments": [],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00037",
-    "level_no": "l14",
-    "title": "Quishing - QR Code Phishing",
-    "content": "\ud83d\udcf1 Scan QR code for parking payment",
-    "category": "medium",
-    "template": "mail",
-    "taxonomy": "QR Code Phishing",
-    "correct_action": "Report Phish",
-    "neutral_action": "Inspect QR URL",
-    "wrong_action": "Scan QR Code",
-    "difficulty": 0.39,
-    "from_address": "\"Parking Payment Service\" <qr@en-phi-sim.vercel.app>",
-    "reply_to": "scan@login-service.co",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@corporation.net",
-    "phish_email": "support@security-check.net",
-    "body_html": "<p><strong>Action required:</strong> A parking citation requires your attention. <a href='http://login-service.co/parking-fine'>View QR code</a> to complete verification.</p>",
-    "body_text": "Action required: A parking citation requires your attention. View QR code to complete verification: http://login-service.co/parking-fine",
-    "links": [
-      "http://login-service.co/parking-fine"
-    ],
-    "has_attachment": true,
-    "attachments": [
-      {
-        "name": "qr_code_parking-fine.png",
-        "type": "image/png",
-        "size": "45KB"
-      }
-    ],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00001",
-    "level_no": "l1",
-    "title": "Mass Credential-Phish",
-    "content": "\ud83d\udea8 URGENT: Your mailbox is almost full",
-    "category": "easy",
-    "template": "mail",
-    "taxonomy": "Credential Phishing",
-    "correct_action": "Report Phish",
-    "neutral_action": "Ignore",
-    "wrong_action": "Trust & Click",
-    "difficulty": 0.22,
-    "from_address": "\"IT Support\" <mailbox-storage@en-phi-sim.vercel.app>",
-    "reply_to": "support@payment-portal.info",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@organization.org",
-    "phish_email": "support@shipping-notice.net",
-    "body_html": "<p><strong>Action Required:</strong> Your mailbox is almost full. <a href='http://payment-portal.info/mailbox-storage'>Click here to verify</a> and secure your account.</p>",
-    "body_text": "Action Required: Your mailbox is almost full. Click here to verify and secure your account: http://payment-portal.info/mailbox-storage",
-    "links": [
-      "http://payment-portal.info/mailbox-storage"
-    ],
-    "has_attachment": false,
-    "attachments": [],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00060",
-    "level_no": "l31",
-    "title": "Government Impersonation",
-    "content": "\u2696\ufe0f IRS: Tax fraud investigation - Respond immediately",
-    "category": "hard",
-    "template": "mail",
-    "taxonomy": "Government Fraud",
-    "correct_action": "Report Phish",
-    "neutral_action": "Contact IRS Directly",
-    "wrong_action": "Provide Information",
-    "difficulty": 0.56,
-    "from_address": "\"IRS Tax Division\" <tax-dept@en-phi-sim.vercel.app>",
-    "reply_to": "compliance@delivery-status.info",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@corporation.net",
-    "phish_email": "support@shipping-notice.net",
-    "body_html": "<p><strong>OFFICIAL NOTICE:</strong> Case #TAX-7843-22 - Your tax records indicate discrepancies requiring immediate review. <a href='http://delivery-status.info/respond'>Respond within 24 hours</a> to avoid legal action.</p>",
-    "body_text": "OFFICIAL NOTICE: Case #TAX-7843-22 - Your tax records indicate discrepancies requiring immediate review. Respond within 24 hours to avoid legal action: http://delivery-status.info/respond",
-    "links": [
-      "http://delivery-status.info/respond"
-    ],
-    "has_attachment": true,
-    "attachments": [
-      {
-        "name": "tax_notice_2025.pdf",
-        "type": "application/pdf",
-        "size": "234KB"
-      }
-    ],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00012",
-    "level_no": "l4",
-    "title": "Lottery / Prize Scam",
-    "content": "\ud83c\udf81 Congratulations! You've won a iPhone 15 Pro",
-    "category": "easy",
-    "template": "mail",
-    "taxonomy": "Financial Fraud",
-    "correct_action": "Report Phish",
-    "neutral_action": "Ignore",
-    "wrong_action": "Trust & Click",
-    "difficulty": 0.28,
-    "from_address": "\"Google Giveaways\" <giveaways@en-phi-sim.vercel.app>",
-    "reply_to": "claim@identity-confirm.co",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@business.org",
-    "phish_email": "support@delivery-status.info",
-    "body_html": "<p><strong>You're a winner!</strong> Your email was randomly selected for our iPhone 15 Pro giveaway. <a href='http://identity-confirm.co/claim'>Claim your prize now</a> (limited time offer).</p>",
-    "body_text": "You're a winner! Your email was randomly selected for our iPhone 15 Pro giveaway. Claim your prize now (limited time offer): http://identity-confirm.co/claim",
-    "links": [
-      "http://identity-confirm.co/claim"
-    ],
-    "has_attachment": true,
-    "attachments": [],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00021",
-    "level_no": "l7",
-    "title": "TypoSquatted Domain Phish",
-    "content": "\ud83d\udd10 LinkedIn: Profile views",
-    "category": "advanced_easy",
-    "template": "mail",
-    "taxonomy": "Credential Phishing",
-    "correct_action": "Report Phish",
-    "neutral_action": "Investigate",
-    "wrong_action": "Trust & Proceed",
-    "difficulty": 0.35,
-    "from_address": "\"LinkedIn Security\" <security@linkedln.com>",
-    "reply_to": "support@delivery-status.info",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@firm.com",
-    "phish_email": "support@security-check.net",
-    "body_html": "<p><strong>Security notification:</strong> Your LinkedIn account has been profile views. <a href='http://linkedln.com/verify'>Verify now</a> to restore access.</p>",
-    "body_text": "Security notification: Your LinkedIn account has been profile views. Verify now to restore access: http://linkedln.com/verify",
-    "links": [
-      "http://linkedln.com/verify"
-    ],
-    "has_attachment": true,
-    "attachments": [],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00042",
-    "level_no": "l16",
-    "title": "Clone Phishing",
-    "content": "\ud83d\udce7 Re: shipping confirmation",
-    "category": "medium",
-    "template": "mail",
-    "taxonomy": "Clone Phishing",
-    "correct_action": "Report Phish",
-    "neutral_action": "Compare with Original",
-    "wrong_action": "Trust & Click",
-    "difficulty": 0.41,
-    "from_address": "\"IT Support\" <replies@en-phi-sim.vercel.app>",
-    "reply_to": "updated@identity-confirm.co",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@corporate.org",
-    "phish_email": "support@identity-confirm.co",
-    "body_html": "<p><strong>Updated: shipping confirmation</strong> The previous shipping confirmation was sent with incorrect information. <a href='http://identity-confirm.co/shipping-update'>View corrected version</a> with updated details.</p>",
-    "body_text": "Updated: shipping confirmation The previous shipping confirmation was sent with incorrect information. View corrected version with updated details: http://identity-confirm.co/shipping-update",
-    "links": [
-      "http://identity-confirm.co/shipping-update"
-    ],
-    "has_attachment": true,
-    "attachments": [
-      {
-        "name": "updated_shipping-update.pdf",
-        "type": "application/pdf",
-        "size": "187KB"
-      }
-    ],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00018",
-    "level_no": "l6",
-    "title": "Basic Spoofed display-name senders",
-    "content": "\u26a0\ufe0f Important: Document shared",
-    "category": "easy",
-    "template": "mail",
-    "taxonomy": "Credential Phishing",
-    "correct_action": "Report Phish",
-    "neutral_action": "Ignore",
-    "wrong_action": "Trust & Click",
-    "difficulty": 0.32,
-    "from_address": "\"David Miller\" <service@david-miller.net>",
-    "reply_to": "support@security-check.net",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@corporation.net",
-    "phish_email": "support@credential-check.net",
-    "body_html": "<p><strong>Action required:</strong> Document shared. <a href='http://security-check.net/document'>Access document</a> using your credentials.</p>",
-    "body_text": "Action required: Document shared. Access document using your credentials: http://security-check.net/document",
-    "links": [
-      "http://security-check.net/document"
-    ],
-    "has_attachment": false,
-    "attachments": [
-      {
-        "name": "document_3578.pdf",
-        "type": "application/pdf",
-        "size": "234KB"
-      }
-    ],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00017",
-    "level_no": "l6",
-    "title": "Basic Spoofed display-name senders",
-    "content": "\u26a0\ufe0f Important: Benefits enrollment",
-    "category": "easy",
-    "template": "mail",
-    "taxonomy": "Credential Phishing",
-    "correct_action": "Report Phish",
-    "neutral_action": "Ignore",
-    "wrong_action": "Trust & Click",
-    "difficulty": 0.32,
-    "from_address": "\"HR Department\" <service@hr-benefits.co>",
-    "reply_to": "support@credential-check.net",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@corporation.net",
-    "phish_email": "support@credential-check.net",
-    "body_html": "<p><strong>Action required:</strong> Benefits enrollment. <a href='http://credential-check.net/document'>Access document</a> using your credentials.</p>",
-    "body_text": "Action required: Benefits enrollment. Access document using your credentials: http://credential-check.net/document",
-    "links": [
-      "http://credential-check.net/document"
-    ],
-    "has_attachment": true,
-    "attachments": [],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00045",
-    "level_no": "l18",
-    "title": "Watering Hole Attack",
-    "content": "\ud83d\udca7 Industry news update from industry-news.com",
-    "category": "medium",
-    "template": "mail",
-    "taxonomy": "Watering Hole",
-    "correct_action": "Report Phish",
-    "neutral_action": "Verify URL",
-    "wrong_action": "Visit Site",
-    "difficulty": 0.43,
-    "from_address": "\"Industry Updates\" <updates@industry-news.com>",
-    "reply_to": "news@delivery-status.info",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@firm.com",
-    "phish_email": "support@security-check.net",
-    "body_html": "<p><strong>Weekly industry digest</strong> from industry-news.com. <a href='http://delivery-status.info/industry-news'>Read full articles</a> on our partner site.</p>",
-    "body_text": "Weekly industry digest from industry-news.com. Read full articles on our partner site: http://delivery-status.info/industry-news",
-    "links": [
-      "http://delivery-status.info/industry-news"
-    ],
-    "has_attachment": false,
-    "attachments": [],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "final00068",
-    "level_no": "l39",
-    "title": "\u26a1 ADVANCED PERSISTENT PHISHING - FUSION ATTACK",
-    "content": "\ud83c\udfad Multi-stage attack combining 7 different phishing techniques",
-    "category": "expert",
-    "template": "multiphase",
-    "taxonomy": "Advanced Persistent Phishing",
-    "correct_action": "Report & Isolate",
-    "neutral_action": "Monitor",
-    "wrong_action": "Engage",
-    "difficulty": 0.99,
-    "from_address": "\"CEO Office\" <ceo.directive@en-phi-sim.vercel.app>",
-    "reply_to": "secure-channel@billing-center.org",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@enterprise.com",
-    "phish_email": "support@document-share.net",
-    "body_html": "\n            <div style='font-family: Arial; max-width: 800px; margin: 0 auto; border: 3px solid #ff4444; padding: 20px; border-radius: 15px;'>\n                <h1 style='color: #ff4444; text-align: center;'>\u26a0\ufe0f FINAL FUSION CHALLENGE \u26a0\ufe0f</h1>\n                <h2 style='text-align: center;'>Advanced Persistent Phishing (APP) Detection</h2>\n                \n                <div style='background: #000; color: #0f0; padding: 15px; font-family: monospace; border-radius: 8px;'>\n                    <p>\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510</p>\n                    <p>\u2502  CLASSIFICATION: MULTI-STAGE FUSION ATTACK  \u2502</p>\n                    <p>\u2502  THREAT LEVEL: \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588  \u2502</p>\n                    <p>\u2502  TECHNIQUES: 7 COMBINED                      \u2502</p>\n                    <p>\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518</p>\n                </div>\n\n                <div style='margin: 20px 0;'>\n                    <h3>\ud83d\udccb Attack Components:</h3>\n                    <ul style='list-style-type: none; padding: 0;'>\n                        <li style='padding: 8px; background: #fee; margin: 5px 0; border-radius: 5px;'>\ud83d\udd39 Phase 1: Spear Phishing (Executive Impersonation)</li>\n                        <li style='padding: 8px; background: #efe; margin: 5px 0; border-radius: 5px;'>\ud83d\udd39 Phase 2: Credential Harvesting (Typosquatted Domain)</li>\n                        <li style='padding: 8px; background: #fee; margin: 5px 0; border-radius: 5px;'>\ud83d\udd39 Phase 3: Session Hijacking (MITM)</li>\n                        <li style='padding: 8px; background: #efe; margin: 5px 0; border-radius: 5px;'>\ud83d\udd39 Phase 4: Malicious Attachment (Document Malware)</li>\n                        <li style='padding: 8px; background: #fee; margin: 5px 0; border-radius: 5px;'>\ud83d\udd39 Phase 5: Redirect Chain (3 URL Shorteners)</li>\n                        <li style='padding: 8px; background: #efe; margin: 5px 0; border-radius: 5px;'>\ud83d\udd39 Phase 6: Clone Phishing (Follow-up)</li>\n                        <li style='padding: 8px; background: #fee; margin: 5px 0; border-radius: 5px;'>\ud83d\udd39 Phase 7: Data Exfiltration (Background)</li>\n                    </ul>\n                </div>\n\n                <div style='background: #f0f0f0; padding: 20px; border-radius: 8px;'>\n                    <h3>\ud83d\udce7 INITIAL CONTACT:</h3>\n                    <p><strong>From:</strong> \"CEO Office\" &lt;ceo.directive@en-phi-sim.vercel.app&gt;</p>\n                    <p><strong>Subject:</strong> CONFIDENTIAL: Urgent Board Directive</p>\n                    <hr>\n                    <p>Team,</p>\n                    <p>The board has approved the Q4 strategic initiative. Attached is the confidential implementation plan requiring your immediate review and digital signature.</p>\n                    <p><strong>\ud83d\udd17 Step 1:</strong> <a href='http://tinyurl.com/fusion-stage1'>Access secure document portal</a> (credentials: your employee ID)</p>\n                    <p><strong>\ud83d\udcce Attachment:</strong> Q4_strategic_plan.pdf (encrypted)</p>\n                    <p><strong>\ud83d\udd11 Decryption key:</strong> Provided after portal login</p>\n                    <p>This is time-sensitive. Complete by EOD.</p>\n                    <p>- CEO Office</p>\n                </div>\n\n                <div style='margin-top: 20px; padding: 15px; background: #ffeb3b; border-radius: 8px;'>\n                    <p><strong>\u26a0\ufe0f CRITICAL NOTE:</strong> This is a fusion attack combining:\n                    <br>\u2022 Spoofed sender (CEO impersonation)\n                    <br>\u2022 Typosquatted domain in redirect chain\n                    <br>\u2022 URL shorteners (tinyurl.com \u2192 bit.ly \u2192 goo.gl \u2192 malicious)\n                    <br>\u2022 Malicious PDF with embedded macros\n                    <br>\u2022 Clone follow-up if no response in 2 hours\n                    <br>\u2022 Credential harvesting on final landing page\n                    <br>\u2022 Session cookie theft via MITM</p>\n                </div>\n\n                <div style='text-align: center; margin-top: 20px;'>\n                    <p><strong>Choose your response:</strong></p>\n                    <button style='background: #4CAF50; color: white; padding: 10px 20px; margin: 5px; border: none; border-radius: 5px; cursor: pointer;'>\ud83d\udea8 Report & Isolate (Correct)</button>\n                    <button style='background: #FFC107; color: black; padding: 10px 20px; margin: 5px; border: none; border-radius: 5px; cursor: pointer;'>\ud83d\udc40 Monitor (Neutral)</button>\n                    <button style='background: #f44336; color: white; padding: 10px 20px; margin: 5px; border: none; border-radius: 5px; cursor: pointer;'>\u26a0\ufe0f Click Link (Wrong)</button>\n                </div>\n            </div>\n            ",
-    "body_text": "FUSION ATTACK DETECTED: Advanced Persistent Phishing combining 7 techniques including CEO fraud, typosquatting, URL shorteners, and malware. This is the final level challenge.",
-    "links": [
-      "http://tinyurl.com/fusion-stage1",
-      "http://bit.ly/fusion-stage2",
-      "http://goo.gl/fusion-stage3",
-      "http://billing-center.org/final-login"
-    ],
-    "has_attachment": true,
-    "attachments": [
-      {
-        "name": "Q4_strategic_plan.pdf",
-        "type": "application/pdf",
-        "size": "2.4MB"
-      },
-      {
-        "name": "digital_signature_required.ps1",
-        "type": "application/x-powershell",
-        "size": "45KB"
-      }
-    ],
-    "redirect_url": "http://secure-boardroom.com/authenticate",
-    "display_url": "http://tinyurl.com/fusion-stage1",
-    "shortener_service": "multi-stage",
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00053",
-    "level_no": "l24",
-    "title": "Charity Scam",
-    "content": "\ud83e\udd1d Urgent: Help disaster victims",
-    "category": "medium",
-    "template": "mail",
-    "taxonomy": "Financial Fraud",
-    "correct_action": "Report Phish",
-    "neutral_action": "Research Charity",
-    "wrong_action": "Donate Now",
-    "difficulty": 0.49,
-    "from_address": "\"Global Relief\" <relief@en-phi-sim.vercel.app>",
-    "reply_to": "donate@identity-confirm.co",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@office.net",
-    "phish_email": "support@billing-center.org",
-    "body_html": "<p><strong>Emergency Relief Fund:</strong> Thousands affected by recent disaster need your help. <a href='http://identity-confirm.co/donate'>Donate now</a> - 100% goes to victims.</p>",
-    "body_text": "Emergency Relief Fund: Thousands affected by recent disaster need your help. Donate now - 100% goes to victims: http://identity-confirm.co/donate",
-    "links": [
-      "http://identity-confirm.co/donate"
-    ],
-    "has_attachment": false,
-    "attachments": [],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "bonus00064",
-    "level_no": "b3",
-    "title": "Bonus: Army Ant Strategy: Understanding DDoS Attacks",
-    "content": "\ud83e\udd8a Army Ants Analogy: Understanding DDoS Attacks",
-    "category": "bonus_analysis",
-    "template": "analysis",
-    "taxonomy": "DDoS Attacks",
-    "correct_action": "Complete Analysis",
-    "neutral_action": "Skip",
-    "wrong_action": "Ignore Lesson",
-    "difficulty": 0.6,
-    "from_address": "\"Cybersecurity Training\" <training@en-phi-sim.vercel.app>",
-    "reply_to": "analytics@document-share.net",
-    "to_address": "analyst@company.com",
-    "crct_mail": "support@office.net",
-    "phish_email": "support@secure-verify.net",
-    "body_html": "\n                <div class='bonus-analysis' style='font-family: Arial; padding: 20px; border: 2px solid #4CAF50; border-radius: 10px;'>\n                    <h2 style='color: #4CAF50;'>\ud83e\udd8a Bonus Level: The Army Ants Principle</h2>\n                    <div style='background: #f0f8ff; padding: 15px; border-radius: 8px; margin: 15px 0;'>\n                        <h3>\ud83c\udf3f Nature's Lesson:</h3>\n                        <p><em>Army ants attack in overwhelming numbers, swarming their target until it's overwhelmed - exactly like DDoS attacks flood servers with traffic.</em></p>\n                    </div>\n                    <div style='background: #fff3e0; padding: 15px; border-radius: 8px; margin: 15px 0;'>\n                        <h3>\ud83d\udee1\ufe0f Cybersecurity Connection:</h3>\n                        <p><strong>Just as prey creates barriers to divert ant swarms, networks need traffic filtering and load balancing.</strong></p>\n                    </div>\n                    <div style='background: #e8f5e8; padding: 15px; border-radius: 8px;'>\n                        <h3>\ud83d\udcca Analysis Task:</h3>\n                        <p>Review the following DDoS Attacks scenario and identify how it mimics the Army Ants's behavior:</p>\n                        <ul>\n                            <li><strong>Attack Type:</strong> DDoS Attacks</li>\n                            <li><strong>Animal Parallel:</strong> Army Ants</li>\n                            <li><strong>Indicators to analyze:</strong> Deception pattern, trust exploitation, impact mechanism</li>\n                        </ul>\n                        <p><a href='http://document-share.net/bonus/b3' style='background: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Begin Analysis</a></p>\n                    </div>\n                </div>\n                ",
-    "body_text": "Bonus Level: The Army Ants Principle - Army ants attack in overwhelming numbers, swarming their target until it's overwhelmed - exactly like DDoS attacks flood servers with traffic. Complete your analysis at: http://document-share.net/bonus/b3",
-    "links": [
-      "http://document-share.net/bonus/b3"
-    ],
-    "has_attachment": true,
-    "attachments": [
-      {
-        "name": "ddos_attacks_analysis_worksheet.pdf",
-        "type": "application/pdf",
-        "size": "428KB"
-      }
-    ],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00025",
-    "level_no": "l9",
-    "title": "Malicious survey request",
-    "content": "\ud83d\udcdd Employee Satisfaction Survey - Please complete",
-    "category": "advanced_easy",
-    "template": "mail",
-    "taxonomy": "Social Engineering",
-    "correct_action": "Report Phish",
-    "neutral_action": "Investigate",
-    "wrong_action": "Trust & Proceed",
-    "difficulty": 0.35,
-    "from_address": "\"Admin\" <employee-survey@en-phi-sim.vercel.app>",
-    "reply_to": "survey@delivery-status.info",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@firm.com",
-    "phish_email": "support@profile-update.co",
-    "body_html": "<p><strong>We value your feedback.</strong> Please take 5 minutes to complete our employee satisfaction survey. <a href='http://delivery-status.info/employee-survey'>Start survey</a> (login with your credentials).</p>",
-    "body_text": "We value your feedback. Please take 5 minutes to complete our employee satisfaction survey. Start survey (login with your credentials): http://delivery-status.info/employee-survey",
-    "links": [
-      "http://delivery-status.info/employee-survey"
-    ],
-    "has_attachment": true,
-    "attachments": [
-      {
-        "name": "survey_preview.pdf",
-        "type": "application/pdf",
-        "size": "98KB"
-      }
-    ],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00002",
-    "level_no": "l1",
-    "title": "Mass Credential-Phish",
-    "content": "\ud83d\udea8 URGENT: Unusual sign-in detected",
-    "category": "easy",
-    "template": "mail",
-    "taxonomy": "Credential Phishing",
-    "correct_action": "Report Phish",
-    "neutral_action": "Ignore",
-    "wrong_action": "Trust & Click",
-    "difficulty": 0.22,
-    "from_address": "\"HR Department\" <signin-activity@en-phi-sim.vercel.app>",
-    "reply_to": "support@billing-center.org",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@corporation.net",
-    "phish_email": "support@login-service.co",
-    "body_html": "<p><strong>Action Required:</strong> Unusual sign-in detected. <a href='http://billing-center.org/signin-activity'>Click here to verify</a> and secure your account.</p>",
-    "body_text": "Action Required: Unusual sign-in detected. Click here to verify and secure your account: http://billing-center.org/signin-activity",
-    "links": [
-      "http://billing-center.org/signin-activity"
-    ],
-    "has_attachment": true,
-    "attachments": [],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00019",
-    "level_no": "l7",
-    "title": "TypoSquatted Domain Phish",
-    "content": "\ud83d\udd10 PayPal: Account limited",
-    "category": "advanced_easy",
-    "template": "mail",
-    "taxonomy": "Credential Phishing",
-    "correct_action": "Report Phish",
-    "neutral_action": "Investigate",
-    "wrong_action": "Trust & Proceed",
-    "difficulty": 0.35,
-    "from_address": "\"PayPal Security\" <security@paypa1.com>",
-    "reply_to": "support@billing-center.org",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@organization.org",
-    "phish_email": "support@login-service.co",
-    "body_html": "<p><strong>Security notification:</strong> Your PayPal account has been account limited. <a href='http://paypa1.com/verify'>Verify now</a> to restore access.</p>",
-    "body_text": "Security notification: Your PayPal account has been account limited. Verify now to restore access: http://paypa1.com/verify",
-    "links": [
-      "http://paypa1.com/verify"
-    ],
-    "has_attachment": true,
-    "attachments": [
-      {
-        "name": "paypal_report.pdf",
-        "type": "application/pdf",
-        "size": "156KB"
-      }
-    ],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00006",
-    "level_no": "l2",
-    "title": "Scam Invoice/Payment reminder",
-    "content": "\ud83d\udcb0 Office365: Refund processed $79.99",
-    "category": "easy",
-    "template": "mail",
-    "taxonomy": "Financial Fraud",
-    "correct_action": "Report Phish",
-    "neutral_action": "Ignore",
-    "wrong_action": "Trust & Click",
-    "difficulty": 0.24,
-    "from_address": "\"Office365 Billing\" <billing@en-phi-sim.vercel.app>",
-    "reply_to": "accounts@billing-center.org",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@corporate.org",
-    "phish_email": "support@credential-check.net",
-    "body_html": "<p><strong>Payment Refund processed:</strong> Your Office365 account has been charged $79.99. <a href='http://billing-center.org/refund-claim'>View invoice</a> or dispute if unauthorized.</p>",
-    "body_text": "Payment Refund processed: Your Office365 account has been charged $79.99. View invoice or dispute if unauthorized: http://billing-center.org/refund-claim",
-    "links": [
-      "http://billing-center.org/refund-claim"
-    ],
-    "has_attachment": true,
-    "attachments": [
-      {
-        "name": "invoice_9449.pdf",
-        "type": "application/pdf",
-        "size": "156KB"
-      }
-    ],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00023",
-    "level_no": "l8",
-    "title": "URL Shortener Redirected Phish",
-    "content": "\ud83d\udea8 URGENT: Document shared with you",
-    "category": "advanced_easy",
-    "template": "browser",
-    "taxonomy": "Credential Phishing",
-    "correct_action": "Report Phish",
-    "neutral_action": "Investigate",
-    "wrong_action": "Trust & Proceed",
-    "difficulty": 0.35,
-    "from_address": null,
-    "reply_to": null,
-    "to_address": null,
-    "crct_mail": "support@office.net",
-    "phish_email": "support@secure-verify.net",
-    "body_html": null,
-    "body_text": "You are being redirected to: http://rebrand.ly/f9p13btl",
-    "links": [
-      "http://rebrand.ly/f9p13btl"
-    ],
-    "has_attachment": false,
-    "attachments": [],
-    "redirect_url": "http://document-share.ai/authenticate",
-    "display_url": "http://rebrand.ly/f9p13btl",
-    "shortener_service": "rebrand.ly",
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00051",
-    "level_no": "l22",
-    "title": "Tech Support Scam",
-    "content": "\ud83d\udda5\ufe0f Critical System Alert - Call Immediately",
-    "category": "medium",
-    "template": "mail",
-    "taxonomy": "Tech Support Fraud",
-    "correct_action": "Report Phish",
-    "neutral_action": "Contact IT Directly",
-    "wrong_action": "Call Number",
-    "difficulty": 0.47,
-    "from_address": "\"Microsoft Support\" <alerts@en-phi-sim.vercel.app>",
-    "reply_to": "help@identity-confirm.co",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@corporate.org",
-    "phish_email": "support@shipping-notice.net",
-    "body_html": "<p><strong>CRITICAL SYSTEM ALERT:</strong> Your computer has reported malware infections. <a href='http://identity-confirm.co/support'>Call support immediately</a> at 1-800-555-0123.</p>",
-    "body_text": "CRITICAL SYSTEM ALERT: Your computer has reported malware infections. Call support immediately at 1-800-555-0123: http://identity-confirm.co/support",
-    "links": [
-      "http://identity-confirm.co/support"
-    ],
-    "has_attachment": false,
-    "attachments": [],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00050",
-    "level_no": "l21",
-    "title": "Evil Twin Wi-Fi Attack",
-    "content": "\ud83d\udcf6 Free Company Wi-Fi Available",
-    "category": "medium",
-    "template": "browser",
-    "taxonomy": "Wi-Fi Phishing",
-    "correct_action": "Report Phish",
-    "neutral_action": "Verify Network",
-    "wrong_action": "Connect",
-    "difficulty": 0.46,
-    "from_address": null,
-    "reply_to": null,
-    "to_address": null,
-    "crct_mail": "support@workplace.co",
-    "phish_email": "support@profile-update.co",
-    "body_html": null,
-    "body_text": "Free Company Guest Wi-Fi available. Connect to 'Company-Guest' and login at: http://document-share.net/portal",
-    "links": [
-      "http://document-share.net/portal"
-    ],
-    "has_attachment": false,
-    "attachments": [],
-    "redirect_url": "http://company-portal.com/authenticate",
-    "display_url": "http://document-share.net/portal",
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00005",
-    "level_no": "l2",
-    "title": "Scam Invoice/Payment reminder",
-    "content": "\ud83d\udcb0 LinkedIn: Payment receipt $1,299.00",
-    "category": "easy",
-    "template": "mail",
-    "taxonomy": "Financial Fraud",
-    "correct_action": "Report Phish",
-    "neutral_action": "Ignore",
-    "wrong_action": "Trust & Click",
-    "difficulty": 0.24,
-    "from_address": "\"LinkedIn Billing\" <billing@en-phi-sim.vercel.app>",
-    "reply_to": "accounts@credential-check.net",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@business.org",
-    "phish_email": "support@verification-system.co",
-    "body_html": "<p><strong>Payment Payment receipt:</strong> Your LinkedIn account has been charged $1,299.00. <a href='http://credential-check.net/payment-receipt'>View invoice</a> or dispute if unauthorized.</p>",
-    "body_text": "Payment Payment receipt: Your LinkedIn account has been charged $1,299.00. View invoice or dispute if unauthorized: http://credential-check.net/payment-receipt",
-    "links": [
-      "http://credential-check.net/payment-receipt"
-    ],
-    "has_attachment": true,
-    "attachments": [
-      {
-        "name": "invoice_8195.pdf",
-        "type": "application/pdf",
-        "size": "156KB"
-      }
-    ],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00015",
-    "level_no": "l5",
-    "title": "Simple attachment Lure",
-    "content": "\ud83d\udcce Invoice attached",
-    "category": "easy",
-    "template": "mail",
-    "taxonomy": "Messaging Attacks",
-    "correct_action": "Report Phish",
-    "neutral_action": "Ignore",
-    "wrong_action": "Trust & Click",
-    "difficulty": 0.3,
-    "from_address": "\"Messaging\" <invoice-view@en-phi-sim.vercel.app>",
-    "reply_to": "documents@profile-update.co",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@corporation.net",
-    "phish_email": "support@login-service.co",
-    "body_html": "<p><strong>Invoice attached.</strong> Please review the attached invoice_7732.pdf. <a href='http://profile-update.co/invoice-view'>Download via portal</a> if attachment doesn't open.</p>",
-    "body_text": "Invoice attached. Please review the attached invoice_7732.pdf. Download via portal if attachment doesn't open: http://profile-update.co/invoice-view",
-    "links": [
-      "http://profile-update.co/invoice-view"
-    ],
-    "has_attachment": true,
-    "attachments": [
-      {
-        "name": "invoice_7732.pdf",
-        "type": "application/pdf",
-        "size": "215KB"
-      }
-    ],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00004",
-    "level_no": "l2",
-    "title": "Scam Invoice/Payment reminder",
-    "content": "\ud83d\udcb0 Amazon: Invoice overdue $499.99",
-    "category": "easy",
-    "template": "mail",
-    "taxonomy": "Financial Fraud",
-    "correct_action": "Report Phish",
-    "neutral_action": "Ignore",
-    "wrong_action": "Trust & Click",
-    "difficulty": 0.24,
-    "from_address": "\"Amazon Billing\" <billing@en-phi-sim.vercel.app>",
-    "reply_to": "accounts@delivery-status.info",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@company.com",
-    "phish_email": "support@verification-system.co",
-    "body_html": "<p><strong>Payment Invoice overdue:</strong> Your Amazon account has been charged $499.99. <a href='http://delivery-status.info/invoice-pay'>View invoice</a> or dispute if unauthorized.</p>",
-    "body_text": "Payment Invoice overdue: Your Amazon account has been charged $499.99. View invoice or dispute if unauthorized: http://delivery-status.info/invoice-pay",
-    "links": [
-      "http://delivery-status.info/invoice-pay"
-    ],
-    "has_attachment": true,
-    "attachments": [
-      {
-        "name": "invoice_7229.pdf",
-        "type": "application/pdf",
-        "size": "156KB"
-      }
-    ],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "bonus00062",
-    "level_no": "b1",
-    "title": "Bonus: The Anglerfish Principle: Understanding Phishing Lures",
-    "content": "\ud83e\udd8a Anglerfish Analogy: Understanding Phishing",
-    "category": "bonus_analysis",
-    "template": "analysis",
-    "taxonomy": "Phishing",
-    "correct_action": "Complete Analysis",
-    "neutral_action": "Skip",
-    "wrong_action": "Ignore Lesson",
-    "difficulty": 0.6,
-    "from_address": "\"Cybersecurity Training\" <training@en-phi-sim.vercel.app>",
-    "reply_to": "analytics@verification-system.co",
-    "to_address": "analyst@company.com",
-    "crct_mail": "support@enterprise.com",
-    "phish_email": "support@shipping-notice.net",
-    "body_html": "\n                <div class='bonus-analysis' style='font-family: Arial; padding: 20px; border: 2px solid #4CAF50; border-radius: 10px;'>\n                    <h2 style='color: #4CAF50;'>\ud83e\udd8a Bonus Level: The Anglerfish Principle</h2>\n                    <div style='background: #f0f8ff; padding: 15px; border-radius: 8px; margin: 15px 0;'>\n                        <h3>\ud83c\udf3f Nature's Lesson:</h3>\n                        <p><em>Anglerfish use a bioluminescent lure to attract prey in the dark depths - exactly like phishing emails use enticing baits to lure victims.</em></p>\n                    </div>\n                    <div style='background: #fff3e0; padding: 15px; border-radius: 8px; margin: 15px 0;'>\n                        <h3>\ud83d\udee1\ufe0f Cybersecurity Connection:</h3>\n                        <p><strong>Just as prey learns to recognize the anglerfish's deceptive light, users must learn to recognize suspicious lures.</strong></p>\n                    </div>\n                    <div style='background: #e8f5e8; padding: 15px; border-radius: 8px;'>\n                        <h3>\ud83d\udcca Analysis Task:</h3>\n                        <p>Review the following Phishing scenario and identify how it mimics the Anglerfish's behavior:</p>\n                        <ul>\n                            <li><strong>Attack Type:</strong> Phishing</li>\n                            <li><strong>Animal Parallel:</strong> Anglerfish</li>\n                            <li><strong>Indicators to analyze:</strong> Deception pattern, trust exploitation, impact mechanism</li>\n                        </ul>\n                        <p><a href='http://verification-system.co/bonus/b1' style='background: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Begin Analysis</a></p>\n                    </div>\n                </div>\n                ",
-    "body_text": "Bonus Level: The Anglerfish Principle - Anglerfish use a bioluminescent lure to attract prey in the dark depths - exactly like phishing emails use enticing baits to lure victims. Complete your analysis at: http://verification-system.co/bonus/b1",
-    "links": [
-      "http://verification-system.co/bonus/b1"
-    ],
-    "has_attachment": true,
-    "attachments": [
-      {
-        "name": "phishing_analysis_worksheet.pdf",
-        "type": "application/pdf",
-        "size": "582KB"
-      }
-    ],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00040",
-    "level_no": "l15",
-    "title": "Pharming - DNS Poisoning",
-    "content": "\ud83c\udf10 Bank of America: Security certificate expired",
-    "category": "medium",
-    "template": "browser",
-    "taxonomy": "DNS Poisoning",
-    "correct_action": "Report Phish",
-    "neutral_action": "Check Certificate",
-    "wrong_action": "Proceed Anyway",
-    "difficulty": 0.4,
-    "from_address": null,
-    "reply_to": null,
-    "to_address": null,
-    "crct_mail": "support@enterprise.com",
-    "phish_email": "support@security-check.net",
-    "body_html": "<div style='font-family: Arial;'><h3>Security Warning</h3><p>The security certificate for Bank of America.com has expired. <a href='http://verification-system.co/renew'>Renew certificate</a> to continue.</p></div>",
-    "body_text": "Security Warning: The security certificate for Bank of America.com has expired. Renew certificate to continue: http://verification-system.co/renew",
-    "links": [
-      "http://verification-system.co/renew"
-    ],
-    "has_attachment": false,
-    "attachments": [],
-    "redirect_url": "http://bankofamerica-secure.com/login",
-    "display_url": "http://verification-system.co/renew",
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "bonus00067",
-    "level_no": "b6",
-    "title": "Bonus: The Zombie Ant Phenomenon: Botnet Behavior Analysis",
-    "content": "\ud83e\udd8a Zombie Ant Fungus Analogy: Understanding Botnets",
-    "category": "bonus_analysis",
-    "template": "analysis",
-    "taxonomy": "Botnets",
-    "correct_action": "Complete Analysis",
-    "neutral_action": "Skip",
-    "wrong_action": "Ignore Lesson",
-    "difficulty": 0.6,
-    "from_address": "\"Cybersecurity Training\" <training@en-phi-sim.vercel.app>",
-    "reply_to": "analytics@profile-update.co",
-    "to_address": "analyst@company.com",
-    "crct_mail": "support@company.com",
-    "phish_email": "support@credential-check.net",
-    "body_html": "\n                <div class='bonus-analysis' style='font-family: Arial; padding: 20px; border: 2px solid #4CAF50; border-radius: 10px;'>\n                    <h2 style='color: #4CAF50;'>\ud83e\udd8a Bonus Level: The Zombie Ant Fungus Principle</h2>\n                    <div style='background: #f0f8ff; padding: 15px; border-radius: 8px; margin: 15px 0;'>\n                        <h3>\ud83c\udf3f Nature's Lesson:</h3>\n                        <p><em>Ophiocordyceps fungus turns ants into zombies, controlling them for the fungus's purposes - exactly like botnets controlling infected devices.</em></p>\n                    </div>\n                    <div style='background: #fff3e0; padding: 15px; border-radius: 8px; margin: 15px 0;'>\n                        <h3>\ud83d\udee1\ufe0f Cybersecurity Connection:</h3>\n                        <p><strong>Just as ants have immune responses, devices need regular health checks and botnet detection.</strong></p>\n                    </div>\n                    <div style='background: #e8f5e8; padding: 15px; border-radius: 8px;'>\n                        <h3>\ud83d\udcca Analysis Task:</h3>\n                        <p>Review the following Botnets scenario and identify how it mimics the Zombie Ant Fungus's behavior:</p>\n                        <ul>\n                            <li><strong>Attack Type:</strong> Botnets</li>\n                            <li><strong>Animal Parallel:</strong> Zombie Ant Fungus</li>\n                            <li><strong>Indicators to analyze:</strong> Deception pattern, trust exploitation, impact mechanism</li>\n                        </ul>\n                        <p><a href='http://profile-update.co/bonus/b6' style='background: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Begin Analysis</a></p>\n                    </div>\n                </div>\n                ",
-    "body_text": "Bonus Level: The Zombie Ant Fungus Principle - Ophiocordyceps fungus turns ants into zombies, controlling them for the fungus's purposes - exactly like botnets controlling infected devices. Complete your analysis at: http://profile-update.co/bonus/b6",
-    "links": [
-      "http://profile-update.co/bonus/b6"
-    ],
-    "has_attachment": true,
-    "attachments": [
-      {
-        "name": "botnets_analysis_worksheet.pdf",
-        "type": "application/pdf",
-        "size": "483KB"
-      }
-    ],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00024",
-    "level_no": "l8",
-    "title": "URL Shortener Redirected Phish",
-    "content": "\ud83d\udea8 URGENT: Document shared with you",
-    "category": "advanced_easy",
-    "template": "browser",
-    "taxonomy": "Credential Phishing",
-    "correct_action": "Report Phish",
-    "neutral_action": "Investigate",
-    "wrong_action": "Trust & Proceed",
-    "difficulty": 0.35,
-    "from_address": null,
-    "reply_to": null,
-    "to_address": null,
-    "crct_mail": "support@business.org",
-    "phish_email": "support@login-service.co",
-    "body_html": null,
-    "body_text": "You are being redirected to: http://bit.ly/nzv96fv5",
-    "links": [
-      "http://bit.ly/nzv96fv5"
-    ],
-    "has_attachment": false,
-    "attachments": [],
-    "redirect_url": "http://identity-verify.co/confirm",
-    "display_url": "http://bit.ly/nzv96fv5",
-    "shortener_service": "bit.ly",
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00056",
-    "level_no": "l27",
-    "title": "Package Delivery Scam",
-    "content": "\ud83d\udce6 Your package could not be delivered",
-    "category": "medium",
-    "template": "mail",
-    "taxonomy": "Shipping Fraud",
-    "correct_action": "Report Phish",
-    "neutral_action": "Check Tracking",
-    "wrong_action": "Reschedule Delivery",
-    "difficulty": 0.52,
-    "from_address": "\"USPS Delivery\" <delivery@en-phi-sim.vercel.app>",
-    "reply_to": "reschedule@secure-verify.net",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@company.com",
-    "phish_email": "support@delivery-status.info",
-    "body_html": "<p><strong>Delivery Attempt Failed:</strong> We attempted to deliver your package but no one was available. <a href='http://secure-verify.net/reschedule'>Reschedule delivery</a> within 48 hours.</p>",
-    "body_text": "Delivery Attempt Failed: We attempted to deliver your package but no one was available. Reschedule delivery within 48 hours: http://secure-verify.net/reschedule",
-    "links": [
-      "http://secure-verify.net/reschedule"
-    ],
-    "has_attachment": false,
-    "attachments": [],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00029",
-    "level_no": "l10",
-    "title": "SMS (Smishing) generic link",
-    "content": "\ud83d\udcf1 FedEx: Delivery failed",
-    "category": "advanced_easy",
-    "template": "message",
-    "taxonomy": "Messaging Attacks",
-    "correct_action": "Report Phish",
-    "neutral_action": "Investigate",
-    "wrong_action": "Trust & Proceed",
-    "difficulty": 0.35,
-    "from_address": "\"FedEx\" <+1-888-555-0172>",
-    "reply_to": "+1-800-555-0199",
-    "to_address": "+1-617-555-0132",
-    "crct_mail": "support@business.org",
-    "phish_email": "support@shipping-notice.net",
-    "body_html": null,
-    "body_text": "FedEx: Delivery failed. Track here: http://short.link/bs0vfv",
-    "links": [
-      "http://short.link/bs0vfv"
-    ],
-    "has_attachment": false,
-    "attachments": [],
-    "redirect_url": "http://secure-login.com/verify",
-    "display_url": "http://short.link/bs0vfv",
-    "shortener_service": "short.link",
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00054",
-    "level_no": "l25",
-    "title": "Fake Job Offer",
-    "content": "\ud83d\udcbc Remote Position - $150k/year - No Experience Needed",
-    "category": "medium",
-    "template": "mail",
-    "taxonomy": "Employment Fraud",
-    "correct_action": "Report Phish",
-    "neutral_action": "Research Company",
-    "wrong_action": "Apply Now",
-    "difficulty": 0.5,
-    "from_address": "\"HR Recruiting\" <careers@en-phi-sim.vercel.app>",
-    "reply_to": "apply@secure-verify.net",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@workplace.co",
-    "phish_email": "support@credential-check.net",
-    "body_html": "<p><strong>Exciting Career Opportunity!</strong> We reviewed your profile and think you'd be perfect for a remote position. <a href='http://secure-verify.net/apply'>Apply now</a> before positions fill.</p>",
-    "body_text": "Exciting Career Opportunity! We reviewed your profile and think you'd be perfect for a remote position. Apply now before positions fill: http://secure-verify.net/apply",
-    "links": [
-      "http://secure-verify.net/apply"
-    ],
-    "has_attachment": true,
-    "attachments": [
-      {
-        "name": "job_description.pdf",
-        "type": "application/pdf",
-        "size": "234KB"
-      }
-    ],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00009",
-    "level_no": "l3",
-    "title": "Fake Newsletter Subscription",
-    "content": "\ud83d\udcf0 You've been subscribed to TechCrunch Premium",
-    "category": "easy",
-    "template": "mail",
-    "taxonomy": "Social Engineering",
-    "correct_action": "Report Phish",
-    "neutral_action": "Ignore",
-    "wrong_action": "Trust & Click",
-    "difficulty": 0.26,
-    "from_address": "\"TechCrunch Subscriptions\" <newsletter@en-phi-sim.vercel.app>",
-    "reply_to": "unsubscribe@profile-update.co",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@office.net",
-    "phish_email": "support@secure-verify.net",
-    "body_html": "<p><strong>Subscription confirmed:</strong> You've been subscribed to TechCrunch Premium. <a href='http://profile-update.co/unsubscribe'>Click here to unsubscribe</a> if this wasn't you.</p>",
-    "body_text": "Subscription confirmed: You've been subscribed to TechCrunch Premium. Click here to unsubscribe if this wasn't you: http://profile-update.co/unsubscribe",
-    "links": [
-      "http://profile-update.co/unsubscribe"
-    ],
-    "has_attachment": false,
-    "attachments": [],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00031",
-    "level_no": "l11",
-    "title": "Spear Phishing - Targeted Attack",
-    "content": "\ud83c\udfaf quarterly budget review - Action Required",
-    "category": "medium",
-    "template": "mail",
-    "taxonomy": "Targeted Phishing",
-    "correct_action": "Report Phish",
-    "neutral_action": "Verify with Sender",
-    "wrong_action": "Trust & Click",
-    "difficulty": 0.38,
-    "from_address": "\"CFO Office\" <budget-approval@en-phi-sim.vercel.app>",
-    "reply_to": "secure@billing-center.org",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@organization.org",
-    "phish_email": "support@verification-system.co",
-    "body_html": "<p><strong>Confidential:</strong> Please review the attached quarterly budget review documents. <a href='http://billing-center.org/budget-approval'>Access secure portal</a> with your credentials.</p>",
-    "body_text": "Confidential: Please review the attached quarterly budget review documents. Access secure portal with your credentials: http://billing-center.org/budget-approval",
-    "links": [
-      "http://billing-center.org/budget-approval"
-    ],
-    "has_attachment": true,
-    "attachments": [
-      {
-        "name": "budget-approval_confidential.pdf",
-        "type": "application/pdf",
-        "size": "324KB"
-      }
-    ],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00027",
-    "level_no": "l9",
-    "title": "Malicious survey request",
-    "content": "\ud83d\udcdd Security Awareness Survey - Please complete",
-    "category": "advanced_easy",
-    "template": "mail",
-    "taxonomy": "Social Engineering",
-    "correct_action": "Report Phish",
-    "neutral_action": "Investigate",
-    "wrong_action": "Trust & Proceed",
-    "difficulty": 0.35,
-    "from_address": "\"IT\" <security-training@en-phi-sim.vercel.app>",
-    "reply_to": "survey@message-center.info",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@office.net",
-    "phish_email": "support@profile-update.co",
-    "body_html": "<p><strong>We value your feedback.</strong> Please take 5 minutes to complete our security awareness survey. <a href='http://message-center.info/security-training'>Start survey</a> (login with your credentials).</p>",
-    "body_text": "We value your feedback. Please take 5 minutes to complete our security awareness survey. Start survey (login with your credentials): http://message-center.info/security-training",
-    "links": [
-      "http://message-center.info/security-training"
-    ],
-    "has_attachment": false,
-    "attachments": [],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00008",
-    "level_no": "l3",
-    "title": "Fake Newsletter Subscription",
-    "content": "\ud83d\udcf0 You've been subscribed to Wall Street Journal Premium",
-    "category": "easy",
-    "template": "mail",
-    "taxonomy": "Social Engineering",
-    "correct_action": "Report Phish",
-    "neutral_action": "Ignore",
-    "wrong_action": "Trust & Click",
-    "difficulty": 0.26,
-    "from_address": "\"Wall Street Journal Subscriptions\" <newsletter@en-phi-sim.vercel.app>",
-    "reply_to": "unsubscribe@secure-verify.net",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@office.net",
-    "phish_email": "support@document-share.net",
-    "body_html": "<p><strong>Subscription confirmed:</strong> You've been subscribed to Wall Street Journal Premium. <a href='http://secure-verify.net/unsubscribe'>Click here to unsubscribe</a> if this wasn't you.</p>",
-    "body_text": "Subscription confirmed: You've been subscribed to Wall Street Journal Premium. Click here to unsubscribe if this wasn't you: http://secure-verify.net/unsubscribe",
-    "links": [
-      "http://secure-verify.net/unsubscribe"
-    ],
-    "has_attachment": false,
-    "attachments": [],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00034",
-    "level_no": "l12",
-    "title": "Whaling - Executive Targeting",
-    "content": "\ud83d\udc0b CFO Directive: Urgent wire transfer required",
-    "category": "medium",
-    "template": "mail",
-    "taxonomy": "Executive Targeting",
-    "correct_action": "Report Phish",
-    "neutral_action": "Verify with Executive",
-    "wrong_action": "Trust & Execute",
-    "difficulty": 0.4,
-    "from_address": "\"CFO Office\" <executive@en-phi-sim.vercel.app>",
-    "reply_to": "finance-urgent@shipping-notice.net",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@workplace.co",
-    "phish_email": "support@login-service.co",
-    "body_html": "<p><strong>Confidential Directive:</strong> Process wire transfer of $247,500 for Q4 acquisition. <a href='http://shipping-notice.net/wire-transfer'>Authorize transfer</a> immediately.</p>",
-    "body_text": "Confidential Directive: Process wire transfer of $247,500 for Q4 acquisition. Authorize transfer immediately: http://shipping-notice.net/wire-transfer",
-    "links": [
-      "http://shipping-notice.net/wire-transfer"
-    ],
-    "has_attachment": true,
-    "attachments": [
-      {
-        "name": "acquisition_terms.pdf",
-        "type": "application/pdf",
-        "size": "1.2MB"
-      }
-    ],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00041",
-    "level_no": "l16",
-    "title": "Clone Phishing",
-    "content": "\ud83d\udce7 Re: meeting invitation",
-    "category": "medium",
-    "template": "mail",
-    "taxonomy": "Clone Phishing",
-    "correct_action": "Report Phish",
-    "neutral_action": "Compare with Original",
-    "wrong_action": "Trust & Click",
-    "difficulty": 0.41,
-    "from_address": "\"IT Support\" <replies@en-phi-sim.vercel.app>",
-    "reply_to": "updated@profile-update.co",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@corporate.org",
-    "phish_email": "support@auth-verify.com",
-    "body_html": "<p><strong>Updated: meeting invitation</strong> The previous meeting invitation was sent with incorrect information. <a href='http://profile-update.co/meeting-reschedule'>View corrected version</a> with updated details.</p>",
-    "body_text": "Updated: meeting invitation The previous meeting invitation was sent with incorrect information. View corrected version with updated details: http://profile-update.co/meeting-reschedule",
-    "links": [
-      "http://profile-update.co/meeting-reschedule"
-    ],
-    "has_attachment": true,
-    "attachments": [
-      {
-        "name": "updated_meeting-reschedule.pdf",
-        "type": "application/pdf",
-        "size": "187KB"
-      }
-    ],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00039",
-    "level_no": "l15",
-    "title": "Pharming - DNS Poisoning",
-    "content": "\ud83c\udf10 Chase: Security certificate expired",
-    "category": "medium",
-    "template": "browser",
-    "taxonomy": "DNS Poisoning",
-    "correct_action": "Report Phish",
-    "neutral_action": "Check Certificate",
-    "wrong_action": "Proceed Anyway",
-    "difficulty": 0.4,
-    "from_address": null,
-    "reply_to": null,
-    "to_address": null,
-    "crct_mail": "support@corporate.org",
-    "phish_email": "support@message-center.info",
-    "body_html": "<div style='font-family: Arial;'><h3>Security Warning</h3><p>The security certificate for Chase.com has expired. <a href='http://identity-confirm.co/renew'>Renew certificate</a> to continue.</p></div>",
-    "body_text": "Security Warning: The security certificate for Chase.com has expired. Renew certificate to continue: http://identity-confirm.co/renew",
-    "links": [
-      "http://identity-confirm.co/renew"
-    ],
-    "has_attachment": false,
-    "attachments": [],
-    "redirect_url": "http://chase-secure.com/login",
-    "display_url": "http://identity-confirm.co/renew",
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00052",
-    "level_no": "l23",
-    "title": "Romance Scam",
-    "content": "\ud83d\udc95 Someone has a crush on you!",
-    "category": "medium",
-    "template": "mail",
-    "taxonomy": "Social Engineering",
-    "correct_action": "Report Phish",
-    "neutral_action": "Ignore",
-    "wrong_action": "Click to See Who",
-    "difficulty": 0.48,
-    "from_address": "\"Dating Connect\" <dating@en-phi-sim.vercel.app>",
-    "reply_to": "match@verification-system.co",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@office.net",
-    "phish_email": "support@secure-verify.net",
-    "body_html": "<p><strong>Someone has a crush on you!</strong> A colleague from your company has added you to their secret crush list. <a href='http://verification-system.co/reveal'>Click to reveal</a> who it is!</p>",
-    "body_text": "Someone has a crush on you! A colleague from your company has added you to their secret crush list. Click to reveal who it is: http://verification-system.co/reveal",
-    "links": [
-      "http://verification-system.co/reveal"
-    ],
-    "has_attachment": false,
-    "attachments": [],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00033",
-    "level_no": "l12",
-    "title": "Whaling - Executive Targeting",
-    "content": "\ud83d\udc0b CEO Directive: Urgent wire transfer required",
-    "category": "medium",
-    "template": "mail",
-    "taxonomy": "Executive Targeting",
-    "correct_action": "Report Phish",
-    "neutral_action": "Verify with Executive",
-    "wrong_action": "Trust & Execute",
-    "difficulty": 0.4,
-    "from_address": "\"CEO Office\" <executive@en-phi-sim.vercel.app>",
-    "reply_to": "finance-urgent@profile-update.co",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@workplace.co",
-    "phish_email": "support@message-center.info",
-    "body_html": "<p><strong>Confidential Directive:</strong> Process wire transfer of $247,500 for Q4 acquisition. <a href='http://profile-update.co/wire-transfer'>Authorize transfer</a> immediately.</p>",
-    "body_text": "Confidential Directive: Process wire transfer of $247,500 for Q4 acquisition. Authorize transfer immediately: http://profile-update.co/wire-transfer",
-    "links": [
-      "http://profile-update.co/wire-transfer"
-    ],
-    "has_attachment": true,
-    "attachments": [
-      {
-        "name": "acquisition_terms.pdf",
-        "type": "application/pdf",
-        "size": "1.2MB"
-      }
-    ],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00058",
-    "level_no": "l29",
-    "title": "Inheritance Scam",
-    "content": "\ud83d\udcb0 $2.5M inheritance waiting for you",
-    "category": "hard",
-    "template": "mail",
-    "taxonomy": "Financial Fraud",
-    "correct_action": "Report Phish",
-    "neutral_action": "Ignore",
-    "wrong_action": "Claim Inheritance",
-    "difficulty": 0.54,
-    "from_address": "\"Legal Affairs\" <attorney@en-phi-sim.vercel.app>",
-    "reply_to": "claim@message-center.info",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@corporate.org",
-    "phish_email": "support@account-update.info",
-    "body_html": "<p><strong>FINAL NOTICE:</strong> You are the beneficiary of an unclaimed inheritance of $2.5M from a distant relative. <a href='http://message-center.info/claim'>Claim now</a> before funds are escheated.</p>",
-    "body_text": "FINAL NOTICE: You are the beneficiary of an unclaimed inheritance of $2.5M from a distant relative. Claim now before funds are escheated: http://message-center.info/claim",
-    "links": [
-      "http://message-center.info/claim"
-    ],
-    "has_attachment": true,
-    "attachments": [
-      {
-        "name": "legal_documents.pdf",
-        "type": "application/pdf",
-        "size": "567KB"
-      }
-    ],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00046",
-    "level_no": "l18",
-    "title": "Watering Hole Attack",
-    "content": "\ud83d\udca7 Industry news update from tech-forum.net",
-    "category": "medium",
-    "template": "mail",
-    "taxonomy": "Watering Hole",
-    "correct_action": "Report Phish",
-    "neutral_action": "Verify URL",
-    "wrong_action": "Visit Site",
-    "difficulty": 0.43,
-    "from_address": "\"Industry Updates\" <updates@tech-forum.net>",
-    "reply_to": "news@message-center.info",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@corporation.net",
-    "phish_email": "support@message-center.info",
-    "body_html": "<p><strong>Weekly industry digest</strong> from tech-forum.net. <a href='http://message-center.info/tech-forum'>Read full articles</a> on our partner site.</p>",
-    "body_text": "Weekly industry digest from tech-forum.net. Read full articles on our partner site: http://message-center.info/tech-forum",
-    "links": [
-      "http://message-center.info/tech-forum"
-    ],
-    "has_attachment": false,
-    "attachments": [],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00007",
-    "level_no": "l3",
-    "title": "Fake Newsletter Subscription",
-    "content": "\ud83d\udcf0 You've been subscribed to Forbes Premium",
-    "category": "easy",
-    "template": "mail",
-    "taxonomy": "Social Engineering",
-    "correct_action": "Report Phish",
-    "neutral_action": "Ignore",
-    "wrong_action": "Trust & Click",
-    "difficulty": 0.26,
-    "from_address": "\"Forbes Subscriptions\" <newsletter@en-phi-sim.vercel.app>",
-    "reply_to": "unsubscribe@delivery-status.info",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@business.org",
-    "phish_email": "support@payment-portal.info",
-    "body_html": "<p><strong>Subscription confirmed:</strong> You've been subscribed to Forbes Premium. <a href='http://delivery-status.info/unsubscribe'>Click here to unsubscribe</a> if this wasn't you.</p>",
-    "body_text": "Subscription confirmed: You've been subscribed to Forbes Premium. Click here to unsubscribe if this wasn't you: http://delivery-status.info/unsubscribe",
-    "links": [
-      "http://delivery-status.info/unsubscribe"
-    ],
-    "has_attachment": false,
-    "attachments": [
-      {
-        "name": "welcome_3902.pdf",
-        "type": "application/pdf",
-        "size": "412KB"
-      }
-    ],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00038",
-    "level_no": "l14",
-    "title": "Quishing - QR Code Phishing",
-    "content": "\ud83d\udcf1 Scan QR code for package tracking",
-    "category": "medium",
-    "template": "mail",
-    "taxonomy": "QR Code Phishing",
-    "correct_action": "Report Phish",
-    "neutral_action": "Inspect QR URL",
-    "wrong_action": "Scan QR Code",
-    "difficulty": 0.39,
-    "from_address": "\"Package Tracking Service\" <qr@en-phi-sim.vercel.app>",
-    "reply_to": "scan@document-share.net",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@corporation.net",
-    "phish_email": "support@delivery-status.info",
-    "body_html": "<p><strong>Action required:</strong> A missed delivery requires your attention. <a href='http://document-share.net/parcel-delivery'>View QR code</a> to complete verification.</p>",
-    "body_text": "Action required: A missed delivery requires your attention. View QR code to complete verification: http://document-share.net/parcel-delivery",
-    "links": [
-      "http://document-share.net/parcel-delivery"
-    ],
-    "has_attachment": true,
-    "attachments": [
-      {
-        "name": "qr_code_parcel-delivery.png",
-        "type": "image/png",
-        "size": "45KB"
-      }
-    ],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00048",
-    "level_no": "l19",
-    "title": "Credential Stuffing Alert",
-    "content": "\u26a0\ufe0f Multiple failed login attempts - Spotify",
-    "category": "medium",
-    "template": "mail",
-    "taxonomy": "Credential Stuffing",
-    "correct_action": "Report Phish",
-    "neutral_action": "Check Account",
-    "wrong_action": "Click to Secure",
-    "difficulty": 0.44,
-    "from_address": "\"Spotify Security\" <security@en-phi-sim.vercel.app>",
-    "reply_to": "alerts@message-center.info",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@workplace.co",
-    "phish_email": "support@message-center.info",
-    "body_html": "<p><strong>Security Alert:</strong> 15 failed login attempts detected on your Spotify account. <a href='http://message-center.info/spotify-secure'>Review activity</a> and secure your account.</p>",
-    "body_text": "Security Alert: 15 failed login attempts detected on your Spotify account. Review activity and secure your account: http://message-center.info/spotify-secure",
-    "links": [
-      "http://message-center.info/spotify-secure"
-    ],
-    "has_attachment": false,
-    "attachments": [],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00032",
-    "level_no": "l11",
-    "title": "Spear Phishing - Targeted Attack",
-    "content": "\ud83c\udfaf salary review - Action Required",
-    "category": "medium",
-    "template": "mail",
-    "taxonomy": "Targeted Phishing",
-    "correct_action": "Report Phish",
-    "neutral_action": "Verify with Sender",
-    "wrong_action": "Trust & Click",
-    "difficulty": 0.38,
-    "from_address": "\"HR Director\" <employee-records@en-phi-sim.vercel.app>",
-    "reply_to": "secure@account-update.info",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@organization.org",
-    "phish_email": "support@delivery-status.info",
-    "body_html": "<p><strong>Confidential:</strong> Please review the attached salary review documents. <a href='http://account-update.info/employee-records'>Access secure portal</a> with your credentials.</p>",
-    "body_text": "Confidential: Please review the attached salary review documents. Access secure portal with your credentials: http://account-update.info/employee-records",
-    "links": [
-      "http://account-update.info/employee-records"
-    ],
-    "has_attachment": true,
-    "attachments": [
-      {
-        "name": "employee-records_confidential.pdf",
-        "type": "application/pdf",
-        "size": "324KB"
-      }
-    ],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00049",
-    "level_no": "l20",
-    "title": "Session Hijacking Alert",
-    "content": "\ud83d\udd04 Your session has expired - Please login again",
-    "category": "medium",
-    "template": "browser",
-    "taxonomy": "Session Hijacking",
-    "correct_action": "Report Phish",
-    "neutral_action": "Check URL",
-    "wrong_action": "Login Again",
-    "difficulty": 0.45,
-    "from_address": null,
-    "reply_to": null,
-    "to_address": null,
-    "crct_mail": "support@corporate.org",
-    "phish_email": "support@account-update.info",
-    "body_html": "<div style='font-family: Arial;'><h3>Session Timeout</h3><p>Your session has expired due to inactivity. <a href='http://{malicious_domain}/renew-session'>Click here</a> to login again and continue.</p></div>",
-    "body_text": "Session Timeout: Your session has expired due to inactivity. Click here to login again and continue: http://shipping-notice.net/renew-session",
-    "links": [
-      "http://shipping-notice.net/renew-session"
-    ],
-    "has_attachment": false,
-    "attachments": [],
-    "redirect_url": "http://company-portal.com/login",
-    "display_url": "http://shipping-notice.net/renew-session",
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00003",
-    "level_no": "l1",
-    "title": "Mass Credential-Phish",
-    "content": "\ud83d\udea8 URGENT: Password expires today",
-    "category": "easy",
-    "template": "mail",
-    "taxonomy": "Credential Phishing",
-    "correct_action": "Report Phish",
-    "neutral_action": "Ignore",
-    "wrong_action": "Trust & Click",
-    "difficulty": 0.22,
-    "from_address": "\"Security Team\" <password-expire@en-phi-sim.vercel.app>",
-    "reply_to": "support@security-check.net",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@workplace.co",
-    "phish_email": "support@document-share.net",
-    "body_html": "<p><strong>Action Required:</strong> Password expires today. <a href='http://security-check.net/password-expire'>Click here to verify</a> and secure your account.</p>",
-    "body_text": "Action Required: Password expires today. Click here to verify and secure your account: http://security-check.net/password-expire",
-    "links": [
-      "http://security-check.net/password-expire"
-    ],
-    "has_attachment": false,
-    "attachments": [
-      {
-        "name": "security_report.pdf",
-        "type": "application/pdf",
-        "size": "124KB"
-      }
-    ],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
-  },
-  {
-    "scenario_id": "sc00011",
-    "level_no": "l4",
-    "title": "Lottery / Prize Scam",
-    "content": "\ud83c\udf81 Congratulations! You've won a 2 First-Class Tickets",
-    "category": "easy",
-    "template": "mail",
-    "taxonomy": "Financial Fraud",
-    "correct_action": "Report Phish",
-    "neutral_action": "Ignore",
-    "wrong_action": "Trust & Click",
-    "difficulty": 0.28,
-    "from_address": "\"DocuSign Giveaways\" <giveaways@en-phi-sim.vercel.app>",
-    "reply_to": "claim@secure-verify.net",
-    "to_address": "employee@company.com",
-    "crct_mail": "support@workplace.co",
-    "phish_email": "support@secure-verify.net",
-    "body_html": "<p><strong>You're a winner!</strong> Your email was randomly selected for our 2 First-Class Tickets giveaway. <a href='http://secure-verify.net/claim'>Claim your prize now</a> (limited time offer).</p>",
-    "body_text": "You're a winner! Your email was randomly selected for our 2 First-Class Tickets giveaway. Claim your prize now (limited time offer): http://secure-verify.net/claim",
-    "links": [
-      "http://secure-verify.net/claim"
-    ],
-    "has_attachment": true,
-    "attachments": [
-      {
-        "name": "prize_voucher_7533.pdf",
-        "type": "application/pdf",
-        "size": "215KB"
-      }
-    ],
-    "redirect_url": null,
-    "display_url": null,
-    "shortener_service": null,
-    "ml_prediction_distilbert": null,
-    "ml_confidence_distilbert": null,
-    "ml_prediction_cnn": null,
-    "ml_confidence_cnn": null,
-    "user_selected_action": null,
-    "timestamp": null
+// generate_dataset.js
+// Run with: node generate_dataset.js
+
+const fs = require('fs');
+
+// ============================================
+// CONFIGURATION
+// ============================================
+
+const DOMAINS = {
+  LEGIT: {
+    company: 'company.com',
+    support: 'support.company.com',
+    security: 'security.company.com',
+    training: 'training.company.com'
+  },
+  PHISHING: {
+    generic: [
+      'secure-verify.net',
+      'account-update.info',
+      'customer-care-center.com',
+      'identity-verification.net',
+      'security-check.net',
+      'document-share.net',
+      'payment-portal.info',
+      'billing-center.org',
+      'shipping-notice.net',
+      'message-center.info',
+      'login-service.co',
+      'verification-system.co',
+      'auth-verify.com',
+      'profile-update.co',
+      'delivery-status.info',
+      'credential-check.net',
+      'office.net',
+      'workplace.co',
+      'business.org',
+      'enterprise.com',
+      'firm.com',
+      'organization.org',
+      'corporate.org',
+      'corporation.net'
+    ]
   }
-]
+};
+
+// ============================================
+// UTILITY FUNCTIONS
+// ============================================
+
+const getRandomPhishingDomain = () => {
+  return DOMAINS.PHISHING.generic[Math.floor(Math.random() * DOMAINS.PHISHING.generic.length)];
+};
+
+const getRandomInt = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+const generateId = (prefix, num) => {
+  const paddedNum = num.toString().padStart(5, '0');
+  return `${prefix}${paddedNum}`;
+};
+
+const formatDate = () => {
+  const now = new Date();
+  return now.toISOString();
+};
+
+// ============================================
+// SCENARIO TEMPLATES
+// ============================================
+
+const generateMailScenario = (id, level, config) => {
+  const phishDomain = getRandomPhishingDomain();
+  const legitDomain = DOMAINS.LEGIT.company;
+  
+  return {
+    scenario_id: generateId('sc', id),
+    level_no: level,
+    title: config.title,
+    content: config.content,
+    category: config.category,
+    template: 'mail',
+    taxonomy: config.taxonomy,
+    correct_action: 'Report Phish',
+    neutral_action: config.neutralAction || 'Ignore',
+    wrong_action: config.wrongAction,
+    difficulty: config.difficulty,
+    from_address: `"${config.fromName}" <${config.fromUser}@${phishDomain}>`,
+    reply_to: `${config.replyToUser}@${phishDomain}`,
+    to_address: 'employee@company.com',
+    crct_mail: `support@${DOMAINS.LEGIT.company}`,
+    phish_email: `scam@${phishDomain}`,
+    body_html: config.bodyHtml || generateHtmlEmail(config),
+    body_text: config.bodyText || generateTextEmail(config),
+    links: config.links || [`http://${phishDomain}/${config.linkPath}`],
+    has_attachment: config.hasAttachment || false,
+    attachments: config.attachments || [],
+    redirect_url: `https://${DOMAINS.LEGIT.training}/phishing-awareness/${config.trainingSlug}`,
+    display_url: `http://${phishDomain}/${config.linkPath}`,
+    shortener_service: config.shortener || null,
+    ml_prediction_distilbert: 1,
+    ml_confidence_distilbert: Math.min(0.99, 0.95 - (config.difficulty * 0.15)),
+    ml_prediction_cnn: 1,
+    ml_confidence_cnn: Math.min(0.98, (0.95 - (config.difficulty * 0.15)) * 0.97),
+    user_selected_action: null,
+    timestamp: null
+  };
+};
+
+const generateBrowserScenario = (id, level, config) => {
+  const phishDomain = getRandomPhishingDomain();
+  
+  return {
+    scenario_id: generateId('sc', id),
+    level_no: level,
+    title: config.title,
+    content: config.content,
+    category: config.category,
+    template: 'browser',
+    taxonomy: config.taxonomy,
+    correct_action: 'Report Phish',
+    neutral_action: config.neutralAction || 'Check Certificate',
+    wrong_action: config.wrongAction,
+    difficulty: config.difficulty,
+    from_address: null,
+    reply_to: null,
+    to_address: null,
+    crct_mail: `support@${DOMAINS.LEGIT.company}`,
+    phish_email: `scam@${phishDomain}`,
+    body_html: config.bodyHtml || null,
+    body_text: config.bodyText,
+    links: config.links || [`http://${phishDomain}/${config.linkPath}`],
+    has_attachment: config.hasAttachment || false,
+    attachments: config.attachments || [],
+    redirect_url: `https://${DOMAINS.LEGIT.training}/phishing-awareness/${config.trainingSlug}`,
+    display_url: `http://${phishDomain}/${config.linkPath}`,
+    shortener_service: config.shortener || null,
+    ml_prediction_distilbert: 1,
+    ml_confidence_distilbert: Math.min(0.99, 0.95 - (config.difficulty * 0.15)),
+    ml_prediction_cnn: 1,
+    ml_confidence_cnn: Math.min(0.98, (0.95 - (config.difficulty * 0.15)) * 0.97),
+    user_selected_action: null,
+    timestamp: null
+  };
+};
+
+const generateMessageScenario = (id, level, config) => {
+  const phishDomain = getRandomPhishingDomain();
+  
+  return {
+    scenario_id: generateId('sc', id),
+    level_no: level,
+    title: config.title,
+    content: config.content,
+    category: config.category,
+    template: 'message',
+    taxonomy: config.taxonomy,
+    correct_action: 'Report Phish',
+    neutral_action: config.neutralAction || 'Investigate',
+    wrong_action: config.wrongAction,
+    difficulty: config.difficulty,
+    from_address: `"${config.fromName}" <${config.fromUser}@${phishDomain}>`,
+    reply_to: `${config.replyToUser}@${phishDomain}`,
+    to_address: '+1-312-555-0145',
+    crct_mail: `support@${DOMAINS.LEGIT.company}`,
+    phish_email: `scam@${phishDomain}`,
+    body_html: null,
+    body_text: config.bodyText,
+    links: config.links || [`http://${phishDomain}/${config.linkPath}`],
+    has_attachment: config.hasAttachment || false,
+    attachments: config.attachments || [],
+    redirect_url: `https://${DOMAINS.LEGIT.training}/phishing-awareness/${config.trainingSlug}`,
+    display_url: `http://${phishDomain}/${config.linkPath}`,
+    shortener_service: config.shortener || null,
+    ml_prediction_distilbert: 1,
+    ml_confidence_distilbert: Math.min(0.99, 0.95 - (config.difficulty * 0.15)),
+    ml_prediction_cnn: 1,
+    ml_confidence_cnn: Math.min(0.98, (0.95 - (config.difficulty * 0.15)) * 0.97),
+    user_selected_action: null,
+    timestamp: null
+  };
+};
+
+const generateBonusScenario = (id, level, config) => {
+  const phishDomain = getRandomPhishingDomain();
+  
+  return {
+    scenario_id: generateId('bonus', id),
+    level_no: level,
+    title: config.title,
+    content: config.content,
+    category: 'bonus_analysis',
+    template: 'analysis',
+    taxonomy: config.taxonomy,
+    correct_action: 'Complete Analysis',
+    neutral_action: 'Skip',
+    wrong_action: 'Ignore Lesson',
+    difficulty: 0.60,
+    from_address: `"Cybersecurity Training" <training@${DOMAINS.LEGIT.training}>`,
+    reply_to: `analytics@${phishDomain}`,
+    to_address: 'analyst@company.com',
+    crct_mail: `support@${DOMAINS.LEGIT.company}`,
+    phish_email: `scam@${phishDomain}`,
+    body_html: config.bodyHtml,
+    body_text: config.bodyText,
+    links: [`http://${phishDomain}/bonus/${level}`],
+    has_attachment: true,
+    attachments: [
+      {
+        name: `${config.taxonomy.toLowerCase().replace(' ', '_')}_analysis_worksheet.pdf`,
+        type: 'application/pdf',
+        size: `${getRandomInt(400, 600)}KB`
+      }
+    ],
+    redirect_url: `https://${DOMAINS.LEGIT.training}/bonus-complete`,
+    display_url: `http://${phishDomain}/bonus/${level}`,
+    shortener_service: null,
+    ml_prediction_distilbert: 1,
+    ml_confidence_distilbert: 0.95,
+    ml_prediction_cnn: 1,
+    ml_confidence_cnn: 0.94,
+    user_selected_action: null,
+    timestamp: null
+  };
+};
+
+// ============================================
+// HTML EMAIL GENERATORS
+// ============================================
+
+const generateHtmlEmail = (config) => {
+  const styles = `
+    <style>
+      body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+      .container { max-width: 600px; margin: 0 auto; border: 1px solid #ddd; border-radius: 5px; overflow: hidden; }
+      .header { background: #0078d4; color: white; padding: 20px; text-align: center; }
+      .content { padding: 30px; }
+      .button { display: inline-block; padding: 12px 30px; background: #0078d4; color: white; text-decoration: none; border-radius: 5px; }
+      .warning { background: #fff3cd; border-left: 5px solid #ffc107; padding: 15px; margin: 20px 0; }
+      .footer { background: #f5f5f5; padding: 15px; text-align: center; font-size: 12px; color: #666; }
+    </style>
+  `;
+
+  return `
+    <div class="container">
+      <div class="header">
+        <h2>${config.title}</h2>
+      </div>
+      <div class="content">
+        ${config.bodyHtml || `
+          <p>Dear Employee,</p>
+          <p>${config.content}</p>
+          <div class="warning">
+            <strong>⚠️ Action Required:</strong> This requires your immediate attention.
+          </div>
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="http://${getRandomPhishingDomain()}/${config.linkPath}" class="button">
+              ${config.buttonText || 'Click Here'}
+            </a>
+          </div>
+          <p>If you didn't request this, please ignore this message.</p>
+        `}
+      </div>
+      <div class="footer">
+        <p>This is an automated message. Please do not reply.</p>
+      </div>
+    </div>
+  `;
+};
+
+const generateTextEmail = (config) => {
+  return `${config.title}\n\n${config.content}\n\nAction: ${config.buttonText || 'Click here'}: http://${getRandomPhishingDomain()}/${config.linkPath}`;
+};
+
+// ============================================
+// SCENARIO CONFIGURATIONS
+// ============================================
+
+const scenarios = [];
+
+// ===== LEVEL 1: Easy Credential Phishing =====
+scenarios.push(generateMailScenario(1, 'l1', {
+  title: '🔐 URGENT: Your Corporate Email Account Requires Verification',
+  content: 'Multiple failed login attempts detected from unrecognized device. Verify immediately to prevent account suspension.',
+  category: 'easy',
+  taxonomy: 'Credential Phishing',
+  neutralAction: 'Ignore',
+  wrongAction: 'Verify Account',
+  difficulty: 0.22,
+  fromName: 'IT Security',
+  fromUser: 'security',
+  replyToUser: 'verify',
+  linkPath: 'verify-account',
+  buttonText: '🔐 VERIFY ACCOUNT',
+  trainingSlug: 'credential-phishing-101',
+  hasAttachment: false
+}));
+
+scenarios.push(generateMailScenario(2, 'l1', {
+  title: '🔐 URGENT: Unusual Sign-in Activity Detected',
+  content: 'We detected a sign-in from an unrecognized device in Russia. If this wasn\'t you, your account may be compromised.',
+  category: 'easy',
+  taxonomy: 'Credential Phishing',
+  neutralAction: 'Ignore',
+  wrongAction: 'Review Activity',
+  difficulty: 0.22,
+  fromName: 'Microsoft 365 Security',
+  fromUser: 'security',
+  replyToUser: 'verify',
+  linkPath: 'review-activity',
+  buttonText: '🔍 REVIEW ACTIVITY',
+  trainingSlug: 'credential-phishing-101'
+}));
+
+scenarios.push(generateMailScenario(3, 'l1', {
+  title: '🔐 URGENT: Your Password Expires Today',
+  content: 'Your corporate password will expire in 24 hours. Update now to maintain access.',
+  category: 'easy',
+  taxonomy: 'Credential Phishing',
+  neutralAction: 'Ignore',
+  wrongAction: 'Update Password',
+  difficulty: 0.22,
+  fromName: 'IT Support',
+  fromUser: 'support',
+  replyToUser: 'password',
+  linkPath: 'update-password',
+  buttonText: '🔑 UPDATE PASSWORD',
+  trainingSlug: 'credential-phishing-101',
+  hasAttachment: true,
+  attachments: [{
+    name: 'password_guidelines.pdf',
+    type: 'application/pdf',
+    size: '124KB'
+  }]
+}));
+
+// ===== LEVEL 2: Financial Fraud =====
+scenarios.push(generateMailScenario(4, 'l2', {
+  title: '💰 Amazon: Invoice Overdue $499.99',
+  content: 'Your Amazon account has an overdue invoice of $499.99. Pay immediately to avoid service interruption.',
+  category: 'easy',
+  taxonomy: 'Financial Fraud',
+  neutralAction: 'Ignore',
+  wrongAction: 'Pay Invoice',
+  difficulty: 0.24,
+  fromName: 'Amazon Billing',
+  fromUser: 'billing',
+  replyToUser: 'accounts',
+  linkPath: 'pay-invoice',
+  buttonText: '💳 PAY NOW',
+  trainingSlug: 'financial-fraud',
+  hasAttachment: true,
+  attachments: [{
+    name: 'invoice_7229.pdf',
+    type: 'application/pdf',
+    size: '156KB'
+  }]
+}));
+
+scenarios.push(generateMailScenario(5, 'l2', {
+  title: '💰 LinkedIn: Payment Receipt $1,299.00',
+  content: 'Your LinkedIn account has been charged $1,299.00 for Premium Business. Review invoice.',
+  category: 'easy',
+  taxonomy: 'Financial Fraud',
+  neutralAction: 'Ignore',
+  wrongAction: 'View Invoice',
+  difficulty: 0.24,
+  fromName: 'LinkedIn Billing',
+  fromUser: 'billing',
+  replyToUser: 'accounts',
+  linkPath: 'view-invoice',
+  buttonText: '📄 VIEW INVOICE',
+  trainingSlug: 'financial-fraud',
+  hasAttachment: true,
+  attachments: [{
+    name: 'invoice_8195.pdf',
+    type: 'application/pdf',
+    size: '156KB'
+  }]
+}));
+
+scenarios.push(generateMailScenario(6, 'l2', {
+  title: '💰 Office365: Refund Processed $79.99',
+  content: 'Your Office365 account has been refunded $79.99. Confirm receipt.',
+  category: 'easy',
+  taxonomy: 'Financial Fraud',
+  neutralAction: 'Ignore',
+  wrongAction: 'Confirm Refund',
+  difficulty: 0.24,
+  fromName: 'Office365 Billing',
+  fromUser: 'billing',
+  replyToUser: 'refunds',
+  linkPath: 'confirm-refund',
+  buttonText: '✅ CONFIRM',
+  trainingSlug: 'financial-fraud',
+  hasAttachment: true,
+  attachments: [{
+    name: 'refund_9449.pdf',
+    type: 'application/pdf',
+    size: '156KB'
+  }]
+}));
+
+// ===== LEVEL 3: Fake Subscriptions =====
+scenarios.push(generateMailScenario(7, 'l3', {
+  title: '📰 You\'ve Been Subscribed to Forbes Premium',
+  content: 'Your subscription to Forbes Premium has been confirmed. Cancel if unauthorized.',
+  category: 'easy',
+  taxonomy: 'Social Engineering',
+  neutralAction: 'Ignore',
+  wrongAction: 'Cancel Subscription',
+  difficulty: 0.26,
+  fromName: 'Forbes Subscriptions',
+  fromUser: 'subscriptions',
+  replyToUser: 'cancel',
+  linkPath: 'cancel-forbes',
+  buttonText: '🚫 CANCEL',
+  trainingSlug: 'social-engineering',
+  hasAttachment: true,
+  attachments: [{
+    name: 'welcome_3902.pdf',
+    type: 'application/pdf',
+    size: '412KB'
+  }]
+}));
+
+scenarios.push(generateMailScenario(8, 'l3', {
+  title: '📰 You\'ve Been Subscribed to WSJ Premium',
+  content: 'Your Wall Street Journal subscription has been confirmed for $389/year.',
+  category: 'easy',
+  taxonomy: 'Social Engineering',
+  neutralAction: 'Ignore',
+  wrongAction: 'Cancel',
+  difficulty: 0.26,
+  fromName: 'WSJ Subscriptions',
+  fromUser: 'subscriptions',
+  replyToUser: 'cancel',
+  linkPath: 'cancel-wsj',
+  buttonText: '✖️ CANCEL',
+  trainingSlug: 'social-engineering'
+}));
+
+scenarios.push(generateMailScenario(9, 'l3', {
+  title: '📰 You\'ve Been Subscribed to TechCrunch+',
+  content: 'Your TechCrunch+ subscription has been confirmed for $99.99/month.',
+  category: 'easy',
+  taxonomy: 'Social Engineering',
+  neutralAction: 'Ignore',
+  wrongAction: 'Unsubscribe',
+  difficulty: 0.26,
+  fromName: 'TechCrunch',
+  fromUser: 'newsletter',
+  replyToUser: 'unsubscribe',
+  linkPath: 'unsubscribe-techcrunch',
+  buttonText: '🔴 UNSUBSCRIBE',
+  trainingSlug: 'social-engineering'
+}));
+
+// ===== LEVEL 4: Prize Scams =====
+scenarios.push(generateMailScenario(10, 'l4', {
+  title: '🎉 Congratulations! You\'ve Won a $500 Gift Card',
+  content: 'Your email was selected for our $500 Amazon Gift Card giveaway!',
+  category: 'easy',
+  taxonomy: 'Financial Fraud',
+  neutralAction: 'Ignore',
+  wrongAction: 'Claim Prize',
+  difficulty: 0.28,
+  fromName: 'AWS Giveaways',
+  fromUser: 'giveaways',
+  replyToUser: 'claim',
+  linkPath: 'claim-giftcard',
+  buttonText: '🎁 CLAIM NOW',
+  trainingSlug: 'prize-scams'
+}));
+
+scenarios.push(generateMailScenario(11, 'l4', {
+  title: '🎉 Congratulations! You\'ve Won 2 First-Class Tickets',
+  content: 'Your LinkedIn profile won 2 first-class tickets to Europe!',
+  category: 'easy',
+  taxonomy: 'Financial Fraud',
+  neutralAction: 'Ignore',
+  wrongAction: 'Claim Tickets',
+  difficulty: 0.28,
+  fromName: 'DocuSign Giveaways',
+  fromUser: 'giveaways',
+  replyToUser: 'claim',
+  linkPath: 'claim-tickets',
+  buttonText: '✈️ CLAIM',
+  trainingSlug: 'prize-scams',
+  hasAttachment: true,
+  attachments: [{
+    name: 'prize_voucher_7533.pdf',
+    type: 'application/pdf',
+    size: '215KB'
+  }]
+}));
+
+scenarios.push(generateMailScenario(12, 'l4', {
+  title: '🎉 Congratulations! You\'ve Won an iPhone 15 Pro',
+  content: 'Your email was selected for our iPhone 15 Pro giveaway!',
+  category: 'easy',
+  taxonomy: 'Financial Fraud',
+  neutralAction: 'Ignore',
+  wrongAction: 'Claim Prize',
+  difficulty: 0.28,
+  fromName: 'Google Giveaways',
+  fromUser: 'giveaways',
+  replyToUser: 'claim',
+  linkPath: 'claim-iphone',
+  buttonText: '📱 CLAIM',
+  trainingSlug: 'prize-scams'
+}));
+
+// ===== LEVEL 5: Attachment Lures =====
+scenarios.push(generateMailScenario(13, 'l5', {
+  title: '📎 Shipping Label Ready - Print and Attach',
+  content: 'Your shipping label is ready for package #UPS773245.',
+  category: 'easy',
+  taxonomy: 'Messaging Attacks',
+  neutralAction: 'Ignore',
+  wrongAction: 'Print Label',
+  difficulty: 0.30,
+  fromName: 'UPS Shipping',
+  fromUser: 'shipping',
+  replyToUser: 'documents',
+  linkPath: 'shipping-label',
+  buttonText: '🖨️ PRINT',
+  trainingSlug: 'attachment-warning',
+  hasAttachment: true,
+  attachments: [{
+    name: 'shipping_label.doc',
+    type: 'application/msword',
+    size: '156KB'
+  }]
+}));
+
+scenarios.push(generateMailScenario(14, 'l5', {
+  title: '📎 New Voicemail Received',
+  content: 'You have a new voicemail from an unknown caller.',
+  category: 'easy',
+  taxonomy: 'Messaging Attacks',
+  neutralAction: 'Ignore',
+  wrongAction: 'Listen',
+  difficulty: 0.30,
+  fromName: 'Voicemail System',
+  fromUser: 'messages',
+  replyToUser: 'voicemail',
+  linkPath: 'voicemail',
+  buttonText: '▶️ LISTEN',
+  trainingSlug: 'attachment-warning',
+  hasAttachment: true,
+  attachments: [{
+    name: 'voicemail.wav',
+    type: 'audio/x-wav',
+    size: '876KB'
+  }]
+}));
+
+scenarios.push(generateMailScenario(15, 'l5', {
+  title: '📎 Invoice #INV-7823 Ready for Review',
+  content: 'Acme Corporation has sent you an invoice for review.',
+  category: 'easy',
+  taxonomy: 'Messaging Attacks',
+  neutralAction: 'Ignore',
+  wrongAction: 'Review Document',
+  difficulty: 0.30,
+  fromName: 'DocuSign',
+  fromUser: 'notifications',
+  replyToUser: 'documents',
+  linkPath: 'invoice-7823',
+  buttonText: '✍️ REVIEW',
+  trainingSlug: 'attachment-warning',
+  hasAttachment: true,
+  attachments: [{
+    name: 'invoice_7732.pdf',
+    type: 'application/pdf',
+    size: '215KB'
+  }]
+}));
+
+// ===== LEVEL 6: Spoofed Senders =====
+scenarios.push(generateMailScenario(16, 'l6', {
+  title: '⚠️ Important: Your Password Expires',
+  content: 'Your Microsoft 365 password will expire in 24 hours.',
+  category: 'easy',
+  taxonomy: 'Credential Phishing',
+  neutralAction: 'Ignore',
+  wrongAction: 'Update Password',
+  difficulty: 0.32,
+  fromName: 'Microsoft 365 Support',
+  fromUser: 'service',
+  replyToUser: 'support',
+  linkPath: 'update-password',
+  buttonText: '🔑 UPDATE',
+  trainingSlug: 'spoofed-senders',
+  hasAttachment: true,
+  attachments: [{
+    name: 'document_7331.pdf',
+    type: 'application/pdf',
+    size: '234KB'
+  }]
+}));
+
+scenarios.push(generateMailScenario(17, 'l6', {
+  title: '⚠️ Important: Benefits Enrollment',
+  content: 'Open enrollment for 2025 benefits begins today.',
+  category: 'easy',
+  taxonomy: 'Credential Phishing',
+  neutralAction: 'Ignore',
+  wrongAction: 'Enroll Now',
+  difficulty: 0.32,
+  fromName: 'HR Department',
+  fromUser: 'hr-service',
+  replyToUser: 'benefits',
+  linkPath: 'benefits-enrollment',
+  buttonText: '📝 ENROLL',
+  trainingSlug: 'spoofed-senders'
+}));
+
+scenarios.push(generateMailScenario(18, 'l6', {
+  title: '⚠️ Important: Document Shared with You',
+  content: 'David Miller has shared a document with you via OneDrive.',
+  category: 'easy',
+  taxonomy: 'Credential Phishing',
+  neutralAction: 'Ignore',
+  wrongAction: 'View Document',
+  difficulty: 0.32,
+  fromName: 'David Miller',
+  fromUser: 'd.miller',
+  replyToUser: 'shared',
+  linkPath: 'view-doc',
+  buttonText: '📂 VIEW',
+  trainingSlug: 'spoofed-senders'
+}));
+
+// ===== LEVEL 7: Typosquatted Domains =====
+scenarios.push(generateMailScenario(19, 'l7', {
+  title: '🔒 PayPal: Your Account Has Been Limited',
+  content: 'Your PayPal account has been limited due to unusual activity.',
+  category: 'advanced_easy',
+  taxonomy: 'Credential Phishing',
+  neutralAction: 'Investigate',
+  wrongAction: 'Verify Account',
+  difficulty: 0.35,
+  fromName: 'PayPal Security',
+  fromUser: 'security',
+  replyToUser: 'resolution',
+  linkPath: 'paypal-verify',
+  buttonText: '✅ VERIFY',
+  trainingSlug: 'typosquatting',
+  linkPath: 'paypa1.com/verify',
+  display_url: 'http://paypa1.com/verify'
+}));
+
+scenarios.push(generateMailScenario(20, 'l7', {
+  title: '📦 Amazon: Your Package Has Been Delayed',
+  content: 'Your Amazon package delivery has been delayed due to weather.',
+  category: 'advanced_easy',
+  taxonomy: 'Credential Phishing',
+  neutralAction: 'Investigate',
+  wrongAction: 'Track Package',
+  difficulty: 0.35,
+  fromName: 'Amazon Shipping',
+  fromUser: 'shipping',
+  replyToUser: 'delivery',
+  linkPath: 'amaz0n.com/track',
+  buttonText: '📦 TRACK',
+  trainingSlug: 'typosquatting'
+}));
+
+scenarios.push(generateMailScenario(21, 'l7', {
+  title: '👥 LinkedIn: Your Profile Has Been Viewed 87 Times',
+  content: 'See who viewed your profile - executives from Google and Microsoft!',
+  category: 'advanced_easy',
+  taxonomy: 'Credential Phishing',
+  neutralAction: 'Investigate',
+  wrongAction: 'View Profile Views',
+  difficulty: 0.35,
+  fromName: 'LinkedIn Security',
+  fromUser: 'security',
+  replyToUser: 'views',
+  linkPath: 'linkedln.com/views',
+  buttonText: '🔍 SEE WHO',
+  trainingSlug: 'typosquatting'
+}));
+
+// ===== LEVEL 8: URL Shorteners =====
+scenarios.push(generateBrowserScenario(22, 'l8', {
+  title: '🔗 URGENT: Document Shared Securely',
+  content: 'A secure document has been shared with you via encrypted link.',
+  category: 'advanced_easy',
+  taxonomy: 'Credential Phishing',
+  neutralAction: 'Investigate',
+  wrongAction: 'Access Document',
+  difficulty: 0.35,
+  bodyText: 'You are being redirected to a secure document portal: http://goo.gl/em74kdmx',
+  linkPath: 'goo.gl/em74kdmx',
+  shortener: 'goo.gl',
+  trainingSlug: 'url-shorteners'
+}));
+
+scenarios.push(generateBrowserScenario(23, 'l8', {
+  title: '🔗 Secure Document Shared - Access via Link',
+  content: 'A confidential document has been shared with you.',
+  category: 'advanced_easy',
+  taxonomy: 'Credential Phishing',
+  neutralAction: 'Investigate',
+  wrongAction: 'Access Document',
+  difficulty: 0.35,
+  bodyText: 'Access your confidential document: http://rebrand.ly/f9p13btl',
+  linkPath: 'rebrand.ly/f9p13btl',
+  shortener: 'rebrand.ly',
+  trainingSlug: 'url-shorteners'
+}));
+
+scenarios.push(generateBrowserScenario(24, 'l8', {
+  title: '🔗 Important Document Shared - Review Required',
+  content: 'Q1 Financial Report 2025 has been shared with you.',
+  category: 'advanced_easy',
+  taxonomy: 'Credential Phishing',
+  neutralAction: 'Investigate',
+  wrongAction: 'View Document',
+  difficulty: 0.35,
+  bodyText: 'Q1 Financial Report ready: http://bit.ly/nzv96fv5',
+  linkPath: 'bit.ly/nzv96fv5',
+  shortener: 'bit.ly',
+  trainingSlug: 'url-shorteners'
+}));
+
+// ===== LEVEL 9: Survey Scams =====
+scenarios.push(generateMailScenario(25, 'l9', {
+  title: '📝 Employee Satisfaction Survey',
+  content: 'Take 5 minutes to complete our annual employee survey.',
+  category: 'advanced_easy',
+  taxonomy: 'Social Engineering',
+  neutralAction: 'Investigate',
+  wrongAction: 'Take Survey',
+  difficulty: 0.35,
+  fromName: 'HR',
+  fromUser: 'hr-surveys',
+  replyToUser: 'survey',
+  linkPath: 'employee-survey',
+  buttonText: '📋 TAKE SURVEY',
+  trainingSlug: 'survey-scams'
+}));
+
+scenarios.push(generateMailScenario(26, 'l9', {
+  title: '🖥️ IT Service Feedback Survey',
+  content: 'Help us improve IT services - complete this brief survey.',
+  category: 'advanced_easy',
+  taxonomy: 'Social Engineering',
+  neutralAction: 'Investigate',
+  wrongAction: 'Take Survey',
+  difficulty: 0.35,
+  fromName: 'IT Department',
+  fromUser: 'it-feedback',
+  replyToUser: 'survey',
+  linkPath: 'it-survey',
+  buttonText: '📋 TAKE SURVEY',
+  trainingSlug: 'survey-scams',
+  hasAttachment: true,
+  attachments: [{
+    name: 'survey_preview.pdf',
+    type: 'application/pdf',
+    size: '98KB'
+  }]
+}));
+
+scenarios.push(generateMailScenario(27, 'l9', {
+  title: '🔐 Security Awareness Survey',
+  content: 'Test your cybersecurity knowledge - complete our survey.',
+  category: 'advanced_easy',
+  taxonomy: 'Social Engineering',
+  neutralAction: 'Investigate',
+  wrongAction: 'Take Survey',
+  difficulty: 0.35,
+  fromName: 'Security Team',
+  fromUser: 'security-training',
+  replyToUser: 'survey',
+  linkPath: 'security-survey',
+  buttonText: '📝 START',
+  trainingSlug: 'survey-scams'
+}));
+
+// ===== LEVEL 10: SMS Smishing =====
+scenarios.push(generateMessageScenario(28, 'l10', {
+  title: '📦 UPS: Your Package is Waiting',
+  content: 'Delivery attempt failed - reschedule now.',
+  category: 'advanced_easy',
+  taxonomy: 'Messaging Attacks',
+  neutralAction: 'Investigate',
+  wrongAction: 'Click Link',
+  difficulty: 0.35,
+  fromName: 'UPS',
+  fromUser: '+1-800-555-0199',
+  replyToUser: '+1-800-555-0199',
+  bodyText: 'UPS: We missed you! A delivery attempt was made today. Reschedule: http://fake-delivery-alerts.net/track/kq38mq',
+  linkPath: 'fake-delivery-alerts.net/track/kq38mq',
+  shortener: 'rebrand.ly',
+  trainingSlug: 'smishing'
+}));
+
+scenarios.push(generateMessageScenario(29, 'l10', {
+  title: '📦 FedEx: Delivery Failed',
+  content: 'Package delivery failed - update preferences.',
+  category: 'advanced_easy',
+  taxonomy: 'Messaging Attacks',
+  neutralAction: 'Investigate',
+  wrongAction: 'Update Delivery',
+  difficulty: 0.35,
+  fromName: 'FedEx',
+  fromUser: '+1-888-555-0172',
+  replyToUser: '+1-888-555-0172',
+  bodyText: 'FedEx: Delivery failed for package #7732451245. Update delivery: http://short.link/bs0vfv',
+  linkPath: 'short.link/bs0vfv',
+  shortener: 'short.link',
+  trainingSlug: 'smishing'
+}));
+
+scenarios.push(generateMessageScenario(30, 'l10', {
+  title: '📦 Amazon: Account Suspended',
+  content: 'Your Amazon account has been suspended - verify now.',
+  category: 'advanced_easy',
+  taxonomy: 'Messaging Attacks',
+  neutralAction: 'Investigate',
+  wrongAction: 'Verify Account',
+  difficulty: 0.35,
+  fromName: 'Amazon',
+  fromUser: '+1-855-555-0189',
+  replyToUser: '+1-855-555-0189',
+  bodyText: 'Amazon: Your account has been suspended due to unusual activity. Verify: http://bit.ly/5bx6y6',
+  linkPath: 'bit.ly/5bx6y6',
+  shortener: 'bit.ly',
+  trainingSlug: 'smishing'
+}));
+
+// ===== LEVEL 11: Spear Phishing =====
+scenarios.push(generateMailScenario(31, 'l11', {
+  title: '🎯 Quarterly Budget Review - Action Required',
+  content: 'Please review attached Q2 budget documents before board meeting.',
+  category: 'medium',
+  taxonomy: 'Targeted Phishing',
+  neutralAction: 'Verify with Sender',
+  wrongAction: 'Review Documents',
+  difficulty: 0.38,
+  fromName: 'CFO Office',
+  fromUser: 'budget',
+  replyToUser: 'secure',
+  linkPath: 'budget-review',
+  buttonText: '📂 ACCESS',
+  trainingSlug: 'spear-phishing',
+  hasAttachment: true,
+  attachments: [{
+    name: 'budget_review_confidential.pdf',
+    type: 'application/pdf',
+    size: '324KB'
+  }]
+}));
+
+scenarios.push(generateMailScenario(32, 'l11', {
+  title: '🎯 Confidential: Salary Review Documents',
+  content: 'Your annual salary review documents are ready for review.',
+  category: 'medium',
+  taxonomy: 'Targeted Phishing',
+  neutralAction: 'Verify with Sender',
+  wrongAction: 'Review Documents',
+  difficulty: 0.38,
+  fromName: 'HR Director',
+  fromUser: 'hr',
+  replyToUser: 'secure',
+  linkPath: 'salary-review',
+  buttonText: '🔐 ACCESS',
+  trainingSlug: 'spear-phishing',
+  hasAttachment: true,
+  attachments: [{
+    name: 'salary_review_confidential.pdf',
+    type: 'application/pdf',
+    size: '324KB'
+  }]
+}));
+
+// ===== LEVEL 12: Whaling =====
+scenarios.push(generateMailScenario(33, 'l12', {
+  title: '🐋 CEO Directive: Urgent Wire Transfer Required',
+  content: 'Board approved acquisition of DataCore Systems. Process wire transfer immediately.',
+  category: 'medium',
+  taxonomy: 'Executive Targeting',
+  neutralAction: 'Verify with Executive',
+  wrongAction: 'Process Transfer',
+  difficulty: 0.40,
+  fromName: 'CEO Office',
+  fromUser: 'executive',
+  replyToUser: 'finance-urgent',
+  linkPath: 'authorize-wire',
+  buttonText: '💰 AUTHORIZE',
+  trainingSlug: 'whaling',
+  hasAttachment: true,
+  attachments: [{
+    name: 'acquisition_terms.pdf',
+    type: 'application/pdf',
+    size: '1.2MB'
+  }]
+}));
+
+scenarios.push(generateMailScenario(34, 'l12', {
+  title: '🐋 CFO: Confidential Wire Transfer - Q4 Acquisition',
+  content: 'Execute wire transfer of $247,500 for DataCore Systems acquisition.',
+  category: 'medium',
+  taxonomy: 'Executive Targeting',
+  neutralAction: 'Verify with Executive',
+  wrongAction: 'Execute Transfer',
+  difficulty: 0.40,
+  fromName: 'CFO Office',
+  fromUser: 'cfo',
+  replyToUser: 'finance-urgent',
+  linkPath: 'confirm-wire',
+  buttonText: '✅ CONFIRM',
+  trainingSlug: 'whaling',
+  hasAttachment: true,
+  attachments: [{
+    name: 'acquisition_agreement.pdf',
+    type: 'application/pdf',
+    size: '1.2MB'
+  }]
+}));
+
+// ===== LEVEL 13: Vishing =====
+scenarios.push(generateMailScenario(35, 'l13', {
+  title: '📞 IRS: Tax Fraud Investigation - Call Immediately',
+  content: 'Case #TAX-7843-22 requires immediate attention.',
+  category: 'medium',
+  taxonomy: 'Voice Phishing',
+  neutralAction: 'Call Official Number',
+  wrongAction: 'Call Back Number',
+  difficulty: 0.38,
+  fromName: 'IRS',
+  fromUser: 'tax-dept',
+  replyToUser: 'compliance',
+  linkPath: 'tax-fraud',
+  buttonText: '📞 CALL NOW',
+  trainingSlug: 'vishing'
+}));
+
+scenarios.push(generateMailScenario(36, 'l13', {
+  title: '📞 Bank of America: Fraudulent Transaction Detected',
+  content: '$2,847 transaction detected from Miami, FL.',
+  category: 'medium',
+  taxonomy: 'Voice Phishing',
+  neutralAction: 'Call Official Number',
+  wrongAction: 'Call Number',
+  difficulty: 0.38,
+  fromName: 'Bank Security',
+  fromUser: 'fraud-alerts',
+  replyToUser: 'callback',
+  linkPath: 'fraud-alert',
+  buttonText: '📞 CALL FRAUD DEPT',
+  trainingSlug: 'vishing'
+}));
+
+// ===== LEVEL 14: QR Code Phishing =====
+scenarios.push(generateMailScenario(37, 'l14', {
+  title: '📱 NYC Parking Violation - Scan QR Code to Pay',
+  content: 'Citation #7843291-02: $65 due by 3/20.',
+  category: 'medium',
+  taxonomy: 'QR Code Phishing',
+  neutralAction: 'Inspect QR URL',
+  wrongAction: 'Scan QR Code',
+  difficulty: 0.39,
+  fromName: 'NYC Finance',
+  fromUser: 'parking',
+  replyToUser: 'payments',
+  linkPath: 'parking-fine',
+  buttonText: '🔳 VIEW QR',
+  trainingSlug: 'quishing',
+  hasAttachment: true,
+  attachments: [{
+    name: 'qr_code_parking-fine.png',
+    type: 'image/png',
+    size: '45KB'
+  }]
+}));
+
+scenarios.push(generateMailScenario(38, 'l14', {
+  title: '📱 Package Delivery Issue - Scan QR Code',
+  content: 'Update delivery preferences to receive package.',
+  category: 'medium',
+  taxonomy: 'QR Code Phishing',
+  neutralAction: 'Inspect QR URL',
+  wrongAction: 'Scan QR Code',
+  difficulty: 0.39,
+  fromName: 'USPS',
+  fromUser: 'delivery',
+  replyToUser: 'resolutions',
+  linkPath: 'parcel-delivery',
+  buttonText: '🔳 SCAN QR',
+  trainingSlug: 'quishing',
+  hasAttachment: true,
+  attachments: [{
+    name: 'qr_code_parcel-delivery.png',
+    type: 'image/png',
+    size: '45KB'
+  }]
+}));
+
+// ===== LEVEL 15: DNS Poisoning =====
+scenarios.push(generateBrowserScenario(39, 'l15', {
+  title: '🔒 Chase: Security Certificate Expired',
+  content: 'Certificate for Chase.com expired - renew now.',
+  category: 'medium',
+  taxonomy: 'DNS Poisoning',
+  neutralAction: 'Check Certificate',
+  wrongAction: 'Proceed Anyway',
+  difficulty: 0.40,
+  bodyText: 'Security Warning: Certificate expired for Chase.com. Renew now.',
+  linkPath: 'chase-renew',
+  trainingSlug: 'pharming'
+}));
+
+scenarios.push(generateBrowserScenario(40, 'l15', {
+  title: '🔒 Bank of America: Certificate Error',
+  content: 'Security certificate requires renewal.',
+  category: 'medium',
+  taxonomy: 'DNS Poisoning',
+  neutralAction: 'Check Certificate',
+  wrongAction: 'Proceed Anyway',
+  difficulty: 0.40,
+  bodyText: 'Bank of America: Security certificate expired. Renew immediately.',
+  linkPath: 'bofa-renew',
+  trainingSlug: 'pharming'
+}));
+
+// ===== LEVEL 16: Clone Phishing =====
+scenarios.push(generateMailScenario(41, 'l16', {
+  title: '📧 Re: Updated Meeting Invitation',
+  content: 'The meeting invitation has been updated with new information.',
+  category: 'medium',
+  taxonomy: 'Clone Phishing',
+  neutralAction: 'Compare with Original',
+  wrongAction: 'Open Attachment',
+  difficulty: 0.41,
+  fromName: 'HR',
+  fromUser: 'meetings',
+  replyToUser: 'updated',
+  linkPath: 'updated-invite',
+  buttonText: '📅 VIEW UPDATE',
+  trainingSlug: 'clone-phishing',
+  hasAttachment: true,
+  attachments: [{
+    name: 'updated_invite.ics',
+    type: 'text/calendar',
+    size: '8KB'
+  }]
+}));
+
+scenarios.push(generateMailScenario(42, 'l16', {
+  title: '📧 Updated Shipping Confirmation',
+  content: 'Your shipping label has been updated with new tracking.',
+  category: 'medium',
+  taxonomy: 'Clone Phishing',
+  neutralAction: 'Compare with Original',
+  wrongAction: 'Open Attachment',
+  difficulty: 0.41,
+  fromName: 'Shipping',
+  fromUser: 'shipping',
+  replyToUser: 'updated',
+  linkPath: 'updated-label',
+  buttonText: '📎 DOWNLOAD',
+  trainingSlug: 'clone-phishing',
+  hasAttachment: true,
+  attachments: [{
+    name: 'updated_shipping_label.pdf',
+    type: 'application/pdf',
+    size: '187KB'
+  }]
+}));
+
+// ===== LEVEL 17: MITM WiFi =====
+scenarios.push(generateBrowserScenario(43, 'l17', {
+  title: '🌐 Connect to Cafe WiFi',
+  content: 'Free WiFi available - login to access internet.',
+  category: 'medium',
+  taxonomy: 'MITM Attack',
+  neutralAction: 'Use VPN',
+  wrongAction: 'Connect & Login',
+  difficulty: 0.42,
+  bodyText: 'Connect to Cafe WiFi: http://fake-cafe-portal.net/login',
+  linkPath: 'cafe-login',
+  trainingSlug: 'evil-twin'
+}));
+
+scenarios.push(generateBrowserScenario(44, 'l17', {
+  title: '🌐 Grand Hotel Guest WiFi',
+  content: 'Connect to high-speed internet during your stay.',
+  category: 'medium',
+  taxonomy: 'MITM Attack',
+  neutralAction: 'Use VPN',
+  wrongAction: 'Connect & Login',
+  difficulty: 0.42,
+  bodyText: 'Grand Hotel WiFi: http://fake-hotel-portal.net/login',
+  linkPath: 'hotel-login',
+  trainingSlug: 'evil-twin'
+}));
+
+// ===== LEVEL 18: Watering Hole =====
+scenarios.push(generateMailScenario(45, 'l18', {
+  title: '📰 Industry News Digest - Cybersecurity Updates',
+  content: 'Latest cybersecurity news from industry-news.com',
+  category: 'medium',
+  taxonomy: 'Watering Hole',
+  neutralAction: 'Verify URL',
+  wrongAction: 'Read Articles',
+  difficulty: 0.43,
+  fromName: 'Industry Updates',
+  fromUser: 'news',
+  replyToUser: 'digest',
+  linkPath: 'industry-news',
+  buttonText: '📰 READ',
+  trainingSlug: 'watering-hole'
+}));
+
+scenarios.push(generateMailScenario(46, 'l18', {
+  title: '💻 Tech Forum Weekly Digest',
+  content: 'Top discussions and code snippets from tech-forum.net',
+  category: 'medium',
+  taxonomy: 'Watering Hole',
+  neutralAction: 'Verify URL',
+  wrongAction: 'Read Articles',
+  difficulty: 0.43,
+  fromName: 'Tech Forum',
+  fromUser: 'newsletter',
+  replyToUser: 'digest',
+  linkPath: 'tech-forum',
+  buttonText: '🔍 VIEW',
+  trainingSlug: 'watering-hole'
+}));
+
+// ===== LEVEL 19: Credential Stuffing =====
+scenarios.push(generateMailScenario(47, 'l19', {
+  title: '🎬 Netflix: Multiple Failed Login Attempts',
+  content: '15 failed login attempts detected - secure your account.',
+  category: 'medium',
+  taxonomy: 'Credential Stuffing',
+  neutralAction: 'Check Account',
+  wrongAction: 'Secure Account',
+  difficulty: 0.44,
+  fromName: 'Netflix Security',
+  fromUser: 'security',
+  replyToUser: 'alerts',
+  linkPath: 'netflix-secure',
+  buttonText: '🔒 SECURE',
+  trainingSlug: 'credential-stuffing'
+}));
+
+scenarios.push(generateMailScenario(48, 'l19', {
+  title: '🎵 Spotify: Unusual Login Activity',
+  content: 'Login attempts from multiple locations detected.',
+  category: 'medium',
+  taxonomy: 'Credential Stuffing',
+  neutralAction: 'Check Account',
+  wrongAction: 'Secure Account',
+  difficulty: 0.44,
+  fromName: 'Spotify Security',
+  fromUser: 'security',
+  replyToUser: 'alerts',
+  linkPath: 'spotify-secure',
+  buttonText: '🔐 SECURE',
+  trainingSlug: 'credential-stuffing'
+}));
+
+// ===== LEVEL 20: Session Hijacking =====
+scenarios.push(generateBrowserScenario(49, 'l20', {
+  title: '⏰ Session Expired - Please Login Again',
+  content: 'Your session has expired due to inactivity.',
+  category: 'medium',
+  taxonomy: 'Session Hijacking',
+  neutralAction: 'Check URL',
+  wrongAction: 'Login Again',
+  difficulty: 0.45,
+  bodyText: 'Session expired. Please login again to continue.',
+  linkPath: 'renew-session',
+  trainingSlug: 'session-hijacking'
+}));
+
+// ===== LEVEL 21: Evil Twin WiFi =====
+scenarios.push(generateBrowserScenario(50, 'l21', {
+  title: '📶 Company Guest WiFi Available',
+  content: 'Free guest WiFi available in lobby - connect now.',
+  category: 'medium',
+  taxonomy: 'Wi-Fi Phishing',
+  neutralAction: 'Verify Network',
+  wrongAction: 'Connect',
+  difficulty: 0.46,
+  bodyText: 'Company Guest WiFi: Connect to "Company-Guest" network.',
+  linkPath: 'company-guest',
+  trainingSlug: 'evil-twin'
+}));
+
+// ===== LEVEL 22: Tech Support Scam =====
+scenarios.push(generateMailScenario(51, 'l22', {
+  title: '🖥️ CRITICAL: 5 Viruses Detected',
+  content: 'Your computer is infected with 5 viruses! Call now.',
+  category: 'medium',
+  taxonomy: 'Tech Support Fraud',
+  neutralAction: 'Contact IT Directly',
+  wrongAction: 'Call Number',
+  difficulty: 0.47,
+  fromName: 'Microsoft Support',
+  fromUser: 'alerts',
+  replyToUser: 'help',
+  linkPath: 'tech-support',
+  buttonText: '📞 CALL NOW',
+  trainingSlug: 'tech-support'
+}));
+
+// ===== LEVEL 23: Romance Scam =====
+scenarios.push(generateMailScenario(52, 'l23', {
+  title: '💕 Someone Has a Crush on You!',
+  content: 'A colleague added you to their secret crush list.',
+  category: 'medium',
+  taxonomy: 'Social Engineering',
+  neutralAction: 'Ignore',
+  wrongAction: 'See Who',
+  difficulty: 0.48,
+  fromName: 'Dating Connect',
+  fromUser: 'dating',
+  replyToUser: 'match',
+  linkPath: 'reveal-crush',
+  buttonText: '💕 SEE WHO',
+  trainingSlug: 'romance-scam'
+}));
+
+// ===== LEVEL 24: Charity Scam =====
+scenarios.push(generateMailScenario(53, 'l24', {
+  title: '🤝 Emergency: Help Disaster Victims',
+  content: 'Thousands affected by earthquake need your help.',
+  category: 'medium',
+  taxonomy: 'Financial Fraud',
+  neutralAction: 'Research Charity',
+  wrongAction: 'Donate Now',
+  difficulty: 0.49,
+  fromName: 'Global Relief',
+  fromUser: 'relief',
+  replyToUser: 'donate',
+  linkPath: 'donate-relief',
+  buttonText: '❤️ DONATE',
+  trainingSlug: 'charity-scam'
+}));
+
+// ===== LEVEL 25: Job Scam =====
+scenarios.push(generateMailScenario(54, 'l25', {
+  title: '💼 Remote Position: $150k/year - No Experience Needed',
+  content: 'Work from home, flexible hours, $150k starting salary.',
+  category: 'medium',
+  taxonomy: 'Employment Fraud',
+  neutralAction: 'Research Company',
+  wrongAction: 'Apply Now',
+  difficulty: 0.50,
+  fromName: 'HR Recruiting',
+  fromUser: 'careers',
+  replyToUser: 'apply',
+  linkPath: 'apply-job',
+  buttonText: '📝 APPLY',
+  trainingSlug: 'job-scam',
+  hasAttachment: true,
+  attachments: [{
+    name: 'job_description.pdf',
+    type: 'application/pdf',
+    size: '234KB'
+  }]
+}));
+
+// ===== LEVEL 26: Account Verification =====
+scenarios.push(generateMailScenario(55, 'l26', {
+  title: '🔑 Account Verification Required',
+  content: 'Verify your account within 48 hours to avoid suspension.',
+  category: 'medium',
+  taxonomy: 'Credential Phishing',
+  neutralAction: 'Check Official Site',
+  wrongAction: 'Verify Now',
+  difficulty: 0.51,
+  fromName: 'Account Services',
+  fromUser: 'verify',
+  replyToUser: 'confirm',
+  linkPath: 'verify-account',
+  buttonText: '✅ VERIFY',
+  trainingSlug: 'account-verification'
+}));
+
+// ===== LEVEL 27: Shipping Fraud =====
+scenarios.push(generateMailScenario(56, 'l27', {
+  title: '📦 Package Could Not Be Delivered',
+  content: 'Reschedule delivery within 48 hours.',
+  category: 'medium',
+  taxonomy: 'Shipping Fraud',
+  neutralAction: 'Check Tracking',
+  wrongAction: 'Reschedule Delivery',
+  difficulty: 0.52,
+  fromName: 'USPS Delivery',
+  fromUser: 'delivery',
+  replyToUser: 'reschedule',
+  linkPath: 'reschedule',
+  buttonText: '📅 RESCHEDULE',
+  trainingSlug: 'shipping-fraud'
+}));
+
+// ===== LEVEL 28: Scareware =====
+scenarios.push(generateBrowserScenario(57, 'l28', {
+  title: '⚠️ CRITICAL: 5 Viruses Detected!',
+  content: 'Your computer is infected - download antivirus now.',
+  category: 'medium',
+  taxonomy: 'Scareware',
+  neutralAction: 'Run Legitimate Scan',
+  wrongAction: 'Download Antivirus',
+  difficulty: 0.53,
+  bodyText: 'CRITICAL ALERT: 5 viruses detected! Download antivirus immediately.',
+  linkPath: 'download-antivirus',
+  trainingSlug: 'scareware',
+  bodyHtml: '<div style="background: red; color: white; padding: 20px;"><h1>⚠️ CRITICAL ALERT</h1><p>5 viruses detected!</p><a href="http://fake-antivirus.net/download" style="background: white; color: red; padding: 10px;">Download Antivirus</a></div>'
+}));
+
+// ===== LEVEL 29: Inheritance Scam =====
+scenarios.push(generateMailScenario(58, 'l29', {
+  title: '💰 $2.5M Inheritance Waiting for You',
+  content: 'You are the beneficiary of an unclaimed estate.',
+  category: 'hard',
+  taxonomy: 'Financial Fraud',
+  neutralAction: 'Ignore',
+  wrongAction: 'Claim Inheritance',
+  difficulty: 0.54,
+  fromName: 'Legal Affairs',
+  fromUser: 'attorney',
+  replyToUser: 'claim',
+  linkPath: 'claim-inheritance',
+  buttonText: '⚖️ CLAIM',
+  trainingSlug: 'inheritance-scam',
+  hasAttachment: true,
+  attachments: [{
+    name: 'legal_documents.pdf',
+    type: 'application/pdf',
+    size: '567KB'
+  }]
+}));
+
+// ===== LEVEL 30: Crypto Scam =====
+scenarios.push(generateMailScenario(59, 'l30', {
+  title: '₿ Double Your Bitcoin in 24 Hours!',
+  content: 'AI trading bot guarantees 100% returns.',
+  category: 'hard',
+  taxonomy: 'Crypto Fraud',
+  neutralAction: 'Research',
+  wrongAction: 'Invest Now',
+  difficulty: 0.55,
+  fromName: 'Crypto Wealth',
+  fromUser: 'trading',
+  replyToUser: 'invest',
+  linkPath: 'invest-crypto',
+  buttonText: '₿ INVEST',
+  trainingSlug: 'crypto-scam'
+}));
+
+// ===== LEVEL 31: Government Fraud =====
+scenarios.push(generateMailScenario(60, 'l31', {
+  title: '⚖️ IRS: Tax Fraud Investigation',
+  content: 'Case #TAX-7843-22 - Respond within 24 hours.',
+  category: 'hard',
+  taxonomy: 'Government Fraud',
+  neutralAction: 'Contact IRS Directly',
+  wrongAction: 'Provide Information',
+  difficulty: 0.56,
+  fromName: 'IRS Tax Division',
+  fromUser: 'tax-dept',
+  replyToUser: 'compliance',
+  linkPath: 'irs-respond',
+  buttonText: '📋 RESPOND',
+  trainingSlug: 'government-fraud',
+  hasAttachment: true,
+  attachments: [{
+    name: 'tax_notice_2025.pdf',
+    type: 'application/pdf',
+    size: '234KB'
+  }]
+}));
+
+// ===== LEVEL 32: Emergency Scam =====
+scenarios.push(generateMailScenario(61, 'l32', {
+  title: '🆘 Urgent: Family Emergency - Need Help',
+  content: 'Cousin stranded in London after robbery - needs $950.',
+  category: 'hard',
+  taxonomy: 'Emergency Fraud',
+  neutralAction: 'Call Family Directly',
+  wrongAction: 'Send Money',
+  difficulty: 0.57,
+  fromName: 'Family Member',
+  fromUser: 'emergency',
+  replyToUser: 'help',
+  linkPath: 'emergency-help',
+  buttonText: '🆘 HELP',
+  trainingSlug: 'emergency-scam'
+}));
+
+// ===== LEVEL 39: Final Boss =====
+scenarios.push({
+  scenario_id: 'final00068',
+  level_no: 'l39',
+  title: '⚡ ADVANCED PERSISTENT PHISHING - FUSION ATTACK',
+  content: 'Multi-stage attack combining 7 different phishing techniques',
+  category: 'expert',
+  template: 'multiphase',
+  taxonomy: 'Advanced Persistent Phishing',
+  correct_action: 'Report & Isolate',
+  neutral_action: 'Monitor',
+  wrong_action: 'Engage',
+  difficulty: 0.99,
+  from_address: '"CEO Office" <ceo.directive@corporate-board.com>',
+  reply_to: 'secure-channel@attackers-c2.net',
+  to_address: 'employee@company.com',
+  crct_mail: 'support@company.com',
+  phish_email: 'scam@attackers-c2.net',
+  body_html: `
+    <div style="font-family: Arial; max-width: 800px; margin: 0 auto; border: 3px solid #ff4444; padding: 20px; border-radius: 15px;">
+      <h1 style="color: #ff4444; text-align: center;">⚡ FINAL FUSION CHALLENGE ⚡</h1>
+      <h2 style="text-align: center;">Advanced Persistent Phishing (APP) Detection</h2>
+      <div style="background: #000; color: #0f0; padding: 15px; font-family: monospace; border-radius: 8px;">
+        <p>THREAT LEVEL: 7 COMBINED TECHNIQUES</p>
+        <p>CEO FRAUD + CLONE PHISHING + CREDENTIAL HARVESTING + MALWARE + VISHING</p>
+      </div>
+      <div style="background: #f0f0f0; padding: 20px; border-radius: 8px; margin: 10px 0;">
+        <h3>📧 PHASE 1: Spear Phishing</h3>
+        <p><strong>From:</strong> "CEO Office" &lt;ceo.directive@corporate-board.com&gt;</p>
+        <p><strong>Subject:</strong> CONFIDENTIAL: Urgent Board Directive - Q4 Acquisition</p>
+        <p>The board has approved the acquisition of Nexus Technologies. Process attached documents immediately.</p>
+      </div>
+      <div style="background: #f0f0f0; padding: 20px; border-radius: 8px; margin: 10px 0;">
+        <h3>📧 PHASE 2: Clone Phishing</h3>
+        <p><strong>From:</strong> "CEO Office" &lt;ceo.directive@corporate-board.com&gt;</p>
+        <p><strong>Subject:</strong> RE: CONFIDENTIAL: Urgent Board Directive - Q4 Acquisition (FOLLOW-UP)</p>
+        <p>Did you receive my previous email? This is time-sensitive. Process within 2 hours.</p>
+      </div>
+      <div style="background: #f0f0f0; padding: 20px; border-radius: 8px; margin: 10px 0;">
+        <h3>📧 PHASE 3: Credential Harvesting</h3>
+        <p><strong>From:</strong> "DocuSign" &lt;notifications@docusign-secure.net&gt;</p>
+        <p><strong>Subject:</strong> Document Ready for Your Signature - Acquisition Agreement</p>
+        <p>Please review and sign the attached agreement using your corporate credentials.</p>
+      </div>
+      <div style="background: #f0f0f0; padding: 20px; border-radius: 8px; margin: 10px 0;">
+        <h3>📧 PHASE 4: Malicious Attachment</h3>
+        <p><strong>From:</strong> "DocuSign" &lt;notifications@docusign-secure.net&gt;</p>
+        <p><strong>Subject:</strong> RE: Document Ready for Your Signature - Acquisition Agreement</p>
+        <p>Having trouble with the link? Please review the attached PDF directly.</p>
+      </div>
+      <div style="background: #f0f0f0; padding: 20px; border-radius: 8px; margin: 10px 0;">
+        <h3>📧 PHASE 5: Tech Support Scam</h3>
+        <p><strong>From:</strong> "Microsoft 365 Support" &lt;support@m365-alerts.net&gt;</p>
+        <p><strong>Subject:</strong> CRITICAL: Multiple failed sign-in attempts detected</p>
+        <p>We've detected unusual activity on your account. Call our security team immediately.</p>
+      </div>
+      <div style="background: #ffeb3b; padding: 20px; border-radius: 8px; margin-top: 20px;">
+        <p><strong>⚠️ CRITICAL NOTE:</strong> This is a fusion attack combining 7 techniques: CEO fraud, clone phishing, credential harvesting, malware attachment, vishing, and 3 URL shorteners.</p>
+      </div>
+      <div style="text-align: center; margin-top: 20px;">
+        <p><strong>Choose your response:</strong></p>
+        <button style="background: #4CAF50; color: white; padding: 10px 20px; margin: 5px; border: none; border-radius: 5px;">🚨 Report & Isolate (Correct)</button>
+        <button style="background: #FFC107; color: black; padding: 10px 20px; margin: 5px; border: none; border-radius: 5px;">👁️ Monitor (Neutral)</button>
+        <button style="background: #f44336; color: white; padding: 10px 20px; margin: 5px; border: none; border-radius: 5px;">⚡ Engage (Wrong)</button>
+      </div>
+    </div>
+  `,
+  body_text: 'FUSION ATTACK DETECTED: Advanced Persistent Phishing combining 7 techniques.',
+  links: [
+    'http://tinyurl.com/fusion-stage1',
+    'http://bit.ly/fusion-stage2',
+    'http://goo.gl/fusion-stage3'
+  ],
+  has_attachment: true,
+  attachments: [
+    {
+      name: 'acquisition_agreement_FINAL.pdf',
+      type: 'application/pdf',
+      size: '2.4MB'
+    },
+    {
+      name: 'digital_signature_request.ps1',
+      type: 'application/x-powershell',
+      size: '45KB'
+    }
+  ],
+  redirect_url: 'https://company.com/security-training/advanced-persistent',
+  display_url: 'http://tinyurl.com/fusion-stage1',
+  shortener_service: 'multi-stage',
+  ml_prediction_distilbert: 1,
+  ml_confidence_distilbert: 0.99,
+  ml_prediction_cnn: 1,
+  ml_confidence_cnn: 0.98,
+  user_selected_action: null,
+  timestamp: null
+});
+
+// ===== BONUS LEVELS =====
+scenarios.push(generateBonusScenario(62, 'b1', {
+  title: '🧠 Bonus: The Anglerfish Principle - Understanding Phishing Lures',
+  content: 'Deep dive analysis: How cybercriminals use irresistible lures just like anglerfish.',
+  taxonomy: 'Phishing',
+  bodyHtml: '<div class="bonus"><h2>The Anglerfish Principle</h2><p>Anglerfish use a bioluminescent lure to attract prey - exactly like phishing emails use enticing baits.</p></div>',
+  bodyText: 'Bonus: The Anglerfish Principle - How phishing lures work.'
+}));
+
+scenarios.push(generateBonusScenario(63, 'b2', {
+  title: '🧠 Bonus: The Porcupine Defense - Ransomware Protection',
+  content: 'How ransomware attacks like porcupines defend their territory.',
+  taxonomy: 'Ransomware',
+  bodyHtml: '<div class="bonus"><h2>The Porcupine Principle</h2><p>Porcupines release quills that cause ongoing pain - like ransomware encrypting files.</p></div>',
+  bodyText: 'Bonus: The Porcupine Principle - Ransomware protection strategies.'
+}));
+
+scenarios.push(generateBonusScenario(64, 'b3', {
+  title: '🧠 Bonus: Army Ant Strategy - Understanding DDoS Attacks',
+  content: 'How DDoS attacks overwhelm targets like army ants swarming prey.',
+  taxonomy: 'DDoS Attacks',
+  bodyHtml: '<div class="bonus"><h2>The Army Ant Principle</h2><p>Army ants overwhelm through sheer numbers - exactly like DDoS attacks.</p></div>',
+  bodyText: 'Bonus: Army Ant Strategy - DDoS attack patterns.'
+}));
+
+scenarios.push(generateBonusScenario(65, 'b4', {
+  title: '🧠 Bonus: The Mockingbird Effect - Social Engineering',
+  content: 'How social engineers mimic trusted voices like mockingbirds.',
+  taxonomy: 'Social Engineering',
+  bodyHtml: '<div class="bonus"><h2>The Mockingbird Principle</h2><p>Mockingbirds mimic other birds - like social engineers impersonate trusted entities.</p></div>',
+  bodyText: 'Bonus: The Mockingbird Effect - Social engineering tactics.'
+}));
+
+scenarios.push(generateBonusScenario(66, 'b5', {
+  title: '🧠 Bonus: The Cuckoo\'s Egg - Trojan Horse Detection',
+  content: 'How trojan horses hide in plain sight like cuckoo eggs.',
+  taxonomy: 'Trojan Horse',
+  bodyHtml: '<div class="bonus"><h2>The Cuckoo Principle</h2><p>Cuckoos lay eggs in other birds\' nests - exactly like trojan horses hide in legitimate software.</p></div>',
+  bodyText: 'Bonus: The Cuckoo\'s Egg - Trojan horse detection.'
+}));
+
+scenarios.push(generateBonusScenario(67, 'b6', {
+  title: '🧠 Bonus: The Zombie Ant Phenomenon - Botnet Behavior',
+  content: 'How botnets turn devices into zombies like the cordyceps fungus.',
+  taxonomy: 'Botnets',
+  bodyHtml: '<div class="bonus"><h2>The Zombie Ant Principle</h2><p>Cordyceps fungus controls ants - exactly like botnets control infected devices.</p></div>',
+  bodyText: 'Bonus: The Zombie Ant Phenomenon - Botnet behavior analysis.'
+}));
+
+// ============================================
+// EXPORT FUNCTIONS
+// ============================================
+
+const saveToFile = (filename, data) => {
+  fs.writeFileSync(filename, JSON.stringify(data, null, 2));
+  console.log(`✅ Saved ${data.length} scenarios to ${filename}`);
+};
+
+const generateMongoScript = () => {
+  let script = '// MongoDB Insert Script\n';
+  script += '// Run with: mongo <script>\n\n';
+  script += 'db.levelDataset.drop();\n\n';
+  
+  scenarios.forEach(scenario => {
+    const json = JSON.stringify(scenario).replace(/'/g, "\\'");
+    script += `db.levelDataset.insertOne(${JSON.stringify(scenario)});\n`;
+  });
+  
+  script += '\nprint(`Inserted ${db.levelDataset.count()} scenarios`);\n';
+  
+  fs.writeFileSync('insert_scenarios.js', script);
+  console.log('✅ Generated insert_scenarios.js');
+};
+
+const generateStats = () => {
+  const stats = {
+    total: scenarios.length,
+    byLevel: {},
+    byCategory: {},
+    byTaxonomy: {},
+    byTemplate: {}
+  };
+  
+  scenarios.forEach(s => {
+    stats.byLevel[s.level_no] = (stats.byLevel[s.level_no] || 0) + 1;
+    stats.byCategory[s.category] = (stats.byCategory[s.category] || 0) + 1;
+    stats.byTaxonomy[s.taxonomy] = (stats.byTaxonomy[s.taxonomy] || 0) + 1;
+    stats.byTemplate[s.template] = (stats.byTemplate[s.template] || 0) + 1;
+  });
+  
+  fs.writeFileSync('dataset_stats.json', JSON.stringify(stats, null, 2));
+  console.log('✅ Generated dataset_stats.json');
+  
+  console.log('\n📊 DATASET STATISTICS:');
+  console.log(`Total Scenarios: ${stats.total}`);
+  console.log('\nBy Level:', stats.byLevel);
+  console.log('\nBy Category:', stats.byCategory);
+  console.log('\nBy Taxonomy:', stats.byTaxonomy);
+  console.log('\nBy Template:', stats.byTemplate);
+};
+
+// ============================================
+// MAIN EXECUTION
+// ============================================
+
+console.log('🚀 Generating EnPhiSim Dataset...\n');
+
+saveToFile('enphisim_dataset.json', scenarios);
+generateMongoScript();
+generateStats();
+
+console.log('\n✅ Dataset generation complete!');
+console.log('\n📁 Output files:');
+console.log('   - enphisim_dataset.json (JSON format)');
+console.log('   - insert_scenarios.js (MongoDB script)');
+console.log('   - dataset_stats.json (Statistics)');
