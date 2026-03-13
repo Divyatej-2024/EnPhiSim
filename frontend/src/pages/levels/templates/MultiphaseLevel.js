@@ -47,7 +47,7 @@ export default function MultiphaseLevel({ level: scenario, onAction, locked }) {
       onAction={onAction} 
       locked={locked}
     >
-      {({ level, onAction: handleAction, locked: isLocked }) => {
+      {({ level, onAction: handleAction, locked: isLocked, now }) => {
         // ✅ ALL logic MUST be INSIDE this function
         
         const calculateFinalScore = () => {
@@ -98,6 +98,14 @@ export default function MultiphaseLevel({ level: scenario, onAction, locked }) {
                   />
                 </div>
                 <span className="threat-value">{threatLevel}%</span>
+              </div>
+
+              <div className="live-row">
+                <span className="live-dot" aria-hidden="true" />
+                <span>Live</span>
+                <span className="live-time">
+                  {(now || new Date()).toLocaleTimeString()}
+                </span>
               </div>
               
               {timerActive && (

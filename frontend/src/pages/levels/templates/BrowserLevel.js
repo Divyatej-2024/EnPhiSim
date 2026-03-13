@@ -6,48 +6,49 @@ export default function BrowserLevel({ level: scenario, onAction }) {
   const [url, setUrl] = useState("");
   const [showDetails, setShowDetails] = useState(false);
 
-  const initialUrl = useMemo(() => 
-    scenario?.url || scenario?.display_url || "http://example.com", 
+  const initialUrl = useMemo(
+    () => scenario?.url || scenario?.display_url || "http://example.com",
     [scenario]
   );
 
   const currentUrl = url || initialUrl;
-  
-  const isShortenedUrl = useMemo(() => 
-    !!scenario?.shortener_service || 
-    currentUrl.match(/(bit\.ly|goo\.gl|tinyurl|ow\.ly|is\.gd|buff\.ly)/i),
+
+  const isShortenedUrl = useMemo(
+    () =>
+      !!scenario?.shortener_service ||
+      currentUrl.match(/(bit\.ly|goo\.gl|tinyurl|ow\.ly|is\.gd|buff\.ly)/i),
     [currentUrl, scenario]
   );
 
-  const getDisplayDomain = (url) => {
+  const getDisplayDomain = (urlValue) => {
     try {
-      const parsed = new URL(url);
+      const parsed = new URL(urlValue);
       return parsed.hostname;
     } catch {
       return "invalid-url";
     }
   };
 
-  const verifyDomainTrust = (url) => {
+  const verifyDomainTrust = (urlValue) => {
     try {
-      const domain = getDisplayDomain(url);
-      
+      const domain = getDisplayDomain(urlValue);
+
       // Check against known legitimate domain
       if (scenario?.crct_mail) {
-        const legitDomain = scenario.crct_mail.split('@')[1];
+        const legitDomain = scenario.crct_mail.split("@")[1];
         if (domain.includes(legitDomain)) {
-          return { trusted: true, message: "✓ Verified legitimate domain" };
+          return { trusted: true, message: "Verified legitimate domain" };
         }
       }
-      
+
       // Check against known phishing domain
       if (scenario?.phish_email) {
-        const phishDomain = scenario.phish_email.split('@')[1];
+        const phishDomain = scenario.phish_email.split("@")[1];
         if (domain.includes(phishDomain)) {
-          return { trusted: false, message: "⚠️ Known phishing domain detected" };
+          return { trusted: false, message: "Known phishing domain detected" };
         }
       }
-      
+
       return { trusted: null, message: "Domain verification unavailable" };
     } catch {
       return { trusted: null, message: "Unable to verify domain" };
@@ -55,14 +56,17 @@ export default function BrowserLevel({ level: scenario, onAction }) {
   };
 
   const domainTrust = verifyDomainTrust(currentUrl);
-  const mlConfidence = scenario?.ml_confidence_distilbert || scenario?.ml_confidence_cnn;
+  const mlConfidence =
+    scenario?.ml_confidence_distilbert || scenario?.ml_confidence_cnn;
 
   return (
     <BaseLevel levelType="browser" scenario={scenario} onAction={onAction}>
-      {({ level, onAction: handleUserAction, locked }) => (
+      {({ level, onAction: handleUserAction, locked, now }) => (
         <div className="browser-container">
           <div className="browser-header">
-            <div className="browser-title">{level.title || "Browser Simulation"}</div>
+            <div className="browser-title">
+              {level.title || "Browser Simulation"}
+            </div>
             <div className="browser-url-bar">
               <input
                 value={currentUrl}
@@ -72,21 +76,30 @@ export default function BrowserLevel({ level: scenario, onAction }) {
                 readOnly={locked}
               />
             </div>
-            
+
             <div className="security-indicators">
-              <span className={`ssl-indicator ${currentUrl.startsWith("https") ? "secure" : "insecure"}`}>
-                {currentUrl.startsWith("https") ? "🔒 HTTPS" : "⚠️ HTTP"}
+              <span
+                className={`ssl-indicator ${
+                  currentUrl.startsWith("https") ? "secure" : "insecure"
+                }`}
+              >
+                {currentUrl.startsWith("https")
+                  ? "HTTPS (secure)"
+                  : "HTTP (not secure)"}
               </span>
-              
+
               {isShortenedUrl && (
-                <span className="warning-indicator" title="URL shorteners can hide malicious destinations">
-                  🔗 Shortened URL
+                <span
+                  className="warning-indicator"
+                  title="URL shorteners can hide malicious destinations"
+                >
+                  Shortened URL
                 </span>
               )}
-              
+
               {domainTrust.trusted === false && (
                 <span className="danger-indicator">
-                  ⚠️ {domainTrust.message}
+                  Warning: {domainTrust.message}
                 </span>
               )}
             </div>
@@ -95,7 +108,8 @@ export default function BrowserLevel({ level: scenario, onAction }) {
           <div className="browser-content">
             {level.show_warning && (
               <div className="warning-banner">
-                <strong>⚠️ Security Warning:</strong> This site may be impersonating a legitimate service.
+                <strong>Security Warning:</strong> This site may be impersonating
+                a legitimate service.
                 {domainTrust.trusted === false && (
                   <div className="warning-detail">{domainTrust.message}</div>
                 )}
@@ -106,89 +120,103 @@ export default function BrowserLevel({ level: scenario, onAction }) {
             <p>{level.body_text || "No content available."}</p>
 
             <div className="security-details">
-              <button 
+              <button
                 className="details-toggle"
                 onClick={() => setShowDetails(!showDetails)}
               >
                 {showDetails ? "Hide" : "Show"} Security Details
               </button>
-              
+
               {showDetails && (
                 <div className="details-panel">
                   <h4>Security Analysis</h4>
                   <ul>
                     <li>Domain: {getDisplayDomain(currentUrl)}</li>
-                    <li>SSL/TLS: {currentUrl.startsWith("https") ? "Enabled" : "Disabled"}</li>
+                    <li>
+                      SSL/TLS: {currentUrl.startsWith("https") ? "Enabled" : "Disabled"}
+                    </li>
                     <li>URL Shortened: {isShortenedUrl ? "Yes" : "No"}</li>
                     <li>Domain Trust: {domainTrust.message}</li>
                     {mlConfidence && (
                       <li>AI Risk Score: {(mlConfidence * 100).toFixed(1)}%</li>
                     )}
                     {scenario?.ml_prediction_distilbert === 1 && (
-                      <li className="high-risk">⚠️ AI Model: High phishing probability</li>
+                      <li className="high-risk">
+                        AI Model: High phishing probability
+                      </li>
                     )}
                   </ul>
-                  
-                  {Array.isArray(level.suspicious_elements) && level.suspicious_elements.length > 0 && (
-                    <div className="suspicious-elements">
-                      <h5>Suspicious Indicators Found:</h5>
-                      <ul>
-                        {level.suspicious_elements.map((item, idx) => (
-                          <li key={idx}>{String(item)}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+
+                  {Array.isArray(level.suspicious_elements) &&
+                    level.suspicious_elements.length > 0 && (
+                      <div className="suspicious-elements">
+                        <h5>Suspicious Indicators Found:</h5>
+                        <ul>
+                          {level.suspicious_elements.map((item, idx) => (
+                            <li key={idx}>{String(item)}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                 </div>
               )}
             </div>
           </div>
 
           <div className="browser-footer">
-            <span>📍 Host: {getDisplayDomain(currentUrl)}</span>
-            <span>🕒 Session: {new Date().toLocaleTimeString()}</span>
+            <span>Host: {getDisplayDomain(currentUrl)}</span>
+            <span>Session: {(now || new Date()).toLocaleTimeString()}</span>
           </div>
 
           <div className="browser-actions">
             <button
               className="browser-btn close"
               disabled={locked}
-              onClick={() => handleUserAction("close", { 
-                url: currentUrl, 
-                reason: domainTrust.trusted === false ? "phishing_detected" : "suspicious",
-                domain: getDisplayDomain(currentUrl),
-                mlConfidence
-              })}
+              onClick={() =>
+                handleUserAction("close", {
+                  url: currentUrl,
+                  reason:
+                    domainTrust.trusted === false
+                      ? "phishing_detected"
+                      : "suspicious",
+                  domain: getDisplayDomain(currentUrl),
+                  mlConfidence,
+                })
+              }
             >
-              🚫 Close Tab
+              Close Tab
             </button>
-            
+
             <button
               className="browser-btn ignore"
               disabled={locked}
-              onClick={() => handleUserAction("ignore", { 
-                url: currentUrl,
-                domain: getDisplayDomain(currentUrl),
-                ignoredWarnings: domainTrust.trusted === false
-              })}
+              onClick={() =>
+                handleUserAction("ignore", {
+                  url: currentUrl,
+                  domain: getDisplayDomain(currentUrl),
+                  ignoredWarnings: domainTrust.trusted === false,
+                })
+              }
             >
-              ⚠️ Ignore Warning
+              Ignore Warning
             </button>
-            
+
             <button
               className="browser-btn report"
               disabled={locked}
-              onClick={() => handleUserAction("report", { 
-                url: currentUrl, 
-                type: "phishing",
-                indicators: {
-                  shortenedUrl: isShortenedUrl,
-                  domainMismatch: domainTrust.trusted === false,
-                  mlScore: mlConfidence
-                }
-              })}
+              onClick={() =>
+                handleUserAction("report", {
+                  url: currentUrl,
+                  type: "phishing",
+                  indicators: {
+                    shortenedUrl: isShortenedUrl,
+                    domainMismatch: domainTrust.trusted === false,
+                    mlScore: mlConfidence,
+                  },
+                })
+              }
             >
-              🚨 Report Phishing
+              Report Phishing
             </button>
           </div>
         </div>

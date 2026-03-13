@@ -21,23 +21,7 @@ export default function MailLevel({ level, onAction, locked }) {
     return match ? match[1] : 'unknown';
   };
   
-  // Create emails array from level data or use fallback
-  const emails = Array.isArray(activeLevel.emails) && activeLevel.emails.length > 0
-    ? activeLevel.emails
-    : [
-        {
-          unread: true,
-          sender: activeLevel.from_address || activeLevel.phish_email || "unknown@example.com",
-          subject: activeLevel.subject || activeLevel.title || "Security Notification",
-          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          body: activeLevel.body_html || activeLevel.body_text || activeLevel.content || "No content",
-          has_links: activeLevel.links?.length > 0,
-          has_attachments: activeLevel.has_attachment
-        }
-      ];
-
-  // Get current selected email data
-  const currentEmail = selectedEmail !== null ? emails[selectedEmail] : emails[0];
+  // Get current selected email data (computed inside render for live time)
   
   // Analyze link risk
   const analyzeLink = (link) => {
@@ -358,13 +342,47 @@ export default function MailLevel({ level, onAction, locked }) {
 
   return (
     <BaseLevel levelType="mail" scenario={activeLevel} onAction={onAction} locked={locked}>
-      {({ level: scenario, onAction: handleAction, locked: isLocked }) => (
+      {({ level: scenario, onAction: handleAction, locked: isLocked, now }) => {
+        const emails =
+          Array.isArray(activeLevel.emails) && activeLevel.emails.length > 0
+            ? activeLevel.emails
+            : [
+                {
+                  unread: true,
+                  sender:
+                    activeLevel.from_address ||
+                    activeLevel.phish_email ||
+                    "unknown@example.com",
+                  subject:
+                    activeLevel.subject ||
+                    activeLevel.title ||
+                    "Security Notification",
+                  time: (now || new Date()).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  }),
+                  body:
+                    activeLevel.body_html ||
+                    activeLevel.body_text ||
+                    activeLevel.content ||
+                    "No content",
+                  has_links: activeLevel.links?.length > 0,
+                  has_attachments: activeLevel.has_attachment,
+                },
+              ];
+
+        const currentEmail =
+          selectedEmail !== null ? emails[selectedEmail] : emails[0];
+
+        return (
         <div className="mail-container">
           {/* Header with live indicator and search */}
           <div className="mail-header">
             <div className="live-indicator">
               <span className="live-dot"></span>
-              <span>Live Email Simulation | {new Date().toLocaleTimeString()}</span>
+              <span>
+                Live Email Simulation | {(now || new Date()).toLocaleTimeString()}
+              </span>
             </div>
             <input 
               type="text" 
@@ -488,7 +506,8 @@ export default function MailLevel({ level, onAction, locked }) {
             </div>
           </div>
         </div>
-      )}
+        );
+      }}
     </BaseLevel>
   );
 }

@@ -37,10 +37,17 @@ export default function MailBrowserMessageLevel({ level: scenario }) {
 
   return (
     <BaseLevel levelType="mail+browser+message" scenario={scenario}>
-      {({ level, onAction, locked }) => (
+      {({ level, onAction, locked, now }) => (
         <div className="multichannel-container">
           <div className="multichannel-header">
             <strong>Multi-Channel Threat Simulation</strong>
+            <div className="live-row">
+              <span className="live-dot" aria-hidden="true" />
+              <span>Live</span>
+              <span className="live-time">
+                {(now || new Date()).toLocaleTimeString()}
+              </span>
+            </div>
           </div>
 
           <div className="multichannel-tabs">

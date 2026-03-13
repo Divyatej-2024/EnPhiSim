@@ -1,6 +1,6 @@
 
 // frontend/src/pages/levels/templates/BaseLevel.js
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../level.css";
 
@@ -88,6 +88,7 @@ function createMlInputText(level, action) {
 export default function BaseLevel({ children, levelType, scenario, onAction, customStyles }) {
   const navigate = useNavigate();
   const [locked, setLocked] = useState(false);
+  const [now, setNow] = useState(() => new Date());
   const [dialog, setDialog] = useState({
     show: false,
     title: "",
@@ -99,6 +100,13 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
   });
 
   const currentLevel = scenario || null;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setNow(new Date());
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleUserAction = useCallback(
     async (action, metadata = {}) => {
@@ -195,6 +203,7 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
         onAction: handleUserAction,
         locked,
         currentLevel,
+        now,
       });
     }
 
@@ -204,6 +213,7 @@ export default function BaseLevel({ children, levelType, scenario, onAction, cus
         onAction: handleUserAction,
         locked,
         currentLevel,
+        now,
       });
     }
 

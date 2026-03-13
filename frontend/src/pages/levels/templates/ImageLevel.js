@@ -7,10 +7,17 @@ import "./ImageLevel.css"; // ✅ ADD THIS
 export default function ImageLevel({ level: scenario }) {
   return (
     <BaseLevel levelType="image" scenario={scenario}>
-      {({ level, onAction, locked }) => (
+      {({ level, onAction, locked, now }) => (
         <div className="image-container">
           <div className="image-header">
             <strong>{level.page_title || "Image Analysis"}</strong>
+            <div className="live-row">
+              <span className="live-dot" aria-hidden="true" />
+              <span>Live</span>
+              <span className="live-time">
+                {(now || new Date()).toLocaleTimeString()}
+              </span>
+            </div>
           </div>
 
           <div className="image-grid">

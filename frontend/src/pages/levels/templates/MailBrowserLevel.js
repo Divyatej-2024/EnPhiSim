@@ -9,10 +9,17 @@ export default function MailBrowserLevel({ level: scenario }) {
 
   return (
     <BaseLevel levelType="mail+browser" scenario={scenario}>
-      {({ level, onAction, locked }) => (
+      {({ level, onAction, locked, now }) => (
         <div className="mailbrowser-container">
           <div className="mailbrowser-header">
             <strong>Cross-Channel Investigation</strong>
+            <div className="live-row">
+              <span className="live-dot" aria-hidden="true" />
+              <span>Live</span>
+              <span className="live-time">
+                {(now || new Date()).toLocaleTimeString()}
+              </span>
+            </div>
             <div className="mailbrowser-tabs">
               <button
                 className={`mailbrowser-tab ${view === "split" ? "active" : ""}`}

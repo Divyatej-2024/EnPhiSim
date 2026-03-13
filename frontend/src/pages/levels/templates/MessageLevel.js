@@ -8,7 +8,7 @@ export default function MessageLevel({ level: scenario }) {
 
   return (
     <BaseLevel levelType="message" scenario={scenario}>
-      {({ level, onAction, locked }) => {
+      {({ level, onAction, locked, now }) => {
         const messages =
           Array.isArray(level.messages) && level.messages.length > 0
             ? level.messages
@@ -27,6 +27,13 @@ export default function MessageLevel({ level: scenario }) {
             <div className="message-header">
               <strong>{level.contact_name || "Contact"}</strong>
               <div className="message-status">{level.status || "Online"}</div>
+            </div>
+            <div className="live-row">
+              <span className="live-dot" aria-hidden="true" />
+              <span>Live Session</span>
+              <span className="live-time">
+                {(now || new Date()).toLocaleTimeString()}
+              </span>
             </div>
 
             {level.show_warning && (

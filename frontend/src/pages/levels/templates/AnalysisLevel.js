@@ -54,7 +54,7 @@ export default function AnalysisLevel({ level: scenario, onAction, locked }) {
       onAction={onAction} 
       locked={locked}
     >
-      {({ level, onAction: handleAction, locked: isLocked }) => {
+      {({ level, onAction: handleAction, locked: isLocked, now }) => {
         // ✅ ALL logic MUST be INSIDE this function
         
         const handleAnswer = (answer) => {
@@ -107,6 +107,13 @@ export default function AnalysisLevel({ level: scenario, onAction, locked }) {
               </div>
               <h2>{level.title || "Nature's Cybersecurity Lesson"}</h2>
               <p className="analysis-description">{level.content}</p>
+              <div className="live-row">
+                <span className="live-dot" aria-hidden="true" />
+                <span>Live</span>
+                <span className="live-time">
+                  {(now || new Date()).toLocaleTimeString()}
+                </span>
+              </div>
               <div className="bonus-badge">🌟 BONUS ANALYSIS LEVEL</div>
             </div>
 

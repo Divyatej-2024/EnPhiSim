@@ -9,7 +9,7 @@ export default function NotificationLevel({ level: scenario }) {
 
   return (
     <BaseLevel levelType="notification" scenario={scenario}>
-      {({ level, onAction, locked }) => {
+      {({ level, onAction, locked, now }) => {
         const notifications =
           Array.isArray(level.notifications) && level.notifications.length > 0
             ? level.notifications
@@ -30,6 +30,13 @@ export default function NotificationLevel({ level: scenario }) {
           <div className="notification-container">
             <div className="notification-header">
               <strong>Notification Center</strong>
+              <div className="live-row">
+                <span className="live-dot" aria-hidden="true" />
+                <span>Live</span>
+                <span className="live-time">
+                  {(now || new Date()).toLocaleTimeString()}
+                </span>
+              </div>
             </div>
 
             <div className="notification-list">
