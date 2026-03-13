@@ -1,6 +1,6 @@
 // frontend/src/pages/levels/TemplateRenderer.js
 import React from 'react';
-import normalizeScenario from './normalizeScenario';
+
 
 // Import all template components
 import MailLevel from './templates/MailLevel';
@@ -71,7 +71,6 @@ export default function TemplateRenderer({ scenario, onAction, locked }) {
 
 
 
-  const normalizedScenario = normalizeScenario(scenario);
 
   // Determine template type - check multiple possible fields
   const templateType = 
@@ -98,7 +97,7 @@ export default function TemplateRenderer({ scenario, onAction, locked }) {
   // Render the template with ALL scenario data
   return (
     <TemplateComponent 
-      level={normalizedScenario}
+      Scenario={normalizedScenario}
       onAction={onAction}
       locked={locked}
     />
