@@ -2,32 +2,43 @@ import React, { useState } from "react";
 import BaseLevel from "./BaseLevel";
 import "./AnalysisLevel.css";
 
-export default function AnalysisLevel({ level: scenario, onAction, locked }) {
+export default function AnalysisLevel({ scenario, onAction, locked }) {
   const [answers, setAnswers] = useState({});
   const [completed, setCompleted] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
 
   if (!scenario) {
-    console.error('AnalysisLevel: No scenario provided');
-    return <div>Error: No level data</div>;
+    console.error('❌ AnalysisLevel: No scenario provided');
+    return (
+      <div className="error-container">
+        <h3>Loading Analysis...</h3>
+        <div className="spinner"></div>
+      </div>
+    );
   }
 
-  // Sample questions for bonus levels
-  const questions = [
+  console.log('📊 AnalysisLevel rendering:', {
+    id: scenario.scenario_id,
+    title: scenario.title,
+    type: scenario.template
+  });
+
+  // Questions from scenario or defaults
+  const questions = scenario.questions || [
     {
       id: 1,
-      text: "What animal behavior does this phishing attack mimic?",
-      options: ["Anglerfish", "Porcupine", "Mockingbird", "Cuckoo"]
+      text: "What type of phishing attack is this?",
+      options: ["Credential Phishing", "Spear Phishing", "Whaling", "Vishing"]
     },
     {
       id: 2,
-      text: "What type of lure is being used in this attack?",
-      options: ["Financial", "Security", "Emotional", "Package Delivery"]
+      text: "What is the main red flag in this email?",
+      options: ["Suspicious sender", "Urgent language", "Suspicious link", "All of the above"]
     },
     {
       id: 3,
-      text: "What is the best defense against this type of attack?",
-      options: ["Verify with sender", "Click the link", "Download attachment", "Forward to friends"]
+      text: "What should you do with this email?",
+      options: ["Report it", "Delete it", "Ignore it", "Forward to IT"]
     }
   ];
 
@@ -38,8 +49,7 @@ export default function AnalysisLevel({ level: scenario, onAction, locked }) {
       onAction={onAction} 
       locked={locked}
     >
-      {({ level, onAction: handleAction, locked: isLocked }) => {
-        // ✅ All component logic MUST be INSIDE this function
+      {({ onAction: baseOnAction, locked: isLocked }) => {
         
         const handleAnswer = (answer) => {
           const newAnswers = { ...answers, [currentQuestion]: answer };
@@ -53,27 +63,33 @@ export default function AnalysisLevel({ level: scenario, onAction, locked }) {
         };
 
         const handleSubmit = () => {
-          // Submit analysis results
-          handleAction(level.correct_action || "Complete Analysis", { 
+          baseOnAction(scenario.correct_action || "Complete Analysis", { 
             answers,
-            completed: true 
+            completed: true,
+            scenario_id: scenario.scenario_id
+          });
+        };
+
+        const handleSkip = () => {
+          baseOnAction(scenario.neutral_action || "Skip", { 
+            skipped: true,
+            scenario_id: scenario.scenario_id
           });
         };
 
         return (
           <div className="analysis-container">
             <div className="analysis-header">
-              <h2>{level.title || "Bonus Analysis"}</h2>
-              <p className="analysis-description">{level.content}</p>
+              <h2>{scenario.title || "Bonus Analysis"}</h2>
+              <p className="analysis-description">{scenario.content}</p>
               <div className="bonus-badge">🌟 BONUS LEVEL</div>
             </div>
 
             <div className="analysis-content">
-              {/* Educational content from body_html */}
-              {level.body_html && (
+              {scenario.body_html && (
                 <div 
                   className="analysis-html"
-                  dangerouslySetInnerHTML={{ __html: level.body_html }} 
+                  dangerouslySetInnerHTML={{ __html: scenario.body_html }} 
                 />
               )}
 
@@ -88,7 +104,7 @@ export default function AnalysisLevel({ level: scenario, onAction, locked }) {
                         key={idx}
                         className="analysis-option"
                         onClick={() => handleAnswer(option)}
-                        disabled={isLocked}
+                        disabled={isLocked || locked}
                       >
                         {option}
                       </button>
@@ -98,16 +114,14 @@ export default function AnalysisLevel({ level: scenario, onAction, locked }) {
               ) : (
                 <div className="analysis-complete">
                   <h3>✓ Analysis Complete!</h3>
-                  <p>You've completed the bonus analysis.</p>
+                  <p>You've analyzed this phishing attempt.</p>
                   
-                  {level.attachments && level.attachments.length > 0 && (
+                  {scenario.has_attachment && (
                     <div className="worksheet-download">
-                      <p>Download your worksheet:</p>
-                      {level.attachments.map((att, idx) => (
-                        <div key={idx} className="attachment">
-                          📄 {att.name} ({att.size})
-                        </div>
-                      ))}
+                      <p>📥 Download your analysis worksheet:</p>
+                      <div className="attachment">
+                        📄 phishing_worksheet.pdf
+                      </div>
                     </div>
                   )}
                 </div>
@@ -118,18 +132,18 @@ export default function AnalysisLevel({ level: scenario, onAction, locked }) {
               {!completed ? (
                 <button
                   className="analysis-btn skip"
-                  disabled={isLocked}
-                  onClick={() => handleAction(level.neutral_action || "Skip", { skipped: true })}
+                  disabled={isLocked || locked}
+                  onClick={handleSkip}
                 >
-                  {level.neutral_action || "Skip Analysis"}
+                  {scenario.neutral_action || "Skip Analysis"}
                 </button>
               ) : (
                 <button
                   className="analysis-btn complete"
-                  disabled={isLocked}
+                  disabled={isLocked || locked}
                   onClick={handleSubmit}
                 >
-                  {level.correct_action || "Complete Bonus Level"}
+                  {scenario.correct_action || "Complete Bonus Level"}
                 </button>
               )}
             </div>
