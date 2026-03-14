@@ -198,10 +198,6 @@ useEffect(() => {
  // Handle user action
 const handleAction = async (action, meta = {}) => {
   console.log('🎯🎯🎯 PHISHING GAME HANDLEACTION STARTED at', new Date().toLocaleTimeString());
-  console.log('   Raw action from button:', action);
-  console.log('   Metadata:', meta);
-  console.log('   Current level key:', currentLevelKey);
-  console.log('   Current scenario index:', currentScenarioIndex);
   
   if (locked || !scenarios[currentScenarioIndex]) return;
   
@@ -212,46 +208,52 @@ const handleAction = async (action, meta = {}) => {
   const startTime = sessionStorage.getItem('scenario_start');
   const timeTaken = startTime ? (Date.now() - parseInt(startTime)) / 1000 : 0;
 
-  // Get the actual action value from metadata
-  let actualAction = action;
-  if (meta.action_taken) {
-    actualAction = meta.action_taken;
-  } else if (meta.actionValue) {
-    actualAction = meta.actionValue;
-  }
-
+  // Get actual action value
+  const actualAction = meta.action_taken || meta.actionValue || action;
+  
   const mlResults = await getMLPrediction(
     currentScenario.body_text || currentScenario.content,
     currentScenario.links
   );
 
-  // Normalize strings for comparison
-  const normalizeString = (str) => {
-    return String(str || '')
-      .trim()
-      .toLowerCase()
-      .replace(/\s+/g, ' ')
-      .replace(/[^\w\s]/g, '');
-  };
-
+  // Normalize for comparison
+  const normalizeString = (str) => String(str || '').trim().toLowerCase().replace(/\s+/g, ' ');
+  
   const correctAction = currentScenario.correct_action || 'Report Phish';
   const normalizedActual = normalizeString(actualAction);
   const normalizedCorrect = normalizeString(correctAction);
   const isCorrect = normalizedActual === normalizedCorrect;
 
   console.log('✅ CORRECTNESS CHECK:', {
-    original: { actual: actualAction, correct: correctAction },
-    normalized: { actual: normalizedActual, correct: normalizedCorrect },
-    isCorrect,
-    scenario_id: currentScenario.scenario_id
+    actualAction,
+    correctAction,
+    normalizedActual,
+    normalizedCorrect,
+    isCorrect
   });
 
+  // Update scores
   if (isCorrect) {
     setScore(prev => prev + 100);
     setTotalCorrect(prev => prev + 1);
   }
   setTotalActions(prev => prev + 1);
 
+  // Save to database - use the SAME isCorrect
+  try {
+    await api.saveAction({
+      scenario_id: currentScenario.scenario_id,
+      user_action: actualAction,
+      time_taken_seconds: timeTaken,
+      session_id: sessionId,
+      level: currentLevelKey,
+      is_correct: isCorrect  // ✅ Use the normalized comparison result
+    });
+  } catch (error) {
+    console.error('Failed to save action:', error);
+  }
+
+  // Record locally
   recordAction(currentLevelKey, {
     scenario_id: currentScenario.scenario_id,
     action: actualAction,
@@ -260,19 +262,7 @@ const handleAction = async (action, meta = {}) => {
     timeTaken,
   });
 
-  try {
-    await api.saveAction({
-      scenario_id: currentScenario.scenario_id,
-      user_action: actualAction,
-      time_taken_seconds: timeTaken,
-      session_id: sessionId,
-      level: currentLevelKey,
-      is_correct: isCorrect
-    });
-  } catch (error) {
-    console.error('Failed to save action:', error);
-  }
-
+  // Show feedback
   setFeedback({
     show: true,
     isCorrect,
@@ -282,45 +272,35 @@ const handleAction = async (action, meta = {}) => {
     explanation: getExplanation(actualAction, isCorrect)
   });
 
+  // Auto-advance logic (keep your existing timeout code)
   const currentIdx = currentScenarioIndex;
   const totalInLevel = scenarios.length;
   const isLastLevelNow = isLastLevel;
   const currentLevel = currentLevelKey;
-  const totalTime = Date.now() - gameStartTime.current;
 
-  const feedbackTimeout = setTimeout(() => {
+  setTimeout(() => {
     setFeedback(null);
     setLocked(false);
 
     if (currentIdx < totalInLevel - 1) {
       setCurrentScenarioIndex(prev => prev + 1);
-      sessionStorage.setItem('scenario_start', Date.now().toString());
     } else {
       completeLevel(currentLevel);
-
       if (!isLastLevelNow) {
         setShowLevelTransition(true);
-        const transitionTimeout = setTimeout(() => {
+        setTimeout(() => {
           setShowLevelTransition(false);
           setCurrentLevelIndex(prev => prev + 1);
         }, 2500);
-        timeoutsRef.current.add(transitionTimeout);
       } else {
-        const minutes = Math.floor(totalTime / 1000 / 60);
-        const seconds = Math.floor((totalTime / 1000) % 60);
-        setSessionTimeTaken(`${minutes}m ${seconds}s`);
         setGameComplete(true);
-
-        const navigateTimeout = setTimeout(() => {
-          navigate('/thankyou');
-        }, 3000);
-        timeoutsRef.current.add(navigateTimeout);
+        setTimeout(() => navigate('/thankyou'), 3000);
       }
     }
   }, 3000);
-  
-  timeoutsRef.current.add(feedbackTimeout);
 };
+//timeoutsRef.current.add(feedbackTimeout);
+//};
   const getExplanation = (action, isCorrect) => {
     if (isCorrect) {
       return "Correct! " + (action === 'Report Phish'
