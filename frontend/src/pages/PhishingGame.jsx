@@ -189,7 +189,25 @@ useEffect(() => {
       };
     }
   };
+// Normalize both strings for comparison
+const normalizeString = (str) => {
+  return String(str || '')
+    .trim()                    // Remove leading/trailing spaces
+    .toLowerCase()             // Case insensitive
+    .replace(/\s+/g, ' ')      // Normalize multiple spaces to single
+    .replace(/[^\w\s]/g, '');  // Remove punctuation
+};
 
+const normalizedActual = normalizeString(actualAction);
+const normalizedCorrect = normalizeString(correctAction);
+const isCorrect = normalizedActual === normalizedCorrect;
+
+console.log('✅ CORRECTNESS CHECK:', {
+  original: { actual: actualAction, correct: correctAction },
+  normalized: { actual: normalizedActual, correct: normalizedCorrect },
+  isCorrect,
+  scenario_id: currentScenario.scenario_id
+});
   // Clear all timeouts (call manually when needed)
   const clearAllTimeouts = () => {
     timeoutsRef.current.forEach(clearTimeout);
@@ -206,7 +224,15 @@ const handleAction = async (action, meta = {}) => {
   console.log('   Scenarios length:', scenarios.length);
   console.log('   Locked:', locked);
   console.log('   Has scenario:', !!scenarios[currentScenarioIndex]);
-  
+  console.log('🔍 EXACT STRING COMPARISON:');
+console.log('   actualAction    :', JSON.stringify(actualAction));
+console.log('   correctAction   :', JSON.stringify(correctAction));
+console.log('   actual length   :', actualAction.length);
+console.log('   correct length  :', correctAction.length);
+console.log('   char codes      :', 
+  'actual:', [...actualAction].map(c => c.charCodeAt(0)),
+  'correct:', [...correctAction].map(c => c.charCodeAt(0))
+);
   if (locked || !scenarios[currentScenarioIndex]) return;
   
   clearAllTimeouts();
