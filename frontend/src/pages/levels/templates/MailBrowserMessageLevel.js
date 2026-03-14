@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import BaseLevel from "./BaseLevel";
 import "./MailBrowserMessageLevel.css"; // ✅ ADD THIS
-
+import "./Template.css";
 export default function MailBrowserMessageLevel({ level: scenario }) {
   const [platform, setPlatform] = useState("email");
 
