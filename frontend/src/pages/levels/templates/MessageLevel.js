@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import BaseLevel from "./BaseLevel";
 import "./MessageLevel.css";
+import "./Template.css";
 
 export default function MessageLevel({ scenario, onAction, locked }) {
   const [draft, setDraft] = useState("");
