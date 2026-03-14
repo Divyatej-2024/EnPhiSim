@@ -5,11 +5,11 @@ import BaseLevel from "./BaseLevel";
 import "./NotificationLevel.css"; 
 import "./Template.css";
 
-export default function NotificationLevel({ level: scenario }) {
+export default function NotificationLevel({ scenario, onAction, locked }) {
   const [selected, setSelected] = useState(null);
 
   return (
-    <BaseLevel levelType="notification" scenario={scenario}>
+    <BaseLevel levelType="notification" scenario={scenario} onAction={onAction}>
       {({ level, onAction, locked, now }) => {
         const notifications =
           Array.isArray(level.notifications) && level.notifications.length > 0
