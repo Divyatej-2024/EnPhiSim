@@ -197,125 +197,140 @@ useEffect(() => {
   };
 
  // Handle user action
- const handleAction = async (action, meta = {}) => {
+const handleAction = async (action, meta = {}) => {
   console.log('🎯🎯🎯 PHISHING GAME HANDLEACTION STARTED at', new Date().toLocaleTimeString());
-  console.log('   Action:', action);
+  console.log('   Raw action from button:', action);
+  console.log('   Metadata:', meta);
   console.log('   Current level key:', currentLevelKey);
   console.log('   Current scenario index:', currentScenarioIndex);
   console.log('   Scenarios length:', scenarios.length);
   console.log('   Locked:', locked);
   console.log('   Has scenario:', !!scenarios[currentScenarioIndex]);
   
-  // ... rest of your existing code
-  
   if (locked || !scenarios[currentScenarioIndex]) return;
-    
-    // Clear any pending timeouts
-    clearAllTimeouts();
-    setLocked(true);
+  
+  clearAllTimeouts();
+  setLocked(true);
 
-    const currentScenario = scenarios[currentScenarioIndex];
-    const startTime = sessionStorage.getItem('scenario_start');
-    const timeTaken = startTime ? (Date.now() - parseInt(startTime)) / 1000 : 0;
+  const currentScenario = scenarios[currentScenarioIndex];
+  const startTime = sessionStorage.getItem('scenario_start');
+  const timeTaken = startTime ? (Date.now() - parseInt(startTime)) / 1000 : 0;
 
-    const mlResults = await getMLPrediction(
-      currentScenario.body_text || currentScenario.content,
-      currentScenario.links
-    );
+  // Get the actual action value from metadata if available
+  let actualAction = action;
+  
+  // If metadata contains the mapped action, use that instead
+  if (meta.action_taken) {
+    actualAction = meta.action_taken;
+  } else if (meta.actionValue) {
+    actualAction = meta.actionValue;
+  }
+  
+  console.log('   Actual action being evaluated:', actualAction);
 
-    const explicitCorrect =
-      typeof meta?.isCorrect === 'boolean'
-        ? meta.isCorrect
-        : typeof meta?.correct === 'boolean'
-          ? meta.correct
-          : undefined;
-    const isCorrect = explicitCorrect ?? action === currentScenario.correct_action;
+  const mlResults = await getMLPrediction(
+    currentScenario.body_text || currentScenario.content,
+    currentScenario.links
+  );
 
-    if (isCorrect) {
-      setScore(prev => prev + 100);
-      setTotalCorrect(prev => prev + 1);
-    }
-    setTotalActions(prev => prev + 1);
+  // 🔴 FIXED: Use the actual action value, not the button identifier
+  const correctAction = currentScenario.correct_action || 'Report Phish';
+  const isCorrect = actualAction === correctAction;
+  
+  console.log('✅ CORRECTNESS CHECK:', {
+    actualAction,
+    correctAction,
+    isCorrect,
+    scenario_id: currentScenario.scenario_id,
+    fromMeta: !!meta.action_taken
+  });
 
-    recordAction(currentLevelKey, {
+  if (isCorrect) {
+    setScore(prev => prev + 100);
+    setTotalCorrect(prev => prev + 1);
+  }
+  setTotalActions(prev => prev + 1);
+
+  recordAction(currentLevelKey, {
+    scenario_id: currentScenario.scenario_id,
+    action: actualAction,
+    isCorrect,
+    level: currentLevelKey,
+    timeTaken,
+  });
+
+  try {
+    await api.saveAction({
       scenario_id: currentScenario.scenario_id,
-      action,
-      isCorrect,
+      user_action: actualAction,
+      time_taken_seconds: timeTaken,
+      session_id: sessionId,
       level: currentLevelKey,
-      timeTaken,
+      is_correct: isCorrect
     });
+  } catch (error) {
+    console.error('Failed to save action:', error);
+  }
 
-    try {
-      await api.saveAction({
-        scenario_id: currentScenario.scenario_id,
-        user_action: action,
-        time_taken_seconds: timeTaken,
-        session_id: sessionId,
-        level: currentLevelKey,
-        is_correct: isCorrect
-      });
-    } catch (error) {
-      console.error('Failed to save action:', error);
-    }
+  // Show feedback
+  setFeedback({
+    show: true,
+    isCorrect,
+    userAction: actualAction,
+    correctAction: correctAction,
+    mlResults,
+    explanation: getExplanation(actualAction, isCorrect)
+  });
+  
+  console.log('📊 mlResults structure:', {
+    hasDistilbert: !!mlResults?.distilbert,
+    hasCnn: !!mlResults?.cnn,
+    distilbertPrediction: mlResults?.distilbert?.prediction,
+    cnnPrediction: mlResults?.cnn?.prediction
+  });
+  console.log('Feedback set with mlresults:', mlResults);
 
-    // Show feedback
-    setFeedback({
-      show: true,
-      isCorrect,
-      userAction: action,
-      correctAction: currentScenario.correct_action,
-      mlResults,
-      explanation: getExplanation(action, isCorrect)
-    });
-   console.log('📊 mlResults structure:', {
-  hasDistilbert: !!mlResults?.distilbert,
-  hasCnn: !!mlResults?.cnn,
-  distilbertPrediction: mlResults?.distilbert?.prediction,
-  cnnPrediction: mlResults?.cnn?.prediction
-});
-console.log('Feedback set with mlresults:', mlResults);
-    // Store current values
-    const currentIdx = currentScenarioIndex;
-    const totalInLevel = scenarios.length;
-    const isLastLevelNow = isLastLevel;
-    const currentLevel = currentLevelKey;
-    const totalTime = Date.now() - gameStartTime.current;
+  // Store current values
+  const currentIdx = currentScenarioIndex;
+  const totalInLevel = scenarios.length;
+  const isLastLevelNow = isLastLevel;
+  const currentLevel = currentLevelKey;
+  const totalTime = Date.now() - gameStartTime.current;
 
-    // Auto-advance timeout
-    const feedbackTimeout = setTimeout(() => {
-      setFeedback(null);
-      setLocked(false);
+  // Auto-advance timeout
+  const feedbackTimeout = setTimeout(() => {
+    setFeedback(null);
+    setLocked(false);
 
-      if (currentIdx < totalInLevel - 1) {
-        setCurrentScenarioIndex(prev => prev + 1);
-        sessionStorage.setItem('scenario_start', Date.now().toString());
+    if (currentIdx < totalInLevel - 1) {
+      setCurrentScenarioIndex(prev => prev + 1);
+      sessionStorage.setItem('scenario_start', Date.now().toString());
+    } else {
+      completeLevel(currentLevel);
+
+      if (!isLastLevelNow) {
+        setShowLevelTransition(true);
+        const transitionTimeout = setTimeout(() => {
+          setShowLevelTransition(false);
+          setCurrentLevelIndex(prev => prev + 1);
+        }, 2500);
+        timeoutsRef.current.add(transitionTimeout);
       } else {
-        completeLevel(currentLevel);
+        const minutes = Math.floor(totalTime / 1000 / 60);
+        const seconds = Math.floor((totalTime / 1000) % 60);
+        setSessionTimeTaken(`${minutes}m ${seconds}s`);
+        setGameComplete(true);
 
-        if (!isLastLevelNow) {
-          setShowLevelTransition(true);
-          const transitionTimeout = setTimeout(() => {
-            setShowLevelTransition(false);
-            setCurrentLevelIndex(prev => prev + 1);
-          }, 2500);
-          timeoutsRef.current.add(transitionTimeout);
-        } else {
-          const minutes = Math.floor(totalTime / 1000 / 60);
-          const seconds = Math.floor((totalTime / 1000) % 60);
-          setSessionTimeTaken(`${minutes}m ${seconds}s`);
-          setGameComplete(true);
-
-          const navigateTimeout = setTimeout(() => {
-            navigate('/thankyou');
-          }, 3000);
-          timeoutsRef.current.add(navigateTimeout);
-        }
+        const navigateTimeout = setTimeout(() => {
+          navigate('/thankyou');
+        }, 3000);
+        timeoutsRef.current.add(navigateTimeout);
       }
-    }, 3000);
-    
-    timeoutsRef.current.add(feedbackTimeout);
-  };
-
+    }
+  }, 3000);
+  
+  timeoutsRef.current.add(feedbackTimeout);
+};
   const getExplanation = (action, isCorrect) => {
     if (isCorrect) {
       return "Correct! " + (action === 'Report Phish'
