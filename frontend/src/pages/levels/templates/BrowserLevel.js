@@ -15,10 +15,10 @@ export default function BrowserLevel({ scenario, onAction, locked }) {
   const [url, setUrl] = useState("");
 
   // ✅ Safe access with optional chaining
-  const initialUrl = useMemo(
-    () => scenario?.url || scenario?.suspicious_url || "http://example.com",
-    [scenario]
-  );
+ const initialUrl = useMemo(
+  () => scenario?.display_url || scenario?.links?.[0] || scenario?.url || scenario?.suspicious_url || "http://example.com",
+  [scenario]
+);
 
   const currentUrl = url || initialUrl;
   const host = currentUrl.replace(/^https?:\/\//, "").split("/")[0] || "unknown";
