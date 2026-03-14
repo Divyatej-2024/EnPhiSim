@@ -208,14 +208,14 @@ const normalizedActual = normalizeString(actualAction);
 const normalizedCorrect = normalizeString(correctAction);
 const isCorrect = normalizedActual === normalizedCorrect;
 // When user clicks "Report Phish" button:
-actualAction = "Report Phish"  // From meta.action_taken
-correctAction = "Report Phish" // From scenario data
-isCorrect = true 
+actualAction = "Report Phish",  // From meta.action_taken
+correctAction = "Report Phish", // From scenario data
+isCorrect = true; 
 
 // Saved to database:
 {
   user_action: "Report Phish",
-  is_correct: true;  // Now correctly marked!
+  is_correct: true  // Now correctly marked!
 }
 console.log('✅ CORRECTNESS CHECK:', {
   original: { actual: actualAction, correct: correctAction },
