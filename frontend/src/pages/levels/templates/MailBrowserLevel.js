@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import BaseLevel from "./BaseLevel";
 import "./MailBrowserLevel.css"; // ✅ ADD THIS
+import "./Template.css";
 
 export default function MailBrowserLevel({ level: scenario }) {
   const [view, setView] = useState("split");
