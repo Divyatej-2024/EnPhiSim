@@ -236,18 +236,7 @@ const handleAction = async (action, meta = {}) => {
   console.log('   Metadata:', meta);
   console.log('   Current level key:', currentLevelKey);
   console.log('   Current scenario index:', currentScenarioIndex);
-  console.log('   Scenarios length:', scenarios.length);
-  console.log('   Locked:', locked);
-  console.log('   Has scenario:', !!scenarios[currentScenarioIndex]);
-  console.log('🔍 EXACT STRING COMPARISON:');
-console.log('   actualAction    :', JSON.stringify(actualAction));
-console.log('   correctAction   :', JSON.stringify(correctAction));
-console.log('   actual length   :', actualAction.length);
-console.log('   correct length  :', correctAction.length);
-console.log('   char codes      :', 
-  'actual:', [...actualAction].map(c => c.charCodeAt(0)),
-  'correct:', [...correctAction].map(c => c.charCodeAt(0))
-);
+  
   if (locked || !scenarios[currentScenarioIndex]) return;
   
   clearAllTimeouts();
@@ -257,33 +246,38 @@ console.log('   char codes      :',
   const startTime = sessionStorage.getItem('scenario_start');
   const timeTaken = startTime ? (Date.now() - parseInt(startTime)) / 1000 : 0;
 
-  // Get the actual action value from metadata if available
+  // Get the actual action value from metadata
   let actualAction = action;
-  
-  // If metadata contains the mapped action, use that instead
   if (meta.action_taken) {
     actualAction = meta.action_taken;
   } else if (meta.actionValue) {
     actualAction = meta.actionValue;
   }
-  
-  console.log('   Actual action being evaluated:', actualAction);
 
   const mlResults = await getMLPrediction(
     currentScenario.body_text || currentScenario.content,
     currentScenario.links
   );
 
-  // 🔴 FIXED: Use the actual action value, not the button identifier
+  // Normalize strings for comparison
+  const normalizeString = (str) => {
+    return String(str || '')
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, ' ')
+      .replace(/[^\w\s]/g, '');
+  };
+
   const correctAction = currentScenario.correct_action || 'Report Phish';
-  const isCorrect = actualAction === correctAction;
-  
+  const normalizedActual = normalizeString(actualAction);
+  const normalizedCorrect = normalizeString(correctAction);
+  const isCorrect = normalizedActual === normalizedCorrect;
+
   console.log('✅ CORRECTNESS CHECK:', {
-    actualAction,
-    correctAction,
+    original: { actual: actualAction, correct: correctAction },
+    normalized: { actual: normalizedActual, correct: normalizedCorrect },
     isCorrect,
-    scenario_id: currentScenario.scenario_id,
-    fromMeta: !!meta.action_taken
+    scenario_id: currentScenario.scenario_id
   });
 
   if (isCorrect) {
@@ -313,7 +307,6 @@ console.log('   char codes      :',
     console.error('Failed to save action:', error);
   }
 
-  // Show feedback
   setFeedback({
     show: true,
     isCorrect,
@@ -322,23 +315,13 @@ console.log('   char codes      :',
     mlResults,
     explanation: getExplanation(actualAction, isCorrect)
   });
-  
-  console.log('📊 mlResults structure:', {
-    hasDistilbert: !!mlResults?.distilbert,
-    hasCnn: !!mlResults?.cnn,
-    distilbertPrediction: mlResults?.distilbert?.prediction,
-    cnnPrediction: mlResults?.cnn?.prediction
-  });
-  console.log('Feedback set with mlresults:', mlResults);
 
-  // Store current values
   const currentIdx = currentScenarioIndex;
   const totalInLevel = scenarios.length;
   const isLastLevelNow = isLastLevel;
   const currentLevel = currentLevelKey;
   const totalTime = Date.now() - gameStartTime.current;
 
-  // Auto-advance timeout
   const feedbackTimeout = setTimeout(() => {
     setFeedback(null);
     setLocked(false);
