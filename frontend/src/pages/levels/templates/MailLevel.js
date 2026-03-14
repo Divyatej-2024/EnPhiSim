@@ -416,7 +416,7 @@ const wrongAction = activeLevel.wrong_action || 'Trust & Click';
           const isLocked = baseLocked || gameLocked;
 
           const handleAction = (actionType) => {
-  if (isLocked) return;
+
   
   let actionValue;
   switch(actionType) {
