@@ -210,7 +210,7 @@ const isCorrect = normalizedActual === normalizedCorrect;
 // When user clicks "Report Phish" button:
 actualAction = "Report Phish"  // From meta.action_taken
 correctAction = "Report Phish" // From scenario data
-isCorrect = true ✅
+isCorrect = true 
 
 // Saved to database:
 {
