@@ -47,16 +47,32 @@ router.get('/:sessionId', validateSessionIdParam, async (req, res) => {
     const correct = userActions.filter((a) => a.is_correct).length;
     const accuracy = total > 0 ? ((correct / total) * 100).toFixed(2) : 0;
 
+    // ✅ FIX: Wrap response in success: true, data: {}
     res.json({
-      session_id: sessionId,
-      total_actions: total,
-      correct_actions: correct,
-      accuracy_percent: accuracy,
-      recent_actions: userActions.slice(0, 10),
+      success: true,
+      data: {
+        session_id: sessionId,
+        total_actions: total,
+        correct_actions: correct,
+        accuracy_percent: accuracy,
+        recent_actions: userActions.slice(0, 10).map(action => ({
+          title: action.title || 'Phishing Scenario',
+          user_action: action.user_action,
+          is_correct: action.is_correct,
+          timestamp: action.timestamp
+        }))
+      }
     });
+    
   } catch (error) {
     logger.error('Analytics query failed', { message: error.message });
-    res.status(500).json({ success: false, error: 'Failed to load analytics' });
+    res.status(500).json({ 
+      success: false, 
+      error: { 
+        code: 'ANALYTICS_ERROR',
+        message: 'Failed to load analytics' 
+      }
+    });
   } finally {
     if (client) await client.close();
   }
