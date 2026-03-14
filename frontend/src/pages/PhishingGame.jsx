@@ -197,13 +197,11 @@ const normalizeString = (str) => {
     .replace(/\s+/g, ' ')      // Normalize multiple spaces to single
     .replace(/[^\w\s]/g, '');  // Remove punctuation
 };
-console.log('🔍 EXACT MATCH CHECK:', {
-  actual: JSON.stringify(actualAction),
-  correct: JSON.stringify(correctAction),
-  match: actualAction === correctAction,
-  actualLength: actualAction?.length,
-  correctLength: correctAction?.length
-});
+console.log('🔍 EXACT STRING COMPARISON:');
+console.log('   actualAction    :', JSON.stringify(actualAction));
+console.log('   correctAction   :', JSON.stringify(correctAction));
+console.log('   actual length   :', actualAction.length);  // <-- Line 218? Add semicolon
+console.log('   correct length  :', correctAction.length);
 const normalizedActual = normalizeString(actualAction);
 const normalizedCorrect = normalizeString(correctAction);
 const isCorrect = normalizedActual === normalizedCorrect;
