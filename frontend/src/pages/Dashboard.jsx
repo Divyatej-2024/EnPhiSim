@@ -18,20 +18,33 @@ export default function Dashboard() {
       setLoading(true);
       setError(null);
 
+      console.log('📊 Fetching dashboard data for session:', sessionId);
+
       const [analyticsResult, metricsResult] = await Promise.allSettled([
         api.getAnalytics(sessionId, timeRange),
         api.getModelMetrics(),
       ]);
 
+      // ✅ FIX: Handle analytics response correctly
       if (analyticsResult.status === 'fulfilled') {
-        setAnalytics(analyticsResult.value);
+        console.log('📊 Analytics raw response:', analyticsResult.value);
+        
+        // Check if response has data wrapper
+        const analyticsData = analyticsResult.value?.data || analyticsResult.value;
+        setAnalytics(analyticsData);
+        
+        console.log('📊 Analytics data set:', analyticsData);
       } else {
+        console.error('❌ Analytics failed:', analyticsResult.reason);
         throw analyticsResult.reason;
       }
 
+      // Handle metrics response
       if (metricsResult.status === 'fulfilled') {
-        setModelMetrics(metricsResult.value);
+        const metricsData = metricsResult.value?.data || metricsResult.value;
+        setModelMetrics(metricsData);
       } else {
+        console.log('⚠️ Model metrics unavailable');
         setModelMetrics(null);
       }
     } catch (err) {
@@ -66,12 +79,12 @@ export default function Dashboard() {
         ['accuracy', 'precision', 'recall', 'f1', 'rate', 'auc'].some((k) => lowerKey.includes(k));
 
       if (looksLikePercentMetric && value <= 1) {
-        return `${(value * 100).toFixed(2)}%`;
+        return `${(value * 100).toFixed(1)}%`;
       }
       if (Number.isInteger(value)) {
         return value.toLocaleString();
       }
-      return value.toFixed(4);
+      return value.toFixed(2);
     }
 
     if (typeof value === 'boolean') {
@@ -131,7 +144,7 @@ export default function Dashboard() {
       <div className="empty-dashboard">
         <h2>No Data Yet</h2>
         <p>Complete some phishing scenarios to see your analytics.</p>
-        <button onClick={() => window.location.href = '/game'}>
+        <button onClick={goToLevels}>
           Go to Game
         </button>
         <button onClick={goToLevels} style={{ marginLeft: '10px' }}>
@@ -141,29 +154,28 @@ export default function Dashboard() {
     );
   }
 
+  // ✅ FIX: Calculate metrics properly
+  const totalActions = analytics.total_actions || 0;
+  const correctActions = analytics.correct_actions || 0;
+  const incorrectActions = totalActions - correctActions;
+  const accuracy = totalActions > 0 ? (correctActions / totalActions) * 100 : 0;
+
   const userMetrics = [
-    ['total_actions', analytics.total_actions ?? 0],
-    ['correct_actions', analytics.correct_actions ?? 0],
-    ['incorrect_actions', Math.max((analytics.total_actions ?? 0) - (analytics.correct_actions ?? 0), 0)],
-    ['accuracy_percent', Number(analytics.accuracy_percent ?? 0)],
+    ['total_actions', totalActions],
+    ['correct_actions', correctActions],
+    ['incorrect_actions', incorrectActions],
+    ['accuracy', accuracy],
   ];
 
   const modelMetricEntries = flattenMetrics(modelMetrics);
 
   return (
     <div className="dashboard-container">
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '20px'
-        }}
-      >
-        <h1 style={{ margin: 0 }}>Your Progress</h1>
+      <div className="dashboard-header">
+        <h1>Your Progress</h1>
         <div className="dashboard-top-actions">
           <button className="dashboard-action-button secondary" onClick={goToLevels}>
-            <span>Back to Levels</span>
+            <span>← Back to Levels</span>
           </button>
           <button className="dashboard-action-button primary" onClick={endGame}>
             <span className="dashboard-action-pulse" aria-hidden="true" />
@@ -172,17 +184,11 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div style={{ marginBottom: '20px' }}>
+      <div className="time-range-selector">
         <select
           value={timeRange}
           onChange={(e) => setTimeRange(e.target.value)}
-          style={{
-            padding: '8px 15px',
-            border: '2px solid #e0e0e0',
-            borderRadius: '8px',
-            fontSize: '0.9rem',
-            cursor: 'pointer'
-          }}
+          className="time-range-select"
         >
           <option value="today">Today</option>
           <option value="week">This Week</option>
@@ -191,17 +197,17 @@ export default function Dashboard() {
         </select>
       </div>
 
-      <h2 className="section-title">Dashboard Metrics</h2>
+      <h2 className="section-title">Your Performance</h2>
       <div className="stats-grid">
         {userMetrics.map(([key, value]) => (
-          <div key={key} className="stat-card">
+          <div key={key} className={`stat-card ${key}`}>
             <h3>{toTitleCase(key)}</h3>
             <p>{formatMetricValue(key, value)}</p>
           </div>
         ))}
       </div>
 
-      <h2 className="section-title">Model Metrics</h2>
+      <h2 className="section-title">ML Model Performance</h2>
       {modelMetrics ? (
         <div className="stats-grid">
           {modelMetricEntries.map(([key, value]) => (
@@ -219,9 +225,9 @@ export default function Dashboard() {
         <h3>Recent Activity</h3>
         {(analytics.recent_actions || []).map((action, i) => (
           <div key={i} className={`action-item ${action.is_correct ? 'correct' : 'incorrect'}`}>
-            <span>{action.title || 'Unknown Type'}</span>
+            <span>{action.title || 'Unknown Scenario'}</span>
             <span>You: {action.user_action}</span>
-            <span>{action.is_correct ? 'Correct' : 'Incorrect'}</span>
+            <span>{action.is_correct ? '✓ Correct' : '✗ Incorrect'}</span>
           </div>
         ))}
         {(analytics.recent_actions || []).length === 0 && (
