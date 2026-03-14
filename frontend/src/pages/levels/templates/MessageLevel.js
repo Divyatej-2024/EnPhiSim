@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import BaseLevel from "./BaseLevel";
 import "./MessageLevel.css";
 
-export default function MessageLevel({ level: scenario, onAction }) {
+export default function MessageLevel({ scenario, onAction, locked }) {
   const [draft, setDraft] = useState("");
 
   return (
