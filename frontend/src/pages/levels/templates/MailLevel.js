@@ -416,29 +416,36 @@ const wrongAction = activeLevel.wrong_action || 'Trust & Click';
           const isLocked = baseLocked || gameLocked;
 
           const handleAction = (actionType) => {
-            if (isLocked) return;
-            
-            let actionValue;
-            switch(actionType) {
-             case 'correct':
-  actionValue = correctAction;  // 'Report Phish' from your data
-  break;
-case 'neutral':
-  actionValue = neutralAction;  // 'Ignore' from your data
-  break;
-case 'wrong':
-  actionValue = wrongAction;    // 'Trust & Click' from your data
-  break;
-              default: actionValue = actionType;
-            }
-            
-            gameOnAction(actionValue, {
-              scenario_id: activeLevel.scenario_id,
-              email: activeLevel.phish_email,
-              correct: actionType === 'correct'
-            });
-          };
-
+  if (isLocked) return;
+  
+  let actionValue;
+  switch(actionType) {
+    case 'correct':
+      actionValue = correctAction;  // 'Report Phish'
+      break;
+    case 'neutral':
+      actionValue = neutralAction;  // 'Ignore'
+      break;
+    case 'wrong':
+      actionValue = wrongAction;    // 'Trust & Click'
+      break;
+    default:
+      actionValue = actionType;
+  }
+  
+  console.log('🎯 Sending action:', {
+    value: actionValue,
+    type: actionType,
+    scenario_id: activeLevel.scenario_id
+  });
+  
+  // ✅ Send the mapped value in metadata
+  gameOnAction(actionType, {
+    scenario_id: activeLevel.scenario_id,
+    action_taken: actionValue,  // This is key!
+    action_category: actionType
+  });
+};
           const currentEmail = emails[selectedEmail] || emails[0];
 
           return (
