@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import BaseLevel from "./BaseLevel";
 import "./MultiphaseLevel.css";
 
-export default function MultiphaseLevel({ level: scenario, onAction, locked }) {
+export default function MultiphaseLevel({ scenario, onAction, locked }) {
   const [phase, setPhase] = useState(1);
   const [responses, setResponses] = useState({});
   const [threatLevel, setThreatLevel] = useState(0);
