@@ -2,7 +2,8 @@
 // frontend/src/pages/levels/templates/NotificationLevel.js
 import React, { useState } from "react";
 import BaseLevel from "./BaseLevel";
-import "./NotificationLevel.css"; // ✅ ADD THIS
+import "./NotificationLevel.css"; 
+import ".Template.css";
 
 export default function NotificationLevel({ level: scenario }) {
   const [selected, setSelected] = useState(null);
