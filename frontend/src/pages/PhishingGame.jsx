@@ -197,11 +197,26 @@ const normalizeString = (str) => {
     .replace(/\s+/g, ' ')      // Normalize multiple spaces to single
     .replace(/[^\w\s]/g, '');  // Remove punctuation
 };
-
+console.log('🔍 EXACT MATCH CHECK:', {
+  actual: JSON.stringify(actualAction),
+  correct: JSON.stringify(correctAction),
+  match: actualAction === correctAction,
+  actualLength: actualAction?.length,
+  correctLength: correctAction?.length
+});
 const normalizedActual = normalizeString(actualAction);
 const normalizedCorrect = normalizeString(correctAction);
 const isCorrect = normalizedActual === normalizedCorrect;
+// When user clicks "Report Phish" button:
+actualAction = "Report Phish"  // From meta.action_taken
+correctAction = "Report Phish" // From scenario data
+isCorrect = true ✅
 
+// Saved to database:
+{
+  user_action: "Report Phish",
+  is_correct: true  // Now correctly marked!
+}
 console.log('✅ CORRECTNESS CHECK:', {
   original: { actual: actualAction, correct: correctAction },
   normalized: { actual: normalizedActual, correct: normalizedCorrect },
