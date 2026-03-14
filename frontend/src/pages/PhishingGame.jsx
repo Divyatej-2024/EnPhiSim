@@ -215,8 +215,8 @@ isCorrect = true
 // Saved to database:
 {
   user_action: "Report Phish",
-  is_correct: true  // Now correctly marked!
-};
+  is_correct: true;  // Now correctly marked!
+}
 console.log('✅ CORRECTNESS CHECK:', {
   original: { actual: actualAction, correct: correctAction },
   normalized: { actual: normalizedActual, correct: normalizedCorrect },
