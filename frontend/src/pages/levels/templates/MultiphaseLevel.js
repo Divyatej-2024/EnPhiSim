@@ -1,7 +1,7 @@
 // frontend/src/pages/levels/templates/MultiphaseLevel.jsx
 import React, { useState, useEffect } from "react";
 import BaseLevel from "./BaseLevel";
-import "./MultiphaseLevel.css";
+//import "./MultiphaseLevel.css";
 import "./Template.css"
 
 export default function MultiphaseLevel({ scenario, onAction, locked }) {
