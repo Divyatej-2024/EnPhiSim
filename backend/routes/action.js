@@ -16,6 +16,7 @@ router.post('/', validateActionPayload, async (req, res) => {
       time_taken_seconds, 
       session_id,
       level 
+      is_correct
     } = req.body;
     
     const uri = process.env.MONGODB_URI;
@@ -34,13 +35,15 @@ router.post('/', validateActionPayload, async (req, res) => {
     const actionDoc = {
       scenario_id,
       user_action,
-      is_correct: isCorrect,
+      is_correct: is_correct,
       ml_predictions,
       time_taken_seconds,
       session_id,
       level,
       timestamp: new Date(),
-      correct_action: scenario?.correct_action
+      correct_action: scenario?.correct_action,  // Store for reference
+      frontend_correct: is_correct,  // Store what frontend sent
+      backend_match: user_action === scenario?.correct_action  // For debugging
     };
     
     await actions.insertOne(actionDoc);
