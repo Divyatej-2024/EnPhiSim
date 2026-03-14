@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import BaseLevel from "./BaseLevel";
 import "./BrowserLevel.css";
 
-export default function BrowserLevel({ level: scenario }) {
+export default function BrowserLevel({ scenario, onAction, locked }) {
   // ✅ Validation
    const [url, setUrl] = useState("");
 
