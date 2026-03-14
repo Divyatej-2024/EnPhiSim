@@ -5,11 +5,11 @@ import BaseLevel from "./BaseLevel";
 import "./MailBrowserLevel.css"; // ✅ ADD THIS
 import "./Template.css";
 
-export default function MailBrowserLevel({ level: scenario }) {
+export default function MailBrowserLevel({ scenario, onAction, locked }) {
   const [view, setView] = useState("split");
 
   return (
-    <BaseLevel levelType="mail+browser" scenario={scenario}>
+    <BaseLevel levelType="mail+browser" scenario={scenario} onAction={onAction}>
       {({ level, onAction, locked, now }) => (
         <div className="mailbrowser-container">
           <div className="mailbrowser-header">
