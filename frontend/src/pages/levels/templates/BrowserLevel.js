@@ -22,7 +22,7 @@ export default function BrowserLevel({ scenario, onAction, locked }) {
 
  
   return (
-    <BaseLevel levelType="browser" scenario={scenario}>
+    <BaseLevel levelType="browser" scenario={scenario} onAction={onAction}>
       {({ level, onAction, locked }) => {
         // ✅ Check if onAction exists
         if (!onAction) {
