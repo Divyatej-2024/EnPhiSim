@@ -189,38 +189,6 @@ useEffect(() => {
       };
     }
   };
-// Normalize both strings for comparison
-const normalizeString = (str) => {
-  return String(str || '')
-    .trim()                    // Remove leading/trailing spaces
-    .toLowerCase()             // Case insensitive
-    .replace(/\s+/g, ' ')      // Normalize multiple spaces to single
-    .replace(/[^\w\s]/g, '');  // Remove punctuation
-};
-console.log('🔍 EXACT STRING COMPARISON:');
-console.log('   actualAction    :', JSON.stringify(actualAction));
-console.log('   correctAction   :', JSON.stringify(correctAction));
-console.log('   actual length   :', actualAction.length);  // <-- Line 218? Add semicolon
-console.log('   correct length  :', correctAction.length);
-const normalizedActual = normalizeString(actualAction);
-const normalizedCorrect = normalizeString(correctAction);
-const isCorrect = normalizedActual === normalizedCorrect;
-// When user clicks "Report Phish" button:
-actualAction = "Report Phish",  // From meta.action_taken
-correctAction = "Report Phish", // From scenario data
-isCorrect = true; 
-
-// Saved to database:
-{
-  user_action: "Report Phish",
-  is_correct: true  // Now correctly marked!
-}
-console.log('✅ CORRECTNESS CHECK:', {
-  original: { actual: actualAction, correct: correctAction },
-  normalized: { actual: normalizedActual, correct: normalizedCorrect },
-  isCorrect,
-  scenario_id: currentScenario.scenario_id
-});
   // Clear all timeouts (call manually when needed)
   const clearAllTimeouts = () => {
     timeoutsRef.current.forEach(clearTimeout);
