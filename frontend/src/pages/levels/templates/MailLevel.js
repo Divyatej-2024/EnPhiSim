@@ -227,6 +227,7 @@ const wrongAction = activeLevel.wrong_action || 'Trust & Click';
       display: flex;
       align-items: center;
       gap: 16px;
+      background-color:#fff;
       padding-bottom: 20px;
       border-bottom: 2px solid #f0f0f0;
       margin-bottom: 20px;
