@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 import mongoose from "mongoose";
 
 const ScenarioSchema = new mongoose.Schema(

@@ -1,3 +1,5 @@
+﻿/* Sections: variables, layout, components, utilities */
+
 /* frontend/src/pages/levels/templates/BrowserLevel.css */
 
 .browser-container {
@@ -116,7 +118,7 @@
 }
 
 .warning-banner::before {
-  content: '⚠️';
+  content: 'âš ï¸';
   font-size: 1.5rem;
 }
 

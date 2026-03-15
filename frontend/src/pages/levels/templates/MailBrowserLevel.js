@@ -1,8 +1,10 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 
 // frontend/src/pages/levels/templates/MailBrowserLevel.js
 import React, { useState } from "react";
 import BaseLevel from "./BaseLevel";
-import "./MailBrowserLevel.css"; // ✅ ADD THIS
+import "./MailBrowserLevel.css"; // âœ… ADD THIS
 import "./Template.css";
 
 export default function MailBrowserLevel({ scenario, onAction, locked }) {

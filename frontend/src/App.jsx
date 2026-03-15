@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 // src/App.jsx
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";

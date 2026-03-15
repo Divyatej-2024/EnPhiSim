@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 import express from "express";
 import Scenario from "../models/Scenario.js";
 

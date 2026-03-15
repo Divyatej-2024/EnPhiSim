@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 // frontend/src/pages/Consent.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -32,8 +34,7 @@ export default function Consent() {
       await api.recordConsent({
         agreed: true,
         sessionId: sessionId,
-        timestamp: new Date().toISOString(),
-        userAgent: navigator.userAgent // For analytics only, not personal data
+        timestamp: new Date().toISOString()
       });
       
       // Set consent flag

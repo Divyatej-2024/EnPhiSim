@@ -1,3 +1,5 @@
+﻿# Sections: imports, configuration, helpers, main
+
 # mlserver.py
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
@@ -176,29 +178,29 @@ def predict(req: PredictRequest):
             "userId": req.userId,
             "distilbert": {
                 "prediction": "Report Phish",
-                "confidence": 0.85,
+                "confidence": 0.34,
                 "probabilities": {
-                    "Report Phish": 0.85,
-                    "Ignore": 0.10,
-                    "Trust & Click": 0.05
+                    "Report Phish": 0.34,
+                    "Ignore": 0.33,
+                    "Trust & Click": 0.33
                 }
             },
             "cnn": {
                 "prediction": "Report Phish",
-                "confidence": 0.82,
+                "confidence": 0.34,
                 "probabilities": {
-                    "Report Phish": 0.82,
-                    "Ignore": 0.12,
-                    "Trust & Click": 0.06
+                    "Report Phish": 0.34,
+                    "Ignore": 0.33,
+                    "Trust & Click": 0.33
                 }
             },
             "ensemble": {
                 "prediction": "Report Phish",
-                "confidence": 0.835,
+                "confidence": 0.34,
                 "probabilities": {
-                    "Report Phish": 0.835,
-                    "Ignore": 0.11,
-                    "Trust & Click": 0.055
+                    "Report Phish": 0.34,
+                    "Ignore": 0.33,
+                    "Trust & Click": 0.33
                 }
             },
             "model_metrics": metrics,
@@ -324,5 +326,35 @@ def health():
             "distilbert_confidence": metrics.get("distilbert_avg_confidence") if metrics else None,
             "cnn_confidence": metrics.get("cnn_avg_confidence") if metrics else None,
             "last_updated": metrics.get("last_updated") if metrics else None
+        }
+    }
+
+# ---- Metrics endpoint for dashboard ----
+@app.get("/metrics")
+def metrics_endpoint():
+    if metrics:
+        return metrics
+    return {
+        "distilbert": {
+            "accuracy": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "avg_confidence": 0.0,
+            "total_predictions": 0
+        },
+        "cnn": {
+            "accuracy": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "avg_confidence": 0.0,
+            "total_predictions": 0
+        },
+        "comparison": {
+            "accuracy_difference": 0.0,
+            "better_model": "unknown",
+            "faster_model": "unknown",
+            "last_updated": None
         }
     }

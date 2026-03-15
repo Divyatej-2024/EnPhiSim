@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 function formatMeta(meta) {
   if (!meta || typeof meta !== "object") {
     return "";

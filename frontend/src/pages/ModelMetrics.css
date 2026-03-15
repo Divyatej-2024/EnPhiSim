@@ -1,6 +1,8 @@
+﻿/* Sections: variables, layout, components, utilities */
+
 /* frontend/src/pages/ModelMetrics.css */
 
-/* ── Page Layout ── */
+/* â”€â”€ Page Layout â”€â”€ */
 .metrics-page {
   max-width: 960px;
   margin: 0 auto;
@@ -10,7 +12,7 @@
   z-index: 1;
 }
 
-/* ── Header ── */
+/* â”€â”€ Header â”€â”€ */
 .metrics-header {
   text-align: center;
   margin-bottom: 32px;
@@ -39,7 +41,7 @@
   opacity: 0.8;
 }
 
-/* ── Tabs ── */
+/* â”€â”€ Tabs â”€â”€ */
 .metrics-tabs {
   display: flex;
   justify-content: center;
@@ -74,12 +76,12 @@
   box-shadow: 0 0 20px rgba(0, 229, 255, 0.1);
 }
 
-/* ── Tab Content Animation ── */
+/* â”€â”€ Tab Content Animation â”€â”€ */
 .tab-content {
   animation: fadeIn 0.4s ease;
 }
 
-/* ── Metrics Grid ── */
+/* â”€â”€ Metrics Grid â”€â”€ */
 .metrics-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -175,7 +177,7 @@
   line-height: 1.4;
 }
 
-/* ── Confusion Matrix ── */
+/* â”€â”€ Confusion Matrix â”€â”€ */
 .confusion-section {
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(20px);
@@ -273,7 +275,7 @@
   color: #64748b;
 }
 
-/* ── Architecture Pipeline ── */
+/* â”€â”€ Architecture Pipeline â”€â”€ */
 .arch-section {
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(20px);
@@ -373,7 +375,7 @@
   line-height: 1.5;
 }
 
-/* ── Footer Buttons ── */
+/* â”€â”€ Footer Buttons â”€â”€ */
 .metrics-footer {
   display: flex;
   justify-content: center;
@@ -415,7 +417,7 @@
   box-shadow: 0 8px 25px rgba(99, 102, 241, 0.35);
 }
 
-/* ── Animations ── */
+/* â”€â”€ Animations â”€â”€ */
 @keyframes fadeSlideDown {
   from { opacity: 0; transform: translateY(-16px); }
   to { opacity: 1; transform: translateY(0); }
@@ -426,7 +428,7 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Responsive ── */
+/* â”€â”€ Responsive â”€â”€ */
 @media (max-width: 768px) {
   .metrics-grid {
     grid-template-columns: repeat(2, 1fr);

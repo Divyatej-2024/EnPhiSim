@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 // utils/mlClient.js
 import axios from "axios";
 

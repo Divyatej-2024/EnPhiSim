@@ -1,3 +1,5 @@
+﻿/* Sections: variables, layout, components, utilities */
+
 /* ============================================ */
 /*         SCENARIO DASHBOARD CONTAINER         */
 /* ============================================ */
@@ -1835,7 +1837,7 @@
 }
 
 .evidence-list li::before {
-  content: "⚠️";
+  content: "âš ï¸";
   margin-right: 8px;
 }
 

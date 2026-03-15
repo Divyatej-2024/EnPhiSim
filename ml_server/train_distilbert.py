@@ -1,3 +1,5 @@
+﻿# Sections: imports, configuration, helpers, main
+
 from transformers import DistilBertTokenizer, TFDistilBertForSequenceClassification
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
@@ -7,7 +9,7 @@ import pandas as pd
 import numpy as np
 
 # -----------------------------
-# 1️⃣ Load and preprocess data
+# 1ï¸âƒ£ Load and preprocess data
 # -----------------------------
 df = pd.read_excel("data/Enphisim_dataset.xlsx")
 
@@ -19,7 +21,7 @@ df["__text_raw"] = (
 
 data_rows = []
 for _, row in df.iterrows():
-    # ✅ Each append must be INSIDE the loop
+    # âœ… Each append must be INSIDE the loop
     data_rows.append({
         "text": f"[TEXT] {row['__text_raw']} [OPTION] {row['correct_option']}",
         "label": "correct"
@@ -35,19 +37,19 @@ for _, row in df.iterrows():
 
 dataset = pd.DataFrame(data_rows)
 
-# ✅ Encode labels
+# âœ… Encode labels
 label_map = {"correct": 0, "neutral": 1, "wrong": 2}
 dataset["label"] = dataset["label"].map(label_map)
 
 # -----------------------------
-# 2️⃣ Train-test split
+# 2ï¸âƒ£ Train-test split
 # -----------------------------
 train_texts, test_texts, train_labels, test_labels = train_test_split(
     dataset["text"], dataset["label"], test_size=0.2, random_state=42
 )
 
 # -----------------------------
-# 3️⃣ Tokenization
+# 3ï¸âƒ£ Tokenization
 # -----------------------------
 tokenizer = DistilBertTokenizer.from_pretrained("distilbert-base-uncased")
 
@@ -71,7 +73,7 @@ train_dataset = tf.data.Dataset.from_tensor_slices((dict(train_encodings), train
 test_dataset = tf.data.Dataset.from_tensor_slices((dict(test_encodings), test_labels)).batch(8)
 
 # -----------------------------
-# 4️⃣ Model setup and training
+# 4ï¸âƒ£ Model setup and training
 # -----------------------------
 model = TFDistilBertForSequenceClassification.from_pretrained(
     "distilbert-base-uncased",
@@ -87,17 +89,17 @@ model.compile(
 model.fit(train_dataset, validation_data=test_dataset, epochs=5)
 
 # -----------------------------
-# 5️⃣ Save model and tokenizer
+# 5ï¸âƒ£ Save model and tokenizer
 # -----------------------------
 model.save_pretrained("models/distilbert_options_model")
 tokenizer.save_pretrained("models/distilbert_options_model")
 
 # -----------------------------
-# 6️⃣ Evaluate model
+# 6ï¸âƒ£ Evaluate model
 # -----------------------------
 preds = model.predict(test_dataset)
 
-# ✅ `preds` from TF models is a dict with logits key
+# âœ… `preds` from TF models is a dict with logits key
 pred_labels = np.argmax(preds.logits, axis=1)
 true_labels = np.array(list(test_labels))
 

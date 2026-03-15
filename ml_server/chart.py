@@ -1,3 +1,5 @@
+﻿# Sections: imports, configuration, helpers, main
+
 import matplotlib
 matplotlib.use("Agg")  # server-safe backend
 
@@ -97,7 +99,7 @@ for i in range(len(classes)):
 
 plt.xlabel("Predicted Action")
 plt.ylabel("Expected Action")
-plt.title("Confusion Matrix – Phishing Response")
+plt.title("Confusion Matrix â€“ Phishing Response")
 plt.tight_layout()
 plt.savefig("confusion_matrix.png")
 plt.close()

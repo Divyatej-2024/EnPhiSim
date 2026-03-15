@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 // backend/scripts/fixDataStructure.js
 import { MongoClient } from 'mongodb';
 import dotenv from 'dotenv';
@@ -8,7 +10,7 @@ async function fixDataStructure() {
   
   try {
     await client.connect();
-    console.log('✅ Connected to MongoDB');
+    console.log('âœ… Connected to MongoDB');
     
     const db = client.db('EnPhiSimdb');
     const collection = db.collection('levelDataset');
@@ -74,10 +76,10 @@ async function fixDataStructure() {
       }
     }
     
-    console.log(`\n✅ Fixed ${fixed} documents`);
+    console.log(`\nâœ… Fixed ${fixed} documents`);
     
   } catch (error) {
-    console.error('❌ Error:', error);
+    console.error('âŒ Error:', error);
   } finally {
     await client.close();
   }

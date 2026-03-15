@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 import dotenv from "dotenv";
 
 dotenv.config();

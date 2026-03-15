@@ -1,3 +1,5 @@
+﻿# Sections: imports, configuration, helpers, main
+
 from transformers import DistilBertTokenizer, DistilBertModel
 import torch
 

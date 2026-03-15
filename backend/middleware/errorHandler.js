@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 import logger from "../utils/logger.js";
 
 export function notFoundHandler(req, res) {

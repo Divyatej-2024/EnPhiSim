@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 // frontend/src/utils/levelHelper.js
 export function normalizeLevelData(level) {
   if (!level) return null;

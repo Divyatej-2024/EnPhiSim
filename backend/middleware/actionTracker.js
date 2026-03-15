@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 export function actionTracker(req, res, next) {
   try {
     if (req && req.method && req.originalUrl) {

@@ -1,3 +1,5 @@
+﻿/* Sections: variables, layout, components, utilities */
+
 /* frontend/src/pages/levels/templates/MailLevel.css */
 
 .mail-container {
@@ -296,7 +298,7 @@
 }
 
 .phishing-warning-badge::before {
-  content: '⚠️';
+  content: 'âš ï¸';
   font-size: 1.5rem;
 }
 

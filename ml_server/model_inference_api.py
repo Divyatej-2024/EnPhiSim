@@ -1,3 +1,5 @@
+﻿# Sections: imports, configuration, helpers, main
+
 from flask import Flask, jsonify
 import os
 

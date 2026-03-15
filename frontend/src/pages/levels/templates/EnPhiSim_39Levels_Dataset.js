@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 // generate_dataset.js
 // Run with: node generate_dataset.js
 
@@ -252,7 +254,7 @@ const generateHtmlEmail = (config) => {
           <p>Dear Employee,</p>
           <p>${config.content}</p>
           <div class="warning">
-            <strong>⚠️ Action Required:</strong> This requires your immediate attention.
+            <strong>âš ï¸ Action Required:</strong> This requires your immediate attention.
           </div>
           <div style="text-align: center; margin: 30px 0;">
             <a href="http://${getRandomPhishingDomain()}/${config.linkPath}" class="button">
@@ -281,7 +283,7 @@ const scenarios = [];
 
 // ===== LEVEL 1: Easy Credential Phishing =====
 scenarios.push(generateMailScenario(1, 'l1', {
-  title: '🔐 URGENT: Your Corporate Email Account Requires Verification',
+  title: 'ðŸ” URGENT: Your Corporate Email Account Requires Verification',
   content: 'Multiple failed login attempts detected from unrecognized device. Verify immediately to prevent account suspension.',
   category: 'easy',
   taxonomy: 'Credential Phishing',
@@ -292,13 +294,13 @@ scenarios.push(generateMailScenario(1, 'l1', {
   fromUser: 'security',
   replyToUser: 'verify',
   linkPath: 'verify-account',
-  buttonText: '🔐 VERIFY ACCOUNT',
+  buttonText: 'ðŸ” VERIFY ACCOUNT',
   trainingSlug: 'credential-phishing-101',
   hasAttachment: false
 }));
 
 scenarios.push(generateMailScenario(2, 'l1', {
-  title: '🔐 URGENT: Unusual Sign-in Activity Detected',
+  title: 'ðŸ” URGENT: Unusual Sign-in Activity Detected',
   content: 'We detected a sign-in from an unrecognized device in Russia. If this wasn\'t you, your account may be compromised.',
   category: 'easy',
   taxonomy: 'Credential Phishing',
@@ -309,12 +311,12 @@ scenarios.push(generateMailScenario(2, 'l1', {
   fromUser: 'security',
   replyToUser: 'verify',
   linkPath: 'review-activity',
-  buttonText: '🔍 REVIEW ACTIVITY',
+  buttonText: 'ðŸ” REVIEW ACTIVITY',
   trainingSlug: 'credential-phishing-101'
 }));
 
 scenarios.push(generateMailScenario(3, 'l1', {
-  title: '🔐 URGENT: Your Password Expires Today',
+  title: 'ðŸ” URGENT: Your Password Expires Today',
   content: 'Your corporate password will expire in 24 hours. Update now to maintain access.',
   category: 'easy',
   taxonomy: 'Credential Phishing',
@@ -325,7 +327,7 @@ scenarios.push(generateMailScenario(3, 'l1', {
   fromUser: 'support',
   replyToUser: 'password',
   linkPath: 'update-password',
-  buttonText: '🔑 UPDATE PASSWORD',
+  buttonText: 'ðŸ”‘ UPDATE PASSWORD',
   trainingSlug: 'credential-phishing-101',
   hasAttachment: true,
   attachments: [{
@@ -337,7 +339,7 @@ scenarios.push(generateMailScenario(3, 'l1', {
 
 // ===== LEVEL 2: Financial Fraud =====
 scenarios.push(generateMailScenario(4, 'l2', {
-  title: '💰 Amazon: Invoice Overdue $499.99',
+  title: 'ðŸ’° Amazon: Invoice Overdue $499.99',
   content: 'Your Amazon account has an overdue invoice of $499.99. Pay immediately to avoid service interruption.',
   category: 'easy',
   taxonomy: 'Financial Fraud',
@@ -348,7 +350,7 @@ scenarios.push(generateMailScenario(4, 'l2', {
   fromUser: 'billing',
   replyToUser: 'accounts',
   linkPath: 'pay-invoice',
-  buttonText: '💳 PAY NOW',
+  buttonText: 'ðŸ’³ PAY NOW',
   trainingSlug: 'financial-fraud',
   hasAttachment: true,
   attachments: [{
@@ -359,7 +361,7 @@ scenarios.push(generateMailScenario(4, 'l2', {
 }));
 
 scenarios.push(generateMailScenario(5, 'l2', {
-  title: '💰 LinkedIn: Payment Receipt $1,299.00',
+  title: 'ðŸ’° LinkedIn: Payment Receipt $1,299.00',
   content: 'Your LinkedIn account has been charged $1,299.00 for Premium Business. Review invoice.',
   category: 'easy',
   taxonomy: 'Financial Fraud',
@@ -370,7 +372,7 @@ scenarios.push(generateMailScenario(5, 'l2', {
   fromUser: 'billing',
   replyToUser: 'accounts',
   linkPath: 'view-invoice',
-  buttonText: '📄 VIEW INVOICE',
+  buttonText: 'ðŸ“„ VIEW INVOICE',
   trainingSlug: 'financial-fraud',
   hasAttachment: true,
   attachments: [{
@@ -381,7 +383,7 @@ scenarios.push(generateMailScenario(5, 'l2', {
 }));
 
 scenarios.push(generateMailScenario(6, 'l2', {
-  title: '💰 Office365: Refund Processed $79.99',
+  title: 'ðŸ’° Office365: Refund Processed $79.99',
   content: 'Your Office365 account has been refunded $79.99. Confirm receipt.',
   category: 'easy',
   taxonomy: 'Financial Fraud',
@@ -392,7 +394,7 @@ scenarios.push(generateMailScenario(6, 'l2', {
   fromUser: 'billing',
   replyToUser: 'refunds',
   linkPath: 'confirm-refund',
-  buttonText: '✅ CONFIRM',
+  buttonText: 'âœ… CONFIRM',
   trainingSlug: 'financial-fraud',
   hasAttachment: true,
   attachments: [{
@@ -404,7 +406,7 @@ scenarios.push(generateMailScenario(6, 'l2', {
 
 // ===== LEVEL 3: Fake Subscriptions =====
 scenarios.push(generateMailScenario(7, 'l3', {
-  title: '📰 You\'ve Been Subscribed to Forbes Premium',
+  title: 'ðŸ“° You\'ve Been Subscribed to Forbes Premium',
   content: 'Your subscription to Forbes Premium has been confirmed. Cancel if unauthorized.',
   category: 'easy',
   taxonomy: 'Social Engineering',
@@ -415,7 +417,7 @@ scenarios.push(generateMailScenario(7, 'l3', {
   fromUser: 'subscriptions',
   replyToUser: 'cancel',
   linkPath: 'cancel-forbes',
-  buttonText: '🚫 CANCEL',
+  buttonText: 'ðŸš« CANCEL',
   trainingSlug: 'social-engineering',
   hasAttachment: true,
   attachments: [{
@@ -426,7 +428,7 @@ scenarios.push(generateMailScenario(7, 'l3', {
 }));
 
 scenarios.push(generateMailScenario(8, 'l3', {
-  title: '📰 You\'ve Been Subscribed to WSJ Premium',
+  title: 'ðŸ“° You\'ve Been Subscribed to WSJ Premium',
   content: 'Your Wall Street Journal subscription has been confirmed for $389/year.',
   category: 'easy',
   taxonomy: 'Social Engineering',
@@ -437,12 +439,12 @@ scenarios.push(generateMailScenario(8, 'l3', {
   fromUser: 'subscriptions',
   replyToUser: 'cancel',
   linkPath: 'cancel-wsj',
-  buttonText: '✖️ CANCEL',
+  buttonText: 'âœ–ï¸ CANCEL',
   trainingSlug: 'social-engineering'
 }));
 
 scenarios.push(generateMailScenario(9, 'l3', {
-  title: '📰 You\'ve Been Subscribed to TechCrunch+',
+  title: 'ðŸ“° You\'ve Been Subscribed to TechCrunch+',
   content: 'Your TechCrunch+ subscription has been confirmed for $99.99/month.',
   category: 'easy',
   taxonomy: 'Social Engineering',
@@ -453,13 +455,13 @@ scenarios.push(generateMailScenario(9, 'l3', {
   fromUser: 'newsletter',
   replyToUser: 'unsubscribe',
   linkPath: 'unsubscribe-techcrunch',
-  buttonText: '🔴 UNSUBSCRIBE',
+  buttonText: 'ðŸ”´ UNSUBSCRIBE',
   trainingSlug: 'social-engineering'
 }));
 
 // ===== LEVEL 4: Prize Scams =====
 scenarios.push(generateMailScenario(10, 'l4', {
-  title: '🎉 Congratulations! You\'ve Won a $500 Gift Card',
+  title: 'ðŸŽ‰ Congratulations! You\'ve Won a $500 Gift Card',
   content: 'Your email was selected for our $500 Amazon Gift Card giveaway!',
   category: 'easy',
   taxonomy: 'Financial Fraud',
@@ -470,12 +472,12 @@ scenarios.push(generateMailScenario(10, 'l4', {
   fromUser: 'giveaways',
   replyToUser: 'claim',
   linkPath: 'claim-giftcard',
-  buttonText: '🎁 CLAIM NOW',
+  buttonText: 'ðŸŽ CLAIM NOW',
   trainingSlug: 'prize-scams'
 }));
 
 scenarios.push(generateMailScenario(11, 'l4', {
-  title: '🎉 Congratulations! You\'ve Won 2 First-Class Tickets',
+  title: 'ðŸŽ‰ Congratulations! You\'ve Won 2 First-Class Tickets',
   content: 'Your LinkedIn profile won 2 first-class tickets to Europe!',
   category: 'easy',
   taxonomy: 'Financial Fraud',
@@ -486,7 +488,7 @@ scenarios.push(generateMailScenario(11, 'l4', {
   fromUser: 'giveaways',
   replyToUser: 'claim',
   linkPath: 'claim-tickets',
-  buttonText: '✈️ CLAIM',
+  buttonText: 'âœˆï¸ CLAIM',
   trainingSlug: 'prize-scams',
   hasAttachment: true,
   attachments: [{
@@ -497,7 +499,7 @@ scenarios.push(generateMailScenario(11, 'l4', {
 }));
 
 scenarios.push(generateMailScenario(12, 'l4', {
-  title: '🎉 Congratulations! You\'ve Won an iPhone 15 Pro',
+  title: 'ðŸŽ‰ Congratulations! You\'ve Won an iPhone 15 Pro',
   content: 'Your email was selected for our iPhone 15 Pro giveaway!',
   category: 'easy',
   taxonomy: 'Financial Fraud',
@@ -508,13 +510,13 @@ scenarios.push(generateMailScenario(12, 'l4', {
   fromUser: 'giveaways',
   replyToUser: 'claim',
   linkPath: 'claim-iphone',
-  buttonText: '📱 CLAIM',
+  buttonText: 'ðŸ“± CLAIM',
   trainingSlug: 'prize-scams'
 }));
 
 // ===== LEVEL 5: Attachment Lures =====
 scenarios.push(generateMailScenario(13, 'l5', {
-  title: '📎 Shipping Label Ready - Print and Attach',
+  title: 'ðŸ“Ž Shipping Label Ready - Print and Attach',
   content: 'Your shipping label is ready for package #UPS773245.',
   category: 'easy',
   taxonomy: 'Messaging Attacks',
@@ -525,7 +527,7 @@ scenarios.push(generateMailScenario(13, 'l5', {
   fromUser: 'shipping',
   replyToUser: 'documents',
   linkPath: 'shipping-label',
-  buttonText: '🖨️ PRINT',
+  buttonText: 'ðŸ–¨ï¸ PRINT',
   trainingSlug: 'attachment-warning',
   hasAttachment: true,
   attachments: [{
@@ -536,7 +538,7 @@ scenarios.push(generateMailScenario(13, 'l5', {
 }));
 
 scenarios.push(generateMailScenario(14, 'l5', {
-  title: '📎 New Voicemail Received',
+  title: 'ðŸ“Ž New Voicemail Received',
   content: 'You have a new voicemail from an unknown caller.',
   category: 'easy',
   taxonomy: 'Messaging Attacks',
@@ -547,7 +549,7 @@ scenarios.push(generateMailScenario(14, 'l5', {
   fromUser: 'messages',
   replyToUser: 'voicemail',
   linkPath: 'voicemail',
-  buttonText: '▶️ LISTEN',
+  buttonText: 'â–¶ï¸ LISTEN',
   trainingSlug: 'attachment-warning',
   hasAttachment: true,
   attachments: [{
@@ -558,7 +560,7 @@ scenarios.push(generateMailScenario(14, 'l5', {
 }));
 
 scenarios.push(generateMailScenario(15, 'l5', {
-  title: '📎 Invoice #INV-7823 Ready for Review',
+  title: 'ðŸ“Ž Invoice #INV-7823 Ready for Review',
   content: 'Acme Corporation has sent you an invoice for review.',
   category: 'easy',
   taxonomy: 'Messaging Attacks',
@@ -569,7 +571,7 @@ scenarios.push(generateMailScenario(15, 'l5', {
   fromUser: 'notifications',
   replyToUser: 'documents',
   linkPath: 'invoice-7823',
-  buttonText: '✍️ REVIEW',
+  buttonText: 'âœï¸ REVIEW',
   trainingSlug: 'attachment-warning',
   hasAttachment: true,
   attachments: [{
@@ -581,7 +583,7 @@ scenarios.push(generateMailScenario(15, 'l5', {
 
 // ===== LEVEL 6: Spoofed Senders =====
 scenarios.push(generateMailScenario(16, 'l6', {
-  title: '⚠️ Important: Your Password Expires',
+  title: 'âš ï¸ Important: Your Password Expires',
   content: 'Your Microsoft 365 password will expire in 24 hours.',
   category: 'easy',
   taxonomy: 'Credential Phishing',
@@ -592,7 +594,7 @@ scenarios.push(generateMailScenario(16, 'l6', {
   fromUser: 'service',
   replyToUser: 'support',
   linkPath: 'update-password',
-  buttonText: '🔑 UPDATE',
+  buttonText: 'ðŸ”‘ UPDATE',
   trainingSlug: 'spoofed-senders',
   hasAttachment: true,
   attachments: [{
@@ -603,7 +605,7 @@ scenarios.push(generateMailScenario(16, 'l6', {
 }));
 
 scenarios.push(generateMailScenario(17, 'l6', {
-  title: '⚠️ Important: Benefits Enrollment',
+  title: 'âš ï¸ Important: Benefits Enrollment',
   content: 'Open enrollment for 2025 benefits begins today.',
   category: 'easy',
   taxonomy: 'Credential Phishing',
@@ -614,12 +616,12 @@ scenarios.push(generateMailScenario(17, 'l6', {
   fromUser: 'hr-service',
   replyToUser: 'benefits',
   linkPath: 'benefits-enrollment',
-  buttonText: '📝 ENROLL',
+  buttonText: 'ðŸ“ ENROLL',
   trainingSlug: 'spoofed-senders'
 }));
 
 scenarios.push(generateMailScenario(18, 'l6', {
-  title: '⚠️ Important: Document Shared with You',
+  title: 'âš ï¸ Important: Document Shared with You',
   content: 'David Miller has shared a document with you via OneDrive.',
   category: 'easy',
   taxonomy: 'Credential Phishing',
@@ -630,13 +632,13 @@ scenarios.push(generateMailScenario(18, 'l6', {
   fromUser: 'd.miller',
   replyToUser: 'shared',
   linkPath: 'view-doc',
-  buttonText: '📂 VIEW',
+  buttonText: 'ðŸ“‚ VIEW',
   trainingSlug: 'spoofed-senders'
 }));
 
 // ===== LEVEL 7: Typosquatted Domains =====
 scenarios.push(generateMailScenario(19, 'l7', {
-  title: '🔒 PayPal: Your Account Has Been Limited',
+  title: 'ðŸ”’ PayPal: Your Account Has Been Limited',
   content: 'Your PayPal account has been limited due to unusual activity.',
   category: 'advanced_easy',
   taxonomy: 'Credential Phishing',
@@ -647,14 +649,14 @@ scenarios.push(generateMailScenario(19, 'l7', {
   fromUser: 'security',
   replyToUser: 'resolution',
   linkPath: 'paypal-verify',
-  buttonText: '✅ VERIFY',
+  buttonText: 'âœ… VERIFY',
   trainingSlug: 'typosquatting',
   linkPath: 'paypa1.com/verify',
   display_url: 'http://paypa1.com/verify'
 }));
 
 scenarios.push(generateMailScenario(20, 'l7', {
-  title: '📦 Amazon: Your Package Has Been Delayed',
+  title: 'ðŸ“¦ Amazon: Your Package Has Been Delayed',
   content: 'Your Amazon package delivery has been delayed due to weather.',
   category: 'advanced_easy',
   taxonomy: 'Credential Phishing',
@@ -665,12 +667,12 @@ scenarios.push(generateMailScenario(20, 'l7', {
   fromUser: 'shipping',
   replyToUser: 'delivery',
   linkPath: 'amaz0n.com/track',
-  buttonText: '📦 TRACK',
+  buttonText: 'ðŸ“¦ TRACK',
   trainingSlug: 'typosquatting'
 }));
 
 scenarios.push(generateMailScenario(21, 'l7', {
-  title: '👥 LinkedIn: Your Profile Has Been Viewed 87 Times',
+  title: 'ðŸ‘¥ LinkedIn: Your Profile Has Been Viewed 87 Times',
   content: 'See who viewed your profile - executives from Google and Microsoft!',
   category: 'advanced_easy',
   taxonomy: 'Credential Phishing',
@@ -681,13 +683,13 @@ scenarios.push(generateMailScenario(21, 'l7', {
   fromUser: 'security',
   replyToUser: 'views',
   linkPath: 'linkedln.com/views',
-  buttonText: '🔍 SEE WHO',
+  buttonText: 'ðŸ” SEE WHO',
   trainingSlug: 'typosquatting'
 }));
 
 // ===== LEVEL 8: URL Shorteners =====
 scenarios.push(generateBrowserScenario(22, 'l8', {
-  title: '🔗 URGENT: Document Shared Securely',
+  title: 'ðŸ”— URGENT: Document Shared Securely',
   content: 'A secure document has been shared with you via encrypted link.',
   category: 'advanced_easy',
   taxonomy: 'Credential Phishing',
@@ -701,7 +703,7 @@ scenarios.push(generateBrowserScenario(22, 'l8', {
 }));
 
 scenarios.push(generateBrowserScenario(23, 'l8', {
-  title: '🔗 Secure Document Shared - Access via Link',
+  title: 'ðŸ”— Secure Document Shared - Access via Link',
   content: 'A confidential document has been shared with you.',
   category: 'advanced_easy',
   taxonomy: 'Credential Phishing',
@@ -715,7 +717,7 @@ scenarios.push(generateBrowserScenario(23, 'l8', {
 }));
 
 scenarios.push(generateBrowserScenario(24, 'l8', {
-  title: '🔗 Important Document Shared - Review Required',
+  title: 'ðŸ”— Important Document Shared - Review Required',
   content: 'Q1 Financial Report 2025 has been shared with you.',
   category: 'advanced_easy',
   taxonomy: 'Credential Phishing',
@@ -730,7 +732,7 @@ scenarios.push(generateBrowserScenario(24, 'l8', {
 
 // ===== LEVEL 9: Survey Scams =====
 scenarios.push(generateMailScenario(25, 'l9', {
-  title: '📝 Employee Satisfaction Survey',
+  title: 'ðŸ“ Employee Satisfaction Survey',
   content: 'Take 5 minutes to complete our annual employee survey.',
   category: 'advanced_easy',
   taxonomy: 'Social Engineering',
@@ -741,12 +743,12 @@ scenarios.push(generateMailScenario(25, 'l9', {
   fromUser: 'hr-surveys',
   replyToUser: 'survey',
   linkPath: 'employee-survey',
-  buttonText: '📋 TAKE SURVEY',
+  buttonText: 'ðŸ“‹ TAKE SURVEY',
   trainingSlug: 'survey-scams'
 }));
 
 scenarios.push(generateMailScenario(26, 'l9', {
-  title: '🖥️ IT Service Feedback Survey',
+  title: 'ðŸ–¥ï¸ IT Service Feedback Survey',
   content: 'Help us improve IT services - complete this brief survey.',
   category: 'advanced_easy',
   taxonomy: 'Social Engineering',
@@ -757,7 +759,7 @@ scenarios.push(generateMailScenario(26, 'l9', {
   fromUser: 'it-feedback',
   replyToUser: 'survey',
   linkPath: 'it-survey',
-  buttonText: '📋 TAKE SURVEY',
+  buttonText: 'ðŸ“‹ TAKE SURVEY',
   trainingSlug: 'survey-scams',
   hasAttachment: true,
   attachments: [{
@@ -768,7 +770,7 @@ scenarios.push(generateMailScenario(26, 'l9', {
 }));
 
 scenarios.push(generateMailScenario(27, 'l9', {
-  title: '🔐 Security Awareness Survey',
+  title: 'ðŸ” Security Awareness Survey',
   content: 'Test your cybersecurity knowledge - complete our survey.',
   category: 'advanced_easy',
   taxonomy: 'Social Engineering',
@@ -779,13 +781,13 @@ scenarios.push(generateMailScenario(27, 'l9', {
   fromUser: 'security-training',
   replyToUser: 'survey',
   linkPath: 'security-survey',
-  buttonText: '📝 START',
+  buttonText: 'ðŸ“ START',
   trainingSlug: 'survey-scams'
 }));
 
 // ===== LEVEL 10: SMS Smishing =====
 scenarios.push(generateMessageScenario(28, 'l10', {
-  title: '📦 UPS: Your Package is Waiting',
+  title: 'ðŸ“¦ UPS: Your Package is Waiting',
   content: 'Delivery attempt failed - reschedule now.',
   category: 'advanced_easy',
   taxonomy: 'Messaging Attacks',
@@ -802,7 +804,7 @@ scenarios.push(generateMessageScenario(28, 'l10', {
 }));
 
 scenarios.push(generateMessageScenario(29, 'l10', {
-  title: '📦 FedEx: Delivery Failed',
+  title: 'ðŸ“¦ FedEx: Delivery Failed',
   content: 'Package delivery failed - update preferences.',
   category: 'advanced_easy',
   taxonomy: 'Messaging Attacks',
@@ -819,7 +821,7 @@ scenarios.push(generateMessageScenario(29, 'l10', {
 }));
 
 scenarios.push(generateMessageScenario(30, 'l10', {
-  title: '📦 Amazon: Account Suspended',
+  title: 'ðŸ“¦ Amazon: Account Suspended',
   content: 'Your Amazon account has been suspended - verify now.',
   category: 'advanced_easy',
   taxonomy: 'Messaging Attacks',
@@ -837,7 +839,7 @@ scenarios.push(generateMessageScenario(30, 'l10', {
 
 // ===== LEVEL 11: Spear Phishing =====
 scenarios.push(generateMailScenario(31, 'l11', {
-  title: '🎯 Quarterly Budget Review - Action Required',
+  title: 'ðŸŽ¯ Quarterly Budget Review - Action Required',
   content: 'Please review attached Q2 budget documents before board meeting.',
   category: 'medium',
   taxonomy: 'Targeted Phishing',
@@ -848,7 +850,7 @@ scenarios.push(generateMailScenario(31, 'l11', {
   fromUser: 'budget',
   replyToUser: 'secure',
   linkPath: 'budget-review',
-  buttonText: '📂 ACCESS',
+  buttonText: 'ðŸ“‚ ACCESS',
   trainingSlug: 'spear-phishing',
   hasAttachment: true,
   attachments: [{
@@ -859,7 +861,7 @@ scenarios.push(generateMailScenario(31, 'l11', {
 }));
 
 scenarios.push(generateMailScenario(32, 'l11', {
-  title: '🎯 Confidential: Salary Review Documents',
+  title: 'ðŸŽ¯ Confidential: Salary Review Documents',
   content: 'Your annual salary review documents are ready for review.',
   category: 'medium',
   taxonomy: 'Targeted Phishing',
@@ -870,7 +872,7 @@ scenarios.push(generateMailScenario(32, 'l11', {
   fromUser: 'hr',
   replyToUser: 'secure',
   linkPath: 'salary-review',
-  buttonText: '🔐 ACCESS',
+  buttonText: 'ðŸ” ACCESS',
   trainingSlug: 'spear-phishing',
   hasAttachment: true,
   attachments: [{
@@ -882,7 +884,7 @@ scenarios.push(generateMailScenario(32, 'l11', {
 
 // ===== LEVEL 12: Whaling =====
 scenarios.push(generateMailScenario(33, 'l12', {
-  title: '🐋 CEO Directive: Urgent Wire Transfer Required',
+  title: 'ðŸ‹ CEO Directive: Urgent Wire Transfer Required',
   content: 'Board approved acquisition of DataCore Systems. Process wire transfer immediately.',
   category: 'medium',
   taxonomy: 'Executive Targeting',
@@ -893,7 +895,7 @@ scenarios.push(generateMailScenario(33, 'l12', {
   fromUser: 'executive',
   replyToUser: 'finance-urgent',
   linkPath: 'authorize-wire',
-  buttonText: '💰 AUTHORIZE',
+  buttonText: 'ðŸ’° AUTHORIZE',
   trainingSlug: 'whaling',
   hasAttachment: true,
   attachments: [{
@@ -904,7 +906,7 @@ scenarios.push(generateMailScenario(33, 'l12', {
 }));
 
 scenarios.push(generateMailScenario(34, 'l12', {
-  title: '🐋 CFO: Confidential Wire Transfer - Q4 Acquisition',
+  title: 'ðŸ‹ CFO: Confidential Wire Transfer - Q4 Acquisition',
   content: 'Execute wire transfer of $247,500 for DataCore Systems acquisition.',
   category: 'medium',
   taxonomy: 'Executive Targeting',
@@ -915,7 +917,7 @@ scenarios.push(generateMailScenario(34, 'l12', {
   fromUser: 'cfo',
   replyToUser: 'finance-urgent',
   linkPath: 'confirm-wire',
-  buttonText: '✅ CONFIRM',
+  buttonText: 'âœ… CONFIRM',
   trainingSlug: 'whaling',
   hasAttachment: true,
   attachments: [{
@@ -927,7 +929,7 @@ scenarios.push(generateMailScenario(34, 'l12', {
 
 // ===== LEVEL 13: Vishing =====
 scenarios.push(generateMailScenario(35, 'l13', {
-  title: '📞 IRS: Tax Fraud Investigation - Call Immediately',
+  title: 'ðŸ“ž IRS: Tax Fraud Investigation - Call Immediately',
   content: 'Case #TAX-7843-22 requires immediate attention.',
   category: 'medium',
   taxonomy: 'Voice Phishing',
@@ -938,12 +940,12 @@ scenarios.push(generateMailScenario(35, 'l13', {
   fromUser: 'tax-dept',
   replyToUser: 'compliance',
   linkPath: 'tax-fraud',
-  buttonText: '📞 CALL NOW',
+  buttonText: 'ðŸ“ž CALL NOW',
   trainingSlug: 'vishing'
 }));
 
 scenarios.push(generateMailScenario(36, 'l13', {
-  title: '📞 Bank of America: Fraudulent Transaction Detected',
+  title: 'ðŸ“ž Bank of America: Fraudulent Transaction Detected',
   content: '$2,847 transaction detected from Miami, FL.',
   category: 'medium',
   taxonomy: 'Voice Phishing',
@@ -954,13 +956,13 @@ scenarios.push(generateMailScenario(36, 'l13', {
   fromUser: 'fraud-alerts',
   replyToUser: 'callback',
   linkPath: 'fraud-alert',
-  buttonText: '📞 CALL FRAUD DEPT',
+  buttonText: 'ðŸ“ž CALL FRAUD DEPT',
   trainingSlug: 'vishing'
 }));
 
 // ===== LEVEL 14: QR Code Phishing =====
 scenarios.push(generateMailScenario(37, 'l14', {
-  title: '📱 NYC Parking Violation - Scan QR Code to Pay',
+  title: 'ðŸ“± NYC Parking Violation - Scan QR Code to Pay',
   content: 'Citation #7843291-02: $65 due by 3/20.',
   category: 'medium',
   taxonomy: 'QR Code Phishing',
@@ -971,7 +973,7 @@ scenarios.push(generateMailScenario(37, 'l14', {
   fromUser: 'parking',
   replyToUser: 'payments',
   linkPath: 'parking-fine',
-  buttonText: '🔳 VIEW QR',
+  buttonText: 'ðŸ”³ VIEW QR',
   trainingSlug: 'quishing',
   hasAttachment: true,
   attachments: [{
@@ -982,7 +984,7 @@ scenarios.push(generateMailScenario(37, 'l14', {
 }));
 
 scenarios.push(generateMailScenario(38, 'l14', {
-  title: '📱 Package Delivery Issue - Scan QR Code',
+  title: 'ðŸ“± Package Delivery Issue - Scan QR Code',
   content: 'Update delivery preferences to receive package.',
   category: 'medium',
   taxonomy: 'QR Code Phishing',
@@ -993,7 +995,7 @@ scenarios.push(generateMailScenario(38, 'l14', {
   fromUser: 'delivery',
   replyToUser: 'resolutions',
   linkPath: 'parcel-delivery',
-  buttonText: '🔳 SCAN QR',
+  buttonText: 'ðŸ”³ SCAN QR',
   trainingSlug: 'quishing',
   hasAttachment: true,
   attachments: [{
@@ -1005,7 +1007,7 @@ scenarios.push(generateMailScenario(38, 'l14', {
 
 // ===== LEVEL 15: DNS Poisoning =====
 scenarios.push(generateBrowserScenario(39, 'l15', {
-  title: '🔒 Chase: Security Certificate Expired',
+  title: 'ðŸ”’ Chase: Security Certificate Expired',
   content: 'Certificate for Chase.com expired - renew now.',
   category: 'medium',
   taxonomy: 'DNS Poisoning',
@@ -1018,7 +1020,7 @@ scenarios.push(generateBrowserScenario(39, 'l15', {
 }));
 
 scenarios.push(generateBrowserScenario(40, 'l15', {
-  title: '🔒 Bank of America: Certificate Error',
+  title: 'ðŸ”’ Bank of America: Certificate Error',
   content: 'Security certificate requires renewal.',
   category: 'medium',
   taxonomy: 'DNS Poisoning',
@@ -1032,7 +1034,7 @@ scenarios.push(generateBrowserScenario(40, 'l15', {
 
 // ===== LEVEL 16: Clone Phishing =====
 scenarios.push(generateMailScenario(41, 'l16', {
-  title: '📧 Re: Updated Meeting Invitation',
+  title: 'ðŸ“§ Re: Updated Meeting Invitation',
   content: 'The meeting invitation has been updated with new information.',
   category: 'medium',
   taxonomy: 'Clone Phishing',
@@ -1043,7 +1045,7 @@ scenarios.push(generateMailScenario(41, 'l16', {
   fromUser: 'meetings',
   replyToUser: 'updated',
   linkPath: 'updated-invite',
-  buttonText: '📅 VIEW UPDATE',
+  buttonText: 'ðŸ“… VIEW UPDATE',
   trainingSlug: 'clone-phishing',
   hasAttachment: true,
   attachments: [{
@@ -1054,7 +1056,7 @@ scenarios.push(generateMailScenario(41, 'l16', {
 }));
 
 scenarios.push(generateMailScenario(42, 'l16', {
-  title: '📧 Updated Shipping Confirmation',
+  title: 'ðŸ“§ Updated Shipping Confirmation',
   content: 'Your shipping label has been updated with new tracking.',
   category: 'medium',
   taxonomy: 'Clone Phishing',
@@ -1065,7 +1067,7 @@ scenarios.push(generateMailScenario(42, 'l16', {
   fromUser: 'shipping',
   replyToUser: 'updated',
   linkPath: 'updated-label',
-  buttonText: '📎 DOWNLOAD',
+  buttonText: 'ðŸ“Ž DOWNLOAD',
   trainingSlug: 'clone-phishing',
   hasAttachment: true,
   attachments: [{
@@ -1077,7 +1079,7 @@ scenarios.push(generateMailScenario(42, 'l16', {
 
 // ===== LEVEL 17: MITM WiFi =====
 scenarios.push(generateBrowserScenario(43, 'l17', {
-  title: '🌐 Connect to Cafe WiFi',
+  title: 'ðŸŒ Connect to Cafe WiFi',
   content: 'Free WiFi available - login to access internet.',
   category: 'medium',
   taxonomy: 'MITM Attack',
@@ -1090,7 +1092,7 @@ scenarios.push(generateBrowserScenario(43, 'l17', {
 }));
 
 scenarios.push(generateBrowserScenario(44, 'l17', {
-  title: '🌐 Grand Hotel Guest WiFi',
+  title: 'ðŸŒ Grand Hotel Guest WiFi',
   content: 'Connect to high-speed internet during your stay.',
   category: 'medium',
   taxonomy: 'MITM Attack',
@@ -1104,7 +1106,7 @@ scenarios.push(generateBrowserScenario(44, 'l17', {
 
 // ===== LEVEL 18: Watering Hole =====
 scenarios.push(generateMailScenario(45, 'l18', {
-  title: '📰 Industry News Digest - Cybersecurity Updates',
+  title: 'ðŸ“° Industry News Digest - Cybersecurity Updates',
   content: 'Latest cybersecurity news from industry-news.com',
   category: 'medium',
   taxonomy: 'Watering Hole',
@@ -1115,12 +1117,12 @@ scenarios.push(generateMailScenario(45, 'l18', {
   fromUser: 'news',
   replyToUser: 'digest',
   linkPath: 'industry-news',
-  buttonText: '📰 READ',
+  buttonText: 'ðŸ“° READ',
   trainingSlug: 'watering-hole'
 }));
 
 scenarios.push(generateMailScenario(46, 'l18', {
-  title: '💻 Tech Forum Weekly Digest',
+  title: 'ðŸ’» Tech Forum Weekly Digest',
   content: 'Top discussions and code snippets from tech-forum.net',
   category: 'medium',
   taxonomy: 'Watering Hole',
@@ -1131,13 +1133,13 @@ scenarios.push(generateMailScenario(46, 'l18', {
   fromUser: 'newsletter',
   replyToUser: 'digest',
   linkPath: 'tech-forum',
-  buttonText: '🔍 VIEW',
+  buttonText: 'ðŸ” VIEW',
   trainingSlug: 'watering-hole'
 }));
 
 // ===== LEVEL 19: Credential Stuffing =====
 scenarios.push(generateMailScenario(47, 'l19', {
-  title: '🎬 Netflix: Multiple Failed Login Attempts',
+  title: 'ðŸŽ¬ Netflix: Multiple Failed Login Attempts',
   content: '15 failed login attempts detected - secure your account.',
   category: 'medium',
   taxonomy: 'Credential Stuffing',
@@ -1148,12 +1150,12 @@ scenarios.push(generateMailScenario(47, 'l19', {
   fromUser: 'security',
   replyToUser: 'alerts',
   linkPath: 'netflix-secure',
-  buttonText: '🔒 SECURE',
+  buttonText: 'ðŸ”’ SECURE',
   trainingSlug: 'credential-stuffing'
 }));
 
 scenarios.push(generateMailScenario(48, 'l19', {
-  title: '🎵 Spotify: Unusual Login Activity',
+  title: 'ðŸŽµ Spotify: Unusual Login Activity',
   content: 'Login attempts from multiple locations detected.',
   category: 'medium',
   taxonomy: 'Credential Stuffing',
@@ -1164,13 +1166,13 @@ scenarios.push(generateMailScenario(48, 'l19', {
   fromUser: 'security',
   replyToUser: 'alerts',
   linkPath: 'spotify-secure',
-  buttonText: '🔐 SECURE',
+  buttonText: 'ðŸ” SECURE',
   trainingSlug: 'credential-stuffing'
 }));
 
 // ===== LEVEL 20: Session Hijacking =====
 scenarios.push(generateBrowserScenario(49, 'l20', {
-  title: '⏰ Session Expired - Please Login Again',
+  title: 'â° Session Expired - Please Login Again',
   content: 'Your session has expired due to inactivity.',
   category: 'medium',
   taxonomy: 'Session Hijacking',
@@ -1184,7 +1186,7 @@ scenarios.push(generateBrowserScenario(49, 'l20', {
 
 // ===== LEVEL 21: Evil Twin WiFi =====
 scenarios.push(generateBrowserScenario(50, 'l21', {
-  title: '📶 Company Guest WiFi Available',
+  title: 'ðŸ“¶ Company Guest WiFi Available',
   content: 'Free guest WiFi available in lobby - connect now.',
   category: 'medium',
   taxonomy: 'Wi-Fi Phishing',
@@ -1198,7 +1200,7 @@ scenarios.push(generateBrowserScenario(50, 'l21', {
 
 // ===== LEVEL 22: Tech Support Scam =====
 scenarios.push(generateMailScenario(51, 'l22', {
-  title: '🖥️ CRITICAL: 5 Viruses Detected',
+  title: 'ðŸ–¥ï¸ CRITICAL: 5 Viruses Detected',
   content: 'Your computer is infected with 5 viruses! Call now.',
   category: 'medium',
   taxonomy: 'Tech Support Fraud',
@@ -1209,13 +1211,13 @@ scenarios.push(generateMailScenario(51, 'l22', {
   fromUser: 'alerts',
   replyToUser: 'help',
   linkPath: 'tech-support',
-  buttonText: '📞 CALL NOW',
+  buttonText: 'ðŸ“ž CALL NOW',
   trainingSlug: 'tech-support'
 }));
 
 // ===== LEVEL 23: Romance Scam =====
 scenarios.push(generateMailScenario(52, 'l23', {
-  title: '💕 Someone Has a Crush on You!',
+  title: 'ðŸ’• Someone Has a Crush on You!',
   content: 'A colleague added you to their secret crush list.',
   category: 'medium',
   taxonomy: 'Social Engineering',
@@ -1226,13 +1228,13 @@ scenarios.push(generateMailScenario(52, 'l23', {
   fromUser: 'dating',
   replyToUser: 'match',
   linkPath: 'reveal-crush',
-  buttonText: '💕 SEE WHO',
+  buttonText: 'ðŸ’• SEE WHO',
   trainingSlug: 'romance-scam'
 }));
 
 // ===== LEVEL 24: Charity Scam =====
 scenarios.push(generateMailScenario(53, 'l24', {
-  title: '🤝 Emergency: Help Disaster Victims',
+  title: 'ðŸ¤ Emergency: Help Disaster Victims',
   content: 'Thousands affected by earthquake need your help.',
   category: 'medium',
   taxonomy: 'Financial Fraud',
@@ -1243,13 +1245,13 @@ scenarios.push(generateMailScenario(53, 'l24', {
   fromUser: 'relief',
   replyToUser: 'donate',
   linkPath: 'donate-relief',
-  buttonText: '❤️ DONATE',
+  buttonText: 'â¤ï¸ DONATE',
   trainingSlug: 'charity-scam'
 }));
 
 // ===== LEVEL 25: Job Scam =====
 scenarios.push(generateMailScenario(54, 'l25', {
-  title: '💼 Remote Position: $150k/year - No Experience Needed',
+  title: 'ðŸ’¼ Remote Position: $150k/year - No Experience Needed',
   content: 'Work from home, flexible hours, $150k starting salary.',
   category: 'medium',
   taxonomy: 'Employment Fraud',
@@ -1260,7 +1262,7 @@ scenarios.push(generateMailScenario(54, 'l25', {
   fromUser: 'careers',
   replyToUser: 'apply',
   linkPath: 'apply-job',
-  buttonText: '📝 APPLY',
+  buttonText: 'ðŸ“ APPLY',
   trainingSlug: 'job-scam',
   hasAttachment: true,
   attachments: [{
@@ -1272,7 +1274,7 @@ scenarios.push(generateMailScenario(54, 'l25', {
 
 // ===== LEVEL 26: Account Verification =====
 scenarios.push(generateMailScenario(55, 'l26', {
-  title: '🔑 Account Verification Required',
+  title: 'ðŸ”‘ Account Verification Required',
   content: 'Verify your account within 48 hours to avoid suspension.',
   category: 'medium',
   taxonomy: 'Credential Phishing',
@@ -1283,13 +1285,13 @@ scenarios.push(generateMailScenario(55, 'l26', {
   fromUser: 'verify',
   replyToUser: 'confirm',
   linkPath: 'verify-account',
-  buttonText: '✅ VERIFY',
+  buttonText: 'âœ… VERIFY',
   trainingSlug: 'account-verification'
 }));
 
 // ===== LEVEL 27: Shipping Fraud =====
 scenarios.push(generateMailScenario(56, 'l27', {
-  title: '📦 Package Could Not Be Delivered',
+  title: 'ðŸ“¦ Package Could Not Be Delivered',
   content: 'Reschedule delivery within 48 hours.',
   category: 'medium',
   taxonomy: 'Shipping Fraud',
@@ -1300,13 +1302,13 @@ scenarios.push(generateMailScenario(56, 'l27', {
   fromUser: 'delivery',
   replyToUser: 'reschedule',
   linkPath: 'reschedule',
-  buttonText: '📅 RESCHEDULE',
+  buttonText: 'ðŸ“… RESCHEDULE',
   trainingSlug: 'shipping-fraud'
 }));
 
 // ===== LEVEL 28: Scareware =====
 scenarios.push(generateBrowserScenario(57, 'l28', {
-  title: '⚠️ CRITICAL: 5 Viruses Detected!',
+  title: 'âš ï¸ CRITICAL: 5 Viruses Detected!',
   content: 'Your computer is infected - download antivirus now.',
   category: 'medium',
   taxonomy: 'Scareware',
@@ -1316,12 +1318,12 @@ scenarios.push(generateBrowserScenario(57, 'l28', {
   bodyText: 'CRITICAL ALERT: 5 viruses detected! Download antivirus immediately.',
   linkPath: 'download-antivirus',
   trainingSlug: 'scareware',
-  bodyHtml: '<div style="background: red; color: white; padding: 20px;"><h1>⚠️ CRITICAL ALERT</h1><p>5 viruses detected!</p><a href="http://fake-antivirus.net/download" style="background: white; color: red; padding: 10px;">Download Antivirus</a></div>'
+  bodyHtml: '<div style="background: red; color: white; padding: 20px;"><h1>âš ï¸ CRITICAL ALERT</h1><p>5 viruses detected!</p><a href="http://fake-antivirus.net/download" style="background: white; color: red; padding: 10px;">Download Antivirus</a></div>'
 }));
 
 // ===== LEVEL 29: Inheritance Scam =====
 scenarios.push(generateMailScenario(58, 'l29', {
-  title: '💰 $2.5M Inheritance Waiting for You',
+  title: 'ðŸ’° $2.5M Inheritance Waiting for You',
   content: 'You are the beneficiary of an unclaimed estate.',
   category: 'hard',
   taxonomy: 'Financial Fraud',
@@ -1332,7 +1334,7 @@ scenarios.push(generateMailScenario(58, 'l29', {
   fromUser: 'attorney',
   replyToUser: 'claim',
   linkPath: 'claim-inheritance',
-  buttonText: '⚖️ CLAIM',
+  buttonText: 'âš–ï¸ CLAIM',
   trainingSlug: 'inheritance-scam',
   hasAttachment: true,
   attachments: [{
@@ -1344,7 +1346,7 @@ scenarios.push(generateMailScenario(58, 'l29', {
 
 // ===== LEVEL 30: Crypto Scam =====
 scenarios.push(generateMailScenario(59, 'l30', {
-  title: '₿ Double Your Bitcoin in 24 Hours!',
+  title: 'â‚¿ Double Your Bitcoin in 24 Hours!',
   content: 'AI trading bot guarantees 100% returns.',
   category: 'hard',
   taxonomy: 'Crypto Fraud',
@@ -1355,13 +1357,13 @@ scenarios.push(generateMailScenario(59, 'l30', {
   fromUser: 'trading',
   replyToUser: 'invest',
   linkPath: 'invest-crypto',
-  buttonText: '₿ INVEST',
+  buttonText: 'â‚¿ INVEST',
   trainingSlug: 'crypto-scam'
 }));
 
 // ===== LEVEL 31: Government Fraud =====
 scenarios.push(generateMailScenario(60, 'l31', {
-  title: '⚖️ IRS: Tax Fraud Investigation',
+  title: 'âš–ï¸ IRS: Tax Fraud Investigation',
   content: 'Case #TAX-7843-22 - Respond within 24 hours.',
   category: 'hard',
   taxonomy: 'Government Fraud',
@@ -1372,7 +1374,7 @@ scenarios.push(generateMailScenario(60, 'l31', {
   fromUser: 'tax-dept',
   replyToUser: 'compliance',
   linkPath: 'irs-respond',
-  buttonText: '📋 RESPOND',
+  buttonText: 'ðŸ“‹ RESPOND',
   trainingSlug: 'government-fraud',
   hasAttachment: true,
   attachments: [{
@@ -1384,7 +1386,7 @@ scenarios.push(generateMailScenario(60, 'l31', {
 
 // ===== LEVEL 32: Emergency Scam =====
 scenarios.push(generateMailScenario(61, 'l32', {
-  title: '🆘 Urgent: Family Emergency - Need Help',
+  title: 'ðŸ†˜ Urgent: Family Emergency - Need Help',
   content: 'Cousin stranded in London after robbery - needs $950.',
   category: 'hard',
   taxonomy: 'Emergency Fraud',
@@ -1395,7 +1397,7 @@ scenarios.push(generateMailScenario(61, 'l32', {
   fromUser: 'emergency',
   replyToUser: 'help',
   linkPath: 'emergency-help',
-  buttonText: '🆘 HELP',
+  buttonText: 'ðŸ†˜ HELP',
   trainingSlug: 'emergency-scam'
 }));
 
@@ -1403,7 +1405,7 @@ scenarios.push(generateMailScenario(61, 'l32', {
 scenarios.push({
   scenario_id: 'final00068',
   level_no: 'l39',
-  title: '⚡ ADVANCED PERSISTENT PHISHING - FUSION ATTACK',
+  title: 'âš¡ ADVANCED PERSISTENT PHISHING - FUSION ATTACK',
   content: 'Multi-stage attack combining 7 different phishing techniques',
   category: 'expert',
   template: 'multiphase',
@@ -1419,50 +1421,50 @@ scenarios.push({
   phish_email: 'scam@attackers-c2.net',
   body_html: `
     <div style="font-family: Arial; max-width: 800px; margin: 0 auto; border: 3px solid #ff4444; padding: 20px; border-radius: 15px;">
-      <h1 style="color: #ff4444; text-align: center;">⚡ FINAL FUSION CHALLENGE ⚡</h1>
+      <h1 style="color: #ff4444; text-align: center;">âš¡ FINAL FUSION CHALLENGE âš¡</h1>
       <h2 style="text-align: center;">Advanced Persistent Phishing (APP) Detection</h2>
       <div style="background: #000; color: #0f0; padding: 15px; font-family: monospace; border-radius: 8px;">
         <p>THREAT LEVEL: 7 COMBINED TECHNIQUES</p>
         <p>CEO FRAUD + CLONE PHISHING + CREDENTIAL HARVESTING + MALWARE + VISHING</p>
       </div>
       <div style="background: #f0f0f0; padding: 20px; border-radius: 8px; margin: 10px 0;">
-        <h3>📧 PHASE 1: Spear Phishing</h3>
+        <h3>ðŸ“§ PHASE 1: Spear Phishing</h3>
         <p><strong>From:</strong> "CEO Office" &lt;ceo.directive@corporate-board.com&gt;</p>
         <p><strong>Subject:</strong> CONFIDENTIAL: Urgent Board Directive - Q4 Acquisition</p>
         <p>The board has approved the acquisition of Nexus Technologies. Process attached documents immediately.</p>
       </div>
       <div style="background: #f0f0f0; padding: 20px; border-radius: 8px; margin: 10px 0;">
-        <h3>📧 PHASE 2: Clone Phishing</h3>
+        <h3>ðŸ“§ PHASE 2: Clone Phishing</h3>
         <p><strong>From:</strong> "CEO Office" &lt;ceo.directive@corporate-board.com&gt;</p>
         <p><strong>Subject:</strong> RE: CONFIDENTIAL: Urgent Board Directive - Q4 Acquisition (FOLLOW-UP)</p>
         <p>Did you receive my previous email? This is time-sensitive. Process within 2 hours.</p>
       </div>
       <div style="background: #f0f0f0; padding: 20px; border-radius: 8px; margin: 10px 0;">
-        <h3>📧 PHASE 3: Credential Harvesting</h3>
+        <h3>ðŸ“§ PHASE 3: Credential Harvesting</h3>
         <p><strong>From:</strong> "DocuSign" &lt;notifications@docusign-secure.net&gt;</p>
         <p><strong>Subject:</strong> Document Ready for Your Signature - Acquisition Agreement</p>
         <p>Please review and sign the attached agreement using your corporate credentials.</p>
       </div>
       <div style="background: #f0f0f0; padding: 20px; border-radius: 8px; margin: 10px 0;">
-        <h3>📧 PHASE 4: Malicious Attachment</h3>
+        <h3>ðŸ“§ PHASE 4: Malicious Attachment</h3>
         <p><strong>From:</strong> "DocuSign" &lt;notifications@docusign-secure.net&gt;</p>
         <p><strong>Subject:</strong> RE: Document Ready for Your Signature - Acquisition Agreement</p>
         <p>Having trouble with the link? Please review the attached PDF directly.</p>
       </div>
       <div style="background: #f0f0f0; padding: 20px; border-radius: 8px; margin: 10px 0;">
-        <h3>📧 PHASE 5: Tech Support Scam</h3>
+        <h3>ðŸ“§ PHASE 5: Tech Support Scam</h3>
         <p><strong>From:</strong> "Microsoft 365 Support" &lt;support@m365-alerts.net&gt;</p>
         <p><strong>Subject:</strong> CRITICAL: Multiple failed sign-in attempts detected</p>
         <p>We've detected unusual activity on your account. Call our security team immediately.</p>
       </div>
       <div style="background: #ffeb3b; padding: 20px; border-radius: 8px; margin-top: 20px;">
-        <p><strong>⚠️ CRITICAL NOTE:</strong> This is a fusion attack combining 7 techniques: CEO fraud, clone phishing, credential harvesting, malware attachment, vishing, and 3 URL shorteners.</p>
+        <p><strong>âš ï¸ CRITICAL NOTE:</strong> This is a fusion attack combining 7 techniques: CEO fraud, clone phishing, credential harvesting, malware attachment, vishing, and 3 URL shorteners.</p>
       </div>
       <div style="text-align: center; margin-top: 20px;">
         <p><strong>Choose your response:</strong></p>
-        <button style="background: #4CAF50; color: white; padding: 10px 20px; margin: 5px; border: none; border-radius: 5px;">🚨 Report & Isolate (Correct)</button>
-        <button style="background: #FFC107; color: black; padding: 10px 20px; margin: 5px; border: none; border-radius: 5px;">👁️ Monitor (Neutral)</button>
-        <button style="background: #f44336; color: white; padding: 10px 20px; margin: 5px; border: none; border-radius: 5px;">⚡ Engage (Wrong)</button>
+        <button style="background: #4CAF50; color: white; padding: 10px 20px; margin: 5px; border: none; border-radius: 5px;">ðŸš¨ Report & Isolate (Correct)</button>
+        <button style="background: #FFC107; color: black; padding: 10px 20px; margin: 5px; border: none; border-radius: 5px;">ðŸ‘ï¸ Monitor (Neutral)</button>
+        <button style="background: #f44336; color: white; padding: 10px 20px; margin: 5px; border: none; border-radius: 5px;">âš¡ Engage (Wrong)</button>
       </div>
     </div>
   `,
@@ -1498,7 +1500,7 @@ scenarios.push({
 
 // ===== BONUS LEVELS =====
 scenarios.push(generateBonusScenario(62, 'b1', {
-  title: '🧠 Bonus: The Anglerfish Principle - Understanding Phishing Lures',
+  title: 'ðŸ§  Bonus: The Anglerfish Principle - Understanding Phishing Lures',
   content: 'Deep dive analysis: How cybercriminals use irresistible lures just like anglerfish.',
   taxonomy: 'Phishing',
   bodyHtml: '<div class="bonus"><h2>The Anglerfish Principle</h2><p>Anglerfish use a bioluminescent lure to attract prey - exactly like phishing emails use enticing baits.</p></div>',
@@ -1506,7 +1508,7 @@ scenarios.push(generateBonusScenario(62, 'b1', {
 }));
 
 scenarios.push(generateBonusScenario(63, 'b2', {
-  title: '🧠 Bonus: The Porcupine Defense - Ransomware Protection',
+  title: 'ðŸ§  Bonus: The Porcupine Defense - Ransomware Protection',
   content: 'How ransomware attacks like porcupines defend their territory.',
   taxonomy: 'Ransomware',
   bodyHtml: '<div class="bonus"><h2>The Porcupine Principle</h2><p>Porcupines release quills that cause ongoing pain - like ransomware encrypting files.</p></div>',
@@ -1514,7 +1516,7 @@ scenarios.push(generateBonusScenario(63, 'b2', {
 }));
 
 scenarios.push(generateBonusScenario(64, 'b3', {
-  title: '🧠 Bonus: Army Ant Strategy - Understanding DDoS Attacks',
+  title: 'ðŸ§  Bonus: Army Ant Strategy - Understanding DDoS Attacks',
   content: 'How DDoS attacks overwhelm targets like army ants swarming prey.',
   taxonomy: 'DDoS Attacks',
   bodyHtml: '<div class="bonus"><h2>The Army Ant Principle</h2><p>Army ants overwhelm through sheer numbers - exactly like DDoS attacks.</p></div>',
@@ -1522,7 +1524,7 @@ scenarios.push(generateBonusScenario(64, 'b3', {
 }));
 
 scenarios.push(generateBonusScenario(65, 'b4', {
-  title: '🧠 Bonus: The Mockingbird Effect - Social Engineering',
+  title: 'ðŸ§  Bonus: The Mockingbird Effect - Social Engineering',
   content: 'How social engineers mimic trusted voices like mockingbirds.',
   taxonomy: 'Social Engineering',
   bodyHtml: '<div class="bonus"><h2>The Mockingbird Principle</h2><p>Mockingbirds mimic other birds - like social engineers impersonate trusted entities.</p></div>',
@@ -1530,7 +1532,7 @@ scenarios.push(generateBonusScenario(65, 'b4', {
 }));
 
 scenarios.push(generateBonusScenario(66, 'b5', {
-  title: '🧠 Bonus: The Cuckoo\'s Egg - Trojan Horse Detection',
+  title: 'ðŸ§  Bonus: The Cuckoo\'s Egg - Trojan Horse Detection',
   content: 'How trojan horses hide in plain sight like cuckoo eggs.',
   taxonomy: 'Trojan Horse',
   bodyHtml: '<div class="bonus"><h2>The Cuckoo Principle</h2><p>Cuckoos lay eggs in other birds\' nests - exactly like trojan horses hide in legitimate software.</p></div>',
@@ -1538,7 +1540,7 @@ scenarios.push(generateBonusScenario(66, 'b5', {
 }));
 
 scenarios.push(generateBonusScenario(67, 'b6', {
-  title: '🧠 Bonus: The Zombie Ant Phenomenon - Botnet Behavior',
+  title: 'ðŸ§  Bonus: The Zombie Ant Phenomenon - Botnet Behavior',
   content: 'How botnets turn devices into zombies like the cordyceps fungus.',
   taxonomy: 'Botnets',
   bodyHtml: '<div class="bonus"><h2>The Zombie Ant Principle</h2><p>Cordyceps fungus controls ants - exactly like botnets control infected devices.</p></div>',
@@ -1551,7 +1553,7 @@ scenarios.push(generateBonusScenario(67, 'b6', {
 
 const saveToFile = (filename, data) => {
   fs.writeFileSync(filename, JSON.stringify(data, null, 2));
-  console.log(`✅ Saved ${data.length} scenarios to ${filename}`);
+  console.log(`âœ… Saved ${data.length} scenarios to ${filename}`);
 };
 
 const generateMongoScript = () => {
@@ -1567,7 +1569,7 @@ const generateMongoScript = () => {
   script += '\nprint(`Inserted ${db.levelDataset.count()} scenarios`);\n';
   
   fs.writeFileSync('insert_scenarios.js', script);
-  console.log('✅ Generated insert_scenarios.js');
+  console.log('âœ… Generated insert_scenarios.js');
 };
 
 const generateStats = () => {
@@ -1587,9 +1589,9 @@ const generateStats = () => {
   });
   
   fs.writeFileSync('dataset_stats.json', JSON.stringify(stats, null, 2));
-  console.log('✅ Generated dataset_stats.json');
+  console.log('âœ… Generated dataset_stats.json');
   
-  console.log('\n📊 DATASET STATISTICS:');
+  console.log('\nðŸ“Š DATASET STATISTICS:');
   console.log(`Total Scenarios: ${stats.total}`);
   console.log('\nBy Level:', stats.byLevel);
   console.log('\nBy Category:', stats.byCategory);
@@ -1601,14 +1603,14 @@ const generateStats = () => {
 // MAIN EXECUTION
 // ============================================
 
-console.log('🚀 Generating EnPhiSim Dataset...\n');
+console.log('ðŸš€ Generating EnPhiSim Dataset...\n');
 
 saveToFile('enphisim_dataset.json', scenarios);
 generateMongoScript();
 generateStats();
 
-console.log('\n✅ Dataset generation complete!');
-console.log('\n📁 Output files:');
+console.log('\nâœ… Dataset generation complete!');
+console.log('\nðŸ“ Output files:');
 console.log('   - enphisim_dataset.json (JSON format)');
 console.log('   - insert_scenarios.js (MongoDB script)');
 console.log('   - dataset_stats.json (Statistics)');

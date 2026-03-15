@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 import express from "express";
 import Eaction from "../models/E_action.js";
 import axios from "axios";

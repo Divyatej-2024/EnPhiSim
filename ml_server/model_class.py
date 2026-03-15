@@ -1,3 +1,5 @@
+﻿# Sections: imports, configuration, helpers, main
+
 # ml_server/model_class.py
 import torch
 import torch.nn as nn

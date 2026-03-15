@@ -1,3 +1,5 @@
+﻿# Sections: imports, configuration, helpers, main
+
 # ml_server/train_model.py
 import torch
 import torch.nn as nn
@@ -99,15 +101,15 @@ def load_data_from_mongodb():
     if not mongodb_uri:
         raise ValueError("MONGODB_URI not found. Please set it in environment or .env file")
     
-    print(f"📡 Connecting to MongoDB Atlas...")
+    print(f"ðŸ“¡ Connecting to MongoDB Atlas...")
     client = MongoClient(mongodb_uri)
     db = client['EnPhiSimdb']
     collection = db['levelDataset']
     
     # Get all phishing scenarios
-    print("📥 Fetching phishing scenarios...")
+    print("ðŸ“¥ Fetching phishing scenarios...")
     phishing_scenarios = list(collection.find({}))
-    print(f"✅ Found {len(phishing_scenarios)} phishing scenarios")
+    print(f"âœ… Found {len(phishing_scenarios)} phishing scenarios")
     
     texts = []
     labels = []
@@ -129,9 +131,9 @@ def load_data_from_mongodb():
             for item in legit_data:
                 texts.append(item['text'])
                 labels.append(0)  # 0 = legitimate
-        print(f"✅ Loaded {len(legit_data)} legitimate emails from file")
+        print(f"âœ… Loaded {len(legit_data)} legitimate emails from file")
     except FileNotFoundError:
-        print("⚠️ No legitimate emails file found. Creating placeholder...")
+        print("âš ï¸ No legitimate emails file found. Creating placeholder...")
         # Create placeholder file
         os.makedirs('data', exist_ok=True)
         placeholder = [
@@ -144,7 +146,7 @@ def load_data_from_mongodb():
         for item in placeholder:
             texts.append(item['text'])
             labels.append(0)
-        print(f"✅ Created {len(placeholder)} placeholder legitimate emails")
+        print(f"âœ… Created {len(placeholder)} placeholder legitimate emails")
     
     return texts, labels
 
@@ -154,11 +156,11 @@ def check_class_distribution(labels):
     unique, counts = np.unique(labels, return_counts=True)
     class_counts = dict(zip(unique, counts))
     
-    print("\n📊 Class Distribution:")
+    print("\nðŸ“Š Class Distribution:")
     for cls, count in class_counts.items():
         print(f"  - Class {cls}: {count} samples")
         if count < 10:
-            print(f"    ⚠️  Warning: Very few samples ({count})")
+            print(f"    âš ï¸  Warning: Very few samples ({count})")
         if count < 2:
             raise ValueError(f"Class {cls} has only {count} samples. Need at least 2 to split.")
     
@@ -169,7 +171,7 @@ def check_class_distribution(labels):
 def train_model(model, train_loader, val_loader, epochs=15, lr=2e-5):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = model.to(device)
-    print(f"🖥️ Using device: {device}")
+    print(f"ðŸ–¥ï¸ Using device: {device}")
     
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr)
     criterion = nn.CrossEntropyLoss()
@@ -281,7 +283,7 @@ def save_metrics(metrics, filename='models/model_metrics.json'):
     os.makedirs('models', exist_ok=True)
     with open(filename, 'w') as f:
         json.dump(metrics, f, indent=2)
-    print(f"✅ Metrics saved to {filename}")
+    print(f"âœ… Metrics saved to {filename}")
 
 
 # ==================== PLOT TRAINING HISTORY ====================
@@ -300,7 +302,7 @@ def plot_history(losses, accuracies):
     
     plt.tight_layout()
     plt.savefig('models/training_history.png')
-    print("✅ Training history plot saved to models/training_history.png")
+    print("âœ… Training history plot saved to models/training_history.png")
 
 
 # ==================== MAIN ====================
@@ -310,18 +312,18 @@ def main():
     print("="*50)
     
     # 1. Load data
-    print("\n📥 Loading data...")
+    print("\nðŸ“¥ Loading data...")
     texts, labels = load_data_from_mongodb()
     
     # Check class distribution
     unique, counts = np.unique(labels, return_counts=True)
-    print(f"\n✅ Loaded {len(texts)} total samples")
+    print(f"\nâœ… Loaded {len(texts)} total samples")
     for cls, count in zip(unique, counts):
         print(f"  - Class {cls}: {count} samples")
     
     # Validate minimum samples
     if min(counts) < 2:
-        print("\n⚠️  ERROR: One class has fewer than 2 samples!")
+        print("\nâš ï¸  ERROR: One class has fewer than 2 samples!")
         print("Cannot perform train/validation/test split.")
         print("\nPlease add more data to the minority class:")
         if counts[0] < 2:  # Assuming class 0 is legitimate
@@ -334,7 +336,7 @@ def main():
     min_class_size = min(counts)
     
     if min_class_size < 5:
-        print(f"\n⚠️ Small dataset detected. Using 60/20/20 split")
+        print(f"\nâš ï¸ Small dataset detected. Using 60/20/20 split")
         # Take 40% for temp (then split into 20% val + 20% test)
         X_train, X_temp, y_train, y_temp = train_test_split(
             texts, labels, test_size=0.4, random_state=42, stratify=labels
@@ -344,7 +346,7 @@ def main():
             X_temp, y_temp, test_size=0.5, random_state=42, stratify=y_temp
         )
     elif min_class_size < 10:
-        print(f"\n⚠️ Medium dataset detected. Using 70/15/15 split")
+        print(f"\nâš ï¸ Medium dataset detected. Using 70/15/15 split")
         X_train, X_temp, y_train, y_temp = train_test_split(
             texts, labels, test_size=0.3, random_state=42, stratify=labels
         )
@@ -352,7 +354,7 @@ def main():
             X_temp, y_temp, test_size=0.5, random_state=42, stratify=y_temp
         )
     else:
-        print(f"\n✅ Good dataset size. Using 80/10/10 split")
+        print(f"\nâœ… Good dataset size. Using 80/10/10 split")
         X_train, X_temp, y_train, y_temp = train_test_split(
             texts, labels, test_size=0.2, random_state=42, stratify=labels
         )
@@ -360,13 +362,13 @@ def main():
             X_temp, y_temp, test_size=0.5, random_state=42, stratify=y_temp
         )
     
-    print(f"\n📊 Final data split:")
+    print(f"\nðŸ“Š Final data split:")
     print(f"  - Train: {len(X_train)} samples")
     print(f"  - Validation: {len(X_val)} samples")
     print(f"  - Test: {len(X_test)} samples")
     
     # 3. Initialize tokenizer and model
-    print("\n🤖 Initializing model...")
+    print("\nðŸ¤– Initializing model...")
     tokenizer = DistilBertTokenizer.from_pretrained('distilbert-base-uncased')
     model = HybridPhishingClassifier(num_classes=2)
     
@@ -380,15 +382,15 @@ def main():
     test_loader = DataLoader(test_dataset, batch_size=2)
     
     # 5. Train model
-    print("\n🏋️ Training model...")
+    print("\nðŸ‹ï¸ Training model...")
     model, losses, accuracies = train_model(model, train_loader, val_loader, epochs=15)
     
     # 6. Evaluate on test set
-    print("\n📊 Evaluating model on test set...")
+    print("\nðŸ“Š Evaluating model on test set...")
     metrics = evaluate_model(model, test_loader)
     
     # 7. Save model and metrics
-    print("\n💾 Saving model...")
+    print("\nðŸ’¾ Saving model...")
     torch.save(model.state_dict(), 'models/real_phishing_model.pt')
     save_metrics(metrics, 'models/model_metrics.json')
     
@@ -403,15 +405,15 @@ def main():
     plot_history(losses, accuracies)
     
     print("\n" + "="*50)
-    print("✅ TRAINING COMPLETE!")
+    print("âœ… TRAINING COMPLETE!")
     print("="*50)
-    print("\n📈 Model Performance Summary:")
+    print("\nðŸ“ˆ Model Performance Summary:")
     print(f"  - Accuracy:  {metrics['accuracy']*100:.2f}%")
     print(f"  - Precision: {metrics['precision']*100:.2f}%")
     print(f"  - Recall:    {metrics['recall']*100:.2f}%")
     print(f"  - F1-Score:  {metrics['f1']*100:.2f}%")
-    print("\n✅ Model saved to: models/real_phishing_model.pt")
-    print("✅ Metrics saved to: models/model_metrics.json")
+    print("\nâœ… Model saved to: models/real_phishing_model.pt")
+    print("âœ… Metrics saved to: models/model_metrics.json")
 
 
 if __name__ == "__main__":

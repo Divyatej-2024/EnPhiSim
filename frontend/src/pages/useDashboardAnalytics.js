@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 // src/useDashboardAnalytics.js
 
 import { useMemo } from "react";

@@ -1,8 +1,10 @@
-/* frontend/src/App.css — EnPhiSim Design System */
+﻿/* Sections: variables, layout, components, utilities */
+
+/* frontend/src/App.css â€” EnPhiSim Design System */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 :root {
-  /* ── Core Colors (matched to logo palette) ── */
+  /* â”€â”€ Core Colors (matched to logo palette) â”€â”€ */
   --bg-primary: #0a1628;
   --bg-secondary: #0d2137;
   --bg-tertiary: #0f3049;
@@ -10,40 +12,40 @@
   --bg-glass: rgba(255, 255, 255, 0.04);
   --bg-glass-hover: rgba(255, 255, 255, 0.08);
 
-  /* ── Accent Gradients ── */
+  /* â”€â”€ Accent Gradients â”€â”€ */
   --gradient-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
   --gradient-secondary: linear-gradient(135deg, #00e5ff 0%, #06b6d4 50%, #6366f1 100%);
   --gradient-accent: linear-gradient(135deg, #00e5ff 0%, #6366f1 50%, #a855f7 100%);
   --gradient-success: linear-gradient(135deg, #10b981 0%, #34d399 100%);
   --gradient-danger: linear-gradient(135deg, #ef4444 0%, #f43f5e 100%);
 
-  /* ── Text Colors ── */
+  /* â”€â”€ Text Colors â”€â”€ */
   --text-primary: #f1f5f9;
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
   --text-accent: #7dd3fc;
 
-  /* ── Borders ── */
+  /* â”€â”€ Borders â”€â”€ */
   --border-subtle: rgba(0, 229, 255, 0.06);
   --border-light: rgba(0, 229, 255, 0.1);
   --border-accent: rgba(0, 229, 255, 0.3);
 
 
-  /* ── Shadows ── */
+  /* â”€â”€ Shadows â”€â”€ */
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.5);
   --shadow-glow: 0 0 30px rgba(99, 102, 241, 0.15);
   --shadow-glow-accent: 0 0 40px rgba(139, 92, 246, 0.2);
 
-  /* ── Layout ── */
+  /* â”€â”€ Layout â”€â”€ */
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-xl: 20px;
   --radius-pill: 50px;
 
-  /* ── Typography ── */
+  /* â”€â”€ Typography â”€â”€ */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
@@ -63,7 +65,7 @@ body {
   overflow-x: hidden;
 }
 
-/* ── Glass Card ── */
+/* â”€â”€ Glass Card â”€â”€ */
 .glass-card {
   background: var(--bg-glass);
   backdrop-filter: blur(20px);
@@ -80,7 +82,7 @@ body {
   transform: translateY(-2px);
 }
 
-/* ── Container ── */
+/* â”€â”€ Container â”€â”€ */
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -89,7 +91,7 @@ body {
   z-index: 1;
 }
 
-/* ── Buttons ── */
+/* â”€â”€ Buttons â”€â”€ */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -182,7 +184,7 @@ body {
   box-shadow: none !important;
 }
 
-/* ── Form Elements ── */
+/* â”€â”€ Form Elements â”€â”€ */
 input, select, textarea {
   width: 100%;
   padding: 12px 16px;
@@ -211,7 +213,7 @@ select {
   padding-right: 36px;
 }
 
-/* ── Animations ── */
+/* â”€â”€ Animations â”€â”€ */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
@@ -258,7 +260,7 @@ select {
 .scale-in { animation: scaleIn 0.3s ease forwards; }
 .slide-up { animation: slideUp 0.6s ease forwards; }
 
-/* ── Utility Classes ── */
+/* â”€â”€ Utility Classes â”€â”€ */
 .text-center { text-align: center; }
 .text-gradient {
   background: var(--gradient-secondary);
@@ -274,7 +276,7 @@ select {
 .mb-2 { margin-bottom: 20px; }
 .mb-3 { margin-bottom: 30px; }
 
-/* ── Loading Screen ── */
+/* â”€â”€ Loading Screen â”€â”€ */
 .loading-screen {
   display: flex;
   justify-content: center;
@@ -299,7 +301,7 @@ select {
   to { transform: rotate(360deg); }
 }
 
-/* ── Error Screen ── */
+/* â”€â”€ Error Screen â”€â”€ */
 .error-screen {
   text-align: center;
   padding: 60px 30px;
@@ -339,7 +341,7 @@ select {
   box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
 }
 
-/* ── Disclaimer Page ── */
+/* â”€â”€ Disclaimer Page â”€â”€ */
 .disclaimer-page {
   min-height: 100vh;
   display: flex;
@@ -425,7 +427,7 @@ select {
 }
 
 .disclaimer-section li::before {
-  content: '•';
+  content: 'â€¢';
   position: absolute;
   left: 4px;
   color: #6366f1;

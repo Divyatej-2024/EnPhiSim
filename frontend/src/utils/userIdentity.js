@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 // frontend/src/utils/userIdentity.js
 export function getClientUserId() {
   // Try to get from localStorage first

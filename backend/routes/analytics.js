@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 import express from 'express';
 import { MongoClient } from 'mongodb';
 import { validateSessionIdParam } from '../middleware/validator.js';
@@ -47,7 +49,7 @@ router.get('/:sessionId', validateSessionIdParam, async (req, res) => {
     const correct = userActions.filter((a) => a.is_correct).length;
     const accuracy = total > 0 ? ((correct / total) * 100).toFixed(2) : 0;
 
-    // ✅ FIX: Wrap response in success: true, data: {}
+    // âœ… FIX: Wrap response in success: true, data: {}
     res.json({
       success: true,
       data: {

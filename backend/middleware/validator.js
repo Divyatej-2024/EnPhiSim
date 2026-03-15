@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 const SESSION_ID_PATTERN = /^[a-zA-Z0-9_-]{8,128}$/;
 const ALLOWED_ACTIONS = new Set(["Trust & Click", "Ignore", "Report Phish"]);
 

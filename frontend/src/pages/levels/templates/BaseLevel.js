@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 
 // frontend/src/pages/levels/templates/BaseLevel.js
 import React, { useState, useCallback, useEffect } from "react";

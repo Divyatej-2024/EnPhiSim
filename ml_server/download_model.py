@@ -1,3 +1,5 @@
+﻿# Sections: imports, configuration, helpers, main
+
 # ml_server/download_model.py
 from transformers import DistilBertForSequenceClassification, DistilBertTokenizer
 import torch

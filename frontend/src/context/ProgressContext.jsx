@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 // frontend/src/context/ProgressContext.jsx
 import React, { createContext, useContext, useState, useCallback } from 'react';
 
@@ -18,7 +20,7 @@ export function ProgressProvider({ children }) {
     return true;
   }, []);
 
-  // getLevelScenario — returns a deterministic scenario from a pool
+  // getLevelScenario â€” returns a deterministic scenario from a pool
   // so the same level always shows the same scenario per session
   const getLevelScenario = useCallback((scenarioKey, scenarios) => {
     if (!scenarios || scenarios.length === 0) return null;

@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 import mongoose from 'mongoose';
 
 const userActionSchema = new mongoose.Schema({

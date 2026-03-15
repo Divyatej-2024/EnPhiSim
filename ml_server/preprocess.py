@@ -1,3 +1,5 @@
+﻿# Sections: imports, configuration, helpers, main
+
 import pandas as pd
 
 def preprocess_txt(fil="data/scenarios_simplified.xlsx"):

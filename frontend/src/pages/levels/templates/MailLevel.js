@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 import React, { useState } from "react";
 import BaseLevel from "./BaseLevel";
 import { useProgress } from "../../../context/ProgressContext";
@@ -434,13 +436,13 @@ const wrongAction = activeLevel.wrong_action || 'Trust & Click';
       actionValue = actionType;
   }
   
-  console.log('🎯 Sending action:', {
+  console.log('ðŸŽ¯ Sending action:', {
     value: actionValue,
     type: actionType,
     scenario_id: activeLevel.scenario_id
   });
   
-  // ✅ Send the mapped value in metadata
+  // âœ… Send the mapped value in metadata
   gameOnAction(actionType, {
     scenario_id: activeLevel.scenario_id,
     action_taken: actionValue,  // This is key!
@@ -498,7 +500,7 @@ const wrongAction = activeLevel.wrong_action || 'Trust & Click';
                         className={`email-item ${selectedEmail === idx ? 'selected' : ''} ${email.unread ? 'unread' : ''}`}
                         onClick={() => !isLocked && setSelectedEmail(idx)}
                       >
-                        <span>{email.unread ? '📧' : '📩'}</span>
+                        <span>{email.unread ? 'ðŸ“§' : 'ðŸ“©'}</span>
                         <div>
                           <div className="email-sender">{email.sender}</div>
                           <div className="email-subject">{email.subject}</div>
@@ -512,7 +514,7 @@ const wrongAction = activeLevel.wrong_action || 'Trust & Click';
                   <div className="email-preview">
                     {/* Warning Banner */}
                     <div className="phishing-warning-badge">
-                      <span>⚠️</span>
+                      <span>âš ï¸</span>
                       <span>
                         <strong>Security Alert:</strong> This message contains suspicious elements
                       </span>
@@ -566,7 +568,7 @@ const wrongAction = activeLevel.wrong_action || 'Trust & Click';
                     {/* Attachments */}
                     {activeLevel.has_attachment && (
                       <div className="attachment-area">
-                        <div className="attachment">📎 attachment.bin</div>
+                        <div className="attachment">ðŸ“Ž attachment.bin</div>
                       </div>
                     )}
 

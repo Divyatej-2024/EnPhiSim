@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 import React, { useState } from "react";
 import BaseLevel from "./BaseLevel";
 import "./AnalysisLevel.css";
@@ -8,7 +10,7 @@ export default function AnalysisLevel({ scenario, onAction, locked }) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
 
   if (!scenario) {
-    console.error('❌ AnalysisLevel: No scenario provided');
+    console.error('âŒ AnalysisLevel: No scenario provided');
     return (
       <div className="error-container">
         <h3>Loading Analysis...</h3>
@@ -17,7 +19,7 @@ export default function AnalysisLevel({ scenario, onAction, locked }) {
     );
   }
 
-  console.log('📊 AnalysisLevel rendering:', {
+  console.log('ðŸ“Š AnalysisLevel rendering:', {
     id: scenario.scenario_id,
     title: scenario.title,
     type: scenario.template
@@ -82,7 +84,7 @@ export default function AnalysisLevel({ scenario, onAction, locked }) {
             <div className="analysis-header">
               <h2>{scenario.title || "Bonus Analysis"}</h2>
               <p className="analysis-description">{scenario.content}</p>
-              <div className="bonus-badge">🌟 BONUS LEVEL</div>
+              <div className="bonus-badge">ðŸŒŸ BONUS LEVEL</div>
             </div>
 
             <div className="analysis-content">
@@ -113,14 +115,14 @@ export default function AnalysisLevel({ scenario, onAction, locked }) {
                 </div>
               ) : (
                 <div className="analysis-complete">
-                  <h3>✓ Analysis Complete!</h3>
+                  <h3>âœ“ Analysis Complete!</h3>
                   <p>You've analyzed this phishing attempt.</p>
                   
                   {scenario.has_attachment && (
                     <div className="worksheet-download">
-                      <p>📥 Download your analysis worksheet:</p>
+                      <p>ðŸ“¥ Download your analysis worksheet:</p>
                       <div className="attachment">
-                        📄 phishing_worksheet.pdf
+                        ðŸ“„ phishing_worksheet.pdf
                       </div>
                     </div>
                   )}

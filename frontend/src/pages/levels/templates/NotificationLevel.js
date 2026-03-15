@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 
 // frontend/src/pages/levels/templates/NotificationLevel.js
 import React, { useState } from "react";

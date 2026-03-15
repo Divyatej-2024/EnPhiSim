@@ -1,4 +1,6 @@
-#!/bin/bash
+﻿#!/bin/bash
+# Sections: configuration, helpers, main
+
 # ml_server/start.sh - EnPhiSim ML Server Startup Script
 
 # Set colors for output
@@ -9,7 +11,7 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 echo -e "${BLUE}========================================${NC}"
-echo -e "${BLUE}🚀 EnPhiSim ML Server - Startup Script${NC}"
+echo -e "${BLUE}ðŸš€ EnPhiSim ML Server - Startup Script${NC}"
 echo -e "${BLUE}========================================${NC}"
 
 # Function to print colored output
@@ -18,15 +20,15 @@ print_info() {
 }
 
 print_success() {
-    echo -e "${GREEN}[✅]${NC} $1"
+    echo -e "${GREEN}[âœ…]${NC} $1"
 }
 
 print_warning() {
-    echo -e "${YELLOW}[⚠️]${NC} $1"
+    echo -e "${YELLOW}[âš ï¸]${NC} $1"
 }
 
 print_error() {
-    echo -e "${RED}[❌]${NC} $1"
+    echo -e "${RED}[âŒ]${NC} $1"
 }
 
 # Function to check if a command exists
@@ -135,11 +137,11 @@ try:
     model_path = 'models/real_phishing_model.pt'
     print('   Loading model file...')
     checkpoint = torch.load(model_path, map_location='cpu', weights_only=False)
-    print('   ✅ Model file is valid PyTorch format')
-    print(f'   📊 Checkpoint contains {len(checkpoint)} keys')
+    print('   âœ… Model file is valid PyTorch format')
+    print(f'   ðŸ“Š Checkpoint contains {len(checkpoint)} keys')
     sys.exit(0)
 except Exception as e:
-    print(f'   ❌ Model verification failed: {e}')
+    print(f'   âŒ Model verification failed: {e}')
     sys.exit(1)
 "
     

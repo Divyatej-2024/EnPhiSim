@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 import crypto from "crypto";
 
 function safeEqual(a, b) {

@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -7,14 +9,14 @@ function Home() {
   const [checked, setChecked] = useState(false);
 
   useEffect(() => {
-    const consent = localStorage.getItem("researchConsent");
+    const consent = localStorage.getItem("consentGiven");
     if (!consent) {
       setShowConsent(true);
     }
   }, []);
 
   const handleStart = () => {
-    const consent = localStorage.getItem("researchConsent");
+    const consent = localStorage.getItem("consentGiven");
     if (consent === "true") {
       navigate("/disclaimer");
     } else {
@@ -23,7 +25,7 @@ function Home() {
   };
 
   const handleConsent = () => {
-    localStorage.setItem("researchConsent", "true");
+    localStorage.setItem("consentGiven", "true");
     setShowConsent(false);
   };
 

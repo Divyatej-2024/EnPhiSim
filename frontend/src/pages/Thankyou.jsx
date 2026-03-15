@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 // frontend/src/pages/ThankYouPage.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
@@ -127,7 +129,7 @@ export default function ThankYouPage() {
 
           {/* Privacy Note */}
           <div className="performance-note">
-            <strong>🔒 Your privacy matters</strong>
+            <strong>ðŸ”’ Your privacy matters</strong>
             <p>
               Your anonymous session ID has been recorded for research purposes.
               No personal data was collected during this simulation.

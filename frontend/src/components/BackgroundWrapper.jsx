@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 // frontend/src/components/BackgroundWrapper.jsx
 import React from "react";
 import './BackgroundWrapper.css'; // Import CSS file instead

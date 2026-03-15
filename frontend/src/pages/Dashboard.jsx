@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
@@ -18,24 +20,24 @@ export default function Dashboard() {
       setLoading(true);
       setError(null);
 
-      console.log('📊 Fetching dashboard data for session:', sessionId);
+      console.log('ðŸ“Š Fetching dashboard data for session:', sessionId);
 
       const [analyticsResult, metricsResult] = await Promise.allSettled([
         api.getAnalytics(sessionId, timeRange),
         api.getModelMetrics(),
       ]);
 
-      // ✅ FIX: Handle analytics response correctly
+      // âœ… FIX: Handle analytics response correctly
       if (analyticsResult.status === 'fulfilled') {
-        console.log('📊 Analytics raw response:', analyticsResult.value);
+        console.log('ðŸ“Š Analytics raw response:', analyticsResult.value);
         
         // Check if response has data wrapper
         const analyticsData = analyticsResult.value?.data || analyticsResult.value;
         setAnalytics(analyticsData);
         
-        console.log('📊 Analytics data set:', analyticsData);
+        console.log('ðŸ“Š Analytics data set:', analyticsData);
       } else {
-        console.error('❌ Analytics failed:', analyticsResult.reason);
+        console.error('âŒ Analytics failed:', analyticsResult.reason);
         throw analyticsResult.reason;
       }
 
@@ -44,7 +46,7 @@ export default function Dashboard() {
         const metricsData = metricsResult.value?.data || metricsResult.value;
         setModelMetrics(metricsData);
       } else {
-        console.log('⚠️ Model metrics unavailable');
+        console.log('âš ï¸ Model metrics unavailable');
         setModelMetrics(null);
       }
     } catch (err) {
@@ -154,7 +156,7 @@ export default function Dashboard() {
     );
   }
 
-  // ✅ FIX: Calculate metrics properly
+  // âœ… FIX: Calculate metrics properly
   const totalActions = analytics.total_actions || 0;
   const correctActions = analytics.correct_actions || 0;
   const incorrectActions = totalActions - correctActions;
@@ -175,7 +177,7 @@ export default function Dashboard() {
         <h1>Your Progress</h1>
         <div className="dashboard-top-actions">
           <button className="dashboard-action-button secondary" onClick={goToLevels}>
-            <span>← Back to Levels</span>
+            <span>â† Back to Levels</span>
           </button>
           <button className="dashboard-action-button primary" onClick={endGame}>
             <span className="dashboard-action-pulse" aria-hidden="true" />
@@ -227,7 +229,7 @@ export default function Dashboard() {
           <div key={i} className={`action-item ${action.is_correct ? 'correct' : 'incorrect'}`}>
             <span>{action.title || 'Unknown Scenario'}</span>
             <span>You: {action.user_action}</span>
-            <span>{action.is_correct ? '✓ Correct' : '✗ Incorrect'}</span>
+            <span>{action.is_correct ? 'âœ“ Correct' : 'âœ— Incorrect'}</span>
           </div>
         ))}
         {(analytics.recent_actions || []).length === 0 && (

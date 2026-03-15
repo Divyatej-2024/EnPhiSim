@@ -1,3 +1,5 @@
+﻿# Sections: imports, configuration, helpers, main
+
 # ml_server/predict.py - COMPLETELY FIXED VERSION
 from fastapi import FastAPI, HTTPException, Security
 from fastapi.security import APIKeyHeader

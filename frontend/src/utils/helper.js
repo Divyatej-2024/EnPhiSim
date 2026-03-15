@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 // frontend/src/utils/helper.js
 export async function safeFetchJSON(url, options = {}) {
   try {

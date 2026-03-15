@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 //backend/seeders/seedLevels.js
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');

@@ -1,3 +1,5 @@
+﻿# Sections: imports, configuration, helpers, main
+
 # ml_server/auth.py
 from fastapi import HTTPException, Security
 from fastapi.security import APIKeyHeader

@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 // frontend/src/pages/levels/TemplateRenderer.js
 import React from 'react';
 

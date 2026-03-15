@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 import express from 'express';
 import axios from 'axios';
 //import { validatePredictPayload } from '../middleware/validator.js';
@@ -45,8 +47,8 @@ console.log('Extracted text length:', text?.length);
       text,
       links: Array.isArray(links) ? links : [],
     });
-  console.log('✅ ML server responded with status:', mlResponse.status);
-    console.log('✅ ML response data:', JSON.stringify(mlResponse.data, null, 2));
+  console.log('âœ… ML server responded with status:', mlResponse.status);
+    console.log('âœ… ML response data:', JSON.stringify(mlResponse.data, null, 2));
 
 
     logger.info('Prediction request completed', {
@@ -57,7 +59,7 @@ console.log('Extracted text length:', text?.length);
     res.json(mlResponse.data);
   } catch (error) {
     const duration = Date.now() - startTime;
- console.error('❌ ERROR CAUGHT:', {
+ console.error('âŒ ERROR CAUGHT:', {
       message: error.message,
       code: error.code,
       status: error.response?.status,

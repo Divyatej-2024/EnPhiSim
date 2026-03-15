@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 import axios from 'axios';
 
 const API_BASE = process.env.REACT_APP_API_URL || 'https://enphisim-1.onrender.com';
@@ -103,9 +105,9 @@ const api = {
     return response.data;
   },
 
-  // ✅ This getPrediction is properly inside the api object
+  // âœ… This getPrediction is properly inside the api object
   getPrediction: async ({ userId, levelId, text, links = [] }) => {
-    console.log('🔮 Getting ML prediction for text:', text?.substring(0, 50) || 'empty');
+    console.log('ðŸ”® Getting ML prediction for text:', text?.substring(0, 50) || 'empty');
     
     const response = await axiosInstance.post('/api/predict', {
       user_id: userId,

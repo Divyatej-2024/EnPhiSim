@@ -1,3 +1,5 @@
+﻿# Sections: imports, configuration, helpers, main
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
@@ -6,7 +8,7 @@ CORS(app)
 
 @app.route('/')
 def home():
-    return jsonify({"message": "ML Server running ✅"})
+    return jsonify({"message": "ML Server running âœ…"})
 
 @app.route('/predict', methods=['POST'])
 def predict():

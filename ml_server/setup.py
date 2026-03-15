@@ -1,3 +1,5 @@
+﻿# Sections: imports, configuration, helpers, main
+
 """
 Unified EnPhiSim Dataset Generator
 Compliant with Teesside University FYP proposal & ethics
@@ -209,7 +211,7 @@ def create_scenarios(level_info, num_variations=200):
         
         # Add randomness
         if i % 3 == 0:
-            content = "🚨 URGENT: " + content
+            content = "ðŸš¨ URGENT: " + content
         if i % 5 == 0:
             content = content.replace("your", "ur").replace("please", "plz")
         if i % 7 == 0:
@@ -358,8 +360,8 @@ dataset.extend(create_scenarios(level_info, num_variations=200))
 with open("data/enphisim_dataset.json", "w", encoding="utf-8") as f:
     json.dump(dataset, f, indent=2, ensure_ascii=False)
 
-print(f"✅ Unified dataset created with {len(dataset)} scenarios")
-print("📁 File: data/enphisim_dataset.json")
+print(f"âœ… Unified dataset created with {len(dataset)} scenarios")
+print("ðŸ“ File: data/enphisim_dataset.json")
 
 # =================== VALIDATION ===================
 template_counts = {}
@@ -367,14 +369,14 @@ for scenario in dataset:
     template = scenario['template']
     template_counts[template] = template_counts.get(template, 0) + 1
 
-print("\n📊 Dataset Statistics:")
+print("\nðŸ“Š Dataset Statistics:")
 print(f"   Total scenarios: {len(dataset)}")
 print("   Templates used:")
 for template, count in template_counts.items():
     print(f"     - {template}: {count} scenarios")
 
 # Show sample from each template type
-print("\n📝 Sample scenarios from each template:")
+print("\nðŸ“ Sample scenarios from each template:")
 sample_templates = ['mail', 'browser', 'message', 'notification', 'image', 'mail+browser']
 for template in sample_templates:
     samples = [s for s in dataset if s['template'] == template]

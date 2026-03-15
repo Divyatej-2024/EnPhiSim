@@ -1,3 +1,5 @@
+﻿// Sections: imports, configuration, logic, render/exports
+
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { safeFetchJSON } from "../utils/helper";

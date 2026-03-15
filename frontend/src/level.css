@@ -1,15 +1,17 @@
-/* level.css — Consolidated and fixed */
+﻿/* Sections: variables, layout, components, utilities */
 
-/* ── CSS Variables (inherit from App.css) ── */
+/* level.css â€” Consolidated and fixed */
 
-/* ── Base Resets ── */
+/* â”€â”€ CSS Variables (inherit from App.css) â”€â”€ */
+
+/* â”€â”€ Base Resets â”€â”€ */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
-/* ── Home Page ── */
+/* â”€â”€ Home Page â”€â”€ */
 .home-page {
   min-height: 100vh;
   display: flex;
@@ -222,7 +224,7 @@
   box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
 }
 
-/* ── About Page ── */
+/* â”€â”€ About Page â”€â”€ */
 .about-page {
   min-height: 100vh;
   display: flex;
@@ -300,7 +302,7 @@
   justify-content: center;
 }
 
-/* ── ThankYou Page ── */
+/* â”€â”€ ThankYou Page â”€â”€ */
 .thankyou-page {
   min-height: 100vh;
   display: flex;
@@ -451,7 +453,7 @@
   text-align: center;
 }
 
-/* ── Level Container (used by Disclaimer, etc.) ── */
+/* â”€â”€ Level Container (used by Disclaimer, etc.) â”€â”€ */
 .level-container {
   width: 100%;
   max-width: min(1280px, 100%);
@@ -490,7 +492,7 @@
   box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
 }
 
-/* ── Browser Window (used by BrowserLevel) ── */
+/* â”€â”€ Browser Window (used by BrowserLevel) â”€â”€ */
 .browser-window {
   width: 100%;
   min-height: 100vh;
@@ -587,7 +589,7 @@
   /* FIXED: opacity was 0.3, now removed */
 }
 
-/* ── Email Box Styling ── */
+/* â”€â”€ Email Box Styling â”€â”€ */
 .mail-level {
   max-width: 850px;
   margin: 40px auto;
@@ -634,7 +636,7 @@
   font-size: 0.95em;
 }
 
-/* ── Options/Buttons ── */
+/* â”€â”€ Options/Buttons â”€â”€ */
 .options {
   margin-top: 20px;
   display: flex;
@@ -729,7 +731,7 @@
   color: var(--text-primary, #f1f5f9);
 }
 
-/* ── Mail wrapper (fixed — values were incorrectly quoted) ── */
+/* â”€â”€ Mail wrapper (fixed â€” values were incorrectly quoted) â”€â”€ */
 .wrapper {
   max-width: 750px;
   margin: 40px auto;
@@ -779,7 +781,7 @@
   line-height: 1.6;
 }
 
-/* ── Dialog Styles ── */
+/* â”€â”€ Dialog Styles â”€â”€ */
 .dialog-overlay {
   position: fixed;
   top: 0;
@@ -865,7 +867,7 @@
   box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
 }
 
-/* ── Buttons (Action) ── */
+/* â”€â”€ Buttons (Action) â”€â”€ */
 .phish-btn,
 .delete-btn,
 .verify-btn {
@@ -895,7 +897,7 @@
   pointer-events: none;
 }
 
-/* ── Task Box ── */
+/* â”€â”€ Task Box â”€â”€ */
 .task-box {
   background: #f6f8fa;
   border-left: 4px solid #1f7aff;
@@ -906,7 +908,7 @@
 
 .task-box h3 { margin: 0; }
 
-/* ── Summary Box (ThankYou) ── */
+/* â”€â”€ Summary Box (ThankYou) â”€â”€ */
 .summary-box {
   margin-top: 24px;
   padding: 18px;
@@ -939,7 +941,7 @@
   color: var(--text-muted, #64748b);
 }
 
-/* ── Error Container ── */
+/* â”€â”€ Error Container â”€â”€ */
 .error-container {
   padding: 40px;
   text-align: center;
@@ -950,7 +952,7 @@
   margin: 20px;
 }
 
-/* ── Mail Container ── */
+/* â”€â”€ Mail Container â”€â”€ */
 .mail-container {
   width: 80%;
   margin: auto;
@@ -971,7 +973,7 @@
   color: #333;
 }
 
-/* ── Buttons wrapper ── */
+/* â”€â”€ Buttons wrapper â”€â”€ */
 .buttons {
   margin-top: 20px;
   display: flex;
@@ -979,7 +981,7 @@
   gap: 12px;
 }
 
-/* ── Animations ── */
+/* â”€â”€ Animations â”€â”€ */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -1000,7 +1002,7 @@
   to { transform: translateY(0); opacity: 1; }
 }
 
-/* ── Unsubscribe ── */
+/* â”€â”€ Unsubscribe â”€â”€ */
 .unsubscribe {
   margin-top: 25px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -1018,7 +1020,7 @@
 
 .unsubscribe a:hover { text-decoration: underline; }
 
-/* ── Responsive ── */
+/* â”€â”€ Responsive â”€â”€ */
 @media (max-width: 768px) {
   .hero-title {
     font-size: 2rem;
