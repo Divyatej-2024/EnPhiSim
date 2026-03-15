@@ -6,8 +6,8 @@ import BaseLevel from "./BaseLevel";
 import "./BrowserLevel.css";
 
 export default function BrowserLevel({ scenario, onAction, locked }) {
-  // âœ… Add debug log at the very top
-  console.log('ðŸŒ BrowserLevel received:', { 
+  // Add debug log at the very top
+  console.log(' BrowserLevel received:', { 
     hasScenario: !!scenario,
     scenarioId: scenario?.scenario_id,
     title: scenario?.title,
@@ -16,7 +16,7 @@ export default function BrowserLevel({ scenario, onAction, locked }) {
 
   const [url, setUrl] = useState("");
 
-  // âœ… Safe access with optional chaining
+  // Safe access with optional chaining
  const initialUrl = useMemo(
   () => scenario?.display_url || scenario?.links?.[0] || scenario?.url || scenario?.suspicious_url || "http://example.com",
   [scenario]
@@ -25,9 +25,9 @@ export default function BrowserLevel({ scenario, onAction, locked }) {
   const currentUrl = url || initialUrl;
   const host = currentUrl.replace(/^https?:\/\//, "").split("/")[0] || "unknown";
 
-  // âœ… Better error handling with loading state
+  // Better error handling with loading state
   if (!scenario) {
-    console.error('âŒ BrowserLevel: No scenario provided');
+    console.error('BrowserLevel: No scenario provided');
     return (
       <div className="error-container">
         <h3>Loading Browser Scenario...</h3>
@@ -40,7 +40,7 @@ export default function BrowserLevel({ scenario, onAction, locked }) {
   return (
     <BaseLevel levelType="browser" scenario={scenario} onAction={onAction}>
       {({ level, onAction: baseOnAction, locked: baseLocked }) => {
-        // âœ… Use the props correctly
+        // Use the props correctly
         const isLocked = locked || baseLocked;
         
         return (
@@ -55,7 +55,7 @@ export default function BrowserLevel({ scenario, onAction, locked }) {
                   disabled={isLocked}
                 />
                 <span className={`ssl-indicator ${currentUrl.startsWith("https") ? "secure" : "insecure"}`}>
-                  {currentUrl.startsWith("https") ? "ðŸ”’ HTTPS" : "âš ï¸ HTTP - UNSECURED"}
+                  {currentUrl.startsWith("https") ? " HTTPS" : "¸ HTTP - UNSECURED"}
                 </span>
               </div>
             </div>
@@ -63,7 +63,7 @@ export default function BrowserLevel({ scenario, onAction, locked }) {
             <div className="browser-content">
               {level.show_warning && (
                 <div className="warning-banner">
-                  <strong>âš ï¸ Security warning:</strong> This site may be impersonating a legitimate service.
+                  <strong>¸ Security warning:</strong> This site may be impersonating a legitimate service.
                 </div>
               )}
 
@@ -87,7 +87,7 @@ export default function BrowserLevel({ scenario, onAction, locked }) {
 
               {level.links && level.links.length > 0 && (
                 <div className="suspicious-links">
-                  <strong>ðŸ”— Suspicious links detected:</strong>
+                  <strong> Suspicious links detected:</strong>
                   <ul>
                     {level.links.map((link, idx) => (
                       <li key={idx} className="suspicious-link">{link}</li>
@@ -98,8 +98,8 @@ export default function BrowserLevel({ scenario, onAction, locked }) {
             </div>
 
             <div className="browser-footer">
-              <span>ðŸŒ Host: {host}</span>
-              <span>ðŸ•’ {new Date().toLocaleTimeString()}</span>
+              <span> Host: {host}</span>
+              <span> {new Date().toLocaleTimeString()}</span>
             </div>
 
             <div className="browser-actions">
@@ -107,7 +107,7 @@ export default function BrowserLevel({ scenario, onAction, locked }) {
                 className="browser-btn wrong"
                 disabled={isLocked}
                 onClick={() => {
-                  console.log('ðŸŽ¯ Wrong action:', level.wrong_action);
+                  console.log(' Wrong action:', level.wrong_action);
                   baseOnAction(level.wrong_action || "Trust & Click", { 
                     url: currentUrl,
                     scenario_id: level.scenario_id 
@@ -121,7 +121,7 @@ export default function BrowserLevel({ scenario, onAction, locked }) {
                 className="browser-btn neutral"
                 disabled={isLocked}
                 onClick={() => {
-                  console.log('ðŸŽ¯ Neutral action:', level.neutral_action);
+                  console.log(' Neutral action:', level.neutral_action);
                   baseOnAction(level.neutral_action || "Ignore", { 
                     url: currentUrl,
                     scenario_id: level.scenario_id 
@@ -135,7 +135,7 @@ export default function BrowserLevel({ scenario, onAction, locked }) {
                 className="browser-btn correct"
                 disabled={isLocked}
                 onClick={() => {
-                  console.log('ðŸŽ¯ Correct action:', level.correct_action);
+                  console.log(' Correct action:', level.correct_action);
                   baseOnAction(level.correct_action || "Report Phish", { 
                     url: currentUrl,
                     scenario_id: level.scenario_id,
@@ -173,3 +173,4 @@ BrowserLevel.propTypes = {
   onAction: PropTypes.func.isRequired,
   locked: PropTypes.bool
 };
+

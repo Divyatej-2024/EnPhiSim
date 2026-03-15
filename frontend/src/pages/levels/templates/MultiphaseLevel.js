@@ -51,7 +51,7 @@ export default function MultiphaseLevel({ scenario, onAction, locked }) {
       locked={locked}
     >
       {({ level, onAction: handleAction, locked: isLocked, now }) => {
-        // âœ… ALL logic MUST be INSIDE this function
+        // ALL logic MUST be INSIDE this function
         
         const calculateFinalScore = () => {
           let score = 100 - threatLevel;
@@ -113,7 +113,7 @@ export default function MultiphaseLevel({ scenario, onAction, locked }) {
               
               {timerActive && (
                 <div className="timer-container">
-                  <div className="timer-icon">â±ï¸</div>
+                  <div className="timer-icon">â±</div>
                   <div className="timer-value">{timeRemaining}s</div>
                   <div className="timer-bar">
                     <div 
@@ -140,7 +140,7 @@ export default function MultiphaseLevel({ scenario, onAction, locked }) {
                   <div className="phase-label">Phase {p}</div>
                   {responses[p] && (
                     <div className="phase-status">
-                      {responses[p].action === level.correct_action ? 'âœ“' : 'âš ï¸'}
+                      {responses[p].action === level.correct_action ? ' : '¸'}
                     </div>
                   )}
                 </div>
@@ -183,10 +183,10 @@ export default function MultiphaseLevel({ scenario, onAction, locked }) {
                     </h4>
                     {showEvidence.email && (
                       <ul className="evidence-list">
-                        <li>âš ï¸ Sender domain doesn't match legitimate company</li>
-                        <li>âš ï¸ Urgent language creates false urgency</li>
-                        <li>âš ï¸ Suspicious link: {level.links?.[0]}</li>
-                        {level.has_attachment && <li>âš ï¸ Unexpected attachment: {level.attachments?.[0]?.name}</li>}
+                        <li>¸ Sender domain doesn't match legitimate company</li>
+                        <li>¸ Urgent language creates false urgency</li>
+                        <li>¸ Suspicious link: {level.links?.[0]}</li>
+                        {level.has_attachment && <li>¸ Unexpected attachment: {level.attachments?.[0]?.name}</li>}
                       </ul>
                     )}
                   </div>
@@ -200,7 +200,7 @@ export default function MultiphaseLevel({ scenario, onAction, locked }) {
                         phase: 1 
                       })}
                     >
-                      âš ï¸ {level.wrong_action || "Click Link"}
+                      ¸ {level.wrong_action || "Click Link"}
                     </button>
                     <button
                       className="phase-btn neutral"
@@ -210,7 +210,7 @@ export default function MultiphaseLevel({ scenario, onAction, locked }) {
                         phase: 1 
                       })}
                     >
-                      ðŸ” {level.neutral_action || "Inspect Email"}
+                       {level.neutral_action || "Inspect Email"}
                     </button>
                     <button
                       className="phase-btn correct"
@@ -220,7 +220,7 @@ export default function MultiphaseLevel({ scenario, onAction, locked }) {
                         phase: 1 
                       })}
                     >
-                      ðŸš¨ {level.correct_action || "Report Phish"}
+                       {level.correct_action || "Report Phish"}
                     </button>
                   </div>
                 </div>
@@ -243,7 +243,7 @@ export default function MultiphaseLevel({ scenario, onAction, locked }) {
                         <input type="password" placeholder="Password" className="login-input" disabled />
                         <button className="login-btn" disabled>Sign In</button>
                       </div>
-                      <div className="ssl-warning">âš ï¸ Connection is not secure</div>
+                      <div className="ssl-warning">¸ Connection is not secure</div>
                     </div>
                   </div>
 
@@ -253,9 +253,9 @@ export default function MultiphaseLevel({ scenario, onAction, locked }) {
                     </h4>
                     {showEvidence.login && (
                       <ul className="evidence-list">
-                        <li>âš ï¸ Typosquatted domain: {level.display_url}</li>
-                        <li>âš ï¸ No HTTPS encryption</li>
-                        <li>âš ï¸ Fake security seal</li>
+                        <li>¸ Typosquatted domain: {level.display_url}</li>
+                        <li>¸ No HTTPS encryption</li>
+                        <li>¸ Fake security seal</li>
                       </ul>
                     )}
                   </div>
@@ -269,7 +269,7 @@ export default function MultiphaseLevel({ scenario, onAction, locked }) {
                         phase: 2 
                       })}
                     >
-                      âš ï¸ Enter Login
+                      ¸ Enter Login
                     </button>
                     <button
                       className="phase-btn neutral"
@@ -279,7 +279,7 @@ export default function MultiphaseLevel({ scenario, onAction, locked }) {
                         phase: 2 
                       })}
                     >
-                      ðŸ” Inspect URL
+                       Inspect URL
                     </button>
                     <button
                       className="phase-btn correct"
@@ -289,7 +289,7 @@ export default function MultiphaseLevel({ scenario, onAction, locked }) {
                         phase: 2 
                       })}
                     >
-                      ðŸš¨ Close Tab
+                       Close Tab
                     </button>
                   </div>
                 </div>
@@ -299,13 +299,13 @@ export default function MultiphaseLevel({ scenario, onAction, locked }) {
               {phase === 3 && (
                 <div className="phase-card malware-phase">
                   <div className="download-warning">
-                    <div className="warning-icon">âš ï¸</div>
+                    <div className="warning-icon">¸</div>
                     <h3>File Download Detected</h3>
                     <p>The website is trying to download a file</p>
                   </div>
 
                   <div className="file-info">
-                    <div className="file-icon">ðŸ“„</div>
+                    <div className="file-icon"></div>
                     <div className="file-details">
                       <div className="file-name">{level.attachments?.[0]?.name || "document.pdf"}</div>
                       <div className="file-size">{level.attachments?.[0]?.size || "2.4MB"}</div>
@@ -319,9 +319,9 @@ export default function MultiphaseLevel({ scenario, onAction, locked }) {
                     </h4>
                     {showEvidence.malware && (
                       <ul className="evidence-list">
-                        <li>âš ï¸ Unsolicited download</li>
-                        <li>âš ï¸ File contains macros</li>
-                        <li>âš ï¸ Digitally unsigned</li>
+                        <li>¸ Unsolicited download</li>
+                        <li>¸ File contains macros</li>
+                        <li>¸ Digitally unsigned</li>
                       </ul>
                     )}
                   </div>
@@ -335,7 +335,7 @@ export default function MultiphaseLevel({ scenario, onAction, locked }) {
                         phase: 3 
                       })}
                     >
-                      âš ï¸ Download
+                      ¸ Download
                     </button>
                     <button
                       className="phase-btn neutral"
@@ -345,7 +345,7 @@ export default function MultiphaseLevel({ scenario, onAction, locked }) {
                         phase: 3 
                       })}
                     >
-                      ðŸ” Scan with AV
+                       Scan with AV
                     </button>
                     <button
                       className="phase-btn correct"
@@ -355,7 +355,7 @@ export default function MultiphaseLevel({ scenario, onAction, locked }) {
                         phase: 3 
                       })}
                     >
-                      ðŸš¨ Block Download
+                       Block Download
                     </button>
                   </div>
                 </div>
@@ -366,7 +366,7 @@ export default function MultiphaseLevel({ scenario, onAction, locked }) {
                 <div className="phase-card exfiltration-phase">
                   <div className="network-alert">
                     <div className="alert-glow"></div>
-                    <h3>ðŸš¨ Unusual Outbound Traffic Detected</h3>
+                    <h3> Unusual Outbound Traffic Detected</h3>
                     <p>Suspicious connection to external IP</p>
                   </div>
 
@@ -395,9 +395,9 @@ export default function MultiphaseLevel({ scenario, onAction, locked }) {
                     </h4>
                     {showEvidence.network && (
                       <ul className="evidence-list">
-                        <li>ðŸ”´ Data exfiltration in progress</li>
-                        <li>ðŸ”´ Credentials already compromised</li>
-                        <li>ðŸ”´ Backdoor connection established</li>
+                        <li> Data exfiltration in progress</li>
+                        <li> Credentials already compromised</li>
+                        <li> Backdoor connection established</li>
                       </ul>
                     )}
                   </div>
@@ -411,7 +411,7 @@ export default function MultiphaseLevel({ scenario, onAction, locked }) {
                         phase: 4 
                       })}
                     >
-                      âš ï¸ Ignore
+                      ¸ Ignore
                     </button>
                     <button
                       className="phase-btn neutral"
@@ -421,7 +421,7 @@ export default function MultiphaseLevel({ scenario, onAction, locked }) {
                         phase: 4 
                       })}
                     >
-                      ðŸ” Monitor
+                       Monitor
                     </button>
                     <button
                       className="phase-btn correct"
@@ -431,7 +431,7 @@ export default function MultiphaseLevel({ scenario, onAction, locked }) {
                         phase: 4 
                       })}
                     >
-                      ðŸš¨ Isolate Immediately
+                       Isolate Immediately
                     </button>
                   </div>
                 </div>
@@ -464,3 +464,4 @@ export default function MultiphaseLevel({ scenario, onAction, locked }) {
     </BaseLevel>
   );
 }
+

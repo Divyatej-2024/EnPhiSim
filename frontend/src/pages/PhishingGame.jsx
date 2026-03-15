@@ -74,7 +74,7 @@ useEffect(() => {
       timestamp: Date.now()
     };
     localStorage.setItem(`gameProgress_${sessionId}`, JSON.stringify(progress));
-    console.log('ðŸ’¾ Progress saved:', progress);
+    console.log(' Progress saved:', progress);
   }
 }, [currentLevelIndex, currentScenarioIndex, sessionId, sortedLevelKeys.length, loading]);
 
@@ -122,34 +122,34 @@ useEffect(() => {
       setScenarios(grouped[keys[0]] || []);
  
   const savedProgress = localStorage.getItem(`gameProgress_${sessionId}`);
-    console.log('ðŸ“‚ Checking for saved progress:', savedProgress);
+    console.log(' Checking for saved progress:', savedProgress);
     
     if (savedProgress) {
       try {
         const { levelIndex, scenarioIndex } = JSON.parse(savedProgress);
-        console.log('ðŸ“‚ Found saved progress:', { levelIndex, scenarioIndex, keys });
+        console.log(' Found saved progress:', { levelIndex, scenarioIndex, keys });
         
         // Validate indices
         if (levelIndex !== undefined && levelIndex >= 0 && levelIndex < keys.length) {
-          console.log(`âž¡ï¸ Loading level ${keys[levelIndex]} (index ${levelIndex})`);
+          console.log(`âž¡ Loading level ${keys[levelIndex]} (index ${levelIndex})`);
           setCurrentLevelIndex(levelIndex);
           setCurrentScenarioIndex(scenarioIndex || 0);
           setScenarios(grouped[keys[levelIndex]] || []);
         } else {
-          console.log('âš ï¸ Invalid saved progress, starting at level 1');
+          console.log('¸ Invalid saved progress, starting at level 1');
           setCurrentLevelIndex(0);
           setCurrentScenarioIndex(0);
           setScenarios(grouped[keys[0]] || []);
         }
       } catch (e) {
-        console.error('âŒ Failed to parse saved progress:', e);
+        console.error('Failed to parse saved progress:', e);
         setCurrentLevelIndex(0);
         setCurrentScenarioIndex(0);
         setScenarios(grouped[keys[0]] || []);
       }
     } else {
       // No saved progress, start at beginning
-      console.log('ðŸ†• No saved progress found, starting at level 1');
+      console.log(' No saved progress found, starting at level 1');
       setCurrentLevelIndex(0);
       setCurrentScenarioIndex(0);
       setScenarios(grouped[keys[0]] || []);
@@ -171,7 +171,7 @@ const getMLPrediction = async (emailText, links) => {
       links: links || [],
     });
     
-    console.log('ðŸ¤– Raw ML response:', response);
+    console.log(' Raw ML response:', response);
 
     // Handle the response from your updated ML server
     if (response.distilbert && response.cnn) {
@@ -206,7 +206,7 @@ const getMLPrediction = async (emailText, links) => {
       };
     }
   } catch (error) {
-    console.error('âŒ ML prediction failed:', error);
+    console.error('ML prediction failed:', error);
     // Return graceful fallback
     return {
       distilbert: { 
@@ -228,7 +228,7 @@ const getMLPrediction = async (emailText, links) => {
 
  // Handle user action
 const handleAction = async (action, meta = {}) => {
-  console.log('ðŸŽ¯ðŸŽ¯ðŸŽ¯ PHISHING GAME HANDLEACTION STARTED at', new Date().toLocaleTimeString());
+  console.log(' PHISHING GAME HANDLEACTION STARTED at', new Date().toLocaleTimeString());
   
   if (locked || !scenarios[currentScenarioIndex]) return;
   
@@ -255,7 +255,7 @@ const handleAction = async (action, meta = {}) => {
   const normalizedCorrect = normalizeString(correctAction);
   const isCorrect = normalizedActual === normalizedCorrect;
 
-  console.log('âœ… CORRECTNESS CHECK:', {
+  console.log('CORRECTNESS CHECK:', {
     actualAction,
     correctAction,
     normalizedActual,
@@ -278,7 +278,7 @@ const handleAction = async (action, meta = {}) => {
       time_taken_seconds: timeTaken,
       session_id: sessionId,
       level: currentLevelKey,
-      is_correct: isCorrect  // âœ… Use the normalized comparison result
+      is_correct: isCorrect  // Use the normalized comparison result
     });
   } catch (error) {
     console.error('Failed to save action:', error);
@@ -491,3 +491,4 @@ const handleAction = async (action, meta = {}) => {
     </div>
   );
 }
+

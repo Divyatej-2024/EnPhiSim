@@ -10,7 +10,7 @@ export default function AnalysisLevel({ scenario, onAction, locked }) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
 
   if (!scenario) {
-    console.error('âŒ AnalysisLevel: No scenario provided');
+    console.error('AnalysisLevel: No scenario provided');
     return (
       <div className="error-container">
         <h3>Loading Analysis...</h3>
@@ -19,7 +19,7 @@ export default function AnalysisLevel({ scenario, onAction, locked }) {
     );
   }
 
-  console.log('ðŸ“Š AnalysisLevel rendering:', {
+  console.log(' AnalysisLevel rendering:', {
     id: scenario.scenario_id,
     title: scenario.title,
     type: scenario.template
@@ -84,7 +84,7 @@ export default function AnalysisLevel({ scenario, onAction, locked }) {
             <div className="analysis-header">
               <h2>{scenario.title || "Bonus Analysis"}</h2>
               <p className="analysis-description">{scenario.content}</p>
-              <div className="bonus-badge">ðŸŒŸ BONUS LEVEL</div>
+              <div className="bonus-badge"> BONUS LEVEL</div>
             </div>
 
             <div className="analysis-content">
@@ -115,14 +115,14 @@ export default function AnalysisLevel({ scenario, onAction, locked }) {
                 </div>
               ) : (
                 <div className="analysis-complete">
-                  <h3>âœ“ Analysis Complete!</h3>
+                  <h3>Analysis Complete!</h3>
                   <p>You've analyzed this phishing attempt.</p>
                   
                   {scenario.has_attachment && (
                     <div className="worksheet-download">
-                      <p>ðŸ“¥ Download your analysis worksheet:</p>
+                      <p> Download your analysis worksheet:</p>
                       <div className="attachment">
-                        ðŸ“„ phishing_worksheet.pdf
+                         phishing_worksheet.pdf
                       </div>
                     </div>
                   )}
@@ -155,3 +155,4 @@ export default function AnalysisLevel({ scenario, onAction, locked }) {
     </BaseLevel>
   );
 }
+

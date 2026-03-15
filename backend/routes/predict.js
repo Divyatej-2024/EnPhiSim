@@ -47,8 +47,8 @@ console.log('Extracted text length:', text?.length);
       text,
       links: Array.isArray(links) ? links : [],
     });
-  console.log('âœ… ML server responded with status:', mlResponse.status);
-    console.log('âœ… ML response data:', JSON.stringify(mlResponse.data, null, 2));
+  console.log('ML server responded with status:', mlResponse.status);
+    console.log('ML response data:', JSON.stringify(mlResponse.data, null, 2));
 
 
     logger.info('Prediction request completed', {
@@ -59,7 +59,7 @@ console.log('Extracted text length:', text?.length);
     res.json(mlResponse.data);
   } catch (error) {
     const duration = Date.now() - startTime;
- console.error('âŒ ERROR CAUGHT:', {
+ console.error('ERROR CAUGHT:', {
       message: error.message,
       code: error.code,
       status: error.response?.status,
@@ -141,3 +141,4 @@ router.get('/info', (_req, res) => {
 });
 
 export default router;
+

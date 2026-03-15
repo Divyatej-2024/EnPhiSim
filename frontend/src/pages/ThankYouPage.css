@@ -166,7 +166,7 @@
 }
 
 .thankyou-icon-core::before {
-  content: 'âœ“';
+  content: ';
   font-size: 48px;
   color: white;
   font-weight: bold;
@@ -572,7 +572,7 @@
 }
 
 .performance-note::before {
-  content: 'ðŸ”’';
+  content: '';
   position: absolute;
   top: 10px;
   left: 10px;
@@ -898,3 +898,4 @@
 .thankyou-card-wrap::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(135deg, #5a67d8 0%, #6b46a0 100%);
 }
+

@@ -129,7 +129,7 @@ export default function ThankYouPage() {
 
           {/* Privacy Note */}
           <div className="performance-note">
-            <strong>ðŸ”’ Your privacy matters</strong>
+            <strong> Your privacy matters</strong>
             <p>
               Your anonymous session ID has been recorded for research purposes.
               No personal data was collected during this simulation.
@@ -153,3 +153,4 @@ export default function ThankYouPage() {
     </div>
   );
 }
+

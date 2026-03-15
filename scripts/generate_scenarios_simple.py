@@ -44,9 +44,9 @@ class SingleUserScenarioGenerator:
                 f"Action required within 24 hours."
             ],
             "message": [
-                f"ðŸ“± SMS: {self._vary_text(level.get('level_text', ''), var_id)}",
-                f"ðŸ”” App Notification: {level.get('level_text', '')}",
-                f"ðŸ’¬ WhatsApp: {self._vary_text(level.get('level_text', ''), var_id)}\n"
+                f" SMS: {self._vary_text(level.get('level_text', ''), var_id)}",
+                f" App Notification: {level.get('level_text', '')}",
+                f" WhatsApp: {self._vary_text(level.get('level_text', ''), var_id)}\n"
                 f"From: +44{random.randint(700000000, 799999999)}"
             ]
         }
@@ -122,10 +122,10 @@ class SingleUserScenarioGenerator:
     def _make_urgent(self, text, var_id):
         """Make text more urgent"""
         urgent_prefixes = [
-            "ðŸš¨ URGENT: ",
-            "âš ï¸ IMMEDIATE ACTION: ",
-            "â— IMPORTANT: ",
-            "ðŸ”¥ TIME-SENSITIVE: "
+            " URGENT: ",
+            "¸ IMMEDIATE ACTION: ",
+            "IMPORTANT: ",
+            " TIME-SENSITIVE: "
         ]
         return f"{random.choice(urgent_prefixes)}{text}"
     
@@ -158,16 +158,16 @@ class SingleUserScenarioGenerator:
             if level['Level_no'].startswith(('l', 'f')):
                 scenarios = self.generate_for_level(level, level['id'])
                 all_scenarios.extend(scenarios)
-                print(f"  âœ… {level['Level_no']}: {len(scenarios)} scenarios")
+                print(f"  {level['Level_no']}: {len(scenarios)} scenarios")
         
-        print(f"\nðŸ“Š Total scenarios generated: {len(all_scenarios)}")
+        print(f"\n Total scenarios generated: {len(all_scenarios)}")
         return all_scenarios
     
     def save_scenarios(self, scenarios, filename="data/scenarios_simplified.json"):
         """Save scenarios to file"""
         with open(filename, 'w') as f:
             json.dump(scenarios, f, indent=2)
-        print(f"ðŸ’¾ Saved {len(scenarios)} scenarios to {filename}")
+        print(f" Saved {len(scenarios)} scenarios to {filename}")
         
         # Also create ML dataset
         self._create_ml_dataset(scenarios)
@@ -192,11 +192,11 @@ class SingleUserScenarioGenerator:
                     scenario['difficulty']
                 ])
         
-        print("ðŸ’¾ Created ml_dataset.csv")
+        print(" Created ml_dataset.csv")
 
 # Run the generator
 if __name__ == "__main__":
-    print("ðŸš€ Generating Single-User EnPhiSim Dataset")
+    print(" Generating Single-User EnPhiSim Dataset")
     print("=" * 50)
     
     generator = SingleUserScenarioGenerator()
@@ -208,5 +208,6 @@ if __name__ == "__main__":
     generator.save_scenarios(scenarios)
     
     # Print sample
-    print("\nðŸ“„ Sample Scenario:")
+    print("\n Sample Scenario:")
     print(json.dumps(scenarios[0], indent=2))
+

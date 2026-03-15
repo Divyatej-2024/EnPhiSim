@@ -10,7 +10,7 @@ const router = express.Router();
 router.post('/', validateActionPayload, async (req, res) => {
   let client;
   try {
-    // âœ… FIX: Include is_correct from frontend
+    // FIX: Include is_correct from frontend
     const { 
       scenario_id, 
       user_action, 
@@ -18,10 +18,10 @@ router.post('/', validateActionPayload, async (req, res) => {
       time_taken_seconds, 
       session_id,
       level,
-      is_correct  // â† ADD THIS (it was missing!)
+      is_correct  // ADD THIS (it was missing!)
     } = req.body;
     
-    console.log('ðŸ“¥ Backend received action:', {  // Add debug log
+    console.log(' Backend received action:', {  // Add debug log
       scenario_id,
       user_action,
       is_correct_from_frontend: is_correct,
@@ -40,11 +40,11 @@ router.post('/', validateActionPayload, async (req, res) => {
     const scenarios = database.collection('levelDataset');
     const scenario = await scenarios.findOne({ scenario_id });
     
-    // âœ… USE the frontend's is_correct value
+    // USE the frontend's is_correct value
     const actionDoc = {
       scenario_id,
       user_action,
-      is_correct: is_correct,  // â† Use frontend's value, don't recalculate
+      is_correct: is_correct,  // Use frontend's value, don't recalculate
       ml_predictions,
       time_taken_seconds,
       session_id,
@@ -56,14 +56,14 @@ router.post('/', validateActionPayload, async (req, res) => {
       backend_match: user_action === scenario?.correct_action
     };
     
-    console.log('ðŸ’¾ Saving to MongoDB:', {
+    console.log(' Saving to MongoDB:', {
       is_correct_saved: is_correct,
       backend_match: user_action === scenario?.correct_action
     });
     
     await actions.insertOne(actionDoc);
     
-    // âœ… Return the frontend's correctness
+    // Return the frontend's correctness
     res.json({ 
       success: true, 
       correct: is_correct,
@@ -82,3 +82,4 @@ router.post('/', validateActionPayload, async (req, res) => {
 });
 
 export default router;
+

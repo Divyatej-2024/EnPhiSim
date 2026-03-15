@@ -16,7 +16,7 @@ const ML_API_KEY = process.env.ML_API_KEY;
 // GET /api/model-metrics - Fetch live metrics from ML server
 router.get('/', async (req, res) => {
   try {
-    console.log('ðŸ“Š Fetching live ML metrics from:', ML_SERVER_URL);
+    console.log(' Fetching live ML metrics from:', ML_SERVER_URL);
     
     // Fetch metrics directly from ML server with API key
     const mlResponse = await axios.get(`${ML_SERVER_URL}/metrics`, {
@@ -119,3 +119,4 @@ router.get('/live', async (req, res) => {
 });
 
 export default router;
+

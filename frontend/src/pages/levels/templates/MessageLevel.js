@@ -43,7 +43,7 @@ export default function MessageLevel({ scenario, onAction, locked }) {
                     <div className="message-text">{msg.text}</div>
                     {msg.has_link && (
                       <div className="message-link-warning">
-                        <span>âš ï¸ Contains suspicious link: {level.links?.[0]}</span>
+                        <span>¸ Contains suspicious link: {level.links?.[0]}</span>
                       </div>
                     )}
                   </div>
@@ -69,7 +69,7 @@ export default function MessageLevel({ scenario, onAction, locked }) {
                 className="message-action-btn block"
                 disabled={locked}
                 onClick={() => {
-                  console.log('âŒ Wrong action clicked:', level.wrong_action);
+                  console.log('Wrong action clicked:', level.wrong_action);
                   onAction(level.wrong_action, { 
                     contact: level.from_address,
                     reason: "phishing" 
@@ -84,7 +84,7 @@ export default function MessageLevel({ scenario, onAction, locked }) {
                 className="message-action-btn safe"
                 disabled={locked}
                 onClick={() => {
-                  console.log('âšª Neutral action clicked:', level.neutral_action);
+                  console.log('Neutral action clicked:', level.neutral_action);
                   onAction(level.neutral_action, { 
                     contact: level.from_address 
                   });
@@ -98,7 +98,7 @@ export default function MessageLevel({ scenario, onAction, locked }) {
                 className="message-action-btn report"
                 disabled={locked}
                 onClick={() => {
-                  console.log('âœ… Correct action clicked:', level.correct_action);
+                  console.log('Correct action clicked:', level.correct_action);
                   onAction(level.correct_action, { 
                     contact: level.from_address,
                     messages: messages 
@@ -114,3 +114,4 @@ export default function MessageLevel({ scenario, onAction, locked }) {
     </BaseLevel>
   );
 }
+

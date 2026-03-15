@@ -10,7 +10,7 @@ async function fixDataStructure() {
   
   try {
     await client.connect();
-    console.log('âœ… Connected to MongoDB');
+    console.log('Connected to MongoDB');
     
     const db = client.db('EnPhiSimdb');
     const collection = db.collection('levelDataset');
@@ -76,13 +76,14 @@ async function fixDataStructure() {
       }
     }
     
-    console.log(`\nâœ… Fixed ${fixed} documents`);
+    console.log(`\nFixed ${fixed} documents`);
     
   } catch (error) {
-    console.error('âŒ Error:', error);
+    console.error('Error:', error);
   } finally {
     await client.close();
   }
 }
 
 fixDataStructure();
+

@@ -2,7 +2,7 @@
 # Sections: configuration, helpers, main
 
 
-echo "ðŸš€ Setting up EnPhiSim Single-User Dataset"
+echo " Setting up EnPhiSim Single-User Dataset"
 echo "=========================================="
 
 # Create directories
@@ -105,13 +105,14 @@ print(f'Created balanced ML dataset with {len(df)} samples')
 "
 
 echo ""
-echo "âœ… DATASET CREATION COMPLETE!"
+echo "DATASET CREATION COMPLETE!"
 echo ""
-echo "ðŸ“ Files created in /data:"
+echo " Files created in /data:"
 echo "  â€¢ levels_complete.json      (39 levels)"
 echo "  â€¢ scenarios_simplified.json (50 variations per level)"
 echo "  â€¢ legitimate_samples.json   (100 legitimate emails)"
 echo "  â€¢ ml_dataset.csv            (ML training data)"
 echo "  â€¢ game_progress_template.json (Single-user template)"
 echo ""
-echo "ðŸš€ You're ready to build your single-user game!"
+echo " You're ready to build your single-user game!"
+

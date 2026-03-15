@@ -1837,7 +1837,7 @@
 }
 
 .evidence-list li::before {
-  content: "âš ï¸";
+  content: "¸";
   margin-right: 8px;
 }
 
@@ -2308,3 +2308,4 @@
     break-inside: avoid;
   }
 }
+

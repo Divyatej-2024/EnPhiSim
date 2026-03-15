@@ -118,7 +118,7 @@
 }
 
 .warning-banner::before {
-  content: 'âš ï¸';
+  content: '¸';
   font-size: 1.5rem;
 }
 
@@ -247,3 +247,4 @@
     text-align: center;
   }
 }
+

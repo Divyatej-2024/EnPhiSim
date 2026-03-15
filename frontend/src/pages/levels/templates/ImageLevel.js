@@ -41,7 +41,7 @@ export default function AnalysisLevel({ level: scenario, onAction, locked }) {
       locked={locked}
     >
       {({ level, onAction: handleAction, locked: isLocked }) => {
-        // âœ… All component logic MUST be INSIDE this function
+        // All component logic MUST be INSIDE this function
         
         const handleAnswer = (answer) => {
           const newAnswers = { ...answers, [currentQuestion]: answer };
@@ -67,7 +67,7 @@ export default function AnalysisLevel({ level: scenario, onAction, locked }) {
             <div className="analysis-header">
               <h2>{level.title || "Bonus Analysis"}</h2>
               <p className="analysis-description">{level.content}</p>
-              <div className="bonus-badge">ðŸŒŸ BONUS LEVEL</div>
+              <div className="bonus-badge"> BONUS LEVEL</div>
             </div>
 
             <div className="analysis-content">
@@ -99,7 +99,7 @@ export default function AnalysisLevel({ level: scenario, onAction, locked }) {
                 </div>
               ) : (
                 <div className="analysis-complete">
-                  <h3>âœ“ Analysis Complete!</h3>
+                  <h3>Analysis Complete!</h3>
                   <p>You've completed the bonus analysis.</p>
                   
                   {level.attachments && level.attachments.length > 0 && (
@@ -107,7 +107,7 @@ export default function AnalysisLevel({ level: scenario, onAction, locked }) {
                       <p>Download your worksheet:</p>
                       {level.attachments.map((att, idx) => (
                         <div key={idx} className="attachment">
-                          ðŸ“„ {att.name} ({att.size})
+                           {att.name} ({att.size})
                         </div>
                       ))}
                     </div>
@@ -141,3 +141,4 @@ export default function AnalysisLevel({ level: scenario, onAction, locked }) {
     </BaseLevel>
   );
 }
+

@@ -211,7 +211,7 @@ def create_scenarios(level_info, num_variations=200):
         
         # Add randomness
         if i % 3 == 0:
-            content = "ðŸš¨ URGENT: " + content
+            content = " URGENT: " + content
         if i % 5 == 0:
             content = content.replace("your", "ur").replace("please", "plz")
         if i % 7 == 0:
@@ -360,8 +360,8 @@ dataset.extend(create_scenarios(level_info, num_variations=200))
 with open("data/enphisim_dataset.json", "w", encoding="utf-8") as f:
     json.dump(dataset, f, indent=2, ensure_ascii=False)
 
-print(f"âœ… Unified dataset created with {len(dataset)} scenarios")
-print("ðŸ“ File: data/enphisim_dataset.json")
+print(f"Unified dataset created with {len(dataset)} scenarios")
+print(" File: data/enphisim_dataset.json")
 
 # =================== VALIDATION ===================
 template_counts = {}
@@ -369,14 +369,14 @@ for scenario in dataset:
     template = scenario['template']
     template_counts[template] = template_counts.get(template, 0) + 1
 
-print("\nðŸ“Š Dataset Statistics:")
+print("\n Dataset Statistics:")
 print(f"   Total scenarios: {len(dataset)}")
 print("   Templates used:")
 for template, count in template_counts.items():
     print(f"     - {template}: {count} scenarios")
 
 # Show sample from each template type
-print("\nðŸ“ Sample scenarios from each template:")
+print("\n Sample scenarios from each template:")
 sample_templates = ['mail', 'browser', 'message', 'notification', 'image', 'mail+browser']
 for template in sample_templates:
     samples = [s for s in dataset if s['template'] == template]
@@ -393,3 +393,4 @@ for template in sample_templates:
             print(f"     Redirects to: {sample['redirect_url']}")
         if sample.get('has_attachment') and sample['attachments']:
             print(f"     Attachments: {len(sample['attachments'])} file(s)")
+

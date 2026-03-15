@@ -173,7 +173,7 @@ class PhishingDatasetGenerator:
                 "scenario_id": self.generate_id(),
                 "level_no": "l1",
                 "title": "Mass Credential-Phish",
-                "content": f"ðŸš¨ URGENT: {lure}",
+                "content": f" URGENT: {lure}",
                 "category": "easy",
                 "template": "mail",
                 "taxonomy": "Credential Phishing",
@@ -223,7 +223,7 @@ class PhishingDatasetGenerator:
                 "scenario_id": self.generate_id(),
                 "level_no": "l2",
                 "title": "Scam Invoice/Payment reminder",
-                "content": f"ðŸ’° {brand}: {lure} {amount}",
+                "content": f" {brand}: {lure} {amount}",
                 "category": "easy",
                 "template": "mail",
                 "taxonomy": "Financial Fraud",
@@ -265,7 +265,7 @@ class PhishingDatasetGenerator:
                 "scenario_id": self.generate_id(),
                 "level_no": "l3",
                 "title": "Fake Newsletter Subscription",
-                "content": f"ðŸ“° You've been subscribed to {pub} Premium",
+                "content": f" You've been subscribed to {pub} Premium",
                 "category": "easy",
                 "template": "mail",
                 "taxonomy": "Social Engineering",
@@ -308,7 +308,7 @@ class PhishingDatasetGenerator:
                 "scenario_id": self.generate_id(),
                 "level_no": "l4",
                 "title": "Lottery / Prize Scam",
-                "content": f"ðŸŽ Congratulations! You've won a {prize}",
+                "content": f" Congratulations! You've won a {prize}",
                 "category": "easy",
                 "template": "mail",
                 "taxonomy": "Financial Fraud",
@@ -359,7 +359,7 @@ class PhishingDatasetGenerator:
                 "scenario_id": self.generate_id(),
                 "level_no": "l5",
                 "title": "Simple attachment Lure",
-                "content": f"ðŸ“Ž {message.capitalize()}",
+                "content": f" {message.capitalize()}",
                 "category": "easy",
                 "template": "mail",
                 "taxonomy": "Messaging Attacks",
@@ -405,7 +405,7 @@ class PhishingDatasetGenerator:
                 "scenario_id": self.generate_id(),
                 "level_no": "l6",
                 "title": "Basic Spoofed display-name senders",
-                "content": f"âš ï¸ Important: {subject.capitalize()}",
+                "content": f"¸ Important: {subject.capitalize()}",
                 "category": "easy",
                 "template": "mail",
                 "taxonomy": "Credential Phishing",
@@ -451,7 +451,7 @@ class PhishingDatasetGenerator:
                 "scenario_id": self.generate_id(),
                 "level_no": "l7",
                 "title": "TypoSquatted Domain Phish",
-                "content": f"ðŸ” {brand}: {issue.capitalize()}",
+                "content": f" {brand}: {issue.capitalize()}",
                 "category": "advanced_easy",
                 "template": "mail",
                 "taxonomy": "Credential Phishing",
@@ -496,7 +496,7 @@ class PhishingDatasetGenerator:
                 "scenario_id": self.generate_id(),
                 "level_no": "l8",
                 "title": "URL Shortener Redirected Phish",
-                "content": f"ðŸš¨ URGENT: Document shared with you",
+                "content": f" URGENT: Document shared with you",
                 "category": "advanced_easy",
                 "template": "browser",
                 "taxonomy": "Credential Phishing",
@@ -542,7 +542,7 @@ class PhishingDatasetGenerator:
                 "scenario_id": self.generate_id(),
                 "level_no": "l9",
                 "title": "Malicious survey request",
-                "content": f"ðŸ“ {topic} Survey - Please complete",
+                "content": f" {topic} Survey - Please complete",
                 "category": "advanced_easy",
                 "template": "mail",
                 "taxonomy": "Social Engineering",
@@ -590,7 +590,7 @@ class PhishingDatasetGenerator:
                 "scenario_id": self.generate_id(),
                 "level_no": "l10",
                 "title": "SMS (Smishing) generic link",
-                "content": f"ðŸ“± {sender}: {message}",
+                "content": f" {sender}: {message}",
                 "category": "advanced_easy",
                 "template": "message",
                 "taxonomy": "Messaging Attacks",
@@ -636,7 +636,7 @@ class PhishingDatasetGenerator:
                 "scenario_id": self.generate_id(),
                 "level_no": "l11",
                 "title": "Spear Phishing - Targeted Attack",
-                "content": f"ðŸŽ¯ {subject} - Action Required",
+                "content": f" {subject} - Action Required",
                 "category": "medium",
                 "template": "mail",
                 "taxonomy": "Targeted Phishing",
@@ -678,7 +678,7 @@ class PhishingDatasetGenerator:
                 "scenario_id": self.generate_id(),
                 "level_no": "l12",
                 "title": "Whaling - Executive Targeting",
-                "content": f"ðŸ‹ {exec_title} Directive: Urgent wire transfer required",
+                "content": f" {exec_title} Directive: Urgent wire transfer required",
                 "category": "medium",
                 "template": "mail",
                 "taxonomy": "Executive Targeting",
@@ -724,7 +724,7 @@ class PhishingDatasetGenerator:
                 "scenario_id": self.generate_id(),
                 "level_no": "l13",
                 "title": "Vishing - Voice Phishing",
-                "content": f"ðŸ“ž Urgent: {caller} - {reason}",
+                "content": f" Urgent: {caller} - {reason}",
                 "category": "medium",
                 "template": "mail",
                 "taxonomy": "Voice Phishing",
@@ -770,7 +770,7 @@ class PhishingDatasetGenerator:
                 "scenario_id": self.generate_id(),
                 "level_no": "l14",
                 "title": "Quishing - QR Code Phishing",
-                "content": f"ðŸ“± Scan QR code for {context}",
+                "content": f" Scan QR code for {context}",
                 "category": "medium",
                 "template": "mail",
                 "taxonomy": "QR Code Phishing",
@@ -812,7 +812,7 @@ class PhishingDatasetGenerator:
                 "scenario_id": self.generate_id(),
                 "level_no": "l15",
                 "title": "Pharming - DNS Poisoning",
-                "content": f"ðŸŒ {bank}: Security certificate expired",
+                "content": f" {bank}: Security certificate expired",
                 "category": "medium",
                 "template": "browser",
                 "taxonomy": "DNS Poisoning",
@@ -858,7 +858,7 @@ class PhishingDatasetGenerator:
                 "scenario_id": self.generate_id(),
                 "level_no": "l16",
                 "title": "Clone Phishing",
-                "content": f"ðŸ“§ Re: {original}",
+                "content": f" Re: {original}",
                 "category": "medium",
                 "template": "mail",
                 "taxonomy": "Clone Phishing",
@@ -904,7 +904,7 @@ class PhishingDatasetGenerator:
                 "scenario_id": self.generate_id(),
                 "level_no": "l17",
                 "title": "Man-in-the-Middle Attack",
-                "content": f"ðŸ•¸ï¸ Connect to {network}",
+                "content": f" Connect to {network}",
                 "category": "medium",
                 "template": "browser",
                 "taxonomy": "MITM Attack",
@@ -948,7 +948,7 @@ class PhishingDatasetGenerator:
                 "scenario_id": self.generate_id(),
                 "level_no": "l18",
                 "title": "Watering Hole Attack",
-                "content": f"ðŸ’§ Industry news update from {site}",
+                "content": f" Industry news update from {site}",
                 "category": "medium",
                 "template": "mail",
                 "taxonomy": "Watering Hole",
@@ -990,7 +990,7 @@ class PhishingDatasetGenerator:
                 "scenario_id": self.generate_id(),
                 "level_no": "l19",
                 "title": "Credential Stuffing Alert",
-                "content": f"âš ï¸ Multiple failed login attempts - {service}",
+                "content": f"¸ Multiple failed login attempts - {service}",
                 "category": "medium",
                 "template": "mail",
                 "taxonomy": "Credential Stuffing",
@@ -1028,7 +1028,7 @@ class PhishingDatasetGenerator:
             "scenario_id": self.generate_id(),
             "level_no": "l20",
             "title": "Session Hijacking Alert",
-            "content": "ðŸ”„ Your session has expired - Please login again",
+            "content": " Your session has expired - Please login again",
             "category": "medium",
             "template": "browser",
             "taxonomy": "Session Hijacking",
@@ -1067,7 +1067,7 @@ class PhishingDatasetGenerator:
             "scenario_id": self.generate_id(),
             "level_no": "l21",
             "title": "Evil Twin Wi-Fi Attack",
-            "content": "ðŸ“¶ Free Company Wi-Fi Available",
+            "content": " Free Company Wi-Fi Available",
             "category": "medium",
             "template": "browser",
             "taxonomy": "Wi-Fi Phishing",
@@ -1103,7 +1103,7 @@ class PhishingDatasetGenerator:
             "scenario_id": self.generate_id(),
             "level_no": "l22",
             "title": "Tech Support Scam",
-            "content": "ðŸ–¥ï¸ Critical System Alert - Call Immediately",
+            "content": " Critical System Alert - Call Immediately",
             "category": "medium",
             "template": "mail",
             "taxonomy": "Tech Support Fraud",
@@ -1139,7 +1139,7 @@ class PhishingDatasetGenerator:
             "scenario_id": self.generate_id(),
             "level_no": "l23",
             "title": "Romance Scam",
-            "content": "ðŸ’• Someone has a crush on you!",
+            "content": " Someone has a crush on you!",
             "category": "medium",
             "template": "mail",
             "taxonomy": "Social Engineering",
@@ -1175,7 +1175,7 @@ class PhishingDatasetGenerator:
             "scenario_id": self.generate_id(),
             "level_no": "l24",
             "title": "Charity Scam",
-            "content": "ðŸ¤ Urgent: Help disaster victims",
+            "content": " Urgent: Help disaster victims",
             "category": "medium",
             "template": "mail",
             "taxonomy": "Financial Fraud",
@@ -1211,7 +1211,7 @@ class PhishingDatasetGenerator:
             "scenario_id": self.generate_id(),
             "level_no": "l25",
             "title": "Fake Job Offer",
-            "content": "ðŸ’¼ Remote Position - $150k/year - No Experience Needed",
+            "content": " Remote Position - $150k/year - No Experience Needed",
             "category": "medium",
             "template": "mail",
             "taxonomy": "Employment Fraud",
@@ -1247,7 +1247,7 @@ class PhishingDatasetGenerator:
             "scenario_id": self.generate_id(),
             "level_no": "l26",
             "title": "Account Verification Required",
-            "content": "ðŸ”‘ Verify your account to avoid suspension",
+            "content": " Verify your account to avoid suspension",
             "category": "medium",
             "template": "mail",
             "taxonomy": "Credential Phishing",
@@ -1283,7 +1283,7 @@ class PhishingDatasetGenerator:
             "scenario_id": self.generate_id(),
             "level_no": "l27",
             "title": "Package Delivery Scam",
-            "content": "ðŸ“¦ Your package could not be delivered",
+            "content": " Your package could not be delivered",
             "category": "medium",
             "template": "mail",
             "taxonomy": "Shipping Fraud",
@@ -1319,7 +1319,7 @@ class PhishingDatasetGenerator:
             "scenario_id": self.generate_id(),
             "level_no": "l28",
             "title": "Fake Antivirus Alert",
-            "content": "ðŸ›¡ï¸ 5 viruses detected - Immediate action required",
+            "content": " 5 viruses detected - Immediate action required",
             "category": "medium",
             "template": "browser",
             "taxonomy": "Scareware",
@@ -1332,7 +1332,7 @@ class PhishingDatasetGenerator:
             "to_address": None,
             "crct_mail": support_email,
             "phish_email": phish_email,
-            "body_html": f"<div style='font-family: Arial; background: red; color: white; padding: 20px;'><h1>âš ï¸ CRITICAL ALERT âš ï¸</h1><p>5 viruses detected! Your personal data is at risk.</p><a href='http://{malicious_domain}/scan' style='background: white; color: red; padding: 10px;'>Run Scan Now</a></div>",
+            "body_html": f"<div style='font-family: Arial; background: red; color: white; padding: 20px;'><h1>¸ CRITICAL ALERT ¸</h1><p>5 viruses detected! Your personal data is at risk.</p><a href='http://{malicious_domain}/scan' style='background: white; color: red; padding: 10px;'>Run Scan Now</a></div>",
             "body_text": f"CRITICAL ALERT: 5 viruses detected! Your personal data is at risk. Run Scan Now: http://{malicious_domain}/scan",
             "links": [f"http://{malicious_domain}/scan"],
             "has_attachment": False,
@@ -1355,7 +1355,7 @@ class PhishingDatasetGenerator:
             "scenario_id": self.generate_id(),
             "level_no": "l29",
             "title": "Inheritance Scam",
-            "content": "ðŸ’° $2.5M inheritance waiting for you",
+            "content": " $2.5M inheritance waiting for you",
             "category": "hard",
             "template": "mail",
             "taxonomy": "Financial Fraud",
@@ -1427,7 +1427,7 @@ class PhishingDatasetGenerator:
             "scenario_id": self.generate_id(),
             "level_no": "l31",
             "title": "Government Impersonation",
-            "content": "âš–ï¸ IRS: Tax fraud investigation - Respond immediately",
+            "content": "¸ IRS: Tax fraud investigation - Respond immediately",
             "category": "hard",
             "template": "mail",
             "taxonomy": "Government Fraud",
@@ -1463,7 +1463,7 @@ class PhishingDatasetGenerator:
             "scenario_id": self.generate_id(),
             "level_no": "l32",
             "title": "Emergency Scam",
-            "content": "ðŸ†˜ Urgent help needed - family emergency",
+            "content": " Urgent help needed - family emergency",
             "category": "hard",
             "template": "mail",
             "taxonomy": "Emergency Fraud",
@@ -1506,7 +1506,7 @@ class PhishingDatasetGenerator:
                 "scenario_id": self.generate_id("bonus"),
                 "level_no": bonus["level"],
                 "title": f"Bonus: {bonus['title']}",
-                "content": f"ðŸ¦Š {bonus['animal']} Analogy: Understanding {bonus['attack']}",
+                "content": f" {bonus['animal']} Analogy: Understanding {bonus['attack']}",
                 "category": "bonus_analysis",
                 "template": "analysis",
                 "taxonomy": bonus['attack'],
@@ -1521,17 +1521,17 @@ class PhishingDatasetGenerator:
                 "phish_email": phish_email,
                 "body_html": f"""
                 <div class='bonus-analysis' style='font-family: Arial; padding: 20px; border: 2px solid #4CAF50; border-radius: 10px;'>
-                    <h2 style='color: #4CAF50;'>ðŸ¦Š Bonus Level: The {bonus['animal']} Principle</h2>
+                    <h2 style='color: #4CAF50;'> Bonus Level: The {bonus['animal']} Principle</h2>
                     <div style='background: #f0f8ff; padding: 15px; border-radius: 8px; margin: 15px 0;'>
-                        <h3>ðŸŒ¿ Nature's Lesson:</h3>
+                        <h3> Nature's Lesson:</h3>
                         <p><em>{bonus['fact']}</em></p>
                     </div>
                     <div style='background: #fff3e0; padding: 15px; border-radius: 8px; margin: 15px 0;'>
-                        <h3>ðŸ›¡ï¸ Cybersecurity Connection:</h3>
+                        <h3> Cybersecurity Connection:</h3>
                         <p><strong>{bonus['defense']}</strong></p>
                     </div>
                     <div style='background: #e8f5e8; padding: 15px; border-radius: 8px;'>
-                        <h3>ðŸ“Š Analysis Task:</h3>
+                        <h3> Analysis Task:</h3>
                         <p>Review the following {bonus['attack']} scenario and identify how it mimics the {bonus['animal']}'s behavior:</p>
                         <ul>
                             <li><strong>Attack Type:</strong> {bonus['attack']}</li>
@@ -1573,8 +1573,8 @@ class PhishingDatasetGenerator:
         self.scenarios.append({
             "scenario_id": self.generate_id("final"),
             "level_no": "l39",
-            "title": "âš¡ ADVANCED PERSISTENT PHISHING - FUSION ATTACK",
-            "content": "ðŸŽ­ Multi-stage attack combining 7 different phishing techniques",
+            "title": "ADVANCED PERSISTENT PHISHING - FUSION ATTACK",
+            "content": " Multi-stage attack combining 7 different phishing techniques",
             "category": "expert",
             "template": "multiphase",
             "taxonomy": "Advanced Persistent Phishing",
@@ -1589,7 +1589,7 @@ class PhishingDatasetGenerator:
             "phish_email": phish_email,
             "body_html": """
             <div style='font-family: Arial; max-width: 800px; margin: 0 auto; border: 3px solid #ff4444; padding: 20px; border-radius: 15px;'>
-                <h1 style='color: #ff4444; text-align: center;'>âš ï¸ FINAL FUSION CHALLENGE âš ï¸</h1>
+                <h1 style='color: #ff4444; text-align: center;'>¸ FINAL FUSION CHALLENGE ¸</h1>
                 <h2 style='text-align: center;'>Advanced Persistent Phishing (APP) Detection</h2>
                 
                 <div style='background: #000; color: #0f0; padding: 15px; font-family: monospace; border-radius: 8px;'>
@@ -1601,37 +1601,37 @@ class PhishingDatasetGenerator:
                 </div>
 
                 <div style='margin: 20px 0;'>
-                    <h3>ðŸ“‹ Attack Components:</h3>
+                    <h3> Attack Components:</h3>
                     <ul style='list-style-type: none; padding: 0;'>
-                        <li style='padding: 8px; background: #fee; margin: 5px 0; border-radius: 5px;'>ðŸ”¹ Phase 1: Spear Phishing (Executive Impersonation)</li>
-                        <li style='padding: 8px; background: #efe; margin: 5px 0; border-radius: 5px;'>ðŸ”¹ Phase 2: Credential Harvesting (Typosquatted Domain)</li>
-                        <li style='padding: 8px; background: #fee; margin: 5px 0; border-radius: 5px;'>ðŸ”¹ Phase 3: Session Hijacking (MITM)</li>
-                        <li style='padding: 8px; background: #efe; margin: 5px 0; border-radius: 5px;'>ðŸ”¹ Phase 4: Malicious Attachment (Document Malware)</li>
-                        <li style='padding: 8px; background: #fee; margin: 5px 0; border-radius: 5px;'>ðŸ”¹ Phase 5: Redirect Chain (3 URL Shorteners)</li>
-                        <li style='padding: 8px; background: #efe; margin: 5px 0; border-radius: 5px;'>ðŸ”¹ Phase 6: Clone Phishing (Follow-up)</li>
-                        <li style='padding: 8px; background: #fee; margin: 5px 0; border-radius: 5px;'>ðŸ”¹ Phase 7: Data Exfiltration (Background)</li>
+                        <li style='padding: 8px; background: #fee; margin: 5px 0; border-radius: 5px;'> Phase 1: Spear Phishing (Executive Impersonation)</li>
+                        <li style='padding: 8px; background: #efe; margin: 5px 0; border-radius: 5px;'> Phase 2: Credential Harvesting (Typosquatted Domain)</li>
+                        <li style='padding: 8px; background: #fee; margin: 5px 0; border-radius: 5px;'> Phase 3: Session Hijacking (MITM)</li>
+                        <li style='padding: 8px; background: #efe; margin: 5px 0; border-radius: 5px;'> Phase 4: Malicious Attachment (Document Malware)</li>
+                        <li style='padding: 8px; background: #fee; margin: 5px 0; border-radius: 5px;'> Phase 5: Redirect Chain (3 URL Shorteners)</li>
+                        <li style='padding: 8px; background: #efe; margin: 5px 0; border-radius: 5px;'> Phase 6: Clone Phishing (Follow-up)</li>
+                        <li style='padding: 8px; background: #fee; margin: 5px 0; border-radius: 5px;'> Phase 7: Data Exfiltration (Background)</li>
                     </ul>
                 </div>
 
                 <div style='background: #f0f0f0; padding: 20px; border-radius: 8px;'>
-                    <h3>ðŸ“§ INITIAL CONTACT:</h3>
+                    <h3> INITIAL CONTACT:</h3>
                     <p><strong>From:</strong> "CEO Office" &lt;ceo.directive@en-phi-sim.vercel.app&gt;</p>
                     <p><strong>Subject:</strong> CONFIDENTIAL: Urgent Board Directive</p>
                     <hr>
                     <p>Team,</p>
                     <p>The board has approved the Q4 strategic initiative. Attached is the confidential implementation plan requiring your immediate review and digital signature.</p>
-                    <p><strong>ðŸ”— Step 1:</strong> <a href='http://tinyurl.com/fusion-stage1'>Access secure document portal</a> (credentials: your employee ID)</p>
-                    <p><strong>ðŸ“Ž Attachment:</strong> Q4_strategic_plan.pdf (encrypted)</p>
-                    <p><strong>ðŸ”‘ Decryption key:</strong> Provided after portal login</p>
+                    <p><strong> Step 1:</strong> <a href='http://tinyurl.com/fusion-stage1'>Access secure document portal</a> (credentials: your employee ID)</p>
+                    <p><strong> Attachment:</strong> Q4_strategic_plan.pdf (encrypted)</p>
+                    <p><strong> Decryption key:</strong> Provided after portal login</p>
                     <p>This is time-sensitive. Complete by EOD.</p>
                     <p>- CEO Office</p>
                 </div>
 
                 <div style='margin-top: 20px; padding: 15px; background: #ffeb3b; border-radius: 8px;'>
-                    <p><strong>âš ï¸ CRITICAL NOTE:</strong> This is a fusion attack combining:
+                    <p><strong>¸ CRITICAL NOTE:</strong> This is a fusion attack combining:
                     <br>â€¢ Spoofed sender (CEO impersonation)
                     <br>â€¢ Typosquatted domain in redirect chain
-                    <br>â€¢ URL shorteners (tinyurl.com â†’ bit.ly â†’ goo.gl â†’ malicious)
+                    <br>â€¢ URL shorteners (tinyurl.com bit.ly goo.gl malicious)
                     <br>â€¢ Malicious PDF with embedded macros
                     <br>â€¢ Clone follow-up if no response in 2 hours
                     <br>â€¢ Credential harvesting on final landing page
@@ -1640,9 +1640,9 @@ class PhishingDatasetGenerator:
 
                 <div style='text-align: center; margin-top: 20px;'>
                     <p><strong>Choose your response:</strong></p>
-                    <button style='background: #4CAF50; color: white; padding: 10px 20px; margin: 5px; border: none; border-radius: 5px; cursor: pointer;'>ðŸš¨ Report & Isolate (Correct)</button>
-                    <button style='background: #FFC107; color: black; padding: 10px 20px; margin: 5px; border: none; border-radius: 5px; cursor: pointer;'>ðŸ‘€ Monitor (Neutral)</button>
-                    <button style='background: #f44336; color: white; padding: 10px 20px; margin: 5px; border: none; border-radius: 5px; cursor: pointer;'>âš ï¸ Click Link (Wrong)</button>
+                    <button style='background: #4CAF50; color: white; padding: 10px 20px; margin: 5px; border: none; border-radius: 5px; cursor: pointer;'> Report & Isolate (Correct)</button>
+                    <button style='background: #FFC107; color: black; padding: 10px 20px; margin: 5px; border: none; border-radius: 5px; cursor: pointer;'> Monitor (Neutral)</button>
+                    <button style='background: #f44336; color: white; padding: 10px 20px; margin: 5px; border: none; border-radius: 5px; cursor: pointer;'>¸ Click Link (Wrong)</button>
                 </div>
             </div>
             """,
@@ -1676,11 +1676,11 @@ class PhishingDatasetGenerator:
     def generate_all_scenarios(self):
         """Generate all 39 levels of scenarios"""
         print("\n" + "="*60)
-        print("ðŸš€ GENERATING 39-LEVEL PHISHING DATASET")
+        print(" GENERATING 39-LEVEL PHISHING DATASET")
         print("="*60)
 
         # Generate 32 standard levels (3 each for l1-l32 = 96 scenarios)
-        print("\nðŸ“§ Generating 32 Standard Phishing Levels...")
+        print("\n Generating 32 Standard Phishing Levels...")
         self.generate_l1_credential_phishing(3)
         self.generate_l2_scam_invoice(3)
         self.generate_l3_fake_newsletter(3)
@@ -1704,24 +1704,24 @@ class PhishingDatasetGenerator:
         self.generate_l21_to_l32()
         
         std_count = len([s for s in self.scenarios if s['level_no'].startswith('l') and s['level_no'] != 'l39'])
-        print(f"âœ“ Generated {std_count} standard scenarios")
+        print(f"Generated {std_count} standard scenarios")
 
         # Generate 6 bonus levels
-        print("\nðŸ¦Š Generating 6 Bonus Analysis Levels (Animal Analogies)...")
+        print("\n Generating 6 Bonus Analysis Levels (Animal Analogies)...")
         self.generate_bonus_levels()
         bonus_count = len([s for s in self.scenarios if s['level_no'].startswith('b')])
-        print(f"âœ“ Generated {bonus_count} bonus analysis scenarios")
+        print(f"Generated {bonus_count} bonus analysis scenarios")
 
         # Generate final fusion level
-        print("\nâš¡ Generating Final Fusion Level (Advanced Persistent Phishing)...")
+        print("\nGenerating Final Fusion Level (Advanced Persistent Phishing)...")
         self.generate_final_fusion_level()
-        print("âœ“ Generated final level l39")
+        print("Generated final level l39")
 
         # Shuffle scenarios to mix levels
         random.shuffle(self.scenarios)
         
         print("\n" + "="*60)
-        print(f"âœ… DATASET COMPLETE: {len(self.scenarios)} TOTAL SCENARIOS")
+        print(f"DATASET COMPLETE: {len(self.scenarios)} TOTAL SCENARIOS")
         print("="*60)
         print(f"â€¢ 32 Standard Levels: {std_count} scenarios")
         print(f"â€¢ 6 Bonus Levels: {bonus_count} scenarios")
@@ -1734,10 +1734,10 @@ class PhishingDatasetGenerator:
         """Save scenarios to JSON file"""
         with open(filename, 'w') as f:
             json.dump(self.scenarios, f, indent=2)
-        print(f"\nðŸ’¾ Dataset saved to {filename}")
+        print(f"\n Dataset saved to {filename}")
         
         # Verify total count
-        print(f"ðŸ“Š Final count: {len(self.scenarios)} scenarios")
+        print(f" Final count: {len(self.scenarios)} scenarios")
 
     def print_statistics(self):
         """Print dataset statistics"""
@@ -1749,7 +1749,7 @@ class PhishingDatasetGenerator:
             levels[level] += 1
         
         print("\n" + "="*60)
-        print("ðŸ“Š DATASET STATISTICS")
+        print(" DATASET STATISTICS")
         print("="*60)
         for level in sorted(levels.keys()):
             print(f"Level {level}: {levels[level]} scenarios")
@@ -1759,7 +1759,7 @@ class PhishingDatasetGenerator:
 def main():
     """Main function to generate and save the dataset"""
     print("\n" + "="*60)
-    print("ðŸŽ¯ PHISHING SIMULATION DATASET GENERATOR")
+    print(" PHISHING SIMULATION DATASET GENERATOR")
     print("="*60)
     print("Domain: en-phi-sim.vercel.app")
     print("Total Levels: 39 (32 Standard + 6 Bonus + 1 Final)")
@@ -1769,8 +1769,9 @@ def main():
     generator.save_to_json("EnPhiSim_39Levels_Dataset.json")
     generator.print_statistics()
     
-    print("\nâœ… Generation complete!")
+    print("\nGeneration complete!")
 
 
 if __name__ == "__main__":
     main()
+
