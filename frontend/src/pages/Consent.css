@@ -34,7 +34,6 @@
 }
 
 .university-header::before {
-  content: '';
   position: absolute;
   top: 0;
   left: 0;
@@ -111,7 +110,6 @@
 }
 
 .consent-card h2::after {
-  content: '';
   position: absolute;
   bottom: 0;
   left: 0;
@@ -171,7 +169,6 @@
 }
 
 .consent-section li::before {
-  content: ';
   position: absolute;
   left: 0;
   color: #34d399;
