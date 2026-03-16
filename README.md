@@ -51,7 +51,7 @@ Create `backend/.env`:
 
 ```env
 PORT=4000
-MONGO_URI=mongodb+srv://pdivyatej2003_db_user:Tej_2026@cluster0.j1b287e.mongodb.net/Cluster0
+MONGO_URI=MongoDB_URL
 ML_SERVER_URL=http://localhost:8000
 ```
 
