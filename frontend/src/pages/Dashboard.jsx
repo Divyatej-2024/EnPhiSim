@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import { connectSession, disconnectSession } from '../services/realtime';
 import './Dashboard1.css';
 
 export default function Dashboard() {
@@ -12,6 +13,7 @@ export default function Dashboard() {
   const [modelMetrics, setModelMetrics] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [liveStatus, setLiveStatus] = useState('connecting');
   const [timeRange, setTimeRange] = useState('week');
   const [sessionId] = useState(() => localStorage.getItem('sessionId') || 'anonymous');
 
@@ -60,6 +62,41 @@ export default function Dashboard() {
   useEffect(() => {
     fetchDashboardData();
   }, [fetchDashboardData]);
+
+  const refreshAnalytics = useCallback(async () => {
+    try {
+      const analyticsResult = await api.getAnalytics(sessionId, timeRange);
+      const analyticsData = analyticsResult?.data || analyticsResult;
+      setAnalytics(analyticsData);
+    } catch (err) {
+      console.error('Realtime analytics refresh failed:', err);
+    }
+  }, [sessionId, timeRange]);
+
+  useEffect(() => {
+    if (!sessionId) return;
+
+    const socket = connectSession(sessionId);
+    setLiveStatus(socket.connected ? 'live' : 'connecting');
+
+    const handleConnect = () => setLiveStatus('live');
+    const handleDisconnect = () => setLiveStatus('offline');
+    const handleAction = (payload) => {
+      if (payload?.session_id && payload.session_id !== sessionId) return;
+      refreshAnalytics();
+    };
+
+    socket.on('connect', handleConnect);
+    socket.on('disconnect', handleDisconnect);
+    socket.on('action:new', handleAction);
+
+    return () => {
+      socket.off('connect', handleConnect);
+      socket.off('disconnect', handleDisconnect);
+      socket.off('action:new', handleAction);
+      disconnectSession(sessionId);
+    };
+  }, [refreshAnalytics, sessionId]);
 
   const goToLevels = () => {
     navigate('/game');
@@ -174,7 +211,13 @@ export default function Dashboard() {
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
-        <h1>Your Progress</h1>
+        <div className="dashboard-title">
+          <h1>Your Progress</h1>
+          <span className={`live-indicator ${liveStatus}`}>
+            <span className="live-dot" />
+            {liveStatus === 'live' ? 'Live updates on' : liveStatus === 'connecting' ? 'Connecting' : 'Offline'}
+          </span>
+        </div>
         <div className="dashboard-top-actions">
           <button className="dashboard-action-button secondary" onClick={goToLevels}>
             <span>Back to Levels</span>

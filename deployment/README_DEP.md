@@ -12,8 +12,9 @@ Set env vars:
 
 ```env
 PORT=4000
-MONGO_URI=your_mongodb_atlas_uri
+MONGODB_URI=your_mongodb_atlas_uri
 ML_SERVER_URL=https://your-ml-service.onrender.com
+FRONTEND_URL=https://your-frontend-app.vercel.app
 ```
 
 Start command:
@@ -42,6 +43,7 @@ Set env var:
 
 ```env
 REACT_APP_API_URL=https://your-backend-service.onrender.com
+REACT_APP_SOCKET_URL=https://your-backend-service.onrender.com
 ```
 
 Build command:

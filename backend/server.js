@@ -1,6 +1,8 @@
 ﻿// Sections: imports, configuration, logic, render/exports
 
 import express from 'express';
+import { createServer } from 'http';
+import { Server as SocketIOServer } from 'socket.io';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -19,25 +21,26 @@ import predictRoutes from './routes/predict.js';
 import consentRoutes from './routes/consent.js';
 import modelMetricsRoutes from './routes/modelMetrics.js';
 import { notFoundHandler, csrfErrorHandler, generalErrorHandler } from './middleware/errorHandler.js';
+import Level from './models/Level.js';
 
 dotenv.config();
 
 const app = express();
 const PORT = Number(process.env.PORT || 4000);
 const NODE_ENV = process.env.NODE_ENV || 'development';
-// Add this at the VERY TOP of server.js, before any other code
-console.log('=== ENVIRONMENT VARIABLES DEBUG ===');
-console.log('MONGODB_URI exists:', !!process.env.MONGODB_URI);
-if (process.env.MONGODB_URI) {
-    // Mask password for safety
+if (NODE_ENV !== 'production') {
+  console.log('=== ENVIRONMENT VARIABLES DEBUG ===');
+  console.log('MONGODB_URI exists:', !!process.env.MONGODB_URI);
+  if (process.env.MONGODB_URI) {
     const masked = process.env.MONGODB_URI.replace(/:[^@]+@/, ':****@');
     console.log('MONGODB_URI value:', masked);
     console.log('MONGODB_URI length:', process.env.MONGODB_URI.length);
     console.log('MONGODB_URI starts with:', process.env.MONGODB_URI.substring(0, 20));
-} else {
+  } else {
     console.log('MONGODB_URI is UNDEFINED!');
+  }
+  console.log('===================================');
 }
-console.log('===================================');
 app.disable('x-powered-by');
 app.set('trust proxy', 1);
 
@@ -62,56 +65,58 @@ const allowedOrigins = new Set([
   'http://localhost:3000',
   ...configuredOrigins,
 ]);
-// Add this right before your routes
-app.get('/debug/check', async (req, res) => {
-  try {
-    const db = mongoose.connection.db;
-    const collections = await db.listCollections().toArray();
-    const levelCount = await Level.countDocuments();
-    const sample = await Level.findOne();
-    
-    res.json({
-      connected: mongoose.connection.readyState === 1,
-      database: mongoose.connection.name,
-      collections: collections.map(c => c.name),
-      levelModelExists: !!mongoose.models.Level,
-      levelModelName: Level?.modelName,
-      levelCollection: Level?.collection?.name,
-      levelCount,
-      hasSample: !!sample,
-      sampleLevel: sample ? {
-        id: sample._id,
-        level_no: sample.level_no,
-        title: sample.title
-      } : null
-    });
-  } catch (err) {
-    res.json({ error: err.message });
-  }
-});
+if (NODE_ENV !== 'production') {
+  app.get('/debug/check', async (_req, res) => {
+    try {
+      const db = mongoose.connection.db;
+      const collections = await db.listCollections().toArray();
+      const levelCount = await Level.countDocuments();
+      const sample = await Level.findOne();
 
-// Add this after mongoose.connect
-app.get('/debug/all-models', async (req, res) => {
-  try {
-    const models = {};
-    Object.keys(mongoose.models).forEach(name => {
-      models[name] = {
-        collection: mongoose.models[name].collection.name
-      };
-    });
-    
-    res.json({
-      connected: mongoose.connection.readyState === 1,
-      database: mongoose.connection.name,
-      registeredModels: Object.keys(mongoose.models),
-      modelDetails: models,
-      levelModelExists: !!mongoose.models.Level,
-      levelCollection: mongoose.models.Level?.collection.name
-    });
-  } catch (err) {
-    res.json({ error: err.message });
-  }
-});
+      res.json({
+        connected: mongoose.connection.readyState === 1,
+        database: mongoose.connection.name,
+        collections: collections.map((c) => c.name),
+        levelModelExists: !!mongoose.models.Level,
+        levelModelName: Level?.modelName,
+        levelCollection: Level?.collection?.name,
+        levelCount,
+        hasSample: !!sample,
+        sampleLevel: sample
+          ? {
+              id: sample._id,
+              level_no: sample.level_no,
+              title: sample.title,
+            }
+          : null,
+      });
+    } catch (err) {
+      res.json({ error: err.message });
+    }
+  });
+
+  app.get('/debug/all-models', async (_req, res) => {
+    try {
+      const models = {};
+      Object.keys(mongoose.models).forEach((name) => {
+        models[name] = {
+          collection: mongoose.models[name].collection.name,
+        };
+      });
+
+      res.json({
+        connected: mongoose.connection.readyState === 1,
+        database: mongoose.connection.name,
+        registeredModels: Object.keys(mongoose.models),
+        modelDetails: models,
+        levelModelExists: !!mongoose.models.Level,
+        levelCollection: mongoose.models.Level?.collection.name,
+      });
+    } catch (err) {
+      res.json({ error: err.message });
+    }
+  });
+}
 
 const corsOptions = {
   origin: (origin, callback) => {
@@ -159,6 +164,16 @@ app.use(
 );
 
 app.use(cors(corsOptions));
+
+const socketCors = {
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.has(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error('Origin not allowed by CORS'));
+  },
+  credentials: true,
+};
 
 app.use(cookieParser());
 app.use(express.json({ limit: '100kb' }));
@@ -213,24 +228,25 @@ const authLimiter = rateLimit({
     },
   },
 });
-// Add to server.js - right before your routes
-app.get('/debug/check-data', async (req, res) => {
-  try {
-    const db = mongoose.connection.db;
-    const collections = await db.listCollections().toArray();
-    const levelData = await db.collection('levelDataset').find().limit(1).toArray();
-    
-    res.json({
-      database: mongoose.connection.name,
-      collections: collections.map(c => c.name),
-      hasLevelDataset: collections.some(c => c.name === 'levelDataset'),
-      sampleData: levelData.length > 0 ? 'Data exists!' : 'No data found',
-      count: await db.collection('levelDataset').countDocuments()
-    });
-  } catch (err) {
-    res.json({ error: err.message });
-  }
-});
+if (NODE_ENV !== 'production') {
+  app.get('/debug/check-data', async (_req, res) => {
+    try {
+      const db = mongoose.connection.db;
+      const collections = await db.listCollections().toArray();
+      const levelData = await db.collection('levelDataset').find().limit(1).toArray();
+
+      res.json({
+        database: mongoose.connection.name,
+        collections: collections.map((c) => c.name),
+        hasLevelDataset: collections.some((c) => c.name === 'levelDataset'),
+        sampleData: levelData.length > 0 ? 'Data exists!' : 'No data found',
+        count: await db.collection('levelDataset').countDocuments(),
+      });
+    } catch (err) {
+      res.json({ error: err.message });
+    }
+  });
+}
 app.use('/api', apiLimiter);
 app.use('/api/predict', predictLimiter);
 app.use('/api/consent', authLimiter);
@@ -315,7 +331,33 @@ mongoose
     process.exit(1);
   });
 
-const server = app.listen(PORT, () => {
+const httpServer = createServer(app);
+const io = new SocketIOServer(httpServer, {
+  cors: socketCors,
+});
+
+io.on('connection', (socket) => {
+  logger.info('Realtime client connected', { id: socket.id });
+
+  socket.on('join-session', ({ sessionId }) => {
+    if (!sessionId) return;
+    socket.join(`session:${sessionId}`);
+    socket.emit('session:joined', { sessionId });
+  });
+
+  socket.on('leave-session', ({ sessionId }) => {
+    if (!sessionId) return;
+    socket.leave(`session:${sessionId}`);
+  });
+
+  socket.on('disconnect', () => {
+    logger.info('Realtime client disconnected', { id: socket.id });
+  });
+});
+
+app.set('io', io);
+
+const server = httpServer.listen(PORT, () => {
   logger.info(`Server running on port ${PORT}`, { env: NODE_ENV });
 });
 
