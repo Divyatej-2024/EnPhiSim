@@ -8,8 +8,9 @@ Create `backend/.env`:
 
 ```env
 PORT=4000
-MONGO_URI=your_mongodb_uri
+MONGODB_URI=your_mongodb_uri
 ML_SERVER_URL=http://localhost:8000
+FRONTEND_URL=http://localhost:3000
 # Optional fallback:
 # ML_API_URL=http://localhost:8000
 ```

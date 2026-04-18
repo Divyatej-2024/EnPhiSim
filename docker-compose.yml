@@ -1,0 +1,45 @@
+version: "3.9"
+
+services:
+  mongo:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  ml_server:
+    build:
+      context: ./ml_server
+    environment:
+      - MODEL_DIR=/app/models
+    ports:
+      - "8000:8000"
+
+  backend:
+    build:
+      context: ./backend
+    depends_on:
+      - mongo
+      - ml_server
+    environment:
+      - PORT=4000
+      - MONGODB_URI=mongodb://mongo:27017/EnPhiSimdb
+      - ML_SERVER_URL=http://ml_server:8000
+      - FRONTEND_URL=http://localhost:3000
+    ports:
+      - "4000:4000"
+
+  frontend:
+    build:
+      context: ./frontend
+    depends_on:
+      - backend
+    environment:
+      - REACT_APP_API_URL=http://localhost:4000
+      - REACT_APP_SOCKET_URL=http://localhost:4000
+    ports:
+      - "3000:3000"
+
+volumes:
+  mongo_data:

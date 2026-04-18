@@ -21,13 +21,15 @@ router.post('/', validateActionPayload, async (req, res) => {
       is_correct  // ADD THIS (it was missing!)
     } = req.body;
     
-    console.log(' Backend received action:', {  // Add debug log
-      scenario_id,
-      user_action,
-      is_correct_from_frontend: is_correct,
-      session_id,
-      level
-    });
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(' Backend received action:', {
+        scenario_id,
+        user_action,
+        is_correct_from_frontend: is_correct,
+        session_id,
+        level,
+      });
+    }
     
     const uri = process.env.MONGODB_URI;
     client = new MongoClient(uri);
@@ -56,12 +58,27 @@ router.post('/', validateActionPayload, async (req, res) => {
       backend_match: user_action === scenario?.correct_action
     };
     
-    console.log(' Saving to MongoDB:', {
-      is_correct_saved: is_correct,
-      backend_match: user_action === scenario?.correct_action
-    });
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(' Saving to MongoDB:', {
+        is_correct_saved: is_correct,
+        backend_match: user_action === scenario?.correct_action,
+      });
+    }
     
-    await actions.insertOne(actionDoc);
+    const insertResult = await actions.insertOne(actionDoc);
+
+    const io = req.app.get('io');
+    if (io) {
+      io.to(`session:${session_id}`).emit('action:new', {
+        action_id: insertResult.insertedId?.toString(),
+        session_id,
+        scenario_id,
+        title: scenario?.title || 'Phishing Scenario',
+        user_action,
+        is_correct,
+        timestamp: actionDoc.timestamp,
+      });
+    }
     
     // Return the frontend's correctness
     res.json({ 

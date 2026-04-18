@@ -5,6 +5,7 @@ It combines:
 - A level-based phishing awareness simulator (React frontend).
 - A backend API for levels, scenarios, actions, and analytics (Node/Express + MongoDB).
 - An ML inference service for real-time text-based phishing classification (FastAPI + DistilBERT + CNN).
+- Real-time dashboard updates via WebSockets for live progress tracking.
 
 ## Project Objectives (from FYP proposal)
 
@@ -51,8 +52,9 @@ Create `backend/.env`:
 
 ```env
 PORT=4000
-MONGO_URI=MongoDB_URL
+MONGODB_URI=MongoDB_URL
 ML_SERVER_URL=http://localhost:8000
+FRONTEND_URL=http://localhost:3000
 ```
 
 Run:
@@ -85,6 +87,7 @@ Create `frontend/.env`:
 
 ```env
 REACT_APP_API_URL=http://localhost:4000
+REACT_APP_SOCKET_URL=http://localhost:4000
 ```
 
 Run:
@@ -94,6 +97,27 @@ cd frontend
 npm install
 npm start
 ```
+
+## Local Deployment (Docker)
+
+This runs MongoDB, backend, ML service, and frontend together:
+
+```bash
+docker compose up --build
+```
+
+Default URLs after startup:
+- Frontend: `http://localhost:3000`
+- Backend: `http://localhost:4000/health`
+- ML Server: `http://localhost:8000/health`
+
+## Product Readiness (Sellable Baseline)
+
+Included upgrades for a production-style demo:
+- WebSocket live updates for analytics and recent activity.
+- Service health endpoints for uptime checks.
+- Docker-based local deployment with one command.
+- Example environment files for faster onboarding (`.env.example`).
 
 ## Deployment Summary
 
