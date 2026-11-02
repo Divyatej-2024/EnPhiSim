@@ -1,0 +1,55 @@
+name: Chromium UI checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  chromium-ui:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+      - name: Install Playwright Chromium
+        run: |
+          python -m pip install -r tests/browser/requirements.txt
+          python -m playwright install --with-deps chromium
+      - name: Start frontend
+        working-directory: frontend
+        run: |
+          npm start > /tmp/enphisim-frontend.log 2>&1 &
+          for attempt in $(seq 1 60); do
+            if curl --fail --silent http://127.0.0.1:3000/ > /dev/null; then exit 0; fi
+            sleep 2
+          done
+          cat /tmp/enphisim-frontend.log
+          exit 1
+        env:
+          CI: "true"
+      - name: Run Chromium checks
+        run: python -m pytest -q tests/browser
+        env:
+          ENPHISIM_BASE_URL: http://127.0.0.1:3000
+      - name: Upload diagnostics on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: enphisim-browser-diagnostics
+          path: /tmp/enphisim-frontend.log
+          if-no-files-found: ignore
